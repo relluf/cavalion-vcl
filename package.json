@@ -1,0 +1,19 @@
+{
+  "name": "cavalion-vcl",
+  "version": "1.0.0",
+  "description": "Cavalion vcl-comps JavaScript library",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/relluf/cavalion-vcl.git"
+  },
+  "author": "ralph",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/relluf/cavalion-vcl/issues"
+  },
+  "homepage": "https://github.com/relluf/cavalion-vcl#readme"
+}
