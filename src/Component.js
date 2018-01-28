@@ -1223,7 +1223,7 @@ define(function (require) {
 	            			selector = this.qsa(selector.join(" "));
             			}
             			selector.forEach(function(component) {
-            				component.override(event, method);
+            				component.override(event, method, true);
             			});
             		}
                 },
@@ -1242,7 +1242,7 @@ define(function (require) {
 	            			selector = this.qsa(selector.join(" "));
             			}
             			selector.forEach(function(component) {
-            				component.override(event, method);
+            				component.override(event, method, true);
             			});
             		}
                 },
