@@ -28,7 +28,7 @@ define(function (require) {
                     ">.close": {
                     	position: "absolute",
                     	right: "4px",
-                    	"padding-top": "4px",
+                    	"padding-top": "3px",
                     	cursor: "pointer",
                     	display: "none"
                     },
@@ -73,7 +73,7 @@ define(function (require) {
 //        				width: "100%",
                         display: 'inline-block',
                         "margin-left": "2px",
-                        padding: "4px 4px 2px 4px"
+                        padding: "3px 4px 3px 4px"
                     },
                     "&.selected": {
                         ">.selection": {
@@ -81,7 +81,7 @@ define(function (require) {
                         },
                         ">.text": {
                             "background-color": "rgb(56, 121, 217)",
-                        	"padding-bottom": "1px",
+                        	"padding-bottom": "2px",
                         	"margin-bottom": "1px",
                             // "padding-left": "4px",
                             // "padding-right": "4px",
