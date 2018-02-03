@@ -1,6 +1,6 @@
 {
   "name": "cavalion-vcl",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Cavalion vcl-comps JavaScript library",
   "main": "index.js",
   "scripts": {
@@ -17,6 +17,6 @@
   },
   "homepage": "https://github.com/relluf/cavalion-vcl#readme",
   "dependencies": {
-    "cavalion-js": "^1.0.0"
+    "cavalion-js": "^1.0.1"
   }
 }
