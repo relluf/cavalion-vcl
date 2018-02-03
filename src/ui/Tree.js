@@ -81,8 +81,8 @@ define(function (require) {
                         },
                         ">.text": {
                             "background-color": "rgb(56, 121, 217)",
-                        	"padding-bottom": "2px",
-                        	"margin-bottom": "1px",
+                        	"padding-bottom": "1px",
+                        	"margin-bottom": "2px",
                             // "padding-left": "4px",
                             // "padding-right": "4px",
                             "border-radius": "3px",
