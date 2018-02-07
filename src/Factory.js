@@ -447,7 +447,7 @@ define(function(require) {
 								component, property._name));
 							Method.setInherited(value, property.get(component, 
 								value));
-							value = Method.trace(value);
+							// value = Method.trace(value);
 						} else {
 							value = undefined;
 						}

@@ -263,7 +263,8 @@ define(function(require) {
 					value = this._autoWidthValue;
 					this._autoWidthValue = "";
 				}
-				if(this._autoWidthValue.length < value.length) {
+				value = value || "&nbsp";
+				if(this._autoWidthValue.length <= value.length) {
 					this.setAutoWidthValue(value);
 				}
 			},

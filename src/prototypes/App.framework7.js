@@ -15,7 +15,7 @@ $([], {
 	},
 	
 	/*- TODO override means final */
-	override: {
+	override_v1: {
 		Event: CustomEvent,
 		
 		f7a: null, /*- Framework7 app instance */

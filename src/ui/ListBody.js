@@ -24,14 +24,10 @@ define(function(require) {
 			_firstRow: -1,
 
 			alignControls: function() {
-			/**
-			 * @overrides ./Panel.prototype.alignControls
-			 */
+				/** @overrides ./Panel.prototype.alignControls */
 			},
 			setParent: function(value) {
-			/**
-			 * @overrides ../Control.prototype.setParent
-			 */
+				/** @overrides ../Control.prototype.setParent */
 				if(this._parent !== value) {
 					if(this._parent !== null) {
 						Method.disconnect(this._parent, "notifyEvent", this, "listNotifyEvent");
@@ -64,8 +60,8 @@ define(function(require) {
 					this.setCount(0);
 				} else {
 					// visual effect, a form will seem to render more quickly
-					this.setTimeout("renderRows", 0);
-					//this.renderRows();
+					this.setTimeout("renderRows", 10);
+					// this.renderRows();
 				}
 			},
 			renderRows: function() {
@@ -92,10 +88,12 @@ define(function(require) {
 				}
 
 				var delta = Math.abs(this._firstRow - firstRow);
-//console.log("delta", delta, "count", count, "firstRow", firstRow);
+// console.log("delta", delta, "count", count, "firstRow", firstRow);
+if(firstRow !== 0 && delta === 0) return;
 				this.setCount(count);
 
-				if(this._firstRow === -1 || delta > rowBuffer) {
+				if(this._firstRow === -1 || delta > rowBuffer / 2) {
+// console.log("!!! pagemove")
 					for(var i = 0; i < count; ++i) {
 						row = this._controls[i];
 						row.setRowIndex(i + firstRow);
@@ -103,8 +101,8 @@ define(function(require) {
 					this._firstRow = firstRow;
 				} else {
 
-					if(delta > rowBuffer * 0.75 || firstRow === 0 || firstRow === max - count) {
-
+					if(/*delta > rowBuffer * 0.75 || */firstRow === 0 || firstRow === max - count) {
+// console.log("!!! normalmove")
 						while(this._firstRow < firstRow) {
 							row = this._controls.splice(0, 1)[0];
 							this._controls.push(row);

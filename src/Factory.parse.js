@@ -50,6 +50,12 @@ define(function(require) {
 					name = inherits[1];
 				}
 				inherits = inherits[0];
+				
+				/*- TODO Some registry would be nice? Or what to do with this anyways? */
+				if(inherits.indexOf("vcl-") === 0 && inherits.indexOf("vcl-veldoffice") !== 0) {
+					inherits = "vcl/" + inherits.substring(4);
+				}
+				
 				if(inherits.endsWith("<>")) {
 					inherits = [inherits.split("<").shift()];
 				}
@@ -94,14 +100,14 @@ define(function(require) {
 		};
 
 		function walk(node) {
-		/**
-		 * Dependencies are two-fold:
-		 * 	- factories
-		 * 	- classes
-		 *
-		 * @param node
-		 *            The scope being walked
-		 */
+			/**
+			 * Dependencies are two-fold:
+			 * 	- factories
+			 * 	- classes
+			 *
+			 * @param node
+			 *            The scope being walked
+			 */
 			// Are we inheriting prototypes?
 			if(node.inherits instanceof Array) {
 				// Test for $([])

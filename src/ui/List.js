@@ -91,6 +91,8 @@ define(function(require) {
 			_footer: null,
 			_body: null,
 			_columns: null,
+			
+			_scrollTimeout: 0,
 
 			_onSelectionChange: null,
 			_onColumnDropped: null,
@@ -205,11 +207,17 @@ define(function(require) {
 					this.notifyEvent("setScrollLeft", this._nodes.body.scrollLeft);
 
 					var me = this;
+					var topRow = parseInt(me._nodes.body.scrollTop / me._rowHeight, 10);
+					me._topRow = topRow;
+					
+					// me._scrolled = me._scrolled || 0;
+					// me._scrolled++;
+					
 					this.setTimeout("scroll", function() {
-						var topRow = parseInt(me._nodes.body.scrollTop / me._rowHeight, 10);
-						me._topRow = topRow;
+						// console.log(me._scrolled);
 						me.render();
-					}, 0);
+						// me._scrolled = 0;
+					}, me._scrollTimeout);
 				}
 
 				return this.inherited(arguments);

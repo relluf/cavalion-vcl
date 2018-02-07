@@ -346,8 +346,17 @@ define(function(require) {
 				]
 			},
 			"onChildNodesNeeded": {
-				set: Function,
-				type: Type.EVENT
+				type: Type.EVENT,
+				set: Function
+			},
+			"onNodesNeeded": {
+				type: Type.EVENT,
+				set: function(value) {
+					this._onChildNodesNeeded = value;
+				},
+				get: function() {
+					return this._onChildNodesNeeded;
+				}
 			},
 			"onCollapse": {
 				set: Function,

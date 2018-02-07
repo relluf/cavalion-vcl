@@ -1210,6 +1210,13 @@ define(function (require) {
             	},
             	type: Type.OBJECT // MAP(String, Function)
             },
+            "override_v1": {
+            	fixUp: true,
+                set: function(value) {
+                	this.override(value, true);
+                },
+                type: Type.OBJECT
+            },
             "override": {
             	fixUp: true,
                 set: function(value) {

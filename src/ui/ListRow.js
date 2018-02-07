@@ -2,6 +2,7 @@ define(function(require) {
 
 	var Class = require("js/Class");
 	var Panel = require("./Panel");
+	var Control = require("../Control");
 
 	var ListRow = {
 		inherits: Panel,
@@ -22,7 +23,7 @@ define(function(require) {
 					display: "inline-block",
 					overflow: "hidden",
 					"padding-left": "6px",
-					"padding-top": "7px",
+					"padding-top": "5px",
 					"text-overflow": "ellipsis"
 				}
 			},
@@ -31,9 +32,7 @@ define(function(require) {
 			_list: null,
 
 			getInnerHtml: function() {
-			/**
-			 * @overrides ../Control.prototype.getInnerHtml
-			 */
+				/** @overrides ../Control.prototype.getInnerHtml */
 				var list = this.getList();
 				var className = "ListCell";
 				var height = list.getRowHeight();
@@ -50,9 +49,7 @@ define(function(require) {
 				return html.join("");
 			},
 			initializeNodes: function(layoutChanged) {
-			/**
-			 * @overrides ../Control.prototype.initializeNodes
-			 */
+				/** @overrides ../Control.prototype.initializeNodes */
 				this.inherited(arguments);
 				if(this._rowIndex !== -1) {
 					var list = this.getList();
@@ -74,9 +71,7 @@ define(function(require) {
 				}
 			},
 			determineClasses: function() {
-			/**
-			 * @overrides ../Control.prototype.determineClasses
-			 */
+				/** @overrides ../Control.prototype.determineClasses */
 				var classes = this.inherited(arguments);
 				if(this._rowIndex % 2 === 1) {
 					classes.push("odd");
@@ -96,16 +91,12 @@ define(function(require) {
 			// 	this.setStyleProp("height", this._height, bu);
 			// },
 			layoutChanged: function() {
-			/**
-			 * @overrides ../Control.prototype.layoutChanged
-			 */
+				/** @overrides ../Control.prototype.layoutChanged */
 				delete this._computedStyle;
 				// blocked, no need to notify parent, the dimensions of a Row are fixed slash already known
 			},
 			isSelected: function() {
-			/**
-			 * @overrides ../Control.prototype.isSelected
-			 */
+				/** @overrides ../Control.prototype.isSelected */
 				var list = this.getList();
 				if(list !== null) {
 					return list.isRowSelected(this._rowIndex);
@@ -113,9 +104,7 @@ define(function(require) {
 				return false;
 			},
 			ondblclick: function(evt) {
-			/**
-			 * @overrides ../Control.prototype.ondblclick
-			 */
+				/** @overrides ../Control.prototype.ondblclick */
 				var r = this.inherited(arguments);
 				if(r !== false) {
 					var list = this.getList();
@@ -149,7 +138,7 @@ define(function(require) {
 						this._top = this._rowIndex * this.getList().getRowHeight();
 						this._node.style.top = String.format("%dpx", this._top);
 						//this._node.style.top = "";
-						//this._node.style.webkitTransform = String.format("translate3d(0, %dpx, 0)", this._top);
+						// this._node.style.webkitTransform = String.format("translate3d(0, %dpx, 0)", this._top);
 					}
 
 					this.setState("classesInvalidated");
