@@ -249,12 +249,14 @@ define(function(require) {
 			whenChildNodesLoaded: function(callback) {
 				this.childNodesNeeded(callback);
 			},
+			
 			getTree: function() {
 				if(this._parent instanceof Tree) {
 					return this._parent;
 				}
 				return this._parent ? this._parent.getTree() : null;
 			},
+			
 			getText: function() {
 				if(this.isDesigning()) {
 					return this._text || this._name;
@@ -281,7 +283,9 @@ define(function(require) {
 							this.dispatch("expand");
 						}
 					} else {//if(value === true && this.isExpandable()) {
-						this._expanded = value;
+						if((this._expanded = value)) {
+							this._expandable = true;
+						}
 					}
 				}
 			},
