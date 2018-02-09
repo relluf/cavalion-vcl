@@ -628,6 +628,7 @@ define(function (require) {
                 if(arguments.length === 0) {
                     return this.getScope();
                 }
+                console.log("Component.prototype.scope() --with-selector")
                 return this.getScope()[arguments[0]];
             },
             qsa: function(selector, context) {

@@ -31,6 +31,20 @@ define(function(require) {
 	        });
 	    }
 		function $(inherits, name, properties, children) {
+			/*- $([ $(), ... ]) */
+			if(arguments.length === 1 && inherits instanceof Array && inherits.length > 0) {
+				if(inherits[0] 
+					&& inherits[0].hasOwnProperty("name") 
+					&& inherits[0].hasOwnProperty("properties") 
+					&& inherits[0].hasOwnProperty("children")
+				) {
+					children = inherits;
+					properties = {};
+					name = "";
+					inherits = [];
+				}
+			}
+			
 			if(typeof inherits === "string" && inherits.charAt(0) === "@") {
 				return new PropertyValue(inherits.substring(1));
 			}

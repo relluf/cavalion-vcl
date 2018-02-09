@@ -170,6 +170,13 @@ define(function(require) {
 				}
 			},
 			
+			updateChildren: function(recursive, directly) {
+				/** @overrides */
+				var args = js.copy_args(arguments); args.callee = arguments.callee;
+				// inherited.apply(this, arguments); // --> inherited.js
+				return Group.prototype.updateChildren.apply(this, [recursive, true]);
+			},
+			
 			onclick: function(evt, force) {
 			/**
 			 * @overrides ../Control.prototype.onclick
@@ -242,6 +249,13 @@ define(function(require) {
 				}
 
 				return r;
+			},
+			onnodeinserted: function() {
+				if(this._expandable === "auto") {
+					console.log("onnodeinserted", this._expandable);
+					this.childNodesNeeded();
+				}
+				return this.inherited(arguments);
 			},
 			getChildNodesLoaded: function() {
 				return this._childNodesLoaded;
