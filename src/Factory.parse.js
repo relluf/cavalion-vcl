@@ -142,7 +142,7 @@ define(function(require) {
 				}
 
 				node.inherits.forEach(function(item, i) {
-					node.inherits[i] = item = normalize(uri, item);
+					node.inherits[i] = item = normalize(uri, typeof item === "string" ? item : "");
 					item = String.format("vcl/Factory!%s", item);
 					if(tree.factories.indexOf(item) === -1) {
 						tree.factories.push(item);
