@@ -1195,6 +1195,7 @@ define(function (require) {
             "handlers": {
             	fixUp: true,
             	set: function(value) {
+            		var properties = {};
             		for(var k in value) {
             			var method = value[k];
             			var selector = k.split(" ");
@@ -1205,7 +1206,15 @@ define(function (require) {
 	            			selector = this.qsa(selector.join(" "));
             			}
             			selector.forEach(function(component) {
-            				component.on(event, method);
+            				if(event.indexOf("on") === 0) {
+	            				var hash = component.hashCode();
+	            				var props = properties[hash] || (properties[hash] = component.defineProperties());
+	            				if(props[event] !== undefined) {
+	            					/*- onSomeEvent property style detected */
+	            					return props[event].set(component, method);
+	            				}
+            				}
+        					component.on(event, method);
             			});
             		}
             	},
