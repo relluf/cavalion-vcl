@@ -1103,6 +1103,8 @@ define(function(require) {
 			},
 
 			_update: function() {
+Control.updateCallCount++;				
+this._updateCalls = this._updateCalls || 0; this._updateCalls++;
 				if(this._parent && this._parent.allowsUpdateChildren() === false) {
 				// if(this._parent && this._parent.inDocument() === false) {
 					//console.warn(this, "_update not allowed, move to ControlUpdater");
@@ -1749,6 +1751,7 @@ define(function(require) {
 			}
 		},
 		statics: {
+			updateCallCount: 0,
 
 			focused: null,
 
