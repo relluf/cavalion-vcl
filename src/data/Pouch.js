@@ -32,6 +32,7 @@ define(function(require) {
 			_sync: "",
 			_pageSize: 750,
 			_pages: null,
+			_includeDocs: true,
 			
 			_busyCount: 0,
 
@@ -62,7 +63,7 @@ define(function(require) {
 console.log("requesting page", p);
 
 					this._pages[p] = this._db.allDocs({ /*- allDocs */
-						include_docs: true, limit: this._pageSize, 
+						include_docs: this._includeDocs, limit: this._pageSize, 
 						skip: start
 					})
 						.then(function(dataset) {

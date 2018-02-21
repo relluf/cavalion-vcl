@@ -867,9 +867,10 @@ define(function (require) {
             },
             readStorage: function (key, callback, errback) {
                 var r = localStorage.getItem(this.getStorageKey(key));
-                if (typeof callback === "function") {
+                if (typeof callback === "function") { // nextTick?
                     callback.apply(this, [r]);
                 }
+                return r;
             },
             writeStorage: function (key, value, callback, errback) {
                 try {

@@ -1,6 +1,7 @@
 define(function() { return function(expr) {
 	
 	var Console = this.constructor;
+	var Deferred = require("js/Deferred");
 	var Component = require("vcl/Component");
     var scope = this.scope();
     var me = this;
@@ -33,7 +34,12 @@ define(function() { return function(expr) {
 	// 	return console.print.apply(console, args);
 	// }
 	function req() {
-	    var d = new Deferred();
+	    if (arguments.length == 1) {
+	        try {
+	            return require(arguments[0]);
+	        } catch(e) {}
+	    }
+   	    var d = new Deferred();
 	    require.apply(this, [js.copy_args(arguments),
 	        function () {
 	            d.callback.apply(d, js.copy_args(arguments));

@@ -527,7 +527,7 @@ define(function(require) {
 					}
 				}
 			    if(uri.indexOf(Factory.PREFIX_PROTOTYPES) !== 0) {
-			        uri = Factory.PREFIX_APP + uri;
+		        	uri = Factory.PREFIX_APP + uri;
 			    }
 				return uri;
 			},
