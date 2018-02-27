@@ -6,6 +6,7 @@ define(function (require) {
     var Form = require("./Form");
     var Control = require("../Control");
     var Factory = require("../Factory");
+    var Deferred = require("js/Deferred");
 
     return (FormContainer = FormContainer(require, {
         inherits: Panel,
@@ -37,7 +38,7 @@ define(function (require) {
             _onFormCloseQuery: null,
             _onFormActivate: null,
             _onFormDeactivate: null,
-
+            
             destroy: function () {
             /**
              * @overrides ../Component.prototype.destroy
@@ -128,7 +129,7 @@ define(function (require) {
                 var uri = this.getSpecializedFormUri();
                 var uri_classes = uri.split(" ");
                 this.dispatch("formloadstart");
-
+                
                 if (uri_classes.length > 1) {
                     uri = uri_classes.shift();
                 }

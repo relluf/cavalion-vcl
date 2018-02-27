@@ -424,6 +424,22 @@ define(function (require) {
             getPropertyValue: function (name) {
                 return this['@properties'] ? this['@properties'][name] : undefined;
             },
+            
+            vars: function(key, value) {
+            	/*- 
+            		this.vars("control") 
+            		this.vars("resource")
+            		this.vars(["resource", true])
+            	*/
+            	if(arguments.length === 2) {
+            		return this.setVar(key, value);
+            	}
+            	if(key instanceof Array) {
+            		return this.getVar.apply(this, key);
+            	}
+            	return this.getVar(key);
+            },
+            
             getVars: function () {
 	            /**
 	             * Returns the -vars- object associated with the calling component.

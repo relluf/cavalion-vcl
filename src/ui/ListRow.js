@@ -15,6 +15,9 @@ define(function(require) {
 				"&:nth-child(even)": {
 					"background-color": "#f0f0f0"	
 				},
+				"&:nth-child(odd)": {
+					"background-color": "white"	
+				},
 				"&.selected": {
 					color: "white",
 					"background-color": "rgb(56, 121, 217)"

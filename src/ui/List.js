@@ -749,6 +749,9 @@ define(function(require) {
 						break;
 
 					case SourceEvent.updated:
+						if(this.hasClass("busy")) {
+							this.removeClass("busy");
+						}
 						this.notifyEvent("updateRows", data);
 						break;
 

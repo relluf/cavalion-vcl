@@ -643,7 +643,9 @@
 		        Result.prototype[name] = function() {
 		            for(var i = 0; i < this.length; ++i) {
 		                if(typeof this[i][name] === "function") {
-		                    this[i][name].apply(this[i], arguments);
+		                    this[i] = this[i][name].apply(this[i], arguments);
+		                } else {
+		                	this[i] = "not-supported";
 		                }
 		            }
 		            return this;

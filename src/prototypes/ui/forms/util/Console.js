@@ -63,7 +63,11 @@ $(["ui/Form"], {
                     content.push(value.getUri());
                 }
                 content.push(String.format("%n", value));
-                scope.console.getNode("input").value = String.format("#%d // %s ", value.hashCode(), content.join(": "));
+                if(sizer.getVar("meta") !== true) {
+                	scope.console.getNode("input").value = String.format("#%d // %s ", value.hashCode(), content.join(": "));
+                } else {
+					scope.console.getNode("input").value = String.format("#%d", value.hashCode());
+				}
                 if (value._owner) {
                     content.push(String.format("%n", value._owner));
                 }
@@ -94,6 +98,9 @@ $(["ui/Form"], {
                 }
                 if (name === "dblclick" && evt.altKey === true) {
                 } else if (name === "click" && evt.altKey === true) {
+                	
+                	sizer.setVar("meta", evt.metaKey === true);
+                	
                     if (evt.shiftKey === false) {
                     	if(evt.metaKey === true) {
                     		if(me.isVisible()) {

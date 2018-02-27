@@ -170,12 +170,12 @@ define(function(require) {
 				}
 			},
 			
-			updateChildren: function(recursive, directly) {
-				/** @overrides */
-				var args = js.copy_args(arguments); args.callee = arguments.callee;
-				// inherited.apply(this, arguments); // --> inherited.js
-				return Group.prototype.updateChildren.apply(this, [recursive, true]);
-			},
+			// updateChildren: function(recursive, directly) {
+			// 	/** @overrides */
+			// 	var args = js.copy_args(arguments); args.callee = arguments.callee;
+			// 	// inherited.apply(this, arguments); // --> inherited.js
+			// 	return Group.prototype.updateChildren.apply(this, [recursive, true]);
+			// },
 			
 			onclick: function(evt, force) {
 			/**
@@ -218,7 +218,7 @@ define(function(require) {
 
 				if(this._expanded === true) {
 					this.childNodesNeeded();
-					this.update();
+					this._update();
 				}
 
 				return this._expanded;
@@ -231,7 +231,7 @@ define(function(require) {
 				}
 
 				if(this._expanded === false) {
-					this.update();
+					this._update();
 				}
 				return this._expanded;
 			},
