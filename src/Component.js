@@ -1116,7 +1116,11 @@ define(function (require) {
                     u2 = u2.indexOf(".scaffold");
                     return u1 < u2 ? -1 : 1;
                 });
-
+                
+                uris = uris.filter(function(uri, index) {
+                	return uris.indexOf(uri) === index;
+                });
+                
                 return String.format("$([\"" + uris.join("\", \"") + "\"]);");
             },
             getKeysByUri: function (uri) {
