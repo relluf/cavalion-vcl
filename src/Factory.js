@@ -515,8 +515,8 @@ define(function(require) {
 					if(keys.template && keys.specializer) {
 						uri = String.format("%s%s%s", keys.template, 
 							Factory.POSTFIX_SPECIALIZED, keys.specializer);
-						if(keys.classes.length) {
-							uri += ("." + keys.classes.join("."));
+						if(keys.specializer_classes.length) {
+							uri += ("." + keys.specializer_classes.join("."));
 						}
 					} else if(keys.classes.length) {
 						uri = String.format("%s%s%s.%s", keys.namespace, 
