@@ -432,12 +432,12 @@ define(function (require) {
             		this.vars(["resource", true])
             	*/
             	if(arguments.length === 2) {
-            		return this.setVar(key, value);
+            		return this.setVar("" + key, value);
             	}
             	if(key instanceof Array) {
             		return this.getVar.apply(this, key);
             	}
-            	return this.getVar(key);
+            	return this.getVar("" + key);
             },
             
             getVars: function () {

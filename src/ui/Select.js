@@ -6,9 +6,7 @@ define(function(require) {
 	var EventDispatcher = require("../EventDispatcher");
 
 	return (Select = Select(require, {
-
 		inherits: Element,
-
 		prototype: {
 			'@css': {},
 
@@ -79,23 +77,18 @@ define(function(require) {
 			}
 			
 		},
-
 		properties: {
-
 			"onChange": {
 				type: Type.EVENT
 			},
-
 			"options": {
 				type: Type.ARRAY
 			},
-
 			"value": {
 				type: Type.STRING,
 				set: Function
 			}
 		}
-
 	}));
 
 });

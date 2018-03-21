@@ -5,19 +5,12 @@ define(function(require) {
     var Type = require("js/Type");
     var js = require("js");
 
-    return (Tabs = js.defineClass(require, {
-
+    return (Tabs = Tabs(require, {
     	inherits: Bar,
-    	
-
     	prototype: {
-
     		_history: null,
     		_onChange: null,
 
-	    	/**
-	    	 * Constructor
-	    	 */
 	    	constructor: function() {
 	    		this._history = [];
 	    		js.mixIn(this._history, {
@@ -32,7 +25,6 @@ define(function(require) {
 	    			}
 	    		});
 	    	},
-	    	
 	    	onkeyup: function(evt) {
 	    		var r = this.inherited(arguments);
     			var selected = this.getSelectedControl(1);
@@ -60,10 +52,6 @@ define(function(require) {
 	    		}
 	    		return r;
 	    	},
-	    	
-	    	/**
-	    	 * 
-	    	 */
 	    	selectNext: function() {
 	    	    var index = this.getSelectedControl(1).getIndex();
 	    	    if(++index === this._controls.length) {
@@ -71,10 +59,6 @@ define(function(require) {
 	    	    }
 	    	    this.getControl(index).setSelected(true);
 	    	},
-	    	
-	    	/**
-	    	 * 
-	    	 */
 	    	selectPrevious: function() {
 	    	    var index = this.getSelectedControl(1).getIndex();
 	    	    if(--index < 0) {
@@ -82,26 +66,17 @@ define(function(require) {
 	    	    }
 	    	    this.getControl(index).setSelected(true);
 	    	},
-	    	
-    		/**
-    		 * @overrides ../Control.prototype.initializeNodes
-    		 */
     		initializeNodes: function(control) {
+	    		/** @overrides ../Control.prototype.initializeNodes */
     			this._node.tabIndex = 1;
     			return this.inherited(arguments);
     		}, 
-    		
-    		/**
-    		 * @overrides ../Control.prototype.insertControl
-    		 */
     		insertControl: function(control) {
+	    		/** @overrides ../Control.prototype.insertControl */
     		    this.inherited(arguments);
     		},
-    		
-    		/**
-    		 * @overrides ../Control.prototype.removeControl
-    		 */
     		removeControl: function(control) {
+	    		/** @overrides ../Control.prototype.removeControl */
     			if(this._history.length > 0) {
     				if(control.isSelected()) {
     					this._history.pop().setSelected(true);
@@ -118,11 +93,8 @@ define(function(require) {
     			}
     			return r;
     		},
-
-    		/**
-    		 * @overrides ../Control.prototype.selectControl
-    		 */
     		selectControl: function(control) {
+	    		/** @overrides ../Control.prototype.selectControl */
     			var selected = this.getSelectedControl(1);
     			if(this.isDesigning() === true || 
     				this.dispatch("change", control, selected) !== false) {
@@ -136,24 +108,14 @@ define(function(require) {
     				return r;
     			}
     		},
-
-    		/**
-    		 *
-    		 */
     		onchange: function() {
 				return this.fire("onChange", arguments);
     		}
     	},
-
     	properties: {
-
     		"onChange": {
     			type: Type.EVENT
     		}
-    	},
-
-    	statics: {
-
     	}
     }));
 });

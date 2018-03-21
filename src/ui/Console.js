@@ -81,6 +81,8 @@ define(function(require) {
 					"&.function>.value>.proto": "color: silver;",
 					"&.function>.container>.code":
 						"margin: 8px; padding: 8px; background-color: #f0f0f0; overflow: auto;",
+					"&.function>.container>.code:not(:hover)":
+						"max-height: 50px;",
 					"&.array>.value": "color: purple;",
 					"&.object>.value": "color: blue;",
 					"&.object>.value>.uri": "color: silver;"

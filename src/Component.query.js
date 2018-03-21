@@ -1,4 +1,7 @@
-(function() {
+define(function() {
+	
+	// var CssSelectorParser = require("CssSelectorParser");
+	
 	function CssSelectorParser() {
 		this.pseudos = {};
 		this.attrEqualityMods = {};
@@ -628,227 +631,226 @@
 	    return CssSelectorParser;
 	
 	}());
-	define(function() {
-		
-		var PARENT_HIERARCHY_OPERATOR = "<";
-		var Component;
 	
-	    function Result() {}
-	    
-	    Result.prototype = [];
-	    
-	    /*- TODO find out which methods of Component, Control, Action to mixin */
-	    
-	    "on,un,listen,unlisten,connect,disconnect,execute,show,hide,render,dispatch,emit,fire,once,selectNext,selectPrevious,toggleClass".split(",").forEach(function(name) {
-		        Result.prototype[name] = function() {
-		            for(var i = 0; i < this.length; ++i) {
-		                if(typeof this[i][name] === "function") {
-		                    this[i] = this[i][name].apply(this[i], arguments);
-		                } else {
-		                	this[i] = "not-supported";
-		                }
-		            }
-		            return this;
-		        };
-	    });
-	    
-	    Result.prototype.focus = function() {
+	
+	var PARENT_HIERARCHY_OPERATOR = "<";
+	var Component;
+
+    function Result() {}
+    
+    Result.prototype = [];
+    
+    /*- TODO find out which methods of Component, Control, Action to mixin */
+    
+    "on,un,listen,unlisten,connect,disconnect,execute,show,hide,render,dispatch,emit,fire,once,selectNext,selectPrevious,toggleClass,print".split(",").forEach(function(name) {
+	        Result.prototype[name] = function() {
 	            for(var i = 0; i < this.length; ++i) {
-	                if(typeof this[i].setFocused === "function") {
-	                    this[i].setFocused(true);
+	                if(typeof this[i][name] === "function") {
+	                    this[i] = this[i][name].apply(this[i], arguments);
+	                } else {
+	                	this[i] = "not-supported";
 	                }
 	            }
 	            return this;
-	    };
-	    
-	    Result.prototype.each = Result.prototype.forEach;
-	    
-	    function match_uri(rule, component) {
-	        var uri = component._uri;//getUri();
-	        return ((rule.exact && uri === rule.uri) ||
-	            (uri.split(".")[0] + "<").indexOf(rule.uri + "<") === 0);
-	    }
-	    function match_ctor(rule, component) {
-	        if(rule.ctor === "*") {
-	            return true;
-	        }
-	        return component.constructor === rule.ctor;
-	    }
-	    function match_classNames(rule, component) {
-	    	Component = Component || require("vcl/Component");
-	    	var classes = Component.getKeysByUri(component._uri).classes;
-	        return rule.classNames.every(function(className) {
-	        	return classes.indexOf(className) !== -1;
-	        });            
-	    }
-	    function match_id(rule, component) {
-	        var hashCode = parseInt(rule.id, 10);
-	        if(!isNaN(hashCode)) {
-	            return component.hashCode() === hashCode;
-	        }
-	        return component._name === rule.id;
-	    }
-	    function match_pseudos(rule, component, context, all) {
-	        return rule.pseudos.every(function(pseudo) {
-	            if(pseudo.name === "this") {
-	                return component === context;
-	            } else if(pseudo.name === "root") {
-	                return component.isRootComponent();
-	            } else if(pseudo.name === "selected") {
-	                return component.isSelected && 
-	                	(component.isSelected() === (pseudo.value !== "false"));
-	            } else if(pseudo.name === "uri") {
-	            	var value = pseudo.value.split(",");
-		            return match_uri({exact: value[1] === "exact", 
-		            	uri: value[0].replace(/\\\//g, "/")}, component);
-	            } else if(pseudo.name === "childOf") {
-	            	return component._parent && 
-	            			component._parent._name === pseudo.value;
-	            } else if(pseudo.name === "app") {
-	            	return component.app();
-	            } else if(pseudo.name === "instanceOf") {
-	            	return component instanceof require(pseudo.value.replace(/\\\//g, "/"));
-	            } else if(pseudo.name === "withVars") {
-	            	var vars = component._vars || {};
-	            	try {
-	            		return eval("with(vars) { " + pseudo.value + "}");
-	            	} catch(e) {
-	            		return false;
-	            	}
-	            }
-	            
-	            var value;
-	            if(pseudo.value === ".") {
-	                value = context;
-	            } else if(pseudo.value.charAt(0) === "#") {
-	                value = parseInt(pseudo.value.substring(1), 10);
-	                if(isNaN) {
-	                	var name = pseudo.value.substring(1);
-	                	value = all.filter(function(comp) {
-	                		return comp.getName() === name;
-	                	});
-	                } else {
-	                	value = require("vcl/Component").all[value];
-	                }
-	            } else {
-	                value = js.get(pseudo.value, context);
-	            }
-	            
-	            if(pseudo.name === "owner-of") {
-	            	if(value instanceof Array) {
-	            		return value.every(function(elem) {
-	            			return component.isOwnerOf(elem);
-	            		});
-	            	}
-	                return component.isOwnerOf(value);
-	            } else if(pseudo.name === "is") {
-	                return component === value;
-	            }
-	            return false; 
-	        });
-	    }
-	    function match_properties(rule, component) {
-	        return rule.attrs.every(function(attr) {
-	            if(attr.name === "uri") {
-	            	return match_uri({uri: attr.value.replace(/\\\//g, "/")}, component);
-	            }
-                var prop = component.defineProperties()[attr.name];
-                var value = prop.get(component);
-                if(value instanceof require("vcl/Component")) {
-                	value = value.getName();
+	        };
+    });
+    
+    Result.prototype.focus = function() {
+            for(var i = 0; i < this.length; ++i) {
+                if(typeof this[i].setFocused === "function") {
+                    this[i].setFocused(true);
                 }
-                switch(attr.operator) {
-                    case "=":
-                        return ("" + value) === ("" + attr.value);
-                    
-                    default:
-                        return false;
+            }
+            return this;
+    };
+    
+    Result.prototype.each = Result.prototype.forEach;
+    
+    function match_uri(rule, component) {
+        var uri = component._uri;//getUri();
+        return ((rule.exact && uri === rule.uri) ||
+            (uri.split(".")[0] + "<").indexOf(rule.uri + "<") === 0);
+    }
+    function match_ctor(rule, component) {
+        if(rule.ctor === "*") {
+            return true;
+        }
+        return component.constructor === rule.ctor;
+    }
+    function match_classNames(rule, component) {
+    	Component = Component || require("vcl/Component");
+    	var classes = Component.getKeysByUri(component._uri).classes;
+        return rule.classNames.every(function(className) {
+        	return classes.indexOf(className) !== -1;
+        });            
+    }
+    function match_id(rule, component) {
+        var hashCode = parseInt(rule.id, 10);
+        if(!isNaN(hashCode)) {
+            return component.hashCode() === hashCode;
+        }
+        return component._name === rule.id;
+    }
+    function match_pseudos(rule, component, context, all) {
+        return rule.pseudos.every(function(pseudo) {
+            if(pseudo.name === "this") {
+                return component === context;
+            } else if(pseudo.name === "root") {
+                return component.isRootComponent();
+            } else if(pseudo.name === "selected") {
+                return component.isSelected && 
+                	(component.isSelected() === (pseudo.value !== "false"));
+            } else if(pseudo.name === "uri") {
+            	var value = pseudo.value.split(",");
+	            return match_uri({exact: value[1] === "exact", 
+	            	uri: value[0].replace(/\\\//g, "/")}, component);
+            } else if(pseudo.name === "childOf") {
+            	return component._parent && 
+            			component._parent._name === pseudo.value;
+            } else if(pseudo.name === "app") {
+            	return component.app();
+            } else if(pseudo.name === "instanceOf") {
+            	return component instanceof require(pseudo.value.replace(/\\\//g, "/"));
+            } else if(pseudo.name === "withVars") {
+            	var vars = component._vars || {};
+            	try {
+            		return eval("with(vars) { " + pseudo.value + "}");
+            	} catch(e) {
+            		return false;
+            	}
+            }
+            
+            var value;
+            if(pseudo.value === ".") {
+                value = context;
+            } else if(pseudo.value.charAt(0) === "#") {
+                value = parseInt(pseudo.value.substring(1), 10);
+                if(isNaN) {
+                	var name = pseudo.value.substring(1);
+                	value = all.filter(function(comp) {
+                		return comp.getName() === name;
+                	});
+                } else {
+                	value = require("vcl/Component").all[value];
                 }
-	        });
-	    }
-	    function match(rule, component, operator, context, all) {
-	    	if(operator === ">") {
-	    		console.warn("DEPRECATED operator >");
-	    		operator = PARENT_HIERARCHY_OPERATOR;
-	    	}
-	        if(operator === null) {
-	        	/*- owner hierarchy */
-	            while(component._owner) {
-	                if(match(rule, component._owner, undefined, context)) {
-	                    return true;
-	                }
-	                component = component._owner;
-	            }
-	            return false;
-	        } else if(operator === PARENT_HIERARCHY_OPERATOR) {
-	        	/*- parent hierarchy */
-	            while(component._parent) {
-	                if(match(rule, component._parent, undefined, context)) {
-	                    return true;
-	                }
-	                component = component._parent;
-	            }
-	            return false;
-	        	
-	        } else if(operator === "first-owner-must-match") {
-	        	/* owner must match */
-	            return match(rule, component._owner, undefined, context);
-	        }
-	        
-	        return component !== null &&
-	            (!rule.uri || match_uri(rule, component)) &&
-	            (!rule.ctor || match_ctor(rule, component)) &&
-	            (!rule.classNames || match_classNames(rule, component)) &&
-	            (!rule.id || match_id(rule, component)) &&
-	            (!rule.pseudos || match_pseudos(rule, component, context, all)) &&
-	            (!rule.attrs || match_properties(rule, component));
-	    }
-	    function parse(selector) {
-	        var parser = new CssSelectorParser();
-	        parser.registerNestingOperators(">");
-	        parser.registerNestingOperators(PARENT_HIERARCHY_OPERATOR);
-	        
-	        tree = parser.parse(selector
-	            .replace(/<([^>]*)>/g, "\\<$1\\>")
-	            .replace(/\//g, "\\/"));
-	
-	        var rules = [], rule = tree.rule;
-	        while(rule) {
-	            if(rule.tagName && rule.tagName.indexOf("<") !== -1) {
-	                rule.uri = rule.tagName;
-	                if(!(rule.exact = rule.uri.indexOf("<>") === -1)) {
-	                    rule.uri = rule.uri.split("<")[0];
-	                }
-	                delete rule.tagName;
-	            } else if(rule.tagName && rule.tagName !== "*") {
-	                rule.ctor = require(rule.tagName);
-	                delete rule.tagName;
-	            } else if(rule.tagName === "*") {
-	                rule.ctor = "*";
-	            }
-	            rules.push(rule);
-	            rule = rule.rule;
-	        }
-	        return rules;
-	    }
-	
-	    return function(selector, context, all) {
-	        var rules = parse(selector);
-	        var operator;
-	        var components = [].concat(all);
-	        
-	        rules.reverse().forEach(function(rule) {
-	            components = components.reduce(function(arr, component) {
-	                if(match(rule, component, operator, context, components)) {
-	                    arr.push(component);
-	                }
-	                return arr;
-	            }, new Result());
-	            operator = rule.nestingOperator;
-	        });
-	        
-	        return components;
-	    };
-	    
-	});
-}());
+            } else {
+                value = js.get(pseudo.value, context);
+            }
+            
+            if(pseudo.name === "owner-of") {
+            	if(value instanceof Array) {
+            		return value.every(function(elem) {
+            			return component.isOwnerOf(elem);
+            		});
+            	}
+                return component.isOwnerOf(value);
+            } else if(pseudo.name === "is") {
+                return component === value;
+            }
+            return false; 
+        });
+    }
+    function match_properties(rule, component) {
+        return rule.attrs.every(function(attr) {
+            if(attr.name === "uri") {
+            	return match_uri({uri: attr.value.replace(/\\\//g, "/")}, component);
+            }
+            var prop = component.defineProperties()[attr.name];
+            var value = prop.get(component);
+            if(value instanceof require("vcl/Component")) {
+            	value = value.getName();
+            }
+            switch(attr.operator) {
+                case "=":
+                    return ("" + value) === ("" + attr.value);
+                
+                default:
+                    return false;
+            }
+        });
+    }
+    function match(rule, component, operator, context, all) {
+    	if(operator === ">") {
+    		console.warn("DEPRECATED operator >");
+    		operator = PARENT_HIERARCHY_OPERATOR;
+    	}
+        if(operator === null) {
+        	/*- owner hierarchy */
+            while(component._owner) {
+                if(match(rule, component._owner, undefined, context)) {
+                    return true;
+                }
+                component = component._owner;
+            }
+            return false;
+        } else if(operator === PARENT_HIERARCHY_OPERATOR) {
+        	/*- parent hierarchy */
+            while(component._parent) {
+                if(match(rule, component._parent, undefined, context)) {
+                    return true;
+                }
+                component = component._parent;
+            }
+            return false;
+        	
+        } else if(operator === "first-owner-must-match") {
+        	/* owner must match */
+            return match(rule, component._owner, undefined, context);
+        }
+        
+        return component !== null &&
+            (!rule.uri || match_uri(rule, component)) &&
+            (!rule.ctor || match_ctor(rule, component)) &&
+            (!rule.classNames || match_classNames(rule, component)) &&
+            (!rule.id || match_id(rule, component)) &&
+            (!rule.pseudos || match_pseudos(rule, component, context, all)) &&
+            (!rule.attrs || match_properties(rule, component));
+    }
+    function parse(selector) {
+        var parser = new CssSelectorParser();
+        parser.registerNestingOperators(">");
+        parser.registerNestingOperators(PARENT_HIERARCHY_OPERATOR);
+        
+        tree = parser.parse(selector
+            .replace(/<([^>]*)>/g, "\\<$1\\>")
+            .replace(/\//g, "\\/"));
+
+        var rules = [], rule = tree.rule;
+        while(rule) {
+            if(rule.tagName && rule.tagName.indexOf("<") !== -1) {
+                rule.uri = rule.tagName;
+                if(!(rule.exact = rule.uri.indexOf("<>") === -1)) {
+                    rule.uri = rule.uri.split("<")[0];
+                }
+                delete rule.tagName;
+            } else if(rule.tagName && rule.tagName !== "*") {
+                rule.ctor = require(rule.tagName);
+                delete rule.tagName;
+            } else if(rule.tagName === "*") {
+                rule.ctor = "*";
+            }
+            rules.push(rule);
+            rule = rule.rule;
+        }
+        return rules;
+    }
+
+    return function(selector, context, all) {
+        var rules = parse(selector);
+        var operator;
+        var components = [].concat(all);
+        
+        rules.reverse().forEach(function(rule) {
+            components = components.reduce(function(arr, component) {
+                if(match(rule, component, operator, context, components)) {
+                    arr.push(component);
+                }
+                return arr;
+            }, new Result());
+            operator = rule.nestingOperator;
+        });
+        
+        return components;
+    };
+    
+});

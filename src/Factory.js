@@ -104,7 +104,11 @@ define(function(require) {
 				return "text!" + uri;
 			},
 			load: function(source, success, failure) {
-                if(source.charAt(0) === "\"") {
+                if(source.charAt(0) === "\"" && source.indexOf("\"use strict\";") !== 0) {
+                	if(source.indexOf("\"use ") === 0) {
+                		// TODO this should be the default
+                		source = "\"" + source.substring(5);
+                	}
     				/*- Parse require section */
                     var i = source.indexOf("\";");
                     if(i !== -1) {
@@ -482,7 +486,7 @@ define(function(require) {
 				function f(source) {
 					var factory = new Factory(parentRequire, name, sourceUri);
 					factory.load(source, function() {
-						load(factory);
+						load(factory, source);
 					});
 				}
 
@@ -558,7 +562,6 @@ define(function(require) {
 			    });
 			},
 			require: function(name, callback, failback) {
-
 				var ocallback = callback;
 				if(ocallback && typeof name === "string") {
 					callback = function() {

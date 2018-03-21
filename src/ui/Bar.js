@@ -1,9 +1,6 @@
 define(["require", "js/defineClass", "./Panel"], function(require, Bar, Panel) {
-	
 	return (Bar = Bar(require, {
-
 		inherits: Panel,
-
 		prototype: {
 			"@css": {
 				padding: "4px 6px",
@@ -29,16 +26,14 @@ define(["require", "js/defineClass", "./Panel"], function(require, Bar, Panel) {
 		            }
 				}
 			},
-
 			_autoSize: "height",
 			_align: "top",
 			_content: "<div class=\"overflow_handler\">&#187;</div>",
-
-			/**
-			 *
-			 * @returns
-			 */
+            
             checkOverflow: function () {
+				/**
+				 * @returns
+				 */
             	if(this.hasOwnProperty("_node")) {
                     var overflowing = this._node.scrollHeight/* - this._node.offsetHeight*/ > this._node.offsetHeight;
                     var has = this.hasClass("overflowing");
@@ -84,42 +79,37 @@ define(["require", "js/defineClass", "./Panel"], function(require, Bar, Panel) {
                     }
             	}
             },
-            
-            /**
-             * @overrides ../../Control.prototype.intializeNodes
-             */
             initializeNodes: function() {
+	            /**
+	             * @overrides ../../Control.prototype.intializeNodes
+	             */
             	this._nodes.overflow_handler = this._node
             		.querySelector(".overflow_handler");
             	return this.inherited(arguments);
             },
-
-            /**
-             * @overrides ../../Control.prototype.insertControl
-             */
             insertControl: function (control, index) {
+	            /**
+	             * @overrides ../../Control.prototype.insertControl
+	             */
                 var r = this.inherited(arguments);
                 this.setTimeout("checkOverflow", 200);
                 return r;
             },
-
-            /**
-             * @overrides ../../Control.prototype.removeControl
-             */
             removeControl: function (control, index) {
+	            /**
+	             * @overrides ../../Control.prototype.removeControl
+	             */
                 var r = this.inherited(arguments);
                 this.setTimeout("checkOverflow", 200);
                 return r;
             },
-
-            /**
-             * @overrides ../../Control.prototype.onresize
-             */
             onresize: function () {
+	            /**
+	             * @overrides ../../Control.prototype.onresize
+	             */
                 this.setTimeout("checkOverflow", 0);
                 return this.inherited(arguments);
             },
-            
             onclick: function(evt) {
             	var r = this.inherited(arguments);
             	if(r !== false) {
@@ -129,13 +119,10 @@ define(["require", "js/defineClass", "./Panel"], function(require, Bar, Panel) {
             	}
             	return r;
             }
-
 		},
-
 		properties: {
 
 		},
-
 		statics: {
 
 
