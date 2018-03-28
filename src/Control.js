@@ -456,9 +456,10 @@ define(function(require) {
 				return node;
 			},
 			getNodeId: function() {
-                return String.format("vcl-%d%s%s", this.hashCode(), this._name !== "" ? "-" : "", this._name);
+                return String.format("vcl-%d%s%s", this.hashCode(), "", "");//, this._name !== "" ? "-" : "", this._name);
 			},
 			setNodeId: function(node, suffix) {
+				// Euh?
 				return (node.id = String.format("%s--%s", this.getNodeId(), suffix));
 			},
 			createNode: function(documentNode) {

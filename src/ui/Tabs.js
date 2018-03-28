@@ -8,6 +8,62 @@ define(function(require) {
     return (Tabs = Tabs(require, {
     	inherits: Bar,
     	prototype: {
+	    	'@css': {
+	            // typical usage vertical: 4px 16px 4px
+	            "background-color": "#f0f0f0",
+	            'height': "26px",
+	            "padding-left": "2px",
+	            "padding-top": "3px",
+	            // "border-top": "1px solid silver",
+	            
+	            "&.gradient":{
+	                "background-image": "-webkit-gradient(linear, 0% 0%, 0% 100%, from(#F5F5F5), to(#E5E5E5))",
+	            },
+	            "&:not(.bottom)": {
+	                "border-bottom": "1px solid silver"
+	            },
+	            "&.bottom": {
+	                "padding-top": "0px",
+	                "border-top": "1px solid silver",
+	                ".{./Tab}": {
+	                    // border: "1px solid silver",
+	                    "&.selected": {
+	                    	// "border-radius": "5px",
+	                    	"border-bottom": "1px solid #a0a0a0"
+	                    },
+	                    "border-top": "none",
+	                    "margin-top": "0"
+	                }
+	            },
+	            "&.sizeable": {
+	                "padding-right": "10px",
+	                "&.overflowing": {
+	                    "padding-right": "24px"
+	                },
+	                ".overflow_handler": {
+	                    right: "4px"
+	                }
+	            },
+	            ">#size_handle": {
+	                "margin-top": "9px"
+	            },
+	            ".{./Tab}": {
+	                display: "inline-block",
+	                border: "1px solid transparent",
+	                "border-bottom": "none",
+	                padding: "2px 4px 2px 4px",
+	                "margin-top": "2px",
+	                "margin-left": "3px",
+	                "margin-right": "3px",
+	                "&.selected": {
+	                    "background-color": "white",
+	                    "border-color": "#a0a0a0",
+	                    ".hashcode": "font-size: 7pt;"
+	                },
+	                "&:not(.selected) .hashcode": "display: none;"
+	            }
+	    	},
+    	
     		_history: null,
     		_onChange: null,
 

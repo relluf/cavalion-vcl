@@ -431,6 +431,9 @@ define(function (require) {
             		this.vars("resource")
             		this.vars(["resource", true])
             	*/
+            	if(arguments.length === 0) { 
+            		return this.getVars();
+            	}
             	if(arguments.length === 2) {
             		return this.setVar("" + key, value);
             	}
