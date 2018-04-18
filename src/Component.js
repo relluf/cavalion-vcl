@@ -1220,6 +1220,17 @@ define(function (require) {
             	fixUp: true,
             	set: function(value) {
             		var properties = {};
+            		
+            		for(var k in value) {
+            			var method = value[k];
+            			if(k.indexOf(",") !== -1) {
+            				delete value[k];
+            				k.split(",").forEach(function(s) {
+            					value[String.trim(s)] = method;
+            				});
+            			}
+            		}
+            		
             		for(var k in value) {
             			var method = value[k];
             			var selector = k.split(" ");

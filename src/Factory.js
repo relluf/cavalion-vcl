@@ -505,7 +505,7 @@ define(function(require) {
 			},
 			resolveUri: function(uri) {
 				if(uri.substring(uri.length - 2, uri.length) === "<>") {
-/**/				console.warn(uri);
+// /**/				console.warn(uri);
 					uri = uri.split("!");
 					if(uri.length === 1) {
 						uri = String.format("%s%s", Factory.PREFIX_PROTOTYPES, 
