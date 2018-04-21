@@ -6,6 +6,7 @@ $("vcl/ui/Element", {
 		position: "absolute",
     	top: "0",
     	right: "0",
+    	zIndex: "999999999999",
     	"background-repeat": "no-repeat",
     	"background-position": "center",
 		"&.horizontal": {

@@ -8,9 +8,10 @@ define(function(require) {
 
 		prototype: {
 
-			/**
-			 *
-			 */
+			_owner: null,
+			_listeners: null,
+
+			
 			constructor: function(owner, listeners) {
 				this._owner = owner;
 				this._listeners = {};
@@ -23,14 +24,6 @@ define(function(require) {
 					this.add(k, listeners[k]);
 				}
 			},
-
-			_owner: null,
-			_listeners: null,
-
-			/**
-			 *
-			 * @param cache
-			 */
 			destroyed: function(cache) {
 				Method.disconnect(this._owner, "destroy", this, "destroyed");
 
@@ -51,10 +44,6 @@ define(function(require) {
 					delete this._owner._listeners;
 				}
 			},
-
-			/**
-			 *
-			 */
 			getListener: function(k, callback) {
 				var lis = this._listeners[k];
 				for(var i = 0, l = lis.length; i < l; ++i) {
@@ -65,10 +54,6 @@ define(function(require) {
 				}
 				throw new Error("Unknown listener");
 			},
-
-			/**
-			 *
-			 */
 			getListenerInfo: function(li) {
 				for(var k in this._listeners) {
 					var lis = this._listeners[k];
@@ -79,20 +64,12 @@ define(function(require) {
 				}
 				throw new Error("Unknown listener");
 			},
-
-			/**
-			 *
-			 */
 			call: function(name, args) {
 			    /*- Copy this._listeners since it might change during callbacks */
 				[].concat(this._listeners[name] || []).forEach(function(li) {
 					li.method.apply(li.context, args);
 				});
 			},
-
-			/**
-			 *
-			 */
 			add: function(name, li, type) {
 				if(this._listeners[name] === undefined) {
 					this._listeners[name] = [];
@@ -129,10 +106,6 @@ define(function(require) {
 				this._listeners[name].push(li);
 				return li;
 			},
-
-			/**
-			 *
-			 */
 			remove: function(li) {
 				var info = this.getListenerInfo(li);
 				var lis = this._listeners[info.name];
@@ -146,10 +119,6 @@ define(function(require) {
 					delete this._listeners[info.name];
 				}
 			},
-
-			/**
-			 *
-			 */
 			getOwner: function() {
 				return this._owner;
 			}
