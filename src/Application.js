@@ -53,7 +53,7 @@ define(function(require) {
 				/**
 				 * @overrides ./Component.prototype.loaded
 				 */
-			    if(!this.isDesigning()) {
+			    if(instances[0] === this && !this.isDesigning()) {
     				this._dispatcher = new EventDispatcher();
     				this._dispatcher.activate();
 
