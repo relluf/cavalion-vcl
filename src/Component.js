@@ -438,6 +438,9 @@ define(function (require) {
             		return this.setVar("" + key, value);
             	}
             	if(key instanceof Array) {
+            		if(key.length === 1 && typeof key[0] === "string") {
+            			key.push(true); // defaults to fallback_to_owner=true
+            		}
             		return this.getVar.apply(this, key);
             	}
             	return this.getVar("" + key);
