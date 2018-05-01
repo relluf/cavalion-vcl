@@ -640,8 +640,7 @@ define(function() {
     
     Result.prototype = [];
     
-    /*- TODO find out which methods of Component, Control, Action to mixin */
-    
+    /*- Prototype methods of Component, Control, Action to mixin */
     "on,un,listen,unlisten,connect,disconnect,execute,show,hide,render,dispatch,emit,fire,once,selectNext,selectPrevious,toggleClass,print".split(",").forEach(function(name) {
 	        Result.prototype[name] = function() {
 	            for(var i = 0; i < this.length; ++i) {
@@ -663,7 +662,6 @@ define(function() {
             }
             return this;
     };
-    
     Result.prototype.each = Result.prototype.forEach;
     
     function match_uri(rule, component) {

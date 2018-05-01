@@ -122,6 +122,9 @@ define(function(require) {
 	    	    }
 	    	    this.getControl(index).setSelected(true);
 	    	},
+	    	selectNth: function(n) {
+	    	    this.getControl(index).setSelected(true);
+	    	},
     		initializeNodes: function(control) {
 	    		/** @overrides ../Control.prototype.initializeNodes */
     			this._node.tabIndex = 1;
