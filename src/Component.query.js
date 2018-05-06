@@ -663,6 +663,13 @@ define(function() {
             return this;
     };
     Result.prototype.each = Result.prototype.forEach;
+    Result.prototype.vars = function() {
+    	var vars_args = arguments;
+    	this.each(function(value, index) {
+    		this[index] = value.vars.apply(value, vars_args);
+    	}, this);
+    	return this;
+    }
     
     function match_uri(rule, component) {
         var uri = component._uri;//getUri();
