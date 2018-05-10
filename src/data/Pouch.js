@@ -22,6 +22,53 @@ define(function(require) {
 		delete doc.id;
 		return db.put(doc);
 	}
+	function getPageOptions(page, pagesize, pages, array) {
+		var options = { include_docs: true, limit: pagesize }, 
+			nofpages = pages.length, lastpagesize = array.length % pagesize;
+			
+		if(page === 0) {
+			return options;
+		} else if(page === nofpages - 1) {
+			options.descending = true;
+			options.limit = (lastpagesize + pagesize) % pagesize;
+			return options;
+		}
+
+		var pagebefore = page - 1, pageafter = page + 1;
+		// determine page before requested page
+		while(pagebefore > 0 && pages[pagebefore] !== true) {
+			pagebefore--;
+		}
+
+		// determine page after requested page
+		while(pageafter < nofpages && pages[pageafter] !== true) {
+			pageafter++;
+		}
+
+		// which is closer?
+		if(pageafter < nofpages && pagebefore > 0 && 
+				(page - pagebefore > pageafter - page)) {
+			// pageafter is closer, pretend pagebefore was never found
+			pagebefore = -1;
+		}
+		
+		if(pages[pagebefore] === true) {
+			// start with the last object of the previous page
+			options.startkey = array[(pagebefore + 1) * pagesize - 1]._id;
+			// and skip it since it's already fetch
+			options.skip = 1 + ((page - pagebefore - 1) * pagesize); 
+		} else if(pages[pageafter] === true) {
+			options.descending = true;
+			// start with the last object of the previous page
+			options.startkey = array[pageafter * pagesize]._id;
+			options.skip = 1 + ((pageafter - page - 1) * pagesize); 
+		} else {
+			options.skip = page * pagesize;
+		}
+		
+		return options;
+	}
+
 	
 	return (Pouch = Pouch(require, {
 		inherits: BaseArray,
@@ -30,9 +77,10 @@ define(function(require) {
 			_dbName: "",
 			_db: null,
 			_sync: "",
-			_pageSize: 750,
+			_pageSize: 25,
 			_pages: null,
 			_includeDocs: true,
+			_requesting: null,
 			
 			_busyCount: 0,
 
@@ -53,38 +101,52 @@ define(function(require) {
 				}
 				return arr;
 			},
-			getPage: function(p) {
-				this._pages = this._pages || [];
-				
-				var me = this, arr = this._array, start = p * this._pageSize;
-				if(this._pages[p] === undefined) {
-					this.incBusy();
-					
-console.log("requesting page", p);
+			getPage: function(page) {
+				var me = this, arr = this._array;
 
-					this._pages[p] = this._db.allDocs({ /*- allDocs */
-						include_docs: this._includeDocs, limit: this._pageSize, 
-						skip: start
-					})
-						.then(function(dataset) {
-console.log("receiving page " + p + ", " + start + "-" + (start + dataset.rows.length));
-							dataset.rows.forEach(function(item, index) {
-								arr[index + start] = item.doc;
-							});
-							if(p === 0) {
-								me.notify(SourceEvent.layoutChanged);
+				this._requesting = this._requesting || [];
+				if(this._requesting.current) {
+					this._requesting.push(page);
+					return this._requesting.current.then(function(r) { 
+						me.getPage(me._requesting.pop()); 
+						return r;
+					});
+				}
+
+				this._pages = this._pages || [];
+				if(this._pages[page] === undefined) {
+					var options = getPageOptions(page, this._pageSize, this._pages, arr);
+					var start = page * this._pageSize;
+
+					this.incBusy();
+console.log("requesting page", page, options);
+					this._requesting.current = this._pages[page]
+					= this._db.allDocs(options).then(function(result) {
+						me._requesting.shift();
+						me._pages[page] = true;
+						delete me._requesting.current;
+						
+						result.rows.forEach(function(item, index) {
+							if(options.descending) {
+								arr[start + result.rows.length - index - 1] = item.doc;	
+							} else {
+								arr[start + index] = item.doc;
+								// item.doc.index = index + start;
 							}
-							me.notify(SourceEvent.changed);
-							me.decBusy();
-							return dataset;
-						})
-						.catch(function(e) {
-							me.decBusy();
-							console.error(e);
 						});
+						if(page === 0) {
+							me.notify(SourceEvent.layoutChanged);
+						}
+						me.notify(SourceEvent.changed);
+						me.decBusy();
+						return result;
+					}).catch(function(e) {
+						me.decBusy();
+						console.error(e);
+					});
 				}
 			},
-			
+
 			incBusy: function() {
 				if(this._busyCount++ === 0) {
 					this.setBusy(true);
