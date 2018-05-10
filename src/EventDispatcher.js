@@ -26,7 +26,7 @@ define(function(require) {
 			}
 		}, 30);
 
-	}, false);
+	}, true);
 
 	return (EventDispatcher = EventDispatcher(require, {
 
