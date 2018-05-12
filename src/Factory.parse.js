@@ -31,13 +31,13 @@ define(function(require) {
 	        });
 	    }
 		function $(inherits, name, properties, children) {
-			/*- $([ $(), ... ]) -- taken from vcl */
 			if(arguments.length === 1 && inherits instanceof Array && inherits.length > 0) {
 				if(inherits[0] 
 					&& inherits[0].hasOwnProperty("name") 
 					&& inherits[0].hasOwnProperty("properties") 
 					&& inherits[0].hasOwnProperty("children")
 				) {
+					/*- $([ $(), ... ]) -- taken from vcl */
 					children = inherits;
 					properties = {};
 					name = "";
