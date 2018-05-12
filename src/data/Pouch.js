@@ -69,20 +69,11 @@ define(function(require) {
 		return options;
 	}
 
-	
 	return (Pouch = Pouch(require, {
 		inherits: BaseArray,
 		prototype: {
-			_adapter: "",
-			_dbName: "",
-			_db: null,
-			_sync: "",
-			_pageSize: 25,
-			_pages: null,
-			_includeDocs: true,
-			_requesting: null,
-			
-			_busyCount: 0,
+			_adapter: "", _dbName: "", _db: null, _sync: "",
+			_pageSize: 25, _pages: null, _requesting: null, _busy: 0,
 
 			loaded: function() {
 				/** @overrides ./Component.prototype.loaded */
@@ -148,12 +139,12 @@ console.log("requesting page", page, options);
 			},
 
 			incBusy: function() {
-				if(this._busyCount++ === 0) {
+				if(this._busy++ === 0) {
 					this.setBusy(true);
 				}
 			},
 			decBusy: function() {
-				if(--this._busyCount === 0) {
+				if(--this._busy === 0) {
 					this.setBusy(false);
 				}
 			},
@@ -188,7 +179,7 @@ console.log("requesting page", page, options);
 					this._refreshWL = true;
 					return;
 				}
-
+				
 				var me = this;
 				if(me._db === null) {
 					var opts = {};
@@ -197,8 +188,10 @@ console.log("requesting page", page, options);
 					}
 					me._db = new PouchDB(me._dbName, opts);
 					delete me._pages;
-					
+
+					me.incBusy();					
 					me._db.info(function(error, info) {
+						me.decBusy();
 						console.log(me._name, "db info", arguments);
 						me.setArray(info.doc_count);
 						me._db.changes({since: "now", live: true})
@@ -234,7 +227,6 @@ console.log("requesting page", page, options);
 					this.refresh();
 				}
 			}
-			
 		},
 		properties: {
 			dbName: { type: Type.STRING, get: Function, set: Function },
