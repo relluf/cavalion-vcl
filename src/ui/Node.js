@@ -239,7 +239,7 @@ define(function(require) {
 				var tree, r;
 
 				if(this.hasOwnProperty("_onChildNodesNeeded")) {
-					r = this.fire("onChildNodesNeeded");
+					r = this.fire("onChildNodesNeeded", [this]);
 				}
 
 				if(r !== false && (tree = this.getTree()) !== null) {
@@ -267,8 +267,10 @@ define(function(require) {
 			getTree: function() {
 				if(this._parent instanceof Tree) {
 					return this._parent;
+				} else if(this._parent instanceof Node) {
+					return this._parent.getTree();
 				}
-				return this._parent ? this._parent.getTree() : null;
+				return null;
 			},
 			
 			getText: function() {
