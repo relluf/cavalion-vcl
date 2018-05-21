@@ -153,7 +153,7 @@ define(function (require) {
                 if (this.hasOwnProperty("_components")) {
 	            	var args = js.copy_args(arguments);
                     var this_uri = this._uri;
-                    this._components.forEach(function (c) {
+                    [].concat(this._components).forEach(function (c) {
                         c.loaded.apply(c, args);
                     });
                 }
