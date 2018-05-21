@@ -60,7 +60,8 @@ define(function(require) {
 						height: "1px",
 						overflow: "hidden"
 					}
-				}
+				},
+				"&.header-invisible .{./ListHeader}": "height:0;"
 			},
 
 			/** @overrides ../Control.prototype */
