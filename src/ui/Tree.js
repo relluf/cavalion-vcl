@@ -214,6 +214,7 @@ define(function (require) {
             	this.setSelection(selection);
             },
             refresh: function() {
+            	var nodes = [].concat(this._controls);
                 this.destroyControls();
                 this.dispatch("nodesneeded", null);
             },
