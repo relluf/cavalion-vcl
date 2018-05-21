@@ -286,6 +286,13 @@ define(function(require) {
 					this.textChanged(this._text, value[1]);
 				}
 			},
+			
+			expand: function() {
+				this.setExpanded(true);
+			},
+			collapse: function() {
+				this.setExpanded(false);
+			},
 
 			getExpanded: function() {
 				return this._expanded;
