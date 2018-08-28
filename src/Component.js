@@ -883,9 +883,10 @@ define(function (require) {
             },
             getStorageKey: function(forKey) {
             	var app = this.getApp();
-            	if(app) {
+            	if(app && app !== this) {
             		return app.getStorageKey([this, forKey]);
             	}
+            	return [this.toString(), forKey].join("$");
             },
             readStorage: function (key, callback, errback) {
                 var r = localStorage.getItem(this.getStorageKey(key));

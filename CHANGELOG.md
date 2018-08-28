@@ -1,3 +1,6 @@
+### 2018-08-28
+- Fix in vcl/Component.prototype.getStorageKey
+
 ### 2018-01-26
 - Where are the changelogs?
 - Fix: vcl/ui/Node.prototype.getTree would crash when no parent tree was found
