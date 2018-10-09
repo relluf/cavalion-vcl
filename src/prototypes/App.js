@@ -11,5 +11,5 @@ $("vcl/Application", {
     		document.body);
 	}
 }, [
-    $("vcl/ui/Panel", "window", { align: "client" }, [])
+    $("vcl/ui/Panel", "window", { align: "client", classes: "animated" }, [])
 ]);

@@ -38,22 +38,34 @@ define(function (require) {
             _onReceiveParams: null,
             _onMessage: null,
 
-            constructor: function (owner, uri, isRoot) {
+			constructor: function (owner, uri, isRoot) {
 	            /**
 	             *
 	             * @param owner
 	             * @param uri
 	             * @param isRoot
 	             */
-                if (owner !== undefined) {
-                    this.setOwner(owner);
-                }
-                if (uri !== undefined) {
-                    this._uri = uri;
-                }
-                if (isRoot) {
-                    this._isRoot = isRoot;
-                }
+	            if(owner === undefined || owner === null || owner instanceof Component) {
+					if (owner !== undefined) {
+	                    this.setOwner(owner);
+	                }
+	                if (uri !== undefined) {
+	                    this._uri = uri;
+	                }
+	                if (isRoot) {
+	                    this._isRoot = isRoot;
+	                }
+	            } else {
+	            	var properties = this.defineProperties();
+	            	var k, values = owner, property;
+	            	
+					for(k in values) {
+						if((property = properties[k]) !== undefined) {
+							property.set(this, values[k]);
+						}
+					}
+	            }
+	             
                 all.push(this);
             },
             toString: function () {
@@ -674,6 +686,9 @@ define(function (require) {
             getProxy: function() {
             	/*- Should return a simple wrapper object which enables 
             		control over the component */
+            		
+            	/*- 2018-10-06: ...?! */
+            	
             	return null;	
             },
 

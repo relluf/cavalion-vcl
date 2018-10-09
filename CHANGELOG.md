@@ -1,5 +1,17 @@
+### 2018-10-08
+
+- Fixed `vcl/ui/Panel`s `zoom` property. It now supports zooming in **and** out. Funny how the solution was already in the code all along.
+
+>> ![](https://i.snag.gy/ak3R2i.jpg)
+
+- Fixed some _virtual constructor_ issues in `vcl/ui/List`
+
+
+### 2018-10-06
+- Fixing `vcl/Component` constructor situation (TObject.Create virtual constructor dejavus)
+
 ### 2018-08-28
-- Fix in vcl/Component.prototype.getStorageKey
+- Fixed issue with vcl/Component.prototype.getStorageKey
 
 ### 2018-01-26
 - Where are the changelogs?

@@ -235,16 +235,30 @@ define(function (require) {
 				var w = parseFloat(cs.width);
 				var h = parseFloat(cs.height);
 				var f = this._zoom < 1 ? -1 : 1;
-				var cr = {
-                    left: parseFloat(cs.getPropertyValue("padding-left")) || 0,
-                    top: parseFloat(cs.getPropertyValue("padding-top")) || 0,
-                    right: w - (w * (1 / this._zoom) * f),
-                    bottom: h - (h * (1 / this._zoom) * f)
-                    // TODO, Erhm, what about the padding?
-                    // right: f * (parseFloat(cs.getPropertyValue("padding-right")) || 0),
-                    // bottom: f * (parseFloat(cs.getPropertyValue("padding-bottom")) || 0)
-                };
-                // console.log(this._name, JSON.stringify(cr));
+				var cr;
+				
+				if(this._zoom < 1) {
+					cr = {
+	                    left: parseFloat(cs.getPropertyValue("padding-left")) || 0,
+	                    top: parseFloat(cs.getPropertyValue("padding-top")) || 0,
+	                    // right: w - (w * (1 / this._zoom) * f),
+	                    // bottom: h - (h * (1 / this._zoom) * f)
+	                    // TODO, Erhm, what about the padding?
+	                    right: f * (parseFloat(cs.getPropertyValue("padding-right")) || 0),
+	                    bottom: f * (parseFloat(cs.getPropertyValue("padding-bottom")) || 0)
+    	            };
+				} else {
+					cr = {
+	                    left: parseFloat(cs.getPropertyValue("padding-left")) || 0,
+	                    top: parseFloat(cs.getPropertyValue("padding-top")) || 0,
+	                    right: w - (w * (1 / this._zoom) * f),
+	                    bottom: h - (h * (1 / this._zoom) * f)
+	                    // TODO, Erhm, what about the padding?
+	                    // right: f * (parseFloat(cs.getPropertyValue("padding-right")) || 0),
+	                    // bottom: f * (parseFloat(cs.getPropertyValue("padding-bottom")) || 0)
+    	            };
+				}
+            // console.log(this._name, JSON.stringify(cr));
                 return cr;
             },
             boundsChanged: function (changed) {

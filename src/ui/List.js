@@ -814,7 +814,7 @@ define(function(require) {
 				return r;
 			},
 			setSelection: function(value) {
-				var oldValue = this._selection;
+				var oldValue = this._selection || [];
 				var length = oldValue.length;
 
 				if(length === value.length) {
