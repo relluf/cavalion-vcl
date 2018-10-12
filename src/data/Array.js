@@ -93,11 +93,19 @@ define(function(require) {
 				if(this._arr === null) {
 					return [];
 				}
-				var obj = this._arr[0];
-				if(typeof obj !== "object") {
-					return ".";
-				}
-				return js.keys(obj);
+				var keys = [];
+				this._arr.forEach(function(obj) {
+					if(typeof obj !== "object") {
+						obj = {'.':'.'};
+					}
+					js.keys(obj).forEach(function(key) {
+						if(keys.indexOf(key) === -1) {
+							keys.push(key);
+						}
+					});
+				});
+
+				return keys;
 			},
 			getAttributeValue: function(name, index) {
 				/** @overrides ../data/Source.prototype.getAttributeValue */
