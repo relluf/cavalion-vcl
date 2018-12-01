@@ -2,13 +2,13 @@ define(function(require) {
 	
 	/*- 2018-01-20: Added queueing of pages so that last pages are served first */
 
+	var EM = require("entities/EM");
     var Query = require("js/defineClass");
 	var Type = require("js/Type");
 	var Method = require("js/Method");
-	var Source = require("../../data/Source");
-	var SourceEvent = require("../../data/SourceEvent");
-	var EM = require("../../entities/EM");
-	var Array = require("../data/Array");
+	var Source = require("data/Source");
+	var SourceEvent = require("data/SourceEvent");
+	var Array = require("vcl/data/Array");
 	var NativeArray = ([]).constructor;
 	
 	var WAITING = {};

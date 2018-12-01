@@ -1,3 +1,6 @@
+### 2018-10-12
+- vcl/ui/Array: Gathering more attribute names
+
 ### 2018-10-08
 
 - Fixed `vcl/ui/Panel`s `zoom` property. It now supports zooming in **and** out. Funny how the solution was already in the code all along.
