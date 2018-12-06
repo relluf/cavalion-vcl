@@ -1,3 +1,6 @@
+### 2018-12-05
+- vcl/entities/Query: Passing on criteria.opts to EM.query
+
 ### 2018-10-12
 - vcl/ui/Array: Gathering more attribute names
 

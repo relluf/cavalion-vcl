@@ -239,7 +239,8 @@ define(function(require) {
 			    	EM.query(
 				    	criteria.entity || this._entity, 
 				    	criteria.attributes || this._attributes, 
-				    	criteria
+				    	criteria,
+				    	criteria.opts
 				    ).then(function(res) {
 						/*- if this response does not belong to the current request */
 						if(me._request !== me._pageReqs[page]) {
