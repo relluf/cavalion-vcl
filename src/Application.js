@@ -102,7 +102,11 @@ define(function(require) {
 				/*- When called by an owned component forKey is an array, where the first element holds a reference to the owned component. The second element contains the original forKey */
 				var r = this.fire("onGetStorageKey", arguments);
 				if(r === undefined) {
-					r = forKey[0].getUri() + "$" + forKey[1];
+					if(forKey[1] !== undefined) {
+						r = forKey[0].getUri() + "$" + forKey[1];
+					} else {
+						r = forKey[0].getUri();
+					}
 				}
 				
 				if(this._namespace !== "") {

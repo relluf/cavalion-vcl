@@ -8,7 +8,7 @@ define(function (require) {
     var js = require("js");
     var mixInR = require("js/mixInRecursive");
     var query = require("./Component.query");
-
+    
     var ILLEGAL_COMPONENT_NAME_CHARS = "/";
     var ILLEGAL_COMPONENT_URI_CHARS = "/";
 
@@ -545,7 +545,7 @@ define(function (require) {
                             return;
                         }
                     }
-                    return this._owner.applyVar(name, args, true, thisObj, callback);
+                    return this._owner && this._owner.applyVar(name, args, true, thisObj, callback);
                 }
                 if (! (args instanceof Array)) {
                     args = [args];
@@ -904,9 +904,10 @@ define(function (require) {
             	return [this.toString(), forKey].join("$");
             },
             readStorage: function (key, callback, errback) {
-                var r = localStorage.getItem(this.getStorageKey(key));
+                var r = localStorage.getItem(this.getStorageKey(key)), me = this;
                 if (typeof callback === "function") { // nextTick?
-                    callback.apply(this, [r]);
+                	setTimeout(function() { callback.apply(me, [r]); }, 0);
+                	// callback.apply(me, [r]);
                 }
                 return r;
             },
