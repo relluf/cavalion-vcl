@@ -686,6 +686,10 @@ define(function() {
     	Component = Component || require("vcl/Component");
     	var classes = Component.getKeysByUri(component._uri).classes;
         return rule.classNames.every(function(className) {
+        	if(className.indexOf("classes-") === 0) {
+        		return (component._classes||[]).indexOf(
+        				className.substring("classes-".length)) !== -1;
+        	}
         	return classes.indexOf(className) !== -1;
         });            
     }
