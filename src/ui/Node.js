@@ -410,7 +410,11 @@ define(function(require) {
 					var props = obj[k][0], Class = props['@class'] || "vcl/ui/Node";
 					var kids = arguments.callee($, config, obj[k][1]);
 					
-					js.mixIn(props, config.defaults || {});
+					for(var cdk in config.defaults) {
+						if(!props.hasOwnProperty(cdk)) {
+							props[cdk] = config.defaults[cdk];
+						}
+					}
 
 					if(typeof props.vars === "string") {
 						props.vars = js.str2obj(props.vars);
