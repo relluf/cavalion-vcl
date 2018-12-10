@@ -1,3 +1,7 @@
+### 2018-12-10
+- Component.query: Now supporting querying for 'classes' property (via vcl/ui/Button.classes-toggle) 
+- ui/Node: Enchancing seperator class for root node
+
 ### 2018-12-05
 - vcl/entities/Query: Passing on criteria.opts to EM.query
 
