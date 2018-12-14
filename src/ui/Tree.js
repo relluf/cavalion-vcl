@@ -28,7 +28,7 @@ define(function (require) {
                     ">.close": {
                     	position: "absolute",
                     	right: "4px",
-                    	"padding-top": "3px",
+                    	"padding-top": "2px",
                     	cursor: "pointer",
                     	display: "none"
                     },

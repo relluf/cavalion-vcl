@@ -1,3 +1,6 @@
+### 2018-12-13
+- Home.tree: Nodes are no longer rendered as expanded
+
 ### 2018-12-10
 - Component.query: Now supporting querying for 'classes' property (via vcl/ui/Button.classes-toggle) 
 - ui/Node: Enchancing seperator class for root node
