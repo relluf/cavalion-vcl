@@ -240,7 +240,6 @@ $([], {
 				}
 			});
 			node.addClass("closeable");
-			node.setExpanded(true);
 
 			var container = new FormContainer(node);
 			container.setFormUri(params.uri);
@@ -255,6 +254,10 @@ $([], {
 			node.setText(params.title || "&nbsp;");
 			node.setVar("control", container);
 			node.setParent(parent || scope.tree);
+			node.update(function() {
+				node.setExpanded(true);
+				node.setExpandable(false);
+			});
 
 			container.on({
 				"formclose": function() {
