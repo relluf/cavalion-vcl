@@ -28,6 +28,7 @@ var Handlers = {
 	    source.push("/*- Implicit Sources */");
 	    for(var k in Factory.implicit_sources) {
 	    	var v = Factory.implicit_sources[k];
+
 	    	source.push(String.format("define(\"%s\", %s);", k, 
 	    		JSON.stringify(v)));
 	    }
@@ -35,12 +36,14 @@ var Handlers = {
 	    source.push("\n\n/*- Sources */");
 	    
 	    function callback(uri, text) {
-	        text = text.replace(/\r/g, "");
-	        if(uri.indexOf(".js") === uri.length - 3) {
-	        	text = minify(text);
-	        }
-            source.push(String.format("define(\"%s\", %s);",
-                    uri, JSON.stringify(text)));
+	    	if(text) {
+		        text = text.replace(/\r/g, "");
+		        if(uri.indexOf(".js") === uri.length - 3) {
+		        	text = minify(text);
+		        }
+	            source.push(String.format("define(\"%s\", %s);",
+	                    uri, JSON.stringify(text)));
+	    	}
             if(--count === 0) {
                 scope['extra-components'].setValue(source.join("\n"));
             }
@@ -53,10 +56,12 @@ var Handlers = {
 
 	    vars.components.forEach(function(uri) {
 	        require([uri], function(text) {
+		    	console.log(">>>" + uri);
                 callback(uri, text);
 	        }, function(err) {
                 //callback(uri, Component.getImplicitSourceByUri(uri));
-                throw err;
+                // throw err;
+                callback(uri);
 	        });
 	    });
     }

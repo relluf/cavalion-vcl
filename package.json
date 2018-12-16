@@ -1,6 +1,6 @@
 {
   "name": "cavalion-vcl",
-  "version": "1.0.17",
+  "version": "1.0.20",
   "description": "Cavalion vcl-comps JavaScript library",
   "main": "index.js",
   "scripts": {
@@ -16,10 +16,4 @@
     "url": "https://github.com/relluf/cavalion-vcl/issues"
   },
   "homepage": "https://github.com/relluf/cavalion-vcl#readme",
-  "dependencies": {
-    "cavalion-js": "^1.0.2"
-  },
-  "devDependencies": {
-    "electron": "^3.0.9"
-  }
 }
