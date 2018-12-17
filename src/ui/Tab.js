@@ -5,11 +5,8 @@ define(function(require) {
 	var Element = require("./Element");
 
 	var Tab = {
-
 		inherits: Element,
-
 		prototype: {
-
 			"@css": {
 				"&:not(.closeable) .close": {
 					display: "none"
@@ -108,18 +105,13 @@ define(function(require) {
 			oncloseclick: function() {
 				return this.fire("onCloseClick", arguments);
 			},
-			/**
-			 *
-			setSelected: function() {
-				try {
-					return js.lang.Class.__inherited(this, arguments);
-				} finally {
-					if(this._control !== null && this.isVisible() === false) {
-						this._control.setVisible(this.isSelected());
-					}
-				}
-			},
-			 */
+			// setSelected: function() {
+			// 	try {
+			// 		return this.inherited(arguments);
+			// 	} finally {
+			// 		this._update();
+			// 	}
+			// },
 			getCloseable: function() {
 				return this._closeable;
 			},
@@ -155,30 +147,22 @@ define(function(require) {
 				}
 			}
 		},
-
 		properties: {
-
 			"text": {
 				set: Function,
 				type: Class.Type.STRING },
-
 			"closeable": {
 				set: Function,
 				type: Class.Type.BOOLEAN },
-
 			"control": {
 				set: Function,
 				type: Control },
-
 			"groupIndex": {
 				set: Function,
 				type: Class.Type.INTEGER },
-
 			"onCloseClick": {
 				type: Class.Type.EVENT }
-
 		}
-
 	};
 
 	return (Tab = Class.define(require, Tab));
