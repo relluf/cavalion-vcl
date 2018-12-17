@@ -1152,7 +1152,11 @@ define(function (require) {
                 uri = uri.split("<");
                 if (uri.length === 2) {
                     r.template = uri[0];
-                    r.namespace = uri[0].split(".")[0].split("/");
+                    
+                    // 20181217 - Do not split the namespace on dots anymore
+                    // r.namespace = uri[0].split(".")[0].split("/");
+                    r.namespace = uri[0].split("/");
+                    
                     r.name = r.namespace.pop();
                     r.namespace = r.namespace.join("/");
 

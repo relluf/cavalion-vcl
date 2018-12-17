@@ -1,4 +1,7 @@
-### 2018-12-13
+### 2018-16 v1.0.22
+- Component/getKeysByUri: Do not split the namespace on dots anymore (or anything before last <)
+
+### 2018-12 v1.0.21
 - Home.tree: Nodes are no longer rendered as expanded
 
 ### 2018-12-10
