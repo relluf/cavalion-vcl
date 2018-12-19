@@ -16,11 +16,8 @@ define(function(require) {
 	// require("stylesheet!./List.less");
 
 	var List = {
-
 		inherits: Panel,
-
 		prototype: {
-
 			constructor: function() {
 				this._columns = [];
 
@@ -153,7 +150,7 @@ define(function(require) {
 				 */
 				this._nodes.body.onscroll = function(e) {
 					//EventDispatcher.handleEvent;
-					thisObj.scroll(e);
+					thisObj.onscroll(e);
 				};
 				this._nodes.body.scrollTop = this._topRow * this._rowHeight;
 
@@ -202,7 +199,7 @@ define(function(require) {
 				}
 				return this._node;
 			},
-			scroll: function(evt) {
+			onscroll: function(evt) {
 				/** @overrides ../Control.prototype.scroll */
 				if(evt.target === this._nodes.body) {
 					this.notifyEvent("setScrollLeft", this._nodes.body.scrollLeft);

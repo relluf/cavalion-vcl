@@ -1455,6 +1455,9 @@ this._updateCalls = this._updateCalls || 0; this._updateCalls++;
 
 				this.fire("onTouchEnd", arguments);
 			},
+			onscroll: function() {
+				this.fire("onScroll", arguments);
+			},
 			onshow: function() {
 				this.fire("onShow", arguments);
 			},
