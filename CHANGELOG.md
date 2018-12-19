@@ -1,3 +1,6 @@
+### 2018-19 v1.0.23
+- Adding Control.prototype.onscroll
+
 ### 2018-16 v1.0.22
 - Component/getKeysByUri: Do not split the namespace on dots anymore (or anything before last <)
 
