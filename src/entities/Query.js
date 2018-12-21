@@ -1,3 +1,5 @@
+// "use strict";
+
 define(function(require) {
 	
 	/*- 2018-01-20: Added queueing of pages so that last pages are served first */
@@ -193,8 +195,9 @@ define(function(require) {
 				
 				return criteria;
 			},
-			requestPage: function(page, wasBusy_) {
+			requestPage: function(page_, wasBusy_) {
 			    var me = this, criteria, wasBusy = wasBusy_ || this.isBusy();
+			    var page = isNaN(page_) ? this._pageReqs.length : page_;
 			    if(this._pageReqs[page] !== undefined) {
 			    	var index;
 			    	if(this._pageQueue && (index = this._pageQueue.indexOf(page)) !== -1) {
@@ -261,7 +264,15 @@ define(function(require) {
 							me.notifyEvent(SourceEvent.busyChanged, false, page);
 						}
 						return res;
-					}));
+					}).catch(function(e) {
+						if(e && e.responseJSON && e.responseJSON.message) {
+							console.error(e.responseJSON.message, e)
+							throw e;
+						}
+						console.error(e);
+						throw e;
+					})
+				);
 				
 				console.debug(this._entity, "requestPage: page", page, "missile away - waiting for response");
 				if(!wasBusy) {
