@@ -1,3 +1,6 @@
+### 2018-19 v1.0.24
+- Working on endless scrolling features
+
 ### 2018-19 v1.0.23
 - Adding Control.prototype.onscroll
 
