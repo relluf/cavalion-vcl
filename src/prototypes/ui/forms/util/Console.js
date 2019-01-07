@@ -191,7 +191,8 @@ $(["ui/Form"], {
     ]),
     $("vcl/ui/Console", "console", {
         onLoad: function () {
-            this.print("loaded-console", this);
+	        this.app().qs("vcl/ui/Console#console").print("window.location", window.location);
+            this.print("console", this);
         },
         onEvaluate: function (expr) {
             var scope = this.getScope();
