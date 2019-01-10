@@ -170,7 +170,6 @@ define(function(require) {
 				}
 			},
 			
-			
 			mousedown: function(evt) {
 				evt = Event.fix(evt);
 

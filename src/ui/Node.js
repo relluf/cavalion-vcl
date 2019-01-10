@@ -34,11 +34,17 @@ define(function(require) {
 			_onCollapsed: null,
 			_onExpand: null,
 			_onExpanded: null,
+			
+			laoded: function() {
+				var r = this.inherited(arguments);
+				if(this._expanded === true) {
+					this.childNodesNeeded();
+				}
+				return r;
+			},
 
 			createNode: function() {
-			/**
-			 * @overrides ../Component.prototype.loaded
-			 */
+				/** @overrides ../Component.prototype.loaded */
 				var expanded = this._expanded;
 				this._expanded = false;
 
@@ -47,16 +53,12 @@ define(function(require) {
 				this.setExpanded(expanded);
 			},
 			insertControl: function() {
-			/**
-			 * @overrides ../Control.prototype.insertControl
-			 */
+				/** @overrides ../Control.prototype.insertControl */
 				this.setState("classesInvalidated");
 				this.inherited(arguments);
 			},
 			removeControl: function(control) {
-			/**
-			 * @overrides ../Control.prototype.insertControl
-			 */
+				/** @overrides ../Control.prototype.insertControl */
 				this.setState("classesInvalidated");
 				this.inherited(arguments);
 
@@ -70,9 +72,7 @@ define(function(require) {
 				}
 			},
 			determineClasses: function() {
-			/**
-			 * @overrides ../Control.prototype.determineClasses
-			 */
+				/** @overrides ../Control.prototype.determineClasses */
 				var r = this.inherited(arguments);
 				if(this.isExpandable()) {
 					r.push("expandable");
@@ -80,9 +80,7 @@ define(function(require) {
 				return r;
 			},
 			initializeNodes: function() {
-			/**
-			 * @overrides ../Control.prototype.initializeNodes
-			 */
+				/** @overrides ../Control.prototype.initializeNodes */
 				this.inherited(arguments);
 
 				this._nodes.selection = this.getChildNode(0);
@@ -99,9 +97,7 @@ define(function(require) {
 				}
 			},
 			render: function() {
-			/**
-			 * @overrides ../Control.prototype.render
-			 */
+				/** @overrides ../Control.prototype.render */
 				if(this._text instanceof Array) {
 					this._nodes.text.innerHTML = String.format.apply(String, this._text);
 				} else {
@@ -110,28 +106,20 @@ define(function(require) {
 			},
 
 			isExpanded: function() {
-			/**
-			 * @overrides ../Control.prototype.isExpanded
-			 */
+				/** @overrides ../Control.prototype.isExpanded */
 				return this._expanded;
 			},
 			isControlVisible: function(control) {
-			/**
-			 * @overrides ../Control.prototype.isControlVisible
-			 */
+				/** @overrides ../Control.prototype.isControlVisible */
 				return this._expanded === true && this.inherited(arguments);
 			},
 			isContainerShowing: function() {
-			/**
-			 * @overrides ../Control.prototype.isContainerShowing
-			 */
+				/** @overrides ../Control.prototype.isContainerShowing */
 				return this.isExpanded();
 			},
 
 			getClientNode: function() {
-			/**
-			 * @overrides ../Control.prototype.getClientNode
-			 */
+				/** @overrides ../Control.prototype.getClientNode */
 				if(this._node === null) {
 					this._nodeNeeded();
 				}
@@ -178,9 +166,7 @@ define(function(require) {
 			// },
 			
 			onclick: function(evt, force) {
-			/**
-			 * @overrides ../Control.prototype.onclick
-			 */
+				/** @overrides ../Control.prototype.onclick */
 				var r = this.inherited(arguments);
 				if(r !== false && (force === true || (evt.target === this._nodes.icon && this.isExpandable()))) {
 					if(this._expanded === true) {
@@ -192,9 +178,7 @@ define(function(require) {
 				return r;
 			},
 			ondblclick: function(evt) {
-			/**
-			 * @overrides ../Control.prototype.ondblclick
-			 */
+				/** @overrides ../Control.prototype.ondblclick */
 				var r = this.inherited(arguments);
 				if(r !== false && this.isExpandable()) {
 					if(this._expanded === true) {
