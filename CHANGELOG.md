@@ -1,4 +1,4 @@
-### 2019-01-16 v1.0.25
+### 2019-01-16 v1.0.26
 - Adding pseudo classes classes :enabled, :focused, :visible
 
 ### 2019-01-11 v1.0.24
