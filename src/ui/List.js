@@ -879,7 +879,7 @@ define(function(require) {
 			"onColumnGetValue": {
 				type: Class.Type.EVENT,
 				editorInfo: {
-					defaultValue: "(function(column, value, row, source) {})"
+					defaultValue: "(function(column, value, rowIndex, source) {})"
 				}
 			},
 			"onColumnRenderCell": {
