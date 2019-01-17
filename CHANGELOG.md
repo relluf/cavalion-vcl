@@ -1,13 +1,16 @@
-### 2018-19 v1.0.24
+### 2019-01-16 v1.0.25
+- Adding pseudo classes classes :enabled, :focused, :visible
+
+### 2018-12-19 v1.0.24
 - Working on endless scrolling features
 
-### 2018-19 v1.0.23
+### 2018-12-19 v1.0.23
 - Adding Control.prototype.onscroll
 
-### 2018-16 v1.0.22
+### 2018-12-16 v1.0.22
 - Component/getKeysByUri: Do not split the namespace on dots anymore (or anything before last <)
 
-### 2018-12 v1.0.21
+### 2018-12-12 v1.0.21
 - Home.tree: Nodes are no longer rendered as expanded
 
 ### 2018-12-10
