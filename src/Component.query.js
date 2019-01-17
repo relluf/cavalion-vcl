@@ -707,8 +707,17 @@ define(function() {
             } else if(pseudo.name === "root") {
                 return component.isRootComponent();
             } else if(pseudo.name === "selected") {
-                return component.isSelected && 
+                return component.isSelected &&
                 	(component.isSelected() === (pseudo.value !== "false"));
+            } else if(pseudo.name === "enabled") {
+                return component.isEnabled &&
+                	(component.isEnabled() === (pseudo.value !== "false"));
+            } else if(pseudo.name === "visible") {
+                return component.isVisible &&
+                	(component.isVisible() === (pseudo.value !== "false"));
+            } else if(pseudo.name === "focused") {
+                return component.isFocused &&
+                	(component.isFocused() === (pseudo.value !== "false"));
             } else if(pseudo.name === "uri") {
             	var value = pseudo.value.split(",");
 	            return match_uri({exact: value[1] === "exact", 
