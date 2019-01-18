@@ -726,7 +726,7 @@ define(function() {
             	return component._parent && 
             			component._parent._name === pseudo.value;
             } else if(pseudo.name === "app") {
-            	return component.app();
+            	return component instanceof require("vcl/Application");//.app();
             } else if(pseudo.name === "instanceOf") {
             	return component instanceof require(pseudo.value.replace(/\\\//g, "/"));
             } else if(pseudo.name === "withVars") {
