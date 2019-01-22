@@ -509,6 +509,8 @@ console.debug(this.hashCode(), "<--", query.hashCode());
     	},
     	properties: {
     		"servlet": {
+    			// shouldn't this be "path" instead of "servlet"?
+    			// path is introduced in vcl-veldoffice/Query
     			type: Type.STRING
     		},
     		"attributes": {

@@ -489,7 +489,7 @@ define(function (require) {
                 return vars;
             },
             hasVar: function (key) {
-                return this._vars && this._vars.hasOwnProperty(key);
+                return (this._vars && this._vars.hasOwnProperty(key)) || false;
             },
             getVar: function (namePath, fallback_to_owner, defaultValue) {
                 if (defaultValue) {
