@@ -1,3 +1,6 @@
+### 2019-01-22
+- Fix vcl/Component.prototype.hasVar
+
 ### 2019-01-16 v1.0.26
 - Adding pseudo classes classes :enabled, :focused, :visible
 

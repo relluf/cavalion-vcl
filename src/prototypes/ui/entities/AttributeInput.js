@@ -11,7 +11,6 @@ $("vcl/ui/Group", {
 
 		return this.inherited(arguments);
     },
-
 	onDispatchChildEvent: function(component, name, evt, f, args) {
 
 		var owner = this._owner;
