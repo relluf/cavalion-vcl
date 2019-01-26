@@ -2,15 +2,6 @@
 
 $("vcl/ui/Form", {
 	tabIndex: 1, // make sure that it can receive keyboard events
-	css: {
-		// "background": "-webkit-linear-gradient(top, rgb(252, 252, 252) 0%, rgb(255, 255, 255) 50%, #fafafa 100%)",
-		"font-family": "Lucida Grande, Arial, sans-serif",
-		"font-size": "9pt",
-		".{./Button}": {
-			"font-family": "Lucida Grande, Arial, sans-serif",
-			"font-size": "9pt"
-		}
-	},
 
     onReceiveParams: function(params) {
         var scope = this.getScope();
