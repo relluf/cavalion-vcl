@@ -686,9 +686,13 @@ define(function() {
     	Component = Component || require("vcl/Component");
     	var classes = Component.getKeysByUri(component._uri).classes;
         return rule.classNames.every(function(className) {
-        	if(className.indexOf("classes-") === 0) {
-        		return (component._classes||[]).indexOf(
-        				className.substring("classes-".length)) !== -1;
+        	if(component.hasClass) {
+	        	if(className.charAt(0) === "-") {
+	        		return component.hasClass(className.substring(1));
+	        	}
+        		if(className.indexOf("classes-") === 0) {
+	        		return component.hasClass(className.substring(8));
+	        	}
         	}
         	return classes.indexOf(className) !== -1;
         });            
@@ -774,7 +778,7 @@ define(function() {
             	return match_uri({uri: attr.value.replace(/\\\//g, "/")}, component);
             }
             var prop = component.defineProperties()[attr.name];
-            var value = prop.get(component);
+            var value = prop && prop.get(component);
             if(value instanceof require("vcl/Component")) {
             	value = value.getName();
             }
