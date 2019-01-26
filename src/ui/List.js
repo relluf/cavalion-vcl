@@ -94,7 +94,7 @@ define(function(require) {
 
 			_onSelectionChange: null,
 			_onColumnDropped: null,
-			_onGetRowClasses: null,
+			_onRowGetClasses: null,
 			_onColumnGetValue: null,
 			_onColumnRenderCell: null,
 
@@ -488,8 +488,8 @@ define(function(require) {
 			},
 
 			getRowClasses: function(row) {
-				if(this._onGetRowClasses !== null) {
-					return this.fire("onGetRowClasses", [row]) || [];
+				if(this._onRowGetClasses !== null) {
+					return this.fire("onRowGetClasses", [row]) || [];
 				}
 				return [];
 			},
@@ -870,12 +870,6 @@ define(function(require) {
 			"onColumnDropped": {
 				type: Class.Type.EVENT
 			},
-			"onGetRowClasses": {
-				type: Class.Type.EVENT,
-				editorInfo: {
-					defaultValue: "(function(row) {})"
-				}
-			},
 			"onColumnGetValue": {
 				type: Class.Type.EVENT,
 				editorInfo: {
@@ -886,6 +880,20 @@ define(function(require) {
 				type: Class.Type.EVENT,
 				editorInfo: {
 					defaultValue: "(function(cell, value, column, row, source, orgValue) {})"
+				}
+			},
+			"onGetRowClasses": { // TODO deprecated
+				get: function() { return this._onRowGetClasses; },
+				set: function(value) { this._onRowGetClasses = value; },
+				type: Class.Type.EVENT,
+				editorInfo: {
+					defaultValue: "(function(row) {})"
+				}
+			},
+			"onRowGetClasses": {
+				type: Class.Type.EVENT,
+				editorInfo: {
+					defaultValue: "(function(row) {})"
 				}
 			},
 			"rowHeight": {
