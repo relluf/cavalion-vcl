@@ -61,6 +61,11 @@ define(function(require) {
 					this._control.setVisible(true);
 					this._control.bringToFront();
 					this._control.setFocus();
+					
+					var app = this.app();
+					app.setTimeout("render", function() {
+						app.down(":root").updateChildren(true, true);
+					}, 500);
 				}
 				this.inherited(arguments);
 			},
