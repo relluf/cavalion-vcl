@@ -1,6 +1,6 @@
 {
   "name": "cavalion-vcl",
-  "version": "1.0.29",
+  "version": "1.0.30",
   "description": "Cavalion vcl-comps JavaScript library",
   "main": "index.js",
   "scripts": {
