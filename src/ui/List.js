@@ -832,6 +832,13 @@ define(function(require) {
 				});
 				this.updateChildren(true, true);
 			},
+			selectAll: function() {
+				var selection = [];
+				for(var i = 0; i < this._count; ++i) {
+					selection.push(i);
+				}
+				this.setSelection(selection);
+			},
 			getOnSelectionChange: function() {
 				return this._onSelectionChange;
 			},

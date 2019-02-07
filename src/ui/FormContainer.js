@@ -136,7 +136,7 @@ define(function (require) {
                 var base = this.getBaseUri();
 // console.log(uri, js.normalize(base, uri));
                 uri = js.normalize(base, uri);
-                Factory.require(uri, function (factory) {
+                return Factory.require(uri, function (factory) {
                     try {
                         var component = factory.newInstance(thisObj, uri, {
 
