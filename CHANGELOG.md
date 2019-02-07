@@ -1,4 +1,4 @@
-### 2019-02-06 v1.0.30
+### 2019-02-06 v1.0.31
 - vcl/ui/Tab: Built in a workaround which reminds me of Borland's `Application->ProcessMessages();`. 
 
 >> ![](https://i.snag.gy/O2ghWj.jpg)
