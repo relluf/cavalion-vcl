@@ -13,7 +13,7 @@ define(function(require) {
 		implementing: [Source],
 		prototype: {
 
-			_arr: null,					/*- the actual array exposed */
+			_arr: null,					/*- the actual array exposed (beit filtered)*/
 			_array: null,				/*- property array */
 			_monitors: null,
 			_busy: false,
