@@ -705,12 +705,6 @@ define(function(require) {
 				}
 				this.render();
 			},
-			getOnColumnDropped: function() {
-				return this._onColumnDropped;
-			},
-			setOnColumnDropped: function(value) {
-				this._onColumnDropped = value;
-			},
 			getAutoColumns: function() {
 				return this._autoColumns;
 			},
@@ -719,6 +713,18 @@ define(function(require) {
 					this._autoColumns = value;
 					this.updateColumns();
 				}
+			},
+			getOnColumnDropped: function() {
+				return this._onColumnDropped;
+			},
+			setOnColumnDropped: function(value) {
+				this._onColumnDropped = value;
+			},
+			getOnColumnGetValue: function() {
+				return this._onColumnGetValue;
+			},
+			setOnColumnGetValue: function(value) {
+				this._onColumnGetValue = value;
 			},
 			
 			sourceNotifyEvent: function(event, data) {
