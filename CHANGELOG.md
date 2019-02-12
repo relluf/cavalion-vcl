@@ -1,9 +1,16 @@
+### 2019-02-11 v1.0.32
+- Fixing RequireJS issues
+- Exposing some events for ui/List
+
 ### 2019-02-06 v1.0.31
 - vcl/ui/Tab: Built in a workaround which reminds me of Borland's `Application->ProcessMessages();`. 
 
 >> ![](https://i.snag.gy/O2ghWj.jpg)
 
 - vcl/ui/List: Adding selectAll()
+
+### 2019-01-29 v1.0.30
+- Made compitable, fixing issues for server2
 
 ### 2019-01-22 v1.0.29
 - Fix vcl/Component.prototype.hasVar
