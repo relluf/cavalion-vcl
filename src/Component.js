@@ -774,7 +774,7 @@ define(function (require) {
                 while (r._owner) {
                     r = r._owner;
                 }
-                return r; // && r instanceof require("vcl/Application") ? r : null;
+                return r; // && r instanceof require("vcl" + "/Application") ? r : null;
             },
            
             app: function() {

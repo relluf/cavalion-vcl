@@ -670,6 +670,18 @@ define(function() {
     	}, this);
     	return this;
     }
+    // Result.prototype.print = function() {
+    //     for(var i = 0; i < this.length; ++i) {
+    //         if(typeof this[i].print === "function") {
+    //             this[i] = this[i].print.apply(this[i], arguments);
+    //         } else {
+    //         	var args = js.copy_args(arguments);
+    //         	this[i] = this[i].qsa("#console").forEach(function(console) {
+    //         		console.print.apply(console, args);
+    //         	})
+    //         }
+    //     }
+    // }
     
     function match_uri(rule, component) {
         var uri = component._uri;//getUri();
@@ -683,7 +695,7 @@ define(function() {
         return component.constructor === rule.ctor;
     }
     function match_classNames(rule, component) {
-    	Component = Component || require("vcl/Component");
+    	Component = Component || require("vcl" + "/Component");
     	var classes = Component.getKeysByUri(component._uri).classes;
         return rule.classNames.every(function(className) {
         	if(component.hasClass) {
@@ -730,7 +742,7 @@ define(function() {
             	return component._parent && 
             			component._parent._name === pseudo.value;
             } else if(pseudo.name === "app") {
-            	return component instanceof require("vcl/Application");//.app();
+            	return component instanceof require("vcl" + "/Application");//.app();
             } else if(pseudo.name === "instanceOf") {
             	return component instanceof require(pseudo.value.replace(/\\\//g, "/"));
             } else if(pseudo.name === "withVars") {
