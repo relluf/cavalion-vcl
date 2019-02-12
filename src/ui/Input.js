@@ -301,7 +301,6 @@ define(function(require) {
 					}
 				}
 			}
-
 		},
 		properties: {
 			"executesAction": {

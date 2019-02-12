@@ -7,17 +7,15 @@ define(function(require) {
 	var SourceEvent = require("../../data/SourceEvent");
 
 	return (Element = Element(require, {
-
 		inherits: Control,
-
 		prototype: {
-			
 			'@css': {
 				"&.disabled": {
 					"pointer-events": "none"
 				}
 			},
 
+			_attributes: null,
 			/*- "dataawarity" */
 			_source: null,
 
@@ -89,19 +87,25 @@ define(function(require) {
 				}
 				return tpl;
 			},
+			
+			onnodecreated: function() {
+				var value = this._attributes;
+				for(var k in value) {
+					this._node.setAttribute(k, value[k]);
+				}
+				return this.inherited(arguments);
+			},
 
             /*- */
 			setAttributes: function(value) {
-				/*- Progressive: not holding on to attributes */
-				var node = this.nodeNeeded();
 				if(typeof value === "string") {
 					value = js.str2obj(value);
 				}
-				for(var k in value) {
-					node.setAttribute(k, value[k]);
+				this._attributes = value;
+				if(this._node) {
+					this.recreateNode();
 				}
 			},
-
 			sourceNotifyEvent: function(event, data) {
 				switch(event) {
 
@@ -118,11 +122,9 @@ define(function(require) {
 						break;
 				}
 			},
-
 			sourceDestroyed: function() {
 				this.setSource(null);
 			},
-
 			setSource: function(value) {
 				if(this._source !== value) {
 					if(this._source !== null) {
@@ -139,7 +141,6 @@ define(function(require) {
 
 			}
 		},
-
 		properties: {
 
             /*- */
@@ -147,11 +148,9 @@ define(function(require) {
 				/*- This property is not stored (when not designing?) */
 				stored: false,
 				type: Type.OBJECT,
-				get: null,
 				set: Function
 			}
 		},
-
 		statics: {
 		}
 	}));

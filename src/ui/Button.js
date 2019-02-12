@@ -14,6 +14,7 @@ define(["require", "js/defineClass", "./Element"], function(require, Button, Ele
 				"background": "-webkit-linear-gradient(top, rgba(255, 255, 255, 1) 0%,rgba(227, 227, 227, 1) 100%)",
 				"box-shadow": "inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 1px 1px rgba(0, 0, 0, 0.10)",
 				"text-shadow": "0 1px 0 rgba(0, 0, 0, 0.1)",
+				"width": "auto",
 				".dropdown": {
 					"font-size": "0.85em"
 				},
