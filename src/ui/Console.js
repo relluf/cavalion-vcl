@@ -190,7 +190,7 @@ define(function(require) {
 
 				if(evt.ctrlKey === true) {
 					if(evt.keyCode === 76) {
-						this._nodes.console.innerHTML = "";
+						this.clear();//_nodes.console.innerHTML = "";
 						evt.preventDefault();
 					}
 				} else if(evt.keyCode === 38) {

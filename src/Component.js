@@ -449,6 +449,10 @@ define(function (require) {
             	if(arguments.length === 2) {
             		return this.setVar("" + key, value);
             	}
+            	if(arguments.length === 3) {
+            		value = arguments[3];
+            		return this.getVar.apply(this, arguments);
+            	}
             	if(key instanceof Array) {
             		if(key.length === 1 && typeof key[0] === "string") {
             			key.push(true); // defaults to fallback_to_owner=true
