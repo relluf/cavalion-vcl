@@ -47,6 +47,7 @@ $(["ui/Form"], {
 
         var app = this.getApp();
         app.on("print", function() {
+console.log("app.on('print', ...)");
             scope.console.print.apply(scope.console, arguments);
         });
         
@@ -189,16 +190,15 @@ $(["ui/Form"], {
             }
         })
     ]),
-    $("vcl/ui/Console", "console", {
+    $(("vcl/ui/Console"), "console", {
         onLoad: function () {
-	        this.app().qs("vcl/ui/Console#console").print("window.location", window.location);
-            this.print("console", this);
+        	this.app().print("window.location", window.location);
         },
         onEvaluate: function (expr) {
             var scope = this.getScope();
             var app = this._owner._owner;
             var pr = this.print.bind(this);
-
+            
             function d(deferred) {
             	return deferred.addCallback(function(res) {
             		pr(res);

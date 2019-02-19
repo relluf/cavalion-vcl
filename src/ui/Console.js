@@ -6,6 +6,7 @@ define(function(require) {
 	var Printer = require("console/Printer");
 	var Component = require("../Component");
 	var Panel = require("./Panel");
+	var HE = require("util/HtmlElement");
 	var evaluate = require("./Console.evaluate");
 
 	var Type = Class.Type;
@@ -20,6 +21,12 @@ define(function(require) {
 
 			"@css": {
 				// "&.highlight-click": "background-color: yellow;",
+				"&.bg-white": {
+					"background-color": "white"
+				},
+				".selected > .key": {
+					"background-color": "yellow"
+				},
 				"font-family": "menlo, 'lucida console'",
 				"font-size": "8pt",
 				"cursor": "default",
@@ -35,7 +42,7 @@ define(function(require) {
 							"vertical-align: top; text-align: right; color: silver; width: 60px; " +
 							"padding-right: 12px; display: inline-block;",
 					">.message": "padding-left: 15px; display: inline-block;",
-					">.key": "padding-left: 15px; display: inline-block; padding-right: 5px; max-width: 75%; overflow: hidden; text-overflow: ellipsis;",
+					">.key": "border-radius:3px;padding-left: 15px; display: inline-block; padding-right: 5px; max-width: 75%; overflow: hidden; text-overflow: ellipsis;",
 					">.value": "display: inline-block; vertical-align: top;",
 					">.container": "padding-left: 85px; clear: both; display: none; margin-bottom: 4px;",
 					"&.border-bottom": {
@@ -44,6 +51,7 @@ define(function(require) {
 						"margin-bottom": "2px"
 					},
 					"&:hover>.key": "background-color: #f0f0f0;",
+					"&:hover.selected>.key": "background-color: yellow;",
 					"&.expandable": {
 						">.value": "cursor: pointer;",
 						">.message": {
@@ -153,6 +161,33 @@ define(function(require) {
 	    				this.restoreScroll();
 			        //}
 				}.bind(this), 200);
+				
+				var node = evt.target;
+				if(evt.metactrlKey && HE.hasClass(node, "key")) {
+					var selection = this._nodes.console.qsa(".selected.key.node") || {};
+					
+					if(!HE.hasClass(node, "node")) {
+						node = node.up(".node");
+					}
+					
+					if(!node) {
+						return;
+					}
+					
+					var index = selection.indexOf(node);
+					if(index === -1) {
+						selection.push(node);
+						if(!HE.hasClass(node, "selected")) {
+							HE.addClass(node, "selected");
+						}
+					} else {
+						selection.splice(index, 1);
+						HE.removeClass(node, "selected");
+					}
+				}
+				
+				// TODO find better way to extend/inherit/override eval context
+				this.sel = this._nodes.console.qsa(".key.selected.node").map(_ => _._line._value);
 				
 				return this.inherited(arguments);
 			},
