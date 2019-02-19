@@ -1,34 +1,39 @@
-### 2019-02-11 v1.0.32
+### 2019-02-11 - 1.0.33
+- vcl/ui/Console: Adding selecting values (Cmd+Click)
+- vcl/Factory: Fix for referencing component in property hashes, before only string-refs where anticipated
+- vcl/Component: Fix for getVar()'s use of default value
+
+### 2019-02-11 - 1.0.32
 - Fixing RequireJS issues
 - Exposing some events for ui/List
 
-### 2019-02-06 v1.0.31
+### 2019-02-06 - 1.0.31
 - vcl/ui/Tab: Built in a workaround which reminds me of Borland's `Application->ProcessMessages();`. 
 
 >> ![](https://i.snag.gy/O2ghWj.jpg)
 
 - vcl/ui/List: Adding selectAll()
 
-### 2019-01-29 v1.0.30
+### 2019-01-29 - 1.0.30
 - Made compitable, fixing issues for server2
 
-### 2019-01-22 v1.0.29
+### 2019-01-22 - 1.0.29
 - Fix vcl/Component.prototype.hasVar
 
-### 2019-01-16 v1.0.26
+### 2019-01-16 - 1.0.26
 - Adding pseudo classes classes :enabled, :focused, :visible
 
-### 2019-01-11 v1.0.24
+### 2019-01-11 - 1.0.24
 - Adding :app pseudo class
 
-### 2018-12-19 v1.0.23
+### 2018-12-19 - 1.0.23
 - Adding Control.prototype.onscroll
 - Working on endless scrolling features
 
-### 2018-12-16 v1.0.22
+### 2018-12-16 - 1.0.22
 - Component/getKeysByUri: Do not split the namespace on dots anymore (or anything before last <)
 
-### 2018-12-12 v1.0.21
+### 2018-12-12 - 1.0.21
 - Home.tree: Nodes are no longer rendered as expanded
 
 ### 2018-12-10
