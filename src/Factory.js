@@ -264,7 +264,9 @@ define(function(require) {
 					fixUps.forEach(function(ref, i) {
 						var v;
 						if(ref.property.isReference()) {
-							if(ref.value && (ref.value.charAt(0) === "#")) {
+							if(ref.value instanceof Component) {//ref.property._type) {
+								v = ref.value;
+							} else if(ref.value && (ref.value.charAt(0) === "#")) {
 								v = component.qs(ref.value);
 							} else {
 								v = (ref.value && ref.component.scope()[ref.value]);
