@@ -765,7 +765,7 @@ define(function() {
                 		return comp.getName() === name;
                 	});
                 } else {
-                	value = require("vcl/Component").all[value];
+                	value = require("vcl/" + "Component").all[value];
                 }
             } else {
                 value = js.get(pseudo.value, context);
@@ -791,7 +791,7 @@ define(function() {
             }
             var prop = component.defineProperties()[attr.name];
             var value = prop && prop.get(component);
-            if(value instanceof require("vcl/Component")) {
+            if(value instanceof require("vcl/" + "Component")) {
             	value = value.getName();
             }
             switch(attr.operator) {
