@@ -42,7 +42,8 @@ define(function(require) {
 							"vertical-align: top; text-align: right; color: silver; width: 60px; " +
 							"padding-right: 12px; display: inline-block;",
 					">.message": "padding-left: 15px; display: inline-block;",
-					">.key": "border-radius:3px;padding-left: 15px; display: inline-block; padding-right: 5px; max-width: 75%; overflow: hidden; text-overflow: ellipsis;",
+					">.key": "border-radius:3px;padding-left: 5px; display: inline-block; padding-right: 5px; max-width: 75%; overflow: hidden; text-overflow: ellipsis;",
+					">.key .fa": "width:10px; display:none; line-height:0px;font-size:13px;padding-top:2px;",
 					">.value": "display: inline-block; vertical-align: top;",
 					">.container": "padding-left: 85px; clear: both; display: none; margin-bottom: 4px;",
 					"&.border-bottom": {
@@ -61,9 +62,9 @@ define(function(require) {
 							"cursor": "pointer"
 						},
 						">.key": {
-							"background-image": String.format("url(%s)", images.collapsed),
-							"background-repeat": "no-repeat",
-							"background-position": "4px 2px",
+							// "background-image": String.format("url(%s)", images.collapsed),
+							// "background-repeat": "no-repeat",
+							// "background-position": "4px 2px",
 							"cursor": "pointer"
 						},
 						"&.expanded": {
@@ -72,10 +73,16 @@ define(function(require) {
 								"background-image": String.format("url(%s)", images.expanded)
 							},
 							">.key": {
-								"background-image": String.format("url(%s)", images.expanded)
+								// "background-image": String.format("url(%s)", images.expanded)
 							}
-						}
+						},
+						
+						"&.expanded >.key .fa-caret-down": "display:inline-block;",
+						// "&.expanded >.key .fa-caret-right": "display:none;",
+						"&:not(.expanded) >.key .fa-caret-right": "display:inline-block;position:relative;top:1px;",
+						// "&:not(.expanded >.key .fa-caret-right": "display:none;",
 					},
+					"&:not(.expandable) >.key": "padding-left:15px;",
 					"&.key>.container": "padding-left: 15px;",
 					"&.expanded>.container": "display: block;",
 					"&.error.error>.message": "color: red;",
@@ -126,6 +133,7 @@ define(function(require) {
 			_onEvaluate: null,
 
 			constructor: function() {
+				this._history = [];
 			},
 			loaded: function() {
 				this.loadHistory();
@@ -269,7 +277,10 @@ define(function(require) {
 			},
 			loadHistory: function() {
 				var key = this.getStorageKey("history");
-				this._history = JSON.parse(localStorage.getItem(key)) || [];
+				this._history = JSON.parse(localStorage.getItem(key));
+				if(!(this._history instanceof Array)) {
+					this._history = [];
+				}
 				this._history.index = this._history.length;
 			},
 			saveHistory: function(text) {

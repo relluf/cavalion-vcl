@@ -48,7 +48,7 @@ define(function (require) {
                         position: "absolute",
                         left: "0",
                         right: "0",
-                        height: "20px",
+                        height: "21px",
                         "z-index": "0",
                         "border-radius": "3px",
                         "pointer-events": "none"//,display:"none"
