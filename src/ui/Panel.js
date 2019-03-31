@@ -731,6 +731,8 @@ define(function (require) {
                     }
                     if (this.isVisible()) {
                         this.align();
+                    } else {
+                    	this.update();
                     }
                 }
             },
