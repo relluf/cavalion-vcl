@@ -22,12 +22,15 @@ define(function(require) {
     		_attributes: "",
     		_entity: "",
     		_where: null,
+    		_filterBy: [],
     		_groupBy: "",
     		_having: null,
     		_orderBy: "",
     		_parameters: null,
     		_limit: 100,
+    		_raw: false,
     		_count: true,
+    		_distinct: false,
     		_onGetRequestCriteria: null,
 
     		_layoutChanged: false,
@@ -83,7 +86,7 @@ define(function(require) {
 			},
 			getObject: function(index) {
 				/** @overrides ../data/Source.prototype.getObject */
-				if(this._useTuplesInsteadOfArray) {
+				if(this._raw || this._useTuplesInsteadOfArray) {
 					this.assertArray(index);
 					return this._tuples[index || 0];
 				}
@@ -171,6 +174,8 @@ define(function(require) {
 			},
 			getRequestCriteria: function(page) {
 				var criteria = {
+					distinct: this._distinct === true,
+					raw: this._raw === true,
 					count: this._count === true && this._arr === null,
 					start: page * this._limit,
 					limit: this._limit
@@ -178,6 +183,9 @@ define(function(require) {
 				if(this._where !== null) {
 					criteria.where = EM.eb.where(
 							this._where, this._parameters, this, []);
+				}
+				if(this._filterBy.length) {
+					criteria.filterBy = this._filterBy;
 				}
 				if(this._groupBy !== "") {
 					criteria.groupBy = this._groupBy.split(",");
@@ -283,10 +291,10 @@ define(function(require) {
 				/** @overrides ../data/Source.prototype.getAttributeValue */
 				
 				var instance, value;
-				if(this._useTuplesInsteadOfArray) {
+				if(this._raw || this._raw || this._useTuplesInsteadOfArray) {
 					var obj = this.getObject(index);
 					index = this._attributes.split(",").indexOf(name);
-					value = obj[index];
+					value = (obj||{})[index];
 				} else {
 					instance = this.getObject(index);
 					if(instance === Source.Pending) {
@@ -299,6 +307,23 @@ define(function(require) {
 				}
 				return value;
 			},
+			// getAttributeValue: function(name, index) {
+			// 	/** @overrides ../data/Source.prototype.getAttributeValue */
+			// 	// return this.inherited(arguments, 1);
+				
+			// 	// TODO based upon inherited method, is NOT calling inherited
+				
+			// 	this.assertArray(index);
+			// 	if(name === ".") {
+			// 		return this.getObject(index || 0);
+			// 	}
+			// 	// var value = js.get(name, this.getObject(index || 0));
+			// 	var value = (this.getObject(index || 0) || {})[name];
+			// 	if(this._onGetAttributeValue !== null) {
+			// 		value = this.fire("onGetAttributeValue", [name, index, value]);
+			// 	}
+			// 	return value;
+			// },
 			setAttributeValue: function(name, value, index) {
 			/**
 			 * @overrides ../data/Source.prototype.setAttributeValue
@@ -520,6 +545,9 @@ console.debug(this.hashCode(), "<--", query.hashCode());
     		"entity": {
     			type: Type.STRING
     		},
+    		"filterBy": {
+    			type: Type.ARRAY
+    		},
     		"where": {
     			type: Type.OBJECT
     		},
@@ -546,6 +574,12 @@ console.debug(this.hashCode(), "<--", query.hashCode());
     			}
     		},
     		"count": {
+    			type: Type.BOOLEAN
+    		},
+    		"distinct": {
+    			type: Type.BOOLEAN
+    		},
+    		"raw": {
     			type: Type.BOOLEAN
     		},
     		"onGetRequestCriteria": {
