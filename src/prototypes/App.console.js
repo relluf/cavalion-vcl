@@ -54,19 +54,19 @@ keyup:MetaCtrl+192`,
 	    height: 250,
 	    visible: false,
 	    vars: "parent: window;",
-	    onLoad: function() {
-	    	// var me = this;
-	    	// this.app().print = function() {
-	    	// 	me.print.apply(me, arguments);	
-	    	// };
+	    // onLoad: function() {
+	    // 	// var me = this;
+	    // 	// this.app().print = function() {
+	    // 	// 	me.print.apply(me, arguments);	
+	    // 	// };
 	    	
-	    	require("vcl/Component").prototype.print = function() {
-	    		var console = this.qs("#console");
-	    		if(console) {
-	    			console.print.apply(console, arguments);
-	    		}
-	    	};
-	    	return this.inherited(arguments);
-	    }
+	    // 	// require("vcl/Component").prototype.print = function() {
+	    // 	// 	var console = this.qs("#console");
+	    // 	// 	if(console) {
+	    // 	// 		console.print.apply(console, arguments);
+	    // 	// 	}
+	    // 	// };
+	    // 	return this.inherited(arguments);
+	    // }
     })
 ]);

@@ -1,3 +1,15 @@
+### 2019-03-31 - 1.0.34
+- Fixing some issues with auto sizing the width of vcl/ui/ListColumn
+- Performance tweak in vcl/ui/Panel (?)
+- Advancing vcl/ui/Tab with the property textReflects: render text as html or text
+- Getting rid of low res images
+
+### 2019-03-29
+- vcl/ui/Console now using font-awesome for caret (no more pixels when zooming, pura-vector ;-)
+
+### 2019-02-25
+- Implementing raw and distinct features for entities/EM
+
 ### 2019-02-11 - 1.0.33
 - vcl/ui/Console: Adding selecting values (Cmd+Click)
 - vcl/Factory: Fix for referencing component in property hashes, before only string-refs where anticipated
