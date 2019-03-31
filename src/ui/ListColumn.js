@@ -263,7 +263,7 @@ define(function(require) {
 					value = this._autoWidthValue;
 					this._autoWidthValue = "";
 				}
-				value = value || "&nbsp";
+				value = value || "&nbsp;";
 				if(this._autoWidthValue.length <= value.length) {
 					this.setAutoWidthValue(value);
 				}
@@ -341,8 +341,9 @@ define(function(require) {
 				return this._autoWidthValue;
 			},
 			setAutoWidthValue: function(value) {
+				if(value === "&nbsp;") value = " ";
 				value = value.trim();
-				if(this._autoWidthValue !== value) {
+				if(this._autoWidthValue !== value && value.length > this._autoWidthValue.length) {
 					this._autoWidthValue = value;
 					if(this._node !== null) {
 // console.debug(js.nameOf(this) + "->setTimeout", name, [this, arguments]);
