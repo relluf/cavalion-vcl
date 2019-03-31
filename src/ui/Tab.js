@@ -33,7 +33,7 @@ define(function(require) {
 				"<a class='close'>×</a>",
 			_groupIndex: 1,
 
-			_text: "",
+			_text: "", _textReflects: "textContent",
 			_closeable: false,
 			_control: null,
 			_onCloseClick: null,
@@ -50,8 +50,11 @@ define(function(require) {
 				/**
 				 * @overrides ../Control.prototype.render
 				 */
-				this._nodes.text.textContent = this.getText();
-				// this._nodes.text.innerHTML = String.format("%H", this.getText());
+				if(this._textReflects === "textContent") {
+					this._nodes.text.textContent = this.getText();
+				} else {
+					this._nodes.text.innerHTML = this.getText();
+				}
 			},
 			select: function() {
 				/**
@@ -143,6 +146,16 @@ define(function(require) {
 					this.setState("invalidated", true);
 				}
 			},
+			getTextReflects: function() {
+				return this._textReflects;
+			},
+			setTextReflects: function(value) {
+				if(this._textReflects !== value) {
+					this._textReflects = value;
+					this.setState("invalidated", true);
+				}
+			},
+		
 			getControl: function() {
 				return this._control;
 			},
@@ -156,6 +169,10 @@ define(function(require) {
 			"text": {
 				set: Function,
 				type: Class.Type.STRING },
+			"textReflects": {
+				type: ["innerHtml", "textContent"],
+				set: Function
+			},
 			"closeable": {
 				set: Function,
 				type: Class.Type.BOOLEAN },
