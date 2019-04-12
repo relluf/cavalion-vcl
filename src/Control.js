@@ -1345,6 +1345,8 @@ this._updateCalls = this._updateCalls || 0; this._updateCalls++;
 					this._node.scrollTop = this._scrollTop;
 				}
 			},
+			onselected: function() {},
+			onunselected: function() {},
 			onkeydown: function() {
 				return this.fire("onKeyDown", arguments);
 			},
