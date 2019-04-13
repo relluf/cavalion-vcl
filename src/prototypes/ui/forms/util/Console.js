@@ -195,17 +195,10 @@ console.log("app.on('print', ...)");
         	this.app().print("window.location", window.location);
         },
         onEvaluate: function (expr) {
-            var scope = this.getScope();
-            var app = this._owner._owner;
+            var scope = this.scope();
+            var app = this.app();
             var pr = this.print.bind(this);
             
-            function d(deferred) {
-            	return deferred.addCallback(function(res) {
-            		pr(res);
-            		return res;
-            	});
-            }
-
             var me = this;
             function open(uri, opts) {
                 me.bubble("openform", js.mixIn(js.mixIn(opts || {}),
@@ -241,7 +234,7 @@ console.log("app.on('print', ...)");
                     }));
                 }
             }
-
+debugger;
             /* jshint evil: true; */
             return eval(expr);
         }
