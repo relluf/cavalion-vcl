@@ -632,6 +632,17 @@ define(function (require) {
 
                 return r;
             },
+
+            scope: function() {
+	            /*- Search in the current scope. The scope being defined by the 
+	                owning component of the calling component, or the calling 
+	                component itself if it is a root component. */
+                if(arguments.length === 0) {
+                    return this.getScope();
+                }
+                // console.log("Component.prototype.scope() --with-selector")
+                return this.getScope()[arguments[0]];
+            },
             up: function(selector, allowAll) {
 	            /*- Queries all components for the given selector and filters out
 	                those matches which are an owner of the calling component. The
@@ -659,16 +670,6 @@ define(function (require) {
 	                selector arguments or null when nothing matches. */
                 return this.qsa(selector)[0] || null;
             },
-            scope: function() {
-	            /*- Search in the current scope. The scope being defined by the 
-	                owning component of the calling component, or the calling 
-	                component itself if it is a root component. */
-                if(arguments.length === 0) {
-                    return this.getScope();
-                }
-                // console.log("Component.prototype.scope() --with-selector")
-                return this.getScope()[arguments[0]];
-            },
             qsa: function(selector, context) {
                 var me = this, parent = selector.trim().charAt(0) === "<";
                 return query(String.format("#%d %s", this.hashCode(), selector), 
@@ -685,6 +686,21 @@ define(function (require) {
             },
             qs: function(selector, context) {
                 return this.qsa(selector, context)[0] || null;
+            },
+
+            open: function() {},
+            bind: function(name) {
+            	var method = this[name];
+            	if(typeof method !== "function") {
+            		throw new Error(String.format("%s is not a method of %n", name, this));
+            	}
+            	if(arguments.length > 1) {
+	            	var args = js.copy_args(arguments); 
+	            	args.shift();
+	            	args.unshift(this);
+	            	return method.bind.apply(method, args);
+            	}
+            	return method.bind(this);
             },
             
             getProxy: function() {
@@ -784,6 +800,7 @@ define(function (require) {
             app: function() {
                 return this.getApp();
             },
+            
 
             getIsRoot: function () {
 	            /**

@@ -1,3 +1,7 @@
+### 2019-04-12
+- vcl/Control: adding dispatchers for on(un)selected
+- vcl/Component: adding bind() and open()
+
 ### 2019-03-31 - 1.0.34
 - Fixing some issues with auto sizing the width of vcl/ui/ListColumn
 - Performance tweak in vcl/ui/Panel (?)
