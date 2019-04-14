@@ -688,7 +688,13 @@ define(function (require) {
                 return this.qsa(selector, context)[0] || null;
             },
 
-            open: function() {},
+            open: function() {
+            	return this._owner && this._owner.open.apply(this._owner, arguments);
+            },
+            close: function(component) {
+            	return this._owner && this._owner.close(
+            			arguments.length === 0 ? this : arguments[0]);
+            },
             bind: function(name) {
             	var method = this[name];
             	if(typeof method !== "function") {

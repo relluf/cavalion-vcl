@@ -20,7 +20,6 @@ $([], {
 				}
 			}
 		});
-
 		return this.inherited(arguments);
 	},
     onMessage: function(name, msg, sender) {
