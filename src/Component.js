@@ -708,6 +708,10 @@ define(function (require) {
             	}
             	return method.bind(this);
             },
+            print: function() {
+            	var c = this.up();
+            	return c && c.print.apply(c, arguments);
+            },
             
             getProxy: function() {
             	/*- Should return a simple wrapper object which enables 
