@@ -640,6 +640,8 @@ define(function(require) {
 				this.notifyEvent("columnsChanged");
 			},
 			updateColumns: function() {
+				this.resetColumnAutoWidth(); 
+				
 				var updateColumns = this.updateColumns;
 				this.updateColumns = function() {
 					console.log("updateColumns blocked");
