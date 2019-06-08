@@ -1,3 +1,12 @@
+### 2019-06-08  [1.0.39]
+- Introducing `vcl/Component.prototype.udown(selector)`,  a shorthand for `this.up().down(selector)`. Also it can be a replacement for `scope()`:
+
+### 2019-06-04  [1.0.37]
+- Fixed autoWidth-ing columns after source resets data
+
+### 2019-04-16 - 1.0.35
+- Added Component.prototype.print()
+
 ### 2019-04-12
 - vcl/Control: adding dispatchers for on(un)selected
 - vcl/Component: adding bind(), open() and close()

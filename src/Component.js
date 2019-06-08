@@ -665,6 +665,20 @@ define(function (require) {
         		
         		return allowAll ? all : all[0] || null;
             },
+            udown: function(selectorUp, selectorDown) {
+            	if(arguments.length === 0) {
+            		return this.up();
+            	}
+            	if(arguments.length === 1) {
+            		return this.up().down(selectorUp);
+            	}
+            	
+            	/*- The call to `selectorUp` below might crash, but let it, so 
+            		that the caller can make out the difference between an exception
+            		and null return value to known whether up/down is the culprit.
+            	*/
+            	return this.up(selectorUp).down(selectorDown);
+            },
 	        down: function(selector) {
 	            /*- Return the first element of a call to ::qsa with the same
 	                selector arguments or null when nothing matches. */
