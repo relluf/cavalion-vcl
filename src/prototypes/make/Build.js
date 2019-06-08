@@ -64,6 +64,14 @@ var Handlers = {
                 callback(uri);
 	        });
 	    });
+    },
+    set_lib: function() {
+    	var scope = this.scope();
+    	var modules = this.vars(["modules", true]);
+    	var components = this.vars(["components", true]);
+    	
+    	var all = JSON.parse(scope.modules.getValue());
+    	scope['extra-modules'].setValue(all.join("\n"));
     }
 };
 
@@ -152,6 +160,10 @@ $(["ui/Form"], {
             $("vcl/ui/Button", {
                 content: "Merge",
                 onClick: Handlers.merge_lib
+            }),
+            $("vcl/ui/Button", {
+                content: "Set",
+                onClick: Handlers.set_lib
             })
         ]),
         $("vcl/ui/CheckGroup", "app.js", {
@@ -172,6 +184,10 @@ $(["ui/Form"], {
             $("vcl/ui/Button", {
                 content: "Merge",
                 onClick: Handlers.merge_app
+            }),
+            $("vcl/ui/Button", {
+                content: "Set",
+                onClick: Handlers.set_app
             }),
             $("vcl/ui/Button", {
                 content: "Make",
