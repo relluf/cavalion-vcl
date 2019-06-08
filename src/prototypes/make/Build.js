@@ -72,6 +72,13 @@ var Handlers = {
     	
     	var all = JSON.parse(scope.modules.getValue());
     	scope['extra-modules'].setValue(all.join("\n"));
+    },
+    set_app: function() {
+    	var scope = this.scope();
+    	var components = this.vars(["components", true]);
+    	
+    	var all = JSON.parse(scope.components.getValue());
+    	scope['extra-components'].setValue(all.join("\n"));
     }
 };
 
@@ -162,7 +169,7 @@ $(["ui/Form"], {
                 onClick: Handlers.merge_lib
             }),
             $("vcl/ui/Button", {
-                content: "Set",
+                content: ">>>",
                 onClick: Handlers.set_lib
             })
         ]),
@@ -186,7 +193,7 @@ $(["ui/Form"], {
                 onClick: Handlers.merge_app
             }),
             $("vcl/ui/Button", {
-                content: "Set",
+                content: ">>>",
                 onClick: Handlers.set_app
             }),
             $("vcl/ui/Button", {
