@@ -1,5 +1,6 @@
-### 2019-06-08  [1.0.39]
-- Introducing `vcl/Component.prototype.udown(selector)`,  a shorthand for `this.up().down(selector)`. Also it can be a replacement for `scope()`:
+### 2019-06-08  [1.0.40]
+- Introducing `vcl/Component.prototype.udown(selector)`,  a shorthand for `this.up().down(selector)`. Also it can be a replacement for `scope()`
+- Advancing prototypes/make/Build
 
 ### 2019-06-04  [1.0.37]
 - Fixed autoWidth-ing columns after source resets data
