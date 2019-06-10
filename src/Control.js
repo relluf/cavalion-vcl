@@ -913,6 +913,10 @@ define(function(require) {
 				}
 			},
 
+			scrollIntoView: function() {
+				this.nodeNeeded();
+				this._node.scrollIntoView();
+			},
 			inDocument: function() {
 				var node = this._node;
 				while(node !== null && node !== document) {

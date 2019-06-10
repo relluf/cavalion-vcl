@@ -221,6 +221,9 @@ define(function (require) {
                     }
                 }
             },
+            nextTick: function(name, f, ms, args) {
+            	return this.setTimeout(name, f, 0, args);
+            },
             setTimeout: function (name, f, ms, args) {
 	            /**
 	             * @param name Used to identify the timeout. Successive calls will cancel a previous timeout with the same name.
@@ -670,6 +673,7 @@ define(function (require) {
             		return this.up();
             	}
             	if(arguments.length === 1) {
+            		// selectorUp = selectorUp.split(" ");
             		return this.up().down(selectorUp);
             	}
             	
