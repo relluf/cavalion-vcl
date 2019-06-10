@@ -5,6 +5,13 @@ define(["require", "js/defineClass", "./Panel"], function(require, Bar, Panel) {
 			"@css": {
 				padding: "4px 6px",
 	            overflow: "hidden", 			// that's the whole point of this control
+	            
+	            "white-space": "nowrap",
+	            "overflow-x": "scroll",
+	            "::-webkit-scrollbar": {
+	            	height: "0"
+	            },
+	            
 				">div.overflow_handler": {
 					display: "none",
                     top: "4px",
@@ -23,7 +30,7 @@ define(["require", "js/defineClass", "./Panel"], function(require, Bar, Panel) {
 					"padding-right": "20px", 	// width of the overflow_handler
 					">div.overflow_handler": {
 						display: "block"
-		            }
+		            },
 				}
 			},
 			_autoSize: "height",
