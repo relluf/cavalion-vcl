@@ -113,17 +113,32 @@ define(function(require) {
 	    	    if(++index === this._controls.length) {
 	    	        index = 0;
 	    	    }
-	    	    this.getControl(index).setSelected(true);
+	    	    this.selectNth(index);
 	    	},
 	    	selectPrevious: function() {
 	    	    var index = this.getSelectedControl(1).getIndex();
 	    	    if(--index < 0) {
 	    	        index = this._controls.length - 1;
 	    	    }
-	    	    this.getControl(index).setSelected(true);
+	    	    this.selectNth(index);
 	    	},
-	    	selectNth: function(n) {
-	    	    this.getControl(index).setSelected(true);
+	    	selectNth: function(index) {
+	    	    var control = this.getControl(index);
+	    	    control.setSelected(true);
+	    	    this.makeVisible(control);
+	    	},
+	    	makeVisible: function(control) {
+	    		/*- this assumes horizontal scrolling only */
+	    	    control.scrollIntoView(); 
+	    	    // HACK
+	    		this._node.scrollTop = 0;
+	    	    this.nextTick("position-scrollbar", function() {
+		    		if(this._node.scrollLeft < 100) {
+		    			this._node.scrollLeft = 0;
+		    		} else {
+		    			this._node.scrollLeft += 100;
+		    		}
+	    	    }.bind(this));
 	    	},
     		initializeNodes: function(control) {
 	    		/** @overrides ../Control.prototype.initializeNodes */
@@ -169,7 +184,15 @@ define(function(require) {
     		},
     		onchange: function() {
 				return this.fire("onChange", arguments);
-    		}
+    		},
+            onresize: function (evt) {
+            /** @overrides Panel.prototype.onresize */
+            	this.setTimeout("after-resize-make-selected-visible", function() {
+	            	var control = this.getSelectedControl(1);
+	            	control && this.makeVisible(control);
+            	}.bind(this), 100);
+            }
+
     	},
     	properties: {
     		"onChange": {
