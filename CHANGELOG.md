@@ -1,3 +1,10 @@
+### 2019-06-10  [1.0.41]
+- vcl/ui/Tabs: Finally have horizontal scrolling with trackpad working! :-D
+- vcl/Component.prototype.nextTick
+
+### 2019-06-09
+- Fixed Component.prototype.udown (probably will only use it with one parameter from now on)
+
 ### 2019-06-08  [1.0.40]
 - Introducing `vcl/Component.prototype.udown(selector)`,  a shorthand for `this.up().down(selector)`. Also it can be a replacement for `scope()`
 - Advancing prototypes/make/Build
