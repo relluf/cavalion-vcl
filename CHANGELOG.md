@@ -1,3 +1,6 @@
+### 2019-06-11  [1.0.42]
+- (LAME) Hacking at $HOME/.../cavalion-blocks in Component.query
+
 ### 2019-06-10  [1.0.41]
 - vcl/ui/Tabs: Finally have horizontal scrolling with trackpad working! :-D
 - vcl/Component.prototype.nextTick
