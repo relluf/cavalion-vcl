@@ -310,9 +310,7 @@ define(function (require) {
                 if (this._autoSize !== "none") {
                     if (this._align !== "none") {
                         var changed = [];
-                        var cs = this.getComputedStyle(),
-                        w,
-                        h;
+                        var cs = this.getComputedStyle(), w, h;
 
                         if (Browser.webkit === true) {
                             w = parseInt(cs.getPropertyValue("width"), 10);

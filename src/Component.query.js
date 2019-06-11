@@ -685,6 +685,12 @@ define(function() {
     
     function match_uri(rule, component) {
         var uri = component._uri;//getUri();
+        
+        // TODO how to solve this?
+        if(uri.indexOf("$HOME") === 0 && (i = uri.indexOf("/cavalion-blocks/")) !== -1) {
+        	uri = uri.substring(i + 17);
+        }
+        
         return ((rule.exact && uri === rule.uri) ||
             (uri.split(".")[0] + "<").indexOf(rule.uri + "<") === 0);
     }
