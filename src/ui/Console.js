@@ -195,7 +195,7 @@ define(function(require) {
 				}
 				
 				// TODO find better way to extend/inherit/override eval context
-				this.sel = this._nodes.console.qsa(".key.selected.node").map(_ => _._line._value);
+				this.sel = this._nodes.console.qsa(".selected.node").map(_ => _._line._value);
 				
 				return this.inherited(arguments);
 			},
