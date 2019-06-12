@@ -1004,6 +1004,11 @@ define(function (require) {
             },
             hasPropertyValue: function (name) {
                 return this['@properties'][name] !== undefined;
+            },
+            toggle: function(name) {
+            	var value = this.defineProperties()[name].get(this);
+            	var values = {}; values[name] = !value;
+            	this.setProperties(values);
             }
         },
         statics: {

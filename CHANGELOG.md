@@ -1,5 +1,9 @@
-### 2019-06-11  [1.0.42]
+### 2019-06-12  [1.0.44]
+- Introducing Component.prototype.toggle()
+
+### 2019-06-11  [1.0.43]
 - (LAME) Hacking at $HOME/.../cavalion-blocks in Component.query
+- Fixed vcl/ui/Console [allow top level nodes to be selected (this.sel)]
 
 ### 2019-06-10  [1.0.41]
 - vcl/ui/Tabs: Finally have horizontal scrolling with trackpad working! :-D
