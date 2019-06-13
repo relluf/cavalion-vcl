@@ -681,7 +681,8 @@ define(function (require) {
             		that the caller can make out the difference between an exception
             		and null return value to known whether up/down is the culprit.
             	*/
-            	return this.up(selectorUp).down(selectorDown);
+            	var up = this.up(selectorUp);
+            	return up && up.down(selectorDown);
             },
 	        down: function(selector) {
 	            /*- Return the first element of a call to ::qsa with the same
