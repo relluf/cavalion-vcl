@@ -1,3 +1,6 @@
+### 2019-06-13  [1.0.45]
+- Bugfix in Component.prototype.udown()
+
 ### 2019-06-12  [1.0.44]
 - Introducing Component.prototype.toggle()
 
