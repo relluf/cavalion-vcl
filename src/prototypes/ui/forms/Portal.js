@@ -2,6 +2,7 @@
 
 var FormContainer = require("vcl/ui/FormContainer");
 var Tab = require("vcl/ui/Tab");
+var Component = require("vcl/Component");
 
 /*
 	Portal: 
@@ -286,6 +287,17 @@ $([["ui/Form"]], {
             var selectedTab = scope.tabs.getSelectedControl(1);
             var container = new FormContainer(owner);
             var tab = new Tab(owner);
+            
+        	var keys = Component.getKeysByUri(this._owner._uri);
+            if(uri.includes("<>") && keys.specializer.length) {
+            	if(keys.specializer_classes) {
+            		keys.specializer += ("." + keys.specializer_classes);
+            	}
+            	console.log("before", uri);
+            	uri = uri.replace(/<>/, "<" + keys.specializer + ">");
+            	console.log("after", uri);
+            }
+            
             tab.override({
                 setText: function () {
                     var r = this.inherited(arguments);

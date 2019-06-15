@@ -234,7 +234,7 @@ console.log("app.on('print', ...)");
                     }));
                 }
             }
-debugger;
+
             /* jshint evil: true; */
             return eval(expr);
         }

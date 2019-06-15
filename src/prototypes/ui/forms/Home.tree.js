@@ -156,7 +156,6 @@ $([], {
     		}
     	},
 		"vcl/ui/Tree": {
-
 			getSelection: function() {
 				var re = /ui\/forms\/Home\<.*\>\.tree/;
 				return this.query("@owner", re).getScope().tree.getSelection();
@@ -165,8 +164,9 @@ $([], {
 		"vcl/ui/Node": {
 			getControl: function(scope) {
 				/**
-				 * @return This method returns the control is associated with the calling
-				 * vcl/ui/Node. The control is created if it doesn't exist yet.
+				 * @return This method returns the control that is associated with 
+				 * the calling vcl/ui/Node. The control is created if it doesn't 
+				 * exist yet.
 				 */
 				var Control = require("vcl/Control");
 	    		var control = this.getVar("control");
