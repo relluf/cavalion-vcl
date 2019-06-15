@@ -236,7 +236,7 @@ define(function(require) {
 			},
 			onnodeinserted: function() {
 				if(this._expandable === "auto") {
-					console.log("onnodeinserted", this._expandable);
+					// console.log("onnodeinserted", this._expandable);
 					this.childNodesNeeded();
 				}
 				return this.inherited(arguments);
