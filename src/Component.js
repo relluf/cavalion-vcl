@@ -221,7 +221,12 @@ define(function (require) {
                     }
                 }
             },
-            nextTick: function(name, f, ms, args) {
+            nextTick: function(name, f, args) {
+            	if(typeof name === "function") {
+            		args = f;
+            		f = name;
+            		name = "nextTick-" + Date.now();
+            	}
             	return this.setTimeout(name, f, 0, args);
             },
             setTimeout: function (name, f, ms, args) {
