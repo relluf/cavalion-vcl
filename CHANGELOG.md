@@ -1,3 +1,9 @@
+### 2019-06-18 [1.0.48]
+- Enhancing List scrolling
+
+### 2019-06-16
+- Another bugfix in Component.prototype.udown()
+
 ### 2019-06-13  [1.0.45]
 - Bugfix in Component.prototype.udown()
 
