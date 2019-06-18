@@ -54,19 +54,31 @@ keyup:MetaCtrl+192`,
 	    height: 250,
 	    visible: false,
 	    vars: "parent: window;",
+	    onLoad() {
+	    	var Component = require("vcl/Component"), me = this.down("#console");
+	    	Component.prototype.print = function(key, value) {
+	    		if(arguments.length === 1) {
+	    			key = "nokey";
+	    		}
+	    		me.print(key, value);
+	    	};
+	    	return this.inherited(arguments);
+	    }
 	    // onLoad: function() {
-	    // 	// var me = this;
-	    // 	// this.app().print = function() {
-	    // 	// 	me.print.apply(me, arguments);	
-	    // 	// };
+	    // 	var me = this;
+	    // 	this.app().print = function() {
+	    // 		me.print.apply(me, arguments);	
+	    // 	};
 	    	
 	    // 	// require("vcl/Component").prototype.print = function() {
-	    // 	// 	var console = this.qs("#console");
+	    // 	// 	var console = this.udown("#console");
 	    // 	// 	if(console) {
 	    // 	// 		console.print.apply(console, arguments);
+	    // 	// 	} else if(this._owner) {
+	    // 	// 		this._owner.print.apply(this._owner, arguments);
 	    // 	// 	}
 	    // 	// };
-	    // 	return this.inherited(arguments);
+	    // 	// return this.inherited(arguments);
 	    // }
     })
 ]);
