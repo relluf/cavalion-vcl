@@ -678,8 +678,11 @@ define(function (require) {
             		return this.up();
             	}
             	if(arguments.length === 1) {
-            		// selectorUp = selectorUp.split(" ");
-            		return this.up().down(selectorUp);
+            		selectorUp = selectorUp.split(" ");
+            		if(selectorUp.length === 1) {
+            			return this.up().down(selectorUp[0]);
+            		}
+            		return this.up(selectorUp.shift()).down(selectorUp.join(" "));
             	}
             	
             	/*- The call to `selectorUp` below might crash, but let it, so 
