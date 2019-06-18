@@ -58,6 +58,7 @@ keyup:MetaCtrl+192`,
 	    	var Component = require("vcl/Component"), me = this.down("#console");
 	    	Component.prototype.print = function(key, value) {
 	    		if(arguments.length === 1) {
+	    			value = key;
 	    			key = "nokey";
 	    		}
 	    		me.print(key, value);
