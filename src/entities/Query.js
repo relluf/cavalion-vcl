@@ -244,7 +244,7 @@ define(function(require) {
 			    	return;
 			    }
 			    
-			    var EM = this.getEM();
+			    var EM = this.getEM(); var start = Date.now();
 			    /*- hold a reference to the current request and index by page */
 			    this._pageReqs[page] = (this._request = 
 			    	EM.query(
@@ -264,7 +264,7 @@ define(function(require) {
 						if(res instanceof Error) {
 							console.error(me._entity, "requestPage: page", page, "error received", err);
 						} else {
-							console.debug(me._entity, "requestPage: page", page, "received", {res: res});
+							console.debug(me._entity, "requestPage: page", page, "received", {time: Date.now() - start, res: res});
 						}
 						me.processResult(res, page, criteria);
 						

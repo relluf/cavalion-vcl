@@ -78,7 +78,7 @@ define(function(require) {
 			_source: null,
 			_sourceMonitor: null,
 			_rowHeight: 23,
-			_rowBuffer: 50,
+			_rowBuffer: 25,
 			_count: 0,
 			_topRow: 0,
 			_visibleRowCount: 0,
@@ -348,11 +348,12 @@ define(function(require) {
 
 				var start = this._topRow - this._rowBuffer;
 
+
+				var end = start + vrc + this._rowBuffer * 2;
+
 				if(start < 0) {
 					start = 0;
 				}
-
-				var end = start + vrc + this._rowBuffer * 2;
 
 				if(end > this._count - 1) {
 					start = start - (end - (this._count - 1));
@@ -374,21 +375,20 @@ define(function(require) {
 								me._body.updateRows();
 							}, 10);
 						};
-						// if(!this._source.isBusy()) {
+						this.setTimeout(function() {
+							this._source.getObjects(this._topRow, this._topRow + vrc);
 							this._source.getObjects(start, end);
-						// } else {
-						// 	console.log("postponed getObjects...")
-						// }
+							this._source.getObjects(this._topRow, this._topRow + vrc);
+						}.bind(this), 250);
 					}
 				}
 
 				if(end > start && this._source !== null && this._source.isActive()) {
-					// console.log([start, end], "???");
-					// if(!this._source.isBusy()) {
+					this.setTimeout(function() {
+							this._source.getObjects(this._topRow, this._topRow + vrc);
 						this._source.getObjects(start, end);
-					// } else {
-					// 	console.log("postponed getObjects...")
-					// }
+							this._source.getObjects(this._topRow, this._topRow + vrc);
+					}.bind(this), 250);
 				}
 				this._body.render();
 			},
