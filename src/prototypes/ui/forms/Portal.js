@@ -293,9 +293,7 @@ $([["ui/Form"]], {
             	if(keys.specializer_classes) {
             		keys.specializer += ("." + keys.specializer_classes);
             	}
-            	console.log("before", uri);
             	uri = uri.replace(/<>/, "<" + keys.specializer + ">");
-            	console.log("after", uri);
             }
             
             tab.override({
