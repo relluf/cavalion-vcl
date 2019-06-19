@@ -376,19 +376,19 @@ define(function(require) {
 							}, 10);
 						};
 						this.setTimeout(function() {
-							this._source.getObjects(this._topRow, this._topRow + vrc);
+							// this._source.getObjects(this._topRow, this._topRow + vrc);
 							this._source.getObjects(start, end);
 							this._source.getObjects(this._topRow, this._topRow + vrc);
-						}.bind(this), 250);
+						}.bind(this), 50);
 					}
 				}
 
 				if(end > start && this._source !== null && this._source.isActive()) {
 					this.setTimeout(function() {
+							// this._source.getObjects(this._topRow, this._topRow + vrc);
+							this._source.getObjects(start, end);
 							this._source.getObjects(this._topRow, this._topRow + vrc);
-						this._source.getObjects(start, end);
-							this._source.getObjects(this._topRow, this._topRow + vrc);
-					}.bind(this), 250);
+					}.bind(this), 50);
 				}
 				this._body.render();
 			},
