@@ -78,7 +78,7 @@ define(function(require) {
 					count = max;
 				}
 				
-				if(count % 2 === 1) count++;
+				// if(count % 2 === 1) count++;
 
 				firstRow -= rowBuffer;
 				if(firstRow < 0) {
@@ -98,6 +98,7 @@ if(firstRow !== 0 && delta === 0) return;
 // console.log("!!! pagemove")
 					for(var i = 0; i < count; ++i) {
 						row = this._controls[i];
+// if((row._rowIndex % 2) !== ((i + firstRow) % 2)) console.log("ListBody-setRowIndex", row._rowIndex, "==>", i + firstRow);
 						row.setRowIndex(i + firstRow);
 					}
 					this._firstRow = firstRow;
