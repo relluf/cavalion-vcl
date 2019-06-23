@@ -192,7 +192,7 @@ console.log("app.on('print', ...)");
     ]),
     $(("vcl/ui/Console"), "console", {
         onLoad: function () {
-        	this.app().print("window.location", window.location);
+        	this.print("window.location", window.location);
         },
         onEvaluate: function (expr) {
             var scope = this.scope();

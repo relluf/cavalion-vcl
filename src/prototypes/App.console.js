@@ -1,21 +1,13 @@
-$([], [
-    // $("vcl/Action", "toggle-server", {
-    //     hotkey: "Ctrl+F2",
-    //     onExecute: function() {
-    //         this.getApp().prompt("switchto", "ralph", function(server) {
-    //             if(server !== null) {
-    //                 var arr = window.location.toString().split("/");
-    //                 arr[2] = server;
-    //                 window.location = arr.join("/");
-    //             }
-    //         });
-    //     }
-    // }),
-    // $("vcl/Action", "open-debug", {
-    //     hotkey: "Ctrl+F3",
-    //     onExecute: function() {
-    //     }
-    // }),
+$([], {
+    onLoad: function() {
+    	var c = this.down("vcl/ui/Console#console");
+    	this.app().print = function() {
+    		c.print.apply(c, arguments);	
+    	};
+    	
+    	return this.inherited(arguments);
+    }
+}, [
     $("vcl/Action", "toggle-console", {
         hotkey: `
 keyup:Ctrl+Escape|keydown:Ctrl+Escape|
@@ -53,33 +45,38 @@ keyup:MetaCtrl+192`,
     	align: "bottom",
 	    height: 250,
 	    visible: false,
-	    vars: "parent: window;",
-	    onLoad() {
-	    	var Component = require("vcl/Component"), me = this.down("#console");
-	    	Component.prototype.print = function(key, value) {
-	    		if(arguments.length === 1) {
-	    			value = key;
-	    			key = "nokey";
-	    		}
-	    		me.print(key, value);
-	    	};
-	    	return this.inherited(arguments);
-	    }
-	    // onLoad: function() {
-	    // 	var me = this;
-	    // 	this.app().print = function() {
-	    // 		me.print.apply(me, arguments);	
-	    // 	};
-	    	
-	    // 	// require("vcl/Component").prototype.print = function() {
-	    // 	// 	var console = this.udown("#console");
-	    // 	// 	if(console) {
-	    // 	// 		console.print.apply(console, arguments);
-	    // 	// 	} else if(this._owner) {
-	    // 	// 		this._owner.print.apply(this._owner, arguments);
-	    // 	// 	}
-	    // 	// };
-	    // 	// return this.inherited(arguments);
-	    // }
+	    vars: "parent: window;"
     })
 ]);
+    // $("vcl/Action", "toggle-server", {
+    //     hotkey: "Ctrl+F2",
+    //     onExecute: function() {
+    //         this.getApp().prompt("switchto", "ralph", function(server) {
+    //             if(server !== null) {
+    //                 var arr = window.location.toString().split("/");
+    //                 arr[2] = server;
+    //                 window.location = arr.join("/");
+    //             }
+    //         });
+    //     }
+    // }),
+    // $("vcl/Action", "open-debug", {
+    //     hotkey: "Ctrl+F3",
+    //     onExecute: function() {
+    //     }
+    // }),
+	// onLoad() {
+ //   	var me = this.down("#console");
+ //   	this.print = function() {
+ //   		me.print.apply(me, arguments);
+ //   	};
+	//     return this.inherited(arguments);
+	// }
+    	// require("vcl/Component").prototype.print = function() {
+    	// 	var console = this.udown("#console");
+    	// 	if(console) {
+    	// 		console.print.apply(console, arguments);
+    	// 	} else if(this._owner) {
+    	// 		this._owner.print.apply(this._owner, arguments);
+    	// 	}
+    	// };
