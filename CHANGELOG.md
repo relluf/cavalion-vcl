@@ -1,3 +1,7 @@
+### 2019-06-23  [1.0.50]
+- Automatically set animated class when zoom is set (Panel)
+- Fixing some scrolling/rendering related issues in List classes while working on veldapps/ListOf<>
+
 ### 2019-06-19 [1.0.49]
 - Enhancing List scrolling
 

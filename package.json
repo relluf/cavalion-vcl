@@ -1,7 +1,7 @@
 {
   "name": "cavalion-vcl",
-  "version": "1.0.49",
-  "description": "Cavalion vcl-comps JavaScript library",
+  "version": "1.0.50",
+  "description": "Visual Component Library for vcl-comps",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
