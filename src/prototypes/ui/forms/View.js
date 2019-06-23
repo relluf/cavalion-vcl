@@ -1,6 +1,8 @@
 $(["ui/Form"], {
     css: {
+    	// TODO refactor to be 'singleton' (iykwim)
     	"#menubar": {
+		    "&.loading": { background: "url(/shared/vcl/images/loading.gif) no-repeat 50% 0" },
 	    	"padding": "4px",
 	    	"overflow": "hidden",
 			"border-bottom": "1px solid #f0f0f0",

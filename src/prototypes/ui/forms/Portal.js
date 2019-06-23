@@ -66,7 +66,9 @@ $([["ui/Form"]], {
 	        }
 		},
 		"#top": {
-	        "padding-top": "10px",
+			// "background-color": "rgba(232, 240, 254)",
+			"padding-bottom": "8px",
+	        "padding-top": "8px",
 	        "padding-right": "32px",
 	        "&:not(.single)": {
 	            "#title_location": {
@@ -83,6 +85,7 @@ $([["ui/Form"]], {
 	            "padding-bottom": "8px",
 	            "border-bottom": "1px solid gray"
 	        },
+	        // "#title_outer": "color:green;",
 	        "#title": "display: inline-block; font-size: 17pt;",
 	        "#title_location": "display: inline-block; font-size: 12pt;",
 	        "#title_right": {
