@@ -94,7 +94,7 @@ define(function(require) {
 			},
 			getObjects: function(start, end) {
 			/** @overrides ../data/Source.prototype.getObjects */
-				// // console.debug(this._entity, "getObjects", start, end);
+				// console.debug(this._entity, "getObjects", start, end);
 				
 				/*- round limits */
 				var startPage = parseInt(start / this._limit, 10);
@@ -212,7 +212,7 @@ define(function(require) {
 			    		if(index !== this._pageQueue.length - 1) {
 				    		this._pageQueue.splice(index, 1);
 				    		this._pageQueue.push(page);
-							console.debug(this._entity, "requestPage: page", page, "to front of queue");
+							// console.debug(this._entity, "requestPage: page", page, "to front of queue");
 			    		}
 			    	}
 			    	return;
@@ -221,14 +221,14 @@ define(function(require) {
 			    /*- make sure additional requests for 'page' are ignored */
 			    this._pageReqs[page] = WAITING;
 			    if((criteria = this.getRequestCriteria(page)) === null) {
-					console.debug(this._entity, "requestPage: page", page, "no criteria, skip");
+					// console.debug(this._entity, "requestPage: page", page, "no criteria, skip");
 					
 					delete me._pageReqs[page];
 			    	return;
 			    }
 
 			    if(this._request !== null) {
-					console.debug(this._entity, "requestPage: page", page, "queued");
+					// console.debug(this._entity, "requestPage: page", page, "queued");
 					if(this._pageQueue === null) {
 						this._pageQueue = [];
 					}
@@ -236,7 +236,7 @@ define(function(require) {
 					this._pageQueue.push(page);
 			    	this._request.then(function() {
 			    		var page = me._pageQueue.pop();
-						console.debug(me._entity, "popping page", page);
+						// console.debug(me._entity, "popping page", page);
 						
 						delete me._pageReqs[page]; /* delete WAITING tag */
 			    		me.requestPage(page, true); /*- make sure that we remain busy */
@@ -255,7 +255,7 @@ define(function(require) {
 				    ).then(function(res) {
 						/*- if this response does not belong to the current request */
 						if(me._request !== me._pageReqs[page]) {
-							console.debug(me._entity, "requestPage: page", page, "receveid, but IGNORED");
+							// console.debug(me._entity, "requestPage: page", page, "receveid, but IGNORED");
 							/* ...it should be ignored */
 							return res;
 						}
@@ -264,7 +264,7 @@ define(function(require) {
 						if(res instanceof Error) {
 							console.error(me._entity, "requestPage: page", page, "error received", err);
 						} else {
-							console.debug(me._entity, "requestPage: page", page, "received", {time: Date.now() - start, res: res});
+							// console.debug(me._entity, "requestPage: page", page, "received", {time: Date.now() - start, res: res});
 						}
 						me.processResult(res, page, criteria);
 						
@@ -282,7 +282,7 @@ define(function(require) {
 					})
 				);
 				
-				console.debug(this._entity, "requestPage: page", page, "missile away - waiting for response");
+				// console.debug(this._entity, "requestPage: page", page, "missile away - waiting for response");
 				if(!wasBusy) {
 					this.notify(SourceEvent.busyChanged, true, page);
 				}
@@ -344,13 +344,14 @@ define(function(require) {
 				return this._attributes !== "" ? this._attributes.split(",") : [];
 			},
 			processResult: function(res, page, criteria) {
+				
+this.print("page/" + page + "/processResult", {res: res, criteria: criteria});
+
 				var instances = res.instances;
 				var tuples = res.tuples;
 				var size = instances.length;
 				var base = page * this._limit;
 				
-				// console.trace("processResult", res, base);
-
 				if(res.names !== undefined) {
 					this._attributes = res.names.join(",");
 					this.notify(SourceEvent.layoutChanged);
@@ -408,10 +409,10 @@ define(function(require) {
 				this.requestWhenNeeded();
 			},
 			setAll: function(entity, attributes, where, groupBy, having, orderBy, count, refresh /*refresh and count default to true*/) {
-				// console.debug("setAll");
+				console.debug("setAll");
 				if(this._request !== null) {
 					var me = this;
-					// console.debug(this._entity, "waiting for current request to finish");
+					console.debug(this._entity, "waiting for current request to finish");
 					this._request.then(function(res) {
 						me.setAll(entity, attributes, where, groupBy, having, orderBy);
 						return res;
@@ -507,7 +508,7 @@ define(function(require) {
 			assign: function(query) {
 				var wasActive = this.isActive();
 				var wasActiveQ = query.isActive();
-console.debug(this.hashCode(), "<--", query.hashCode());				
+// console.debug(this.hashCode(), "<--", query.hashCode());				
 				if(query.constructor !== this.constructor) {
 					throw new Error("Must be instance of exactly " + 
 						js.nameOf(this.constructor));

@@ -339,7 +339,9 @@ define(function(require) {
 			},
 
 			notifyEvent: function(event, data) {},
-			render: function() {
+			render: function(bodyUpdateRows/*TODO*/) {
+				if(bodyUpdateRows) return this._body.updateRows();
+				
 				var vrc = this.getVisibleRowCount(true);
 
 				if(this._topRow > this._count - vrc + 1) {
@@ -363,28 +365,28 @@ define(function(require) {
 					end = this._count - 1;
 				}
 
-				if(this._count > 0 && this._source !== null && this._source.isActive()) {
-					if(this._sourceMonitor === null || this._sourceMonitor.start !== start || this._sourceMonitor.end !== end) {
-						var me = this;
-						if(this._sourceMonitor !== null) {
-							this._source.releaseMonitor(this._sourceMonitor);
-						}
-						this._sourceMonitor = this._source.getMonitor(start, end);
-						this._sourceMonitor.process = function() {
-							me.setTimeout("updateBodyRows", function() {
-								me._body.updateRows();
-							}, 10);
-						};
-						this.setTimeout(function() {
-							// this._source.getObjects(this._topRow, this._topRow + vrc);
-							this._source.getObjects(start, end);
-							this._source.getObjects(this._topRow, this._topRow + vrc);
-						}.bind(this), 50);
-					}
-				}
+				// if(this._count > 0 && this._source !== null && this._source.isActive()) {
+				// 	if(this._sourceMonitor === null || this._sourceMonitor.start !== start || this._sourceMonitor.end !== end) {
+				// 		var me = this;
+				// 		if(this._sourceMonitor !== null) {
+				// 			this._source.releaseMonitor(this._sourceMonitor);
+				// 		}
+				// 		this._sourceMonitor = this._source.getMonitor(start, end);
+				// 		this._sourceMonitor.process = function() {
+				// 			me.setTimeout("updateBodyRows", function() {
+				// 				me._body.updateRows();
+				// 			}, 10);
+				// 		};
+				// 		this.setTimeout("render", function() {
+				// 			// this._source.getObjects(this._topRow, this._topRow + vrc);
+				// 			this._source.getObjects(start, end);
+				// 			this._source.getObjects(this._topRow, this._topRow + vrc);
+				// 		}.bind(this), 50);
+				// 	}
+				// }
 
 				if(end > start && this._source !== null && this._source.isActive()) {
-					this.setTimeout(function() {
+					this.setTimeout("render", function() {
 							// this._source.getObjects(this._topRow, this._topRow + vrc);
 							this._source.getObjects(start, end);
 							this._source.getObjects(this._topRow, this._topRow + vrc);
@@ -399,42 +401,39 @@ define(function(require) {
 					    column._attribute, row));
 				}
 
-				if(value !== Source.Pending) {
-					if(column._displayFormat !== "") {
-						value = String.format(column._displayFormat, value);
-					}
-					if(column._onGetValue !== null) {
-						value = column.fire("onGetValue", [
-						        value, row, this._source]);
-					}
-					if(this._onColumnGetValue !== null) {
-					    value = this.fire("onColumnGetValue", [
-					            column, value, row, this._source]);
-					}
-					if(column._onRenderCell !== null) {
-						if(column.fire("onRenderCell", [cell, value, column, 
-    						    row, this._source, orgValue]) === false) {
-							return;
-						}
-					}
-					if(this._onColumnRenderCell !== null) {
-					    if(this.fire("onColumnRenderCell", [cell, value, column, 
-    						    row, this._source, orgValue]) === false) {
-					        return;
-					    }
-					}
-					if(value === null || value === undefined) {
-						value = "";
-					} else if(this._formatDates === true && 
-					        value instanceof Date) {
-						// FIXME
-						value = this.formatDate(value);
-					}
-				} else {
-					value = "...";
+				if(column._displayFormat !== "") {
+					value = String.format(column._displayFormat, value);
 				}
+				if(column._onGetValue !== null) {
+					value = column.fire("onGetValue", [
+					        value, row, this._source]);
+				}
+				if(this._onColumnGetValue !== null) {
+				    value = this.fire("onColumnGetValue", [
+				            column, value, row, this._source]);
+				}
+				if(column._onRenderCell !== null) {
+					if(column.fire("onRenderCell", [cell, value, column, 
+						    row, this._source, orgValue]) === false) {
+						return;
+					}
+				}
+				if(this._onColumnRenderCell !== null) {
+				    if(this.fire("onColumnRenderCell", [cell, value, column, 
+						    row, this._source, orgValue]) === false) {
+				        return;
+				    }
+				}
+				if(value === null || value === undefined) {
+					value = "";
+				} else if(this._formatDates === true && 
+				        value instanceof Date) {
+					// FIXME
+					value = this.formatDate(value);
+				}
+				
 				if(value === null || value === undefined || value === "") {
-					value = "&nbsp;";
+					value = " &nbsp; ";
 				} else if(value instanceof Array) {
 					if(typeof value[0] !== "object") {
 						value = value.join("");
@@ -747,11 +746,13 @@ define(function(require) {
 						if(data && this._topRow > 0) { /* TODO what about scrolling up? */
 							return;
 						}
-						if(data && !this.hasClass("busy")) {
-							this.addClass("busy");
-						} else if(!data && this.hasClass("busy")) {
-							this.removeClass("busy");
-						}
+						this.setTimeout("update-busy", function() {
+							if(data && !this.hasClass("busy")) {
+								this.addClass("busy");
+							} else if(!data && this.hasClass("busy")) {
+								this.removeClass("busy");
+							}
+						}.bind(this), 100);
 						break;
 
 					case SourceEvent.updated:

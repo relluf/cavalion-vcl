@@ -77,6 +77,8 @@ define(function(require) {
 				if(count > max) {
 					count = max;
 				}
+				
+				if(count % 2 === 1) count++;
 
 				firstRow -= rowBuffer;
 				if(firstRow < 0) {

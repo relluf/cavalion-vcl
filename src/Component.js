@@ -723,7 +723,7 @@ define(function (require) {
             			arguments.length === 0 ? this : arguments[0]);
             },
             bind: function(name) {
-            	var method = this[name];
+            	var method = typeof name === "function" ? name : this[name];
             	if(typeof method !== "function") {
             		throw new Error(String.format("%s is not a method of %n", name, this));
             	}
@@ -735,9 +735,18 @@ define(function (require) {
             	}
             	return method.bind(this);
             },
-            print: function() {
-            	var c = this.up();
-            	return c && c.print.apply(c, arguments);
+            print: function(key, value) {
+            	var c = this._owner;
+            	if(c !== null) {
+            		var id = js.sf("#%d-%s", this.hashCode(), this._name || "");
+	            	if(arguments.length === 1) {
+	            		value = key;
+	            		key = id;
+	            	} else if(typeof key === "string") {
+	            		key = id + ": " + key;
+	            	}
+	            	return c.print.apply(c, [key, value]);
+            	}
             },
             
             getProxy: function() {
@@ -943,7 +952,7 @@ define(function (require) {
                     this._components = [];
                 }
                 if (component._name !== "" && this.findComponent(component.getName()) !== null) {
-                    throw new Error(String.format("A component named '%s' already exists.", component.getName()));
+                    // throw new Error(String.format("A component named '%s' already exists.", component.getName()));
                 }
                 component._owner = this;
                 this._components.push(component);
