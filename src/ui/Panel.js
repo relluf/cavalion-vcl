@@ -861,6 +861,10 @@ define(function (require) {
             },
             setZoom: function(f) {
             	if(this._zoom !== f) {
+            		if(!this.hasClass("animated")) {
+            			this.addClass("animated");
+            			return this.update(function() { this.setZoom(f); }.bind(this));	
+            		}
             		this._zoom = f;
             		this.nodeNeeded();
             		this.renderZoom();
