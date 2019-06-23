@@ -743,7 +743,7 @@ define(function (require) {
 	            		value = key;
 	            		key = id;
 	            	} else if(typeof key === "string" && key.charAt(0) !== "#") {
-	            		key = id + ": " + key;
+	            		key = id + "|" + key;
 	            	}
 	            	return c.print.apply(c, [key, value]);
             	}

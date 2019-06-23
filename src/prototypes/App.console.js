@@ -1,10 +1,14 @@
 $([], {
     onLoad: function() {
-    	var c = this.down("vcl/ui/Console#console");
-    	this.app().print = function() {
-    		c.print.apply(c, arguments);	
+    	// var c = this.down("vcl/ui/Console#console");
+    	require("vcl/Component").prototype.print = function() {
+    		var console = this.down("vcl/ui/Console#console");
+    		if(console) {
+    			return console.print.apply(console, arguments);
+    		}
+    		return this.inherited(arguments);
     	};
-    	
+
     	return this.inherited(arguments);
     }
 }, [
@@ -15,7 +19,7 @@ keyup:Ctrl+Shift+D|keydown:Ctrl+Shift+D|
 keyup:Alt+Shift+X|keydown:Alt+Shift+X|
 keyup:MetaCtrl+192`,
         onExecute: function (evt) {
-            var scope = this.getScope();
+            var scope = this.scope();
             var focused;
 
             if (evt.type === "keydown") {
@@ -72,11 +76,3 @@ keyup:MetaCtrl+192`,
  //   	};
 	//     return this.inherited(arguments);
 	// }
-    	// require("vcl/Component").prototype.print = function() {
-    	// 	var console = this.udown("#console");
-    	// 	if(console) {
-    	// 		console.print.apply(console, arguments);
-    	// 	} else if(this._owner) {
-    	// 		this._owner.print.apply(this._owner, arguments);
-    	// 	}
-    	// };
