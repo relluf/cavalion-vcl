@@ -742,7 +742,7 @@ define(function (require) {
 	            	if(arguments.length === 1) {
 	            		value = key;
 	            		key = id;
-	            	} else if(typeof key === "string") {
+	            	} else if(typeof key === "string" && key.charAt(0) !== "#") {
 	            		key = id + ": " + key;
 	            	}
 	            	return c.print.apply(c, [key, value]);
