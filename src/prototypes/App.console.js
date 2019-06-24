@@ -1,13 +1,18 @@
+"use override";
+
+var override = require("override");
+
 $([], {
     onLoad: function() {
-    	// var c = this.down("vcl/ui/Console#console");
-    	require("vcl/Component").prototype.print = function() {
-    		var console = this.down("vcl/ui/Console#console");
-    		if(console) {
-    			return console.print.apply(console, arguments);
-    		}
-    		return this.inherited(arguments);
-    	};
+    	override(require("vcl/Component").prototype, "print", function(inherited) {
+    		return function() {
+	    		var console = this.down("vcl/ui/Console#console");
+	    		if(console) {
+	    			return console.print.apply(console, arguments);
+	    		}
+	    		return inherited.apply(this, arguments);
+    		};
+    	});
 
     	return this.inherited(arguments);
     }
