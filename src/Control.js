@@ -382,7 +382,23 @@ define(function(require) {
 			isParentOf: function(kid) {
 				return kid instanceof Control && kid.hasParent(this) === true;
 			},
-
+			
+/**-- seems unnecessary?
+			beginLoading: function() {
+				if(!this.hasOwnProperty("_loading")) {
+					this.addClass("loading");
+				}
+				return this.inherited(arguments);
+			},
+			endLoading: function() {
+				var loading = this.hasOwnProperty("_loading");
+				var r = this.inherited(arguments);
+				if(loading !== this.hasOwnProperty("_loading")) {
+					this.removeClass("loading");
+				}
+				return r;
+			},
+*/
 
 /**-- node/element */
 			getInsertReference: function(parentNode) {

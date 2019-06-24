@@ -1,4 +1,9 @@
-### 2019-06-23  [1.0.52]
+### 2019-06-24  [1.0.54]
+- That `vcl/Component.prototype.print()`` keeps troubling me
+- Done some more worl on the Query/Array/List scrolling xp. It seems to have improved dramatically now for long lists, like veldapps/ListOf<Onderzoek>
+- Adding sort() to vcl/data/Array
+
+### 2019-06-23  [1.0.53]
 - Automatically set animated class when zoom is set (Panel)
 - Fixing some scrolling/rendering related issues in List classes while working on veldapps/ListOf<>
 - Fixing some issues related to colouring odd/even ListRow-s
