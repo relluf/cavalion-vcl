@@ -90,7 +90,7 @@ define(function(require) {
 			_body: null,
 			_columns: null,
 			
-			_scrollTimeout: 0,
+			_scrollTimeout: 100,
 
 			_onSelectionChange: null,
 			_onColumnDropped: null,
@@ -208,14 +208,7 @@ define(function(require) {
 					var topRow = parseInt(me._nodes.body.scrollTop / me._rowHeight, 10);
 					me._topRow = topRow;
 					
-					// me._scrolled = me._scrolled || 0;
-					// me._scrolled++;
-					
-					this.setTimeout("scroll", function() {
-						// console.log(me._scrolled);
-						me.render();
-						// me._scrolled = 0;
-					}, me._scrollTimeout);
+					me.render();
 				}
 
 				return this.inherited(arguments);
@@ -387,9 +380,8 @@ define(function(require) {
 
 				if(end > start && this._source !== null && this._source.isActive()) {
 					this.setTimeout("render", function() {
-							// this._source.getObjects(this._topRow, this._topRow + vrc);
-							this._source.getObjects(start, end);
-							this._source.getObjects(this._topRow, this._topRow + vrc);
+						this._source.getObjects(this._topRow, this._topRow + vrc);
+						this._source.getObjects(start, end);
 					}.bind(this), 50);
 				}
 				this._body.render();
