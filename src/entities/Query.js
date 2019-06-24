@@ -212,7 +212,6 @@ define(function(require) {
 			    		if(index !== this._pageQueue.length - 1) {
 				    		this._pageQueue.splice(index, 1);
 				    		this._pageQueue.push(page);
-							// console.debug(this._entity, "requestPage: page", page, "to front of queue");
 			    		}
 			    	}
 			    	return;
@@ -283,6 +282,7 @@ define(function(require) {
 				);
 				
 				// console.debug(this._entity, "requestPage: page", page, "missile away - waiting for response");
+				// this.print("requesting-page", page);
 				if(!wasBusy) {
 					this.notify(SourceEvent.busyChanged, true, page);
 				}
@@ -345,7 +345,7 @@ define(function(require) {
 			},
 			processResult: function(res, page, criteria) {
 				
-this.print("page/" + page + "/processResult", {res: res, criteria: criteria});
+				//this.print("page/" + page + "/processResult", {res: res, criteria: criteria});
 
 				var instances = res.instances;
 				var tuples = res.tuples;
