@@ -271,6 +271,14 @@ define(function(require) {
 			concat: function() {
 				this.assertArray();
 				return window.Array.prototype.concat.apply(this._array, arguments);
+			},
+			sort: function() {
+				this.assertArray();
+				try {
+					return window.Array.prototype.sort.apply(this._array, arguments);
+				} finally {
+					this.arrayChanged();
+				}
 			}
 		},
 		properties: {
