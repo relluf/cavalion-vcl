@@ -678,11 +678,8 @@ define(function (require) {
             		return this.up();
             	}
             	if(arguments.length === 1) {
-            		selectorUp = selectorUp.split(" ");
-            		if(selectorUp.length === 1) {
-            			return this.up().down(selectorUp[0]);
-            		}
-            		return this.up(selectorUp.shift()).down(selectorUp.join(" "));
+        			return this.up().down(selectorUp);
+            		// return this.up(selectorUp.shift()).down(selectorUp.join(" "));
             	}
             	
             	/*- The call to `selectorUp` below might crash, but let it, so 
@@ -738,12 +735,12 @@ define(function (require) {
             print: function(key, value) {
             	var c = this._owner;
             	if(c !== null) {
-            		var id = js.sf("#%d-%s", this.hashCode(), this._name || "");
+            		var id = js.sf("#%d [%s]", this.hashCode(), this._name || "anonymous");
 	            	if(arguments.length === 1) {
 	            		value = key;
 	            		key = id;
 	            	} else if(typeof key === "string" && key.charAt(0) !== "#") {
-	            		key = id + "|" + key;
+	            		key = id + " | " + key;
 	            	}
 	            	return c.print.apply(c, [key, value]);
             	}

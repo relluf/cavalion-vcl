@@ -37,7 +37,11 @@ $(["ui/Form"], {
 				padding: "2px 4px 2px 4px",
 				display: "inline-block", "margin-right": "16px",
 				"border-radius": "3px",
-				"&.selected": "background-color: rgb(56, 121, 217); color: white;"
+				"&.selected": "background-color: rgb(56, 121, 217); color: white;",
+				"&:not(.disabled):active": {
+				    color: "red",
+				    "background-color": "#f0f0f0"
+				}
 			}
     	},
     	"#left": {
