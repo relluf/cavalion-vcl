@@ -322,7 +322,7 @@ define(function(require) {
 				type: Type.EVENT
 			},
 			"value": {
-				type: Type.STRING,
+				type: Type.OBJECT,//STRING,
 				set: Function
 			},
 			"source": {
