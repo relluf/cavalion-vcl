@@ -1,6 +1,9 @@
+### 2019-08-21  [1.0.57]
+- Introducing `vcl/Component.prototype.require()`
+
 ### 2019-08-01  [1.0.56]
 - Making adjustments for compilation of V7
-- What happened to 55?
+- What happened to 55? (adjustments for r.js)
 
 ### 2019-06-24  [1.0.54]
 - That `vcl/Component.prototype.print()`` keeps troubling me
