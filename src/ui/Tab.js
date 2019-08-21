@@ -39,17 +39,13 @@ define(function(require) {
 			_onCloseClick: null,
 
 			initializeNodes: function() {
-				/**
-				 * @overrides ../Control.prototype.initializeNodes
-				 */
+				/** @overrides ../Control.prototype.initializeNodes */
                 this.inherited(arguments);
 				this._nodes.text = this._node.childNodes[0];
 				this._nodes.close = this._node.childNodes[1];
 			},
 			render: function() {
-				/**
-				 * @overrides ../Control.prototype.render
-				 */
+				/** @overrides ../Control.prototype.render */
 				if(this._textReflects === "textContent") {
 					this._nodes.text.textContent = this.getText();
 				} else {
@@ -57,13 +53,17 @@ define(function(require) {
 				}
 			},
 			select: function() {
-				/**
-				 * @overrides ../Control.prototype.select
-				 */
+				/** @overrides ../Control.prototype.select */
 				if(this._control !== null) {
-					this._control.setVisible(true);
-					this._control.bringToFront();
-					this._control.setFocus();
+					this.setTimeout("selected", function() {
+						if(this.isSelected() === false) return;
+						
+						// console.log("delayed select");
+						
+						this._control.setVisible(true);
+						this._control.bringToFront();
+						this._control.setFocus();
+					}.bind(this), 125);
 					
 					var app = this.app();
 					app.setTimeout("render", function() {
@@ -73,18 +73,15 @@ define(function(require) {
 				this.inherited(arguments);
 			},
 			unselect: function() {
-				/**
-				 * @overrides ../Control.prototype.unselect
-				 */
+				/** @overrides ../Control.prototype.unselect */
 				if(this._control !== null) {
 					this._control.setVisible(false);
+					this.clearTimeout("selected");
 				}
 				this.inherited(arguments);
 			},
 			ontap: function(evt) {
-				/**
-				 * @overrides ../Control.prototype.ontap
-				 */
+				/** @overrides ../Control.prototype.ontap */
 				var r = this.inherited(arguments);
 
 				if(r !== false) {
@@ -99,9 +96,7 @@ define(function(require) {
 				return r;
 			},
 			determineClasses: function() {
-				/**
-				 * @overrides ../Control.prototype.determineClasses
-				 */
+				/** @overrides ../Control.prototype.determineClasses */
 				var classes = this.inherited(arguments);
 
 				if(this._closeable === true) {
