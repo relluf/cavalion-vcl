@@ -1,3 +1,6 @@
+### 2019-08-01  [1.0.55]
+- Making adjustments for compilation of V7
+
 ### 2019-06-24  [1.0.54]
 - That `vcl/Component.prototype.print()`` keeps troubling me
 - Done some more worl on the Query/Array/List scrolling xp. It seems to have improved dramatically now for long lists, like veldapps/ListOf<Onderzoek>

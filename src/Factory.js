@@ -482,6 +482,11 @@ define(function(require) {
 			implicit_sources: {},
 
 			load: function(name, parentRequire, load, config) {
+				if(typeof window === "undefined") {
+					console.log("vcl/Factory!! " + name);
+					return onLoad(name);
+				}
+
 				/** @overrides http://requirejs.org/docs/plugins.html#apiload */
 				var sourceUri = Factory.makeTextUri(name);
 

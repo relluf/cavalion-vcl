@@ -102,9 +102,9 @@ define(function(require) {
 		return r;
 	}
 	function impl(source, uri, normalize) {
-
-		var Component = require("vcl/" + "Component");
-		var Factory = require("vcl/" + "Factory");
+		var require_ = require;
+		var Component = req("vcl/" + "Component");
+		var Factory = req("vcl/" + "Factory");
 
 		var tree = {
 			root: [],
@@ -133,7 +133,7 @@ define(function(require) {
 				if(node.inherits[0] instanceof Array) {
 					node.inherits = node.inherits[0];
 					node.inherits.forEach(function(item, i) {
-						var prefix = require("vcl/Factory").PREFIX_PROTOTYPES;
+						var prefix = require_("vcl/Factory").PREFIX_PROTOTYPES;
 						if(item.indexOf(prefix) === 0) {
 							console.warn("Something is out of the ordinary");
 						}
