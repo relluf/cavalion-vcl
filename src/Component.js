@@ -843,7 +843,9 @@ define(function (require) {
             app: function() {
                 return this.getApp();
             },
-            
+			require: function(module) {
+				return require(js.sf("%s%s", this['@factory']._uri, module));
+			},
 
             getIsRoot: function () {
 	            /**
