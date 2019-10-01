@@ -1,3 +1,14 @@
+### 2019-10-01
+- Introducing inset class to vcl/ui/Tabs  
+![](https://i.snipboard.io/tNwEyY.jpg?2x)
+
+### 2019-09-25
+- Introducing menu feature to vcl/ui/Tab  
+![](https://i.snipboard.io/fXON7T.jpg?2x)
+
+### 2019-08-31  [1.0.58]
+- Bugfix in vcl/Factory.parse.js (req undefined)
+
 ### 2019-08-21  [1.0.57]
 - Introducing `vcl/Component.prototype.require()`
 

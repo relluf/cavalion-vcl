@@ -22,6 +22,14 @@ define(function(require) {
 	            "&:not(.bottom)": {
 	                "border-bottom": "1px solid silver"
 	            },
+	            "&.bottom.inset": {
+	                "padding-top": "0px",
+	                ".{./Tab}": {
+	                    "margin-top": "2px",
+	                    "&.selected": "border: 1px inset;"
+	                }
+	            },
+	            
 	            "&.bottom": {
 	                "padding-top": "0px",
 	                "border-top": "1px solid silver",
@@ -35,6 +43,7 @@ define(function(require) {
 	                    "margin-top": "0"
 	                }
 	            },
+	            
 	            "&.sizeable": {
 	                "padding-right": "10px",
 	                "&.overflowing": {
@@ -60,6 +69,7 @@ define(function(require) {
 	                    "border-color": "#a0a0a0",
 	                    ".hashcode": "font-size: 7pt;"
 	                },
+	                // Euh? move this to devtools
 	                "&:not(.selected) .hashcode": "display: none;"
 	            }
 	    	},

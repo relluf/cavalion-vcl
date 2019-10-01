@@ -24,12 +24,16 @@ define(function(require) {
 						"font-weight": "bold",
 						color: "black"
 					}
-				}
+				},
+				i: "display:none;margin-left:4px;", 
+				"&:not(.without-menu).selected i": "display:inline-block;", 
+				"i:not(:hover)": "color:silver;"
 			},
 
 			//_element: "li",
 			_content:
 				"<a class='text'></a>" +
+				"<i class='menu fa fa-caret-down'></i>" +
 				"<a class='close'>×</a>",
 			_groupIndex: 1,
 
@@ -42,7 +46,7 @@ define(function(require) {
 				/** @overrides ../Control.prototype.initializeNodes */
                 this.inherited(arguments);
 				this._nodes.text = this._node.childNodes[0];
-				this._nodes.close = this._node.childNodes[1];
+				this._nodes.close = this._node.childNodes[2];
 			},
 			render: function() {
 				/** @overrides ../Control.prototype.render */
@@ -87,6 +91,8 @@ define(function(require) {
 				if(r !== false) {
 					if(evt.target === this._nodes.close || evt.target.parentNode === this._nodes.close) {
 						this.dispatch("closeclick", evt);
+					} else if(evt.target.classList.contains("menu")) {
+						this.dispatch("menuclick", evt);
 					} else {
 						this.setSelected(this._groupIndex < -1 ? !this.getSelected() : true);
 						//this._node.childNodes[0].blur();
@@ -107,6 +113,9 @@ define(function(require) {
 			},
 			oncloseclick: function() {
 				return this.fire("onCloseClick", arguments);
+			},
+			onmenuclick: function() {
+				return this.fire("onMenuClick", arguments);
 			},
 			// setSelected: function() {
 			// 	try {
@@ -178,6 +187,8 @@ define(function(require) {
 				set: Function,
 				type: Class.Type.INTEGER },
 			"onCloseClick": {
+				type: Class.Type.EVENT },
+			"onMenuClick": {
 				type: Class.Type.EVENT }
 		}
 	};
