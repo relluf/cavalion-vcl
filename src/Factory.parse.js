@@ -103,8 +103,8 @@ define(function(require) {
 	}
 	function impl(source, uri, normalize) {
 		var require_ = require;
-		var Component = req("vcl/" + "Component");
-		var Factory = req("vcl/" + "Factory");
+		var Component = require_("vcl/" + "Component");
+		var Factory = require_("vcl/" + "Factory");
 
 		var tree = {
 			root: [],
