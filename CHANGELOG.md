@@ -1,3 +1,8 @@
+### 2019-10-05  [1.0.60]
+- Fixed an issue with vcl/Component.prototype.toString()
+- Fixed an issue where deselecting root-level nodes didn't work
+- Introducing vcl/ui/Node.properties.textReflects
+
 ### 2019-10-01
 - Introducing inset class to vcl/ui/Tabs  
 ![](https://i.snipboard.io/tNwEyY.jpg?2x)
