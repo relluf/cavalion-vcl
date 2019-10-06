@@ -69,6 +69,9 @@ define(function (require) {
                 all.push(this);
             },
             toString: function () {
+            	if(!(this instanceof Component)) {
+            		return "?";
+            	}
 	            /**
 	             * @overrides Object.prototype.toString
 	             */
