@@ -23,7 +23,7 @@ define(function(require) {
 
 			_element: "li",
 
-			_text: "",
+			_text: "",  _textReflects: "innerHtml",
 			_expanded: false,
 			_expandable: "auto",
 
@@ -100,8 +100,10 @@ define(function(require) {
 				/** @overrides ../Control.prototype.render */
 				if(this._text instanceof Array) {
 					this._nodes.text.innerHTML = String.format.apply(String, this._text);
-				} else {
+				} else if(this._textReflects === "innerHtml") {
 					this._nodes.text.innerHTML = this._text;
+				} else {
+					this._node.text = String.format("%H", this._text);
 				}
 			},
 
