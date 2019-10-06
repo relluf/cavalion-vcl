@@ -172,7 +172,7 @@ define(function(require) {
 				
 				var node = evt.target;
 				if(evt.metactrlKey && HE.hasClass(node, "key")) {
-					var selection = this._nodes.console.qsa(".selected.key.node") || {};
+					var selection = this._nodes.console.qsa(".selected.node") || {};
 					
 					if(!HE.hasClass(node, "node")) {
 						node = node.up(".node");
