@@ -20,6 +20,13 @@ $([], {
 				}
 			}
 		});
+		
+		this.popup = function(uri, opts) {
+			opts = js.mixIn(opts);
+			opts.uri = uri;
+			return this.bubble("openform_modal", opts );
+		};
+		
 		return this.inherited(arguments);
 	},
     onMessage: function(name, msg, sender) {
@@ -107,7 +114,7 @@ $([], {
 
             client.addClasses("animate darken initial");
             container.addClasses("animate fadein-scale initial");
-            container.setParentNode(document.body);
+            container.setParentNode(app.down("#window").getNode());//document.body);
             container.setOnFormClose(function() {
             	client.applyVar("cancel");
             });

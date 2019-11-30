@@ -848,7 +848,6 @@ define(function(require) {
 			}
 		},
 		properties: {
-
 			"align": {
 				set: Function,
 				type: Panel.ALIGN

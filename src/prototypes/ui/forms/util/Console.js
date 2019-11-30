@@ -68,6 +68,7 @@ console.log("app.on('print', ...)");
                 	scope.console.getNode("input").value = String.format("#%d // %s ", value.hashCode(), content.join(": "));
                 } else {
 					scope.console.getNode("input").value = String.format("#%d", value.hashCode());
+					scope.console.focus();
 				}
                 if (value._owner) {
                     content.push(String.format("%n", value._owner));

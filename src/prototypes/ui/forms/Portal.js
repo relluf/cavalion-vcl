@@ -187,7 +187,7 @@ $([["ui/Form"]], {
             scope.go_back.setEnabled(app.canBack());
             scope.go_forward.setEnabled(app.canForward());
         });
-        
+
         return this.inherited(arguments);
     }
 }, [

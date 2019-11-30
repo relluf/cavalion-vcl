@@ -54,8 +54,8 @@ $(["ui/forms/Home"], {
 	onActivate: Handlers.onActivate,
 	onLoad: Handlers.onLoad
 }, [
-	$("vcl/entities/Instance", "instance"), /*- TODO */
-	$("vcl/entities/Query", "query", {
+	$("vcl/entities/Instance", ("instance")), /*- TODO */
+	$("vcl/entities/Query", ("query"), {
 		onActiveChanged: function(active) {
 			// console.log("onActiveChanged", active);
 			var scope = this.getScope();
@@ -125,11 +125,11 @@ $(["ui/forms/Home"], {
 		}
 	}),
 	
-	$("vcl/Action", "item_selected", {
+	$("vcl/Action", ("item_selected"), {
 		// parent for open, remove
 		enabled: false
 	}),
-	$("vcl/Action", "item_open", {
+	$("vcl/Action", ("item_open"), {
 		content: "Open",
 		enabled: "parent",
 		visible: false,
@@ -163,7 +163,7 @@ $(["ui/forms/Home"], {
 		    formUri: "ui/entities/Edit<%s>.modal"
 		}
 	}),
-	$("vcl/Action", "item_new", {
+	$("vcl/Action", ("item_new"), {
 		content: "New",
 		vars: {
 		    formUri: "ui/entities/Edit<%s>.modal.new"
@@ -189,7 +189,7 @@ $(["ui/forms/Home"], {
 		    });
 		}
 	}),
-	$("vcl/Action", "item_remove", {
+	$("vcl/Action", ("item_remove"), {
 		enabled: "parent",
 		content: "Delete",
 		parent: "item_selected",
@@ -233,18 +233,18 @@ $(["ui/forms/Home"], {
 		    );
 		}
 	}),
-	$("vcl/Action", "export", {
+	$("vcl/Action", ("export"), {
 		enabled: "parent",
 		parent: "item_selected",
 		content: "Export"
 	}),
-	$("vcl/Action", "refresh", {
+	$("vcl/Action", ("refresh"), {
 		content: "Refresh",
 		onExecute: function() {
 			this.scope().query.refresh();
 		}
 	}),
-	$("vcl/Action", "search_toggle", {
+	$("vcl/Action", ("search_toggle"), {
 		content: "Search",
 		visible: false,
 		onExecute: function() {
@@ -254,10 +254,10 @@ $(["ui/forms/Home"], {
 		    }
 		}
 	}),
-	$("vcl/Action", "toggle_options", {
+	$("vcl/Action", ("toggle_options"), {
 		content: "Options"
 	}),
-	$("vcl/Action", "toggle_filters", {
+	$("vcl/Action", ("toggle_filters"), {
 		content: "Selection",
 		state: false,
 		selected: "state",
@@ -266,7 +266,7 @@ $(["ui/forms/Home"], {
 			this.setState(!this.getState());
 		}
 	}),
-	$("vcl/Action", "toggle_info", {
+	$("vcl/Action", ("toggle_info"), {
 		content: "Info",
 		state: false,
 		selected: "state",
@@ -275,7 +275,7 @@ $(["ui/forms/Home"], {
 			this.setState(!this.getState());
 		}
 	}),
-	$("vcl/Action", "toggle_new", {
+	$("vcl/Action", ("toggle_new"), {
 		content: "New",
 		state: false,
 		selected: "state",
@@ -285,7 +285,7 @@ $(["ui/forms/Home"], {
 		}
 	}),
 	
-	$i("menubar", [
+	$i(("menubar"), [
 		$("vcl/ui/Button", {
 			action: "refresh",
 			content: "<i class='fa fa-refresh'></i>",
@@ -355,46 +355,46 @@ $(["ui/forms/Home"], {
 			onDispatchChildEvent: Handlers['filters.onDispatchChildEvent']
 		})
     ]),
-    $i("tree", {
+    $i(("tree"), {
     	onSelectionChange: Handlers['tree.onSelectionChange']
     }),
-    $i("left_content", [
-                $("vcl/ui/Group", {
-                    visible: false,
-                   css: {
-                       "padding-right": "8px",
-                       ".{Input}": {
-                           width: "100%"
-                       },
-                       ".{Select}": {
-                           "-webkit-appearance": "textfield",
-                           width: "100%",
-                           display: "block"
-                       }
-                   }
-	       	    }, [
-    	       	    $("vcl/ui/CheckGroup", {
-    	       	        text: "Name",
-    	       	        visible: true
-    	       	    }, [
-    	       	        $("vcl/ui/Input")
-    	       	    ]),
-    	       	    $("vcl/ui/CheckGroup", {
-    	       	        css: {
-    	       	            "padding-right": "8px",
-    	       	            ".{./Input}": {
-    	       	                width: "100%"
-    	       	            }
-    	       	        },
-    	       	        text: "Type",
-    	       	        visible: true
-    	       	    }, [
-    	       	        $("vcl/ui/Select")
-    	       	    ])
+    $i(("left_content"), [
+        $("vcl/ui/Group", {
+            visible: false,
+           css: {
+               "padding-right": "8px",
+               ".{Input}": {
+                   width: "100%"
+               },
+               ".{Select}": {
+                   "-webkit-appearance": "textfield",
+                   width: "100%",
+                   display: "block"
+               }
+           }
+   	    }, [
+       	    $("vcl/ui/CheckGroup", {
+       	        text: "Name",
+       	        visible: true
+       	    }, [
+       	        $("vcl/ui/Input")
+       	    ]),
+       	    $("vcl/ui/CheckGroup", {
+       	        css: {
+       	            "padding-right": "8px",
+       	            ".{./Input}": {
+       	                width: "100%"
+       	            }
+       	        },
+       	        text: "Type",
+       	        visible: true
+       	    }, [
+       	        $("vcl/ui/Select")
+       	    ])
 
-	       	    ])
+   	    ])
     ]),
-	$("vcl/ui/List", "list", {
+	$("vcl/ui/List", ("list"), {
 		action: "item_open",
 		enabled: "always", // not affected by action
 		visible: "always", // not affected by action

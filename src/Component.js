@@ -603,7 +603,7 @@ define(function (require) {
                 return (this.query.apply(this, arguments) || [])[0];
             },
             query: function (selector, ctor) {
-                console.error("ARGH query must be qsa");
+                // console.error("ARGH query must be qsa");
                 
                 var r;
                 if (selector === "@owner") {

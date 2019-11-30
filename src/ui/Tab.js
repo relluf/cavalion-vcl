@@ -59,7 +59,7 @@ define(function(require) {
 			select: function() {
 				/** @overrides ../Control.prototype.select */
 				if(this._control !== null) {
-					this.setTimeout("selected", function() {
+					// this.setTimeout("selected", function() {
 						if(this.isSelected() === false) return;
 						
 						// console.log("delayed select");
@@ -67,10 +67,11 @@ define(function(require) {
 						this._control.setVisible(true);
 						this._control.bringToFront();
 						this._control.setFocus();
-					}.bind(this), 125);
+					// }.bind(this), 125);
 					
 					var app = this.app();
 					app.setTimeout("render", function() {
+						// TODO MAYOR HACK !!!
 						app.down(":root").updateChildren(true, true);
 					}, 500);
 				}
