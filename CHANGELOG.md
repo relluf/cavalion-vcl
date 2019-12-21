@@ -1,3 +1,17 @@
+### 2019-12-21  [1.0.64]
+- Updating for using pouchdb a storage layer
+- Fixing vcl/Component:destroy()
+- Adding vcl/Component:set(), get(), properties()
+- Adding vcl/Action:toggleState()
+
+
+
+### 2019-12-13  [1.0.63]
+- Upadting NPM only, need to describe still here
+
+### 2019-11-29  [1.0.62]
+- Updating and working on app.open/popup
+
 ### 2019-10-05  [1.0.60]
 - Fixed an issue with vcl/Component.prototype.toString()
 - Fixed an issue where deselecting root-level nodes didn't work
