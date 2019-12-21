@@ -1,6 +1,7 @@
 $([], {
 	onToast: function(options) {
 
+		var Element = require("vcl/ui/Element");
 		var scope = this.getScope();
 		var elem = new Element(this);
 
