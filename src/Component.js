@@ -118,7 +118,7 @@ define(function (require) {
                     };
                 }
 
-                if (this._loading === false) {
+                if (this._loading === false || name === "destroy") {
                     var f = this["on" + name];
                     var args = js.copy_args(arguments);
                     args.shift();
@@ -644,6 +644,7 @@ define(function (require) {
                 return r;
             },
 
+/*- 2020... */
             scope: function() {
 	            /*- Search in the current scope. The scope being defined by the 
 	                owning component of the calling component, or the calling 
@@ -713,6 +714,19 @@ define(function (require) {
             },
             qs: function(selector, context) {
                 return this.qsa(selector, context)[0] || null;
+            },
+            
+            rk: function() { return "Ralph Kazemier"; },
+            
+/*- 2020... */
+            set: function() {
+            	return this.setProperties.apply(this, arguments);
+            },
+            get: function(key) {
+            	return this.defineProperties()[key].get(this);	
+            },
+            properties: function() {
+            	return this.defineProperties();
             },
 
             open: function() {
