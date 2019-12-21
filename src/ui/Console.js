@@ -275,7 +275,7 @@ define(function(require) {
 				
 				return evaluate.apply(this, [expr]);
 			},
-			loadHistory: function() {
+			loadHistoryLS: function() {
 				var key = this.getStorageKey("history");
 				this._history = JSON.parse(localStorage.getItem(key));
 				if(!(this._history instanceof Array)) {
@@ -283,7 +283,7 @@ define(function(require) {
 				}
 				this._history.index = this._history.length;
 			},
-			saveHistory: function(text) {
+			saveHistoryLS: function(text) {
 				var key = this.getStorageKey("history");
 		        try {
 		            var history = JSON.parse(localStorage.getItem(key)) || [];
@@ -297,6 +297,24 @@ define(function(require) {
 		        } catch(e) {
 		        	this.print(e);
 		        }
+			},
+			loadHistory: function() {
+				this.readStorage("history", function(value) {
+					if(!((this._history = JSON.parse(value)) instanceof Array)) {
+						this._history = [];
+					}
+					this._history.index = this._history.length;
+				}.bind(this));
+			},
+			saveHistory: function(text) {
+				var history = this._history || [];
+	            if (history[history.length - 1] !== text) {
+	                history.push(text);
+	                if (history.length > 100) {
+	                    history.splice(0, history.length - 100);
+	                }
+	                this.writeStorage("history", JSON.stringify(history));
+	            }
 			},
 			pushHistory: function(text) {
 			    this.saveHistory(text);
