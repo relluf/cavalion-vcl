@@ -18,29 +18,29 @@ $(["ui/Form"], {
     height: 250,
     visible: true,
     css: "background-color: white border-top: 1px solid silver z-index: 10000",
-    onMessage: function (name, params, sender) {
-        var scope = this.getScope();
-        if (name === "log") {
+    // onMessage: function (name, params, sender) {
+    //     var scope = this.getScope();
+    //     if (name === "log") {
             
-            console.warn("onMessage will be deprecated, migrate code to Component.prototype.emit and Component.prototype.query[All]");
+    //         console.warn("onMessage will be deprecated, migrate code to Component.prototype.emit and Component.prototype.query[All]");
             
-            var args = js.copy_args(params);
-            var source = params[0];
-            if (typeof source !== "string") {
-                source = "[source-unknown]";
-            } else {
-                args.shift();
-            }
-            scope.console.print.apply(scope.console, [String.format("%n - %s", sender, source)].concat(args));
-            return true;
-        }
+    //         var args = js.copy_args(params);
+    //         var source = params[0];
+    //         if (typeof source !== "string") {
+    //             source = "[source-unknown]";
+    //         } else {
+    //             args.shift();
+    //         }
+    //         scope.console.print.apply(scope.console, [String.format("%n - %s", sender, source)].concat(args));
+    //         return true;
+    //     }
 
-        return this.inherited(arguments);
-    },
-    onActivate: function () {
+    //     return this.inherited(arguments);
+    // },
+    onActivate() {
         this._vars.sizer.setControl(null);
     },
-    onLoad: function () {
+    onLoad() {
         var me = this;
         var scope = this.getScope();
         var sizer = this.setVar("sizer", new Sizer(this));
@@ -152,7 +152,7 @@ console.log("app.on('print', ...)");
 
         return this.inherited(arguments);
     },
-    onHide: function() {
+    onHide() {
     	var focused = Control.focused ;
     	var scope = this.getScope();
     	if(focused === scope.console) {
@@ -186,16 +186,14 @@ console.log("app.on('print', ...)");
         }),
         $([["ui/controls/SizeHandle"]], "size_handle", {
             classes: "vertical",
-            vars: {
-                control: "@owner"
-            }
+            vars: { control: "@owner" }
         })
     ]),
     $(("vcl/ui/Console"), "console", {
-        onLoad: function () {
+        onLoad() {
         	this.print("window.location", window.location);
         },
-        onEvaluate: function (expr) {
+        onEvaluate(expr) {
             var scope = this.scope();
             var app = this.app();
             var pr = this.print.bind(this);

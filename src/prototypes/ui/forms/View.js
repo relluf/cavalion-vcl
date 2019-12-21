@@ -49,7 +49,7 @@ $(["ui/Form"], {
             	"padding": "8px",
             	"padding-left": "16px",
             	"min-height": "96px",
-            	">#description": "margin-left: 16px; margin-right:16px;"
+            	// ">#description": "margin-left: 16px; margin-right:16px;"
         	},
 			"#menubar": {
 		        // "box-shadow": "0px 3px 5px 0px rgba(0,0,0,0.5)", "z-index": "100000",
