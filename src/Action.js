@@ -77,6 +77,9 @@ define(function (require) {
             update: function() {
             	this.fire("onUpdate", js.copy_args(arguments));	
             },
+            toggle: function() {
+            	return this.toggleState();
+            },
             toggleState: function () {
                 this.setState(!this.getState());
                 return this._state;
