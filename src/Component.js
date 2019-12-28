@@ -98,7 +98,7 @@ define(function (require) {
                 return this.inherited(arguments);
             },
             ondestroy: function () {
-                this.fire("onDestroy", arguments);
+                this.fire("onDestroy", arguments, true);
             },
             destroyComponents: function () {
                 if (this.hasOwnProperty("_components")) {
@@ -123,7 +123,7 @@ define(function (require) {
                     var args = js.copy_args(arguments);
                     args.shift();
 
-                    var enabled = this.isEventEnabled(name, evt, f, args);
+                    var enabled = (name === "destroy") || this.isEventEnabled(name, evt, f, args);
                     if (typeof f === "function" && enabled === true) {
                         return f.apply(this, args);
                     } else {
@@ -728,7 +728,9 @@ define(function (require) {
             properties: function() {
             	return this.defineProperties();
             },
-
+            
+            refresh: function() { /* global F5 in Vacoide */ },
+            
             open: function() {
             	return this._owner && this._owner.open.apply(this._owner, arguments);
             },
@@ -1031,6 +1033,12 @@ define(function (require) {
                 return Component.getKeysByUri(this.getUri()).namespace;
             },
             getSpecializer: function (removeClasses) {
+            	if(removeClasses !== true) {
+            		var keys = Component.getKeysByUri(this._uri || this.getUri());
+            		keys.specializer_classes.unshift(keys.specializer);
+            		return keys.specializer_classes.join(".");
+            	}
+            	
                 return Component.getKeysByUri(this._uri || this.getUri()).specializer;
             },
             getPropertyValue: function (name) {
