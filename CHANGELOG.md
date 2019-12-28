@@ -1,10 +1,17 @@
+### 2019-12-27  [1.0.65]
+- Fix for vcl/Component.prototype.onDestroy
+
+### 2019-12-23
+- Fix for vcl/Component.prototype.getSpecializer(removeClasses)
+
+### 2019-12-22
+- Adding v7/bro/bhrgtcodes.js
+
 ### 2019-12-21  [1.0.64]
 - Updating for using pouchdb a storage layer
 - Fixing vcl/Component:destroy()
 - Adding vcl/Component:set(), get(), properties()
 - Adding vcl/Action:toggleState()
-
-
 
 ### 2019-12-13  [1.0.63]
 - Upadting NPM only, need to describe still here
