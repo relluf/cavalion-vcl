@@ -23,7 +23,10 @@ keyup:Ctrl+Escape|keydown:Ctrl+Escape|
 keyup:Ctrl+Shift+D|keydown:Ctrl+Shift+D|
 keyup:Alt+Shift+X|keydown:Alt+Shift+X|
 keyup:MetaCtrl+192`,
-        onExecute: function (evt) {
+		onLoad() {
+			this.readStorage("visible", (visible) => visible && this.execute({}));
+		},
+        onExecute(evt) {
             var scope = this.scope();
             var focused;
 
@@ -46,7 +49,9 @@ keyup:MetaCtrl+192`,
                     }
                 }
             }
-
+            
+            this.writeStorage("visible", scope.console.isVisible());
+            
             return this.inherited(arguments);
         }
     }),
