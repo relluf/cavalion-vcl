@@ -715,6 +715,13 @@ define(function (require) {
             qs: function(selector, context) {
                 return this.qsa(selector, context)[0] || null;
             },
+            soup: function(selector) {
+            	var ctor = js.get("require.s.contexts._.defined." + selector, window);
+            	if(ctor instanceof Function && this instanceof ctor) {
+            		return this;
+            	}
+            	return this.up(selector);
+            },
             
             rk: function() { return "Ralph Kazemier"; },
             
@@ -729,7 +736,7 @@ define(function (require) {
             	return this.defineProperties();
             },
             
-            refresh: function() { /* global F5 in Vacoide */ },
+            refresh: function() { /* global F5 in cavalion-tapps */ },
             
             open: function() {
             	return this._owner && this._owner.open.apply(this._owner, arguments);
@@ -865,7 +872,7 @@ define(function (require) {
 			require: function(module) {
 				return require(js.sf("%s%s", this['@factory']._uri, module));
 			},
-
+			
             getIsRoot: function () {
 	            /**
 	             *
