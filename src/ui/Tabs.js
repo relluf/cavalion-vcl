@@ -98,7 +98,7 @@ define(function(require) {
     			function move(direction) {
     				var l = selected._parent._controls.length;
     				if(evt.ctrlKey === true) {
-    					selected.setIndex(direction < 0 ? 0 : l - 1);
+    					// selected.setIndex(direction < 0 ? 0 : l - 1);
     				} else {
     					var index = (selected.getIndex() + direction + l) % l;
     					selected.setIndex(index);
