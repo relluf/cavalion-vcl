@@ -34,7 +34,7 @@ define(function(require) {
 			_content:
 				"<a class='text'></a>" +
 				"<i class='menu fa fa-caret-down'></i>" +
-				"<a class='close'>×</a>",
+				"<a class='menu close'>×</a>",
 			_groupIndex: 1,
 
 			_text: "", _textReflects: "textContent",
