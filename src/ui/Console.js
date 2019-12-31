@@ -300,7 +300,10 @@ define(function(require) {
 			},
 			loadHistory: function() {
 				this.readStorage("history", function(value) {
-					if(!((this._history = JSON.parse(value)) instanceof Array)) {
+					// if(!((this._history = JSON.parse(value)) instanceof Array)) {
+					// 	this._history = [];
+					// }
+					if(!((this._history = value) instanceof Array)) {
 						this._history = [];
 					}
 					this._history.index = this._history.length;
@@ -313,7 +316,7 @@ define(function(require) {
 	                if (history.length > 100) {
 	                    history.splice(0, history.length - 100);
 	                }
-	                this.writeStorage("history", JSON.stringify(history));
+	                this.writeStorage("history", history);
 	            }
 			},
 			pushHistory: function(text) {
