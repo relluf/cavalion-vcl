@@ -1,6 +1,7 @@
 ### 2019-12-31  [1.0.66]
 - Introducing vcl/Component.prototype.soup()
 - Persisting/restoring visibility of the console
+- Refactoring storage interface
 
 ### 2019-12-27  [1.0.65]
 - Fix for vcl/Component.prototype.onDestroy
