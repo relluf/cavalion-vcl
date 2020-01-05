@@ -1,3 +1,8 @@
+### 2019-01-05  [1.0.67]
+- Fix in `entities/Query` where responses where tried to be processed after the component was already destroyed
+- Enhanced `vcl/Component.prototype.set()` so that it accepts a string or a string and value as input, besides an object specifying the values for properties
+- Added `onMenuClick` to `vcl/ui/Tab`s prototype
+
 ### 2019-12-31  [1.0.66]
 - Introducing vcl/Component.prototype.soup()
 - Persisting/restoring visibility of the console
