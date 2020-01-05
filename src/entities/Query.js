@@ -253,7 +253,7 @@ define(function(require) {
 				    	criteria.opts
 				    ).then(function(res) {
 						/*- if this response does not belong to the current request */
-						if(me._request !== me._pageReqs[page]) {
+						if(me._pageReqs && (me._request !== me._pageReqs[page])) {
 							// console.debug(me._entity, "requestPage: page", page, "receveid, but IGNORED");
 							/* ...it should be ignored */
 							return res;
