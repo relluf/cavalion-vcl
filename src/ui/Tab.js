@@ -41,6 +41,7 @@ define(function(require) {
 			_closeable: false,
 			_control: null,
 			_onCloseClick: null,
+			_onMenuClick: null,
 
 			initializeNodes: function() {
 				/** @overrides ../Control.prototype.initializeNodes */
