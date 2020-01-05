@@ -669,7 +669,7 @@ define(function() {
     		this[index] = value.vars.apply(value, vars_args);
     	}, this);
     	return this;
-    }
+    };
     // Result.prototype.print = function() {
     //     for(var i = 0; i < this.length; ++i) {
     //         if(typeof this[i].print === "function") {
@@ -682,6 +682,21 @@ define(function() {
     //         }
     //     }
     // }
+    
+    Result.prototype.set = function(property, value) {
+    	if(typeof property === "string") {
+			var values = {}; 
+			values[property] = value;
+			
+	    	this.each((comp) => comp.set(values));
+    	} else if(arguments.length === 1) {
+    		// property is assumed to a properties object
+	    	this.each((comp) => comp.set(property));
+    	}
+    };
+    Result.prototype.get = function(property) {
+    	return this.map((comp) => comp.get(property));
+    };
     
     function match_uri(rule, component) {
         var uri = component._uri;//getUri();
@@ -892,5 +907,4 @@ define(function() {
         
         return components;
     };
-    
 });

@@ -726,7 +726,15 @@ define(function (require) {
             rk: function() { return "Ralph Kazemier"; },
             
 /*- 2020... */
-            set: function() {
+            set: function(value) {
+            	if(typeof value === "string") {
+            		if(arguments.length === 2) {
+            			var values = {}; 
+            			values[value] = arguments[1];
+            			return this.set(values);
+            		}
+            		return this.setProperties.apply(this, js.str2obj(value));
+            	}
             	return this.setProperties.apply(this, arguments);
             },
             get: function(key) {
