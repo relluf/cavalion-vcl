@@ -15,6 +15,7 @@ define(function(require) {
 					"color": "inherit",
 					"text-decoration": "none"
 				},
+				".text": "display:inline-block;max-width:250px;text-overflow: ellipsis;overflow:hidden;",
 				".close": {
 					"vertical-align": "top",
 					"margin-left": "4px",
@@ -25,6 +26,7 @@ define(function(require) {
 						color: "black"
 					}
 				},
+				".menu": "vertical-align: text-top;",
 				i: "display:none;margin-left:4px;", 
 				"&:not(.without-menu).selected i": "display:inline-block;", 
 				"i:not(:hover)": "color:silver;"
@@ -32,7 +34,7 @@ define(function(require) {
 
 			//_element: "li",
 			_content:
-				"<a class='text'></a>" +
+				"<div class='text'></div>" +
 				"<i class='menu fa fa-caret-down'></i>" +
 				"<a class='menu close'>×</a>",
 			_groupIndex: 1,
