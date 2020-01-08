@@ -7,36 +7,16 @@ define(function(require) {
 	var Tab = {
 		inherits: Element,
 		prototype: {
-			"@css": {
-				"&:not(.closeable) .close": {
-					display: "none"
-				},
-				"a": {
-					"color": "inherit",
-					"text-decoration": "none"
-				},
-				".text": "display:inline-block;max-width:250px;text-overflow: ellipsis;overflow:hidden;",
-				".close": {
-					"vertical-align": "top",
-					"margin-left": "4px",
-					color: "silver",
-					cursor: "pointer",
-					"&:hover": {
-						"font-weight": "bold",
-						color: "black"
-					}
-				},
-				".menu": "vertical-align: text-top;",
-				i: "display:none;margin-left:4px;", 
-				"&:not(.without-menu).selected i": "display:inline-block;", 
-				"i:not(:hover)": "color:silver;"
-			},
+			// "@css": {
+			// 	// see Tabs
+			// },
 
 			//_element: "li",
 			_content:
 				"<div class='text'></div>" +
 				"<i class='menu fa fa-caret-down'></i>" +
 				"<a class='menu close'>×</a>",
+				// "<i class='menu fa fa-close'></i>",
 			_groupIndex: 1,
 
 			_text: "", _textReflects: "textContent",

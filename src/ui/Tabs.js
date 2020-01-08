@@ -40,7 +40,8 @@ define(function(require) {
 	                    	"border-bottom": "1px solid #a0a0a0"
 	                    },
 	                    "border-top": "none",
-	                    "margin-top": "0"
+	                    "margin-top": "0",
+	                    "height": "20px"
 	                }
 	            },
 	            
@@ -64,13 +65,31 @@ define(function(require) {
 	                "margin-top": "2px",
 	                "margin-left": "3px",
 	                "margin-right": "3px",
-	                "&.selected": {
-	                    "background-color": "white",
-	                    "border-color": "#a0a0a0",
-	                    ".hashcode": "font-size: 7pt;"
-	                },
-	                // Euh? move this to devtools
-	                "&:not(.selected) .hashcode": "display: none;"
+	                
+	                "&.selected": "background-color: white; border-color: #a0a0a0;",
+                    "&.selected .hashcode": "font-size: 7pt;",
+                    
+	                // Euh? move this to devtools?
+	                "&:not(.selected) .hashcode": "display: none;",
+					"&:not(.closeable) .close": "display: none;",
+					
+					"a": "color: inherit; text-decoration: none;",
+					".text": "display:inline-block;max-width:250px;text-overflow:ellipsis;overflow:hidden;",
+					".menu:not(.close)": "vertical-align:text-top;",
+					".close": {
+						"vertical-align": "top",
+						"margin-left": "4px",
+						color: "silver",
+						cursor: "pointer",
+						"&:hover": {
+							"font-weight": "bold",
+							color: "black"
+						}
+					},
+					i: "display:none;margin-left:4px;", 
+					"&:not(.without-menu).selected i": "display:inline-block;", 
+					"i:not(:hover)": "color:silver;"
+	                
 	            }
 	    	},
     	

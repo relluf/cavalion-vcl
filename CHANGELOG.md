@@ -1,3 +1,12 @@
+### 2019-01-06
+- Finetuning vcl/ui/Tab(s)
+	- cleaning up its css (moved to ./Tabs)
+	- max-width for its text set to 250px
+	- showing ellipsis when its text is cut short
+
+![image](https://user-images.githubusercontent.com/686773/71868086-54ab4f80-30d2-11ea-8596-24c84f4424f5.png?2x)
+
+
 ### 2019-01-05  [1.0.67]
 - Fix in `entities/Query` where responses where tried to be processed after the component was already destroyed
 - Enhanced `vcl/Component.prototype.set()` so that it accepts a string or a string and value as input, besides an object specifying the values for properties
