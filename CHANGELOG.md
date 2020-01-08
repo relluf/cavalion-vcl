@@ -1,4 +1,4 @@
-### 2019-01-06
+### 2019-01-07 - 1.0.68
 - Finetuning vcl/ui/Tab(s)
 	- cleaning up its css (moved to ./Tabs)
 	- max-width for its text set to 250px
