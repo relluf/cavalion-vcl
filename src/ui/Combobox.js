@@ -5,9 +5,7 @@ define(function(require) {
 	var Popup = require("./ComboboxPopup");
 
 	return (Combobox = Combobox(require, {
-
 		inherits: Input,
-
 		prototype: {
 
 			/**
@@ -32,18 +30,15 @@ define(function(require) {
 
 			_onItemGetDisplayValue: null,
 			_onItemClick: null,
-
-			/**
-			 * Constructor
-			 */
-			constructor: function() {
+			
+			constructor() {
+				/**
+				 * Constructor
+				 */
 
 			},
-
-			/**
-			 * @overrides org.cavalion.comp.Control.prototype.mousedown
-			 */
-			mousedown: function() {
+			mousedown() {
+				/** @overrides org.cavalion.comp.Control.prototype.mousedown */
 				var r = js.lang.Class.__inherited(this, arguments);
 				if(r !== false) {
 					this.addClass("down");
@@ -53,27 +48,18 @@ define(function(require) {
 				}
 				return r;
 			},
-
-			/**
-			 * @overrides org.cavalion.comp.Control.prototype.mouseup
-			 */
-			mouseup: function() {
+			mouseup() {
+				/** @overrides org.cavalion.comp.Control.prototype.mouseup */
 				this.removeClass("down");
 				return js.lang.Class.__inherited(this, arguments);
 			},
-
-			/**
-			 * @overrides org.cavalion.comp.Control.prototype.mouseleave
-			 */
-			mouseleave: function() {
+			mouseleave() {
+				/** @overrides org.cavalion.comp.Control.prototype.mouseleave */
 				this.removeClass("down");
 				return js.lang.Class.__inherited(this, arguments);
 			},
-
-			/**
-			 * @overrides org.cavalion.comp.Control.prototype.keydown
-			 */
-			keydown: function(evt) {
+			keydown(evt) {
+				/** @overrides org.cavalion.comp.Control.prototype.keydown */
 				var r = js.lang.Class.__inherited(this, arguments);
 				if(r !== false && this._list !== null) {
 					if(evt.keyCode === 40 && evt.altKey === true) {
@@ -91,11 +77,8 @@ define(function(require) {
 				}
 				return r;
 			},
-
-			/**
-			 * @overrides org.cavalion.comp.Control.prototype.keypress
-			 */
-			keypress: function(evt) {
+			keypress(evt) {
+				/** @overrides org.cavalion.comp.Control.prototype.keypress */
 				var r = js.lang.Class.__inherited(this, arguments);
 				if(r !== false) {
 					if(evt.keyCode !== 13) {
@@ -110,11 +93,10 @@ define(function(require) {
 				}
 				return r;
 			},
-
-			/**
-			 *
-			 */
-			keyup: function(evt) {
+			keyup(evt) {
+				/**
+				 *
+				 */
 				var r = js.lang.Class.__inherited(this, arguments);
 				if(r !== false) {
 					if(evt.keyCode === 8 || evt.keyCode === 46) {
@@ -127,11 +109,8 @@ define(function(require) {
 
 				return r;
 			},
-
-			/**
-			 * @overrides org.cavalion.comp.ui.Edit.prototype.blurred
-			 */
-			_blur: function() {
+			_blur() {
+				/** @overrides org.cavalion.comp.ui.Edit.prototype.blurred */
 				js.lang.Class.__inherited(this, arguments);
 
 				var ac = org.cavalion.comp.Control.getActiveControl();
@@ -141,11 +120,8 @@ define(function(require) {
 					}
 				}
 			},
-
-			/**
-			 * @overrides org.cavalion.comp.ui.Edit.prototype.reflectSourceValue
-			 */
-			_reflectSourceValue: function() {
+			_reflectSourceValue() {
+				/** @overrides org.cavalion.comp.ui.Edit.prototype.reflectSourceValue */
 				if(this._list !== null) {
 					this._listIndex = this._list.indexOf(this.getKeyValue());
 					this.setText(this.getItemDisplayValue(), true);
@@ -153,17 +129,13 @@ define(function(require) {
 					return js.lang.Class.__inherited(this, arguments);
 				}
 			},
-
-			/**
-			 * @overrides org.cavalion.comp.ui.Edit.prototype._updateSourceValue
-			 */
-			_updateSourceValue: function() {
+			_updateSourceValue() {
+				/** @overrides org.cavalion.comp.ui.Edit.prototype._updateSourceValue */
 			},
-
-			/**
-			 *
-			 */
-			itemclick: function(evt) {
+			itemclick(evt) {
+				/**
+				 *
+				 */
 				evt.itemIndex = this._getItemIndex(evt.target);
 				if(org.cavalion.comp.Component.fire(this, "onItemClick", [evt]) !== false) {
 					this._selectItem(evt.target, evt);
@@ -172,11 +144,10 @@ define(function(require) {
 					org.cavalion.comp.Component.setTimeout(this, "setFocus", 0);
 				}
 			},
-
-			/**
-			 *
-			 */
-			_keypressed: function(evt) {
+			_keypressed(evt) {
+				/**
+				 *
+				 */
 				if(this._list !== null) {
 
 					// Make sure all the necessary objects are available.
@@ -216,11 +187,10 @@ define(function(require) {
 					}
 				}
 			},
-
-			/**
-			 *
-			 */
-			_reflectList: function() {
+			_reflectList() {
+				/**
+				 *
+				 */
 				this._list = [];
 
 				// FIXME Most probably want to reindex here...
@@ -246,11 +216,10 @@ define(function(require) {
 					this._repopulatePopup = true;
 				}
 			},
-
-			/**
-			 *
-			 */
-			_getItemIndex: function(node) {
+			_getItemIndex(node) {
+				/**
+				 *
+				 */
 				var i = 0;
 				while((node = node.previousSibling) !== null) {
 					i++;
@@ -258,11 +227,10 @@ define(function(require) {
 
 				this.setListIndex(i);
 			},
-
-			/**
-			 *
-			 */
-			_selectItem: function(node) {
+			_selectItem(node) {
+				/**
+				 *
+				 */
 				var i = 0;
 				while((node = node.previousSibling) !== null) {
 					i++;
@@ -270,11 +238,10 @@ define(function(require) {
 
 				this.setListIndex(i);
 			},
-
-			/**
-			 *
-			 */
-			_navigateItem: function(delta) {
+			_navigateItem(delta) {
+				/**
+				 *
+				 */
 				this._ensurePopup();
 
 				if(this._list.length === 0) {
@@ -327,11 +294,10 @@ define(function(require) {
 					this.setFocus();
 				}
 			},
-
-			/**
-			 *
-			 */
-			_ensurePopup: function() {
+			_ensurePopup() {
+				/**
+				 *
+				 */
 				if(this._popup === null) {
 					this._popup = new org.cavalion.comp.ui.ComboboxPopup(this);
 					this._popup.setParentNode(document.body);
@@ -342,11 +308,10 @@ define(function(require) {
 					this._repopulatePopup = false;
 				}
 			},
-
-			/**
-			 *
-			 */
-			_populatePopup: function() {
+			_populatePopup() {
+				/**
+				 *
+				 */
 				var node = this._popup.getClientNode();
 				var html = [];
 				if(this._list !== null) {
@@ -362,11 +327,10 @@ define(function(require) {
 					node.innerHTML = "";
 				}
 			},
-
-			/**
-			 *
-			 */
-			_refreshPopup: function(showAll) {
+			_refreshPopup(showAll) {
+				/**
+				 *
+				 */
 				var node, n;
 				if(this._list !== null) {
 					node = this._popup.getClientNode();
@@ -388,25 +352,22 @@ define(function(require) {
 					// Last parameter indicates a DOM node to scroll into view of the popup.
 				}
 			},
-
-			/**
-			 *
-			 */
-			isIndexSelected: function(index) {
+			isIndexSelected(index) {
+				/**
+				 *
+				 */
 				return this._listIndex === index;
 			},
-
-			/**
-			 *
-			 */
-			getListIndex: function() {
+			getListIndex() {
+				/**
+				 *
+				 */
 				return this._listIndex;
 			},
-
-			/**
-			 *
-			 */
-			setListIndex: function(value) {
+			setListIndex(value) {
+				/**
+				 *
+				 */
 				if(this._listIndex !== value) {
 					this._listIndex = value;
 					this._ensurePopup();
@@ -438,11 +399,10 @@ define(function(require) {
 					}
 				}
 			},
-
-			/**
-			 *
-			 */
-			getKeyValue: function(listIndex) {
+			getKeyValue(listIndex) {
+				/**
+				 *
+				 */
 				var r;
 				if(listIndex === undefined) {
 					listIndex = this._listIndex;
@@ -463,20 +423,18 @@ define(function(require) {
 				}
 				return r;
 			},
-
-			/**
-			 *
-			 */
-			setKeyValue: function(value) {
+			setKeyValue(value) {
+				/**
+				 *
+				 */
 				if(this._list !== null) {
 					this.setListIndex(this._list.indexOf(value));
 				}
 			},
-
-			/**
-			 *
-			 */
-			getItemDisplayValue: function(listIndex) {
+			getItemDisplayValue(listIndex) {
+				/**
+				 *
+				 */
 				var r;
 
 				if(listIndex === undefined) {
@@ -507,54 +465,48 @@ define(function(require) {
 
 				return r;
 			},
-
-			/**
-			 *
-			 */
-			listSourceNotifyEvent: function(event, data) {
+			listSourceNotifyEvent(event, data) {
+				/**
+				 *
+				 */
 				if(event === org.cavalion.data.SourceEvent.activeChanged || event === org.cavalion.data.SourceEvent.changed) {
 					this._reflectList();
 				}
 			},
-
-			/**
-			 *
-			 */
-			activatePopup: function(showAll) {
+			activatePopup(showAll) {
+				/**
+				 *
+				 */
 				//var node, n;
 
 				this._ensurePopup();
 				this._refreshPopup(showAll);
 				this._popup.popup("below-above", this, undefined, undefined);//, n);
 			},
-
-			/**
-			 *
-			 */
-			closePopup: function() {
+			closePopup() {
+				/**
+				 *
+				 */
 				if(this.isPopupActive()) {
 					this._popup.close();
 				}
 			},
-
-			/**
-			 *
-			 */
-			isPopupActive: function() {
+			isPopupActive() {
+				/**
+				 *
+				 */
 				return this._popup !== null ? this._popup.isShowing() : false;
 			},
-
-			/**
-			 *
-			 */
-			getListSource: function() {
+			getListSource() {
+				/**
+				 *
+				 */
 				return this._listSource;
 			},
-
-			/**
-			 *
-			 */
-			setListSource: function(value) {
+			setListSource(value) {
+				/**
+				 *
+				 */
 				if(this._listSource !== value) {
 					if(this._listSource !== null) {
 						Function.disconnect(this._listSource, "notifyEvent", this, "listSourceNotifyEvent");
@@ -566,28 +518,25 @@ define(function(require) {
 					this.listSourceNotifyEvent(org.cavalion.data.SourceEvent.changed, {});
 				}
 			},
-
-			/**
-			 *
-			 */
-			getList: function() {
+			getList() {
+				/**
+				 *
+				 */
 				return this._list;
 			},
-
-			/**
-			 *
-			 */
-			getListP: function() {
+			getListP() {
+				/**
+				 *
+				 */
 				if(this._listSource === null) {
 					return this._list || [];
 				}
 				return [];
 			},
-
-			/**
-			 *
-			 */
-			setList: function(value) {
+			setList(value) {
+				/**
+				 *
+				 */
 				this._list = value;
 				if(this.isPopupActive()) {
 					this._populatePopup();
@@ -595,69 +544,60 @@ define(function(require) {
 					this._repopulatePopup = true;
 				}
 			},
-
-			/**
-			 *
-			 */
-			getListAttribute: function() {
+			getListAttribute() {
+				/**
+				 *
+				 */
 				return this._listAttribute;
 			},
-
-			/**
-			 *
-			 */
-			setListAttribute: function(value) {
+			setListAttribute(value) {
+				/**
+				 *
+				 */
 				if(this._listAttribute !== value) {
 					this._listAttribute = value;
 				}
 			},
-
-			/**
-			 *
-			 */
-			getListKey: function() {
+			getListKey() {
+				/**
+				 *
+				 */
 				return this._listKey;
 			},
-
-			/**
-			 *
-			 */
-			setListKey: function(value) {
+			setListKey(value) {
+				/**
+				 *
+				 */
 				if(this._listKey !== value) {
 					this._listKey = value;
 				}
 			},
-
-			/**
-			 *
-			 */
-			getOnItemGetDisplayValue: function() {
+			getOnItemGetDisplayValue() {
+				/**
+				 *
+				 */
 				return this._onItemGetDisplayValue;
 			},
-
-			/**
-			 *
-			 */
-			setOnItemGetDisplayValue: function(value) {
+			setOnItemGetDisplayValue(value) {
+				/**
+				 *
+				 */
 				this._onItemGetDisplayValue = value;
 			},
-
-			/**
-			 *
-			 */
-			getOnItemClick: function() {
+			getOnItemClick() {
+				/**
+				 *
+				 */
 				return this._onItemClick;
 			},
-
-			/**
-			 *
-			 */
-			setOnItemClick: function(value) {
+			setOnItemClick(value) {
+				/**
+				 *
+				 */
 				this._onItemClick = value;
 			}
 
 		},
-
 		properties: {
 
 			"listSource": {
