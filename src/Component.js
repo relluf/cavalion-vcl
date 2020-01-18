@@ -371,6 +371,9 @@ define(function (require) {
                 }
                 return r;
             },
+            off: function(listeners, asIs) {
+            	return this.un.apply(this, arguments);	
+            },
             un: function (listeners) {
 	            /** @param listeners, asIs */
                 if (this.hasOwnProperty("_listeners") === false) {
