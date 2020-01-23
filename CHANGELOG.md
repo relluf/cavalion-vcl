@@ -1,4 +1,10 @@
-### 2019-01-07 - 1.0.68
+### 2020-01-22 - 1.0.70
+- Introducing 'onDblClick' -executesAction-
+
+### 2020-01-18 - 1.0.69
+- Introducing vcl/Component.prototype.off() alias for un()
+
+### 2020-01-07 - 1.0.68
 - Finetuning vcl/ui/Tab(s)
 	- cleaning up its css (moved to ./Tabs)
 	- max-width for its text set to 250px
@@ -7,7 +13,7 @@
 ![image](https://user-images.githubusercontent.com/686773/71868086-54ab4f80-30d2-11ea-8596-24c84f4424f5.png?2x)
 
 
-### 2019-01-05  [1.0.67]
+### 2020-01-05  [1.0.67]
 - Fix in `entities/Query` where responses where tried to be processed after the component was already destroyed
 - Enhanced `vcl/Component.prototype.set()` so that it accepts a string or a string and value as input, besides an object specifying the values for properties
 - Added `onMenuClick` to `vcl/ui/Tab`s prototype
