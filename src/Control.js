@@ -74,7 +74,7 @@ define(function(require) {
 			_focused: false,
 			_readonly: false,
 			_state: ControlState.enabled | ControlState.acceptChildNodes,
-			_executesAction: "No",
+			_executesAction: "no",
 			_groupIndex: -1,
 			_tabIndex: -1,
 
@@ -1425,7 +1425,11 @@ this._updateCalls = this._updateCalls || 0; this._updateCalls++;
 				this.dispatch("tap", evt);
 			},
 			ondblclick: function(evt) {
-				this.fire("onDblClick", arguments);
+				if(this.fire("onDblClick", arguments) !== false) {
+					if(this._executesAction === "onDblClick" && this._action) {
+						this._action.execute(evt, this);
+					}
+				}
 
 				// FIXME
 				this.dispatch("dbltap", evt);
@@ -1946,7 +1950,7 @@ this._updateCalls = this._updateCalls || 0; this._updateCalls++;
 				type: [true, false, "always", "never"]
 			},
 			"executesAction": {
-				type: ["No", "onClick"]
+				type: ["no", "onClick", "onDblClick"]
 			},
 			// events
 			"onClick": {
