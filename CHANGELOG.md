@@ -1,3 +1,13 @@
+### 2020-04-06 - 1.0.72
+- Implemented relative require (hard work was already done in cavalion-blocks)
+- 'Cosmetic' changes for readibilty when code is in 'collapsed' state
+- Introducing `Component.prototype.hook()`
+- Tabs- developing focys by keuboad
+- Checkbox - fix for setting checked -> value
+
+### 2020-04-02 - 1.0.71
+- vcl/ui/Tabs: Implemented focus movements
+
 ### 2020-01-22 - 1.0.70
 - Introducing 'onDblClick' -executesAction-
 
