@@ -1332,6 +1332,7 @@ this._updateCalls = this._updateCalls || 0; this._updateCalls++;
 			enable: function() {},
 			disable: function() {},
 			focus: function() {
+	    		this.nodeNeeded().focus();
 				Control.setFocused(this);
 			},
 			blur: function() {
