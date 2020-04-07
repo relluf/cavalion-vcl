@@ -13,9 +13,7 @@ define(function (require) {
     var ActionState = [true, false, "parent"];
 
     return (Action = Action(require, {
-
         inherits: Component,
-
         prototype: {
             _onExecute: null,
             _onUpdate: null,
@@ -438,7 +436,6 @@ define(function (require) {
                 }
             }
         },
-
         properties: {
             "content": {
                 type: Type.STRING,

@@ -1,9 +1,7 @@
 define(["require", "js/defineClass", "./Element", "js/Type"], function(require, Container, Element, Type) {
 
 	return (Container = Container(require, {
-
 		inherits: Element,
-
 		prototype: {
 
 			/**
@@ -55,7 +53,6 @@ define(["require", "js/defineClass", "./Element", "js/Type"], function(require, 
 				}
 			}
 		},
-
 		properties: {
 
 			"controls": {

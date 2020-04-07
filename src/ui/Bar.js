@@ -1,4 +1,5 @@
 define(["require", "js/defineClass", "./Panel"], function(require, Bar, Panel) {
+	
 	return (Bar = Bar(require, {
 		inherits: Panel,
 		prototype: {
