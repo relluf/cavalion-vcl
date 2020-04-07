@@ -111,10 +111,15 @@ define(function(require) {
 	    		});
 	    	},
 	    	onkeyup: function(evt) {
+	    		/** @overrides ../Control.prototype.onkeyup */
 	    		var r = this.inherited(arguments);
     			var selected = this.getSelectedControl(1);
+    			var query = this._name;
+    			if(query !== "") {
+    				query = "#" + query;
+    			}
 	    		
-    			function move(direction) {
+    			function moveH(direction) {
     				var l = selected._parent._controls.length;
     				if(evt.ctrlKey === true) {
     					// selected.setIndex(direction < 0 ? 0 : l - 1);
@@ -124,18 +129,53 @@ define(function(require) {
     				}
     			}
     			
+    			function moveV(direction) {
+					var tabs = null;
+    				if(evt.ctrlKey === true) {
+    					// selected.setIndex(direction < 0 ? 0 : l - 1);
+    				} else {
+    					if(direction < 0) {
+	    					tabs = selected.up().udown("vcl/ui/Tabs" + query);
+    					} else {
+    						tabs = this.down("vcl/ui/Tabs" + query);
+    					}
+						selected.setParent(tabs);
+						selected._control && selected._control.setParent(tabs && tabs.up());
+						selected.setSelected();
+						tabs && tabs.focus();
+    				}
+    			}
+    			
 	    		if(r !== false && selected !== null) {
 	    			switch(evt.keyCode) {
 	    				case evt.KEY_LEFT_ARROW:
-		    				evt.shiftKey ? move(-1) : this.selectPrevious();
+		    				evt.shiftKey ? moveH(-1) : this.selectPrevious();
 	    					break;
 	    					
 	    				case evt.KEY_RIGHT_ARROW:
-		    				evt.shiftKey ? move(1) : this.selectNext();
+		    				evt.shiftKey ? moveH(1) : this.selectNext();
+	    					break;
+
+	    				case evt.KEY_UP_ARROW:
+		    				evt.shiftKey ? moveV(-1) : this.selectUp();
+	    					break;
+	    					
+	    				case evt.KEY_DOWN_ARROW:
+		    				evt.shiftKey ? moveV(1) : this.selectDown();
 	    					break;
 	    			}
 	    		}
 	    		return r;
+	    	},
+	    	selectUp: function() {
+	    		var selected = this.getSelectedControl();
+	    		if(selected) {
+	    			var tabs = this.udown("vcl/ui/Tabs");
+	    			tabs && tabs.focus();
+	    		}
+	    	},
+	    	selectDown: function() {
+	    		
 	    	},
 	    	selectNext: function() {
 	    	    var index = this.getSelectedControl(1).getIndex();
