@@ -5,9 +5,7 @@ define(function(require) {
 	var Type = require("js/Type");
 
 	return (Checkbox = Checkbox(require, {
-
 		inherits: Input,
-
 		prototype: {
 			'@css': {
 				display: "inline-block"
@@ -32,7 +30,7 @@ define(function(require) {
 			},
 			setChecked: function(value) {
 				if(this._checked !== value) {
-					this._checked = value;
+					this._value = this._checked = value;
 					this.setState("invalidated");
 				}
 			},
@@ -73,7 +71,6 @@ define(function(require) {
 				this._nodes.input.value = value === true;
 			}
 		},
-
 		properties: {
 			checked: {
 				type: Type.BOOLEAN,
