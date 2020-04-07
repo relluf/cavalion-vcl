@@ -1,6 +1,7 @@
-define(function(require) {
+define(["js/Deferred"], function(Deferred) {
 	
-	var Deferred = require("js/Deferred");
+	// var Deferred = require("js/Deferred");
+	var require_ = require;
 	
 	function PropertyValue(uri) {
 		this.uri = uri;
@@ -95,16 +96,20 @@ define(function(require) {
 		}
 
 		/* jshint: eval */		
-		var r = eval(arguments[0]);
+		var require = arguments[1];
+		var r = eval(arguments[0]); // require is in 'scope'
 		if(r instanceof Array) {
 		    r = $.apply(this, r);
 		}
 		return r;
 	}
-	function impl(source, uri, normalize) {
-		var require_ = require;
-		var Component = require_("vcl/" + "Component");
-		var Factory = require_("vcl/" + "Factory");
+	function impl(source, uri, normalize, require) {
+		// nasty hack to get reference to parse()
+		if(arguments.length === 0) return parse;
+		
+		var rqr = require || require_;
+		var Component = rqr("vcl/" + "Component");
+		var Factory = rqr("vcl/" + "Factory");
 
 		var tree = {
 			root: [],
@@ -182,12 +187,12 @@ define(function(require) {
 		source = String.format("%s\n//# sourceURL=http://vcl-%s/%s.js", source,
 		    uri.indexOf(Factory.PREFIX_PROTOTYPES) === 0 ? "prototypes" : "comps",
 		    devtoolsFriendly(uri));
-		tree.root = parse(source);
+		tree.root = parse(source, rqr);
 		tree.root && adjust(tree.root);
 		return tree;
 	}
 	
 	impl.PropertyValue = PropertyValue;
-	
+
 	return impl;
 });

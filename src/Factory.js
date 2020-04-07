@@ -76,6 +76,16 @@ define(function(require) {
 	function getFactoryUri(name) {
 		return String.format("vcl/Factory!%s", name);
 	}
+	function normalize(uri, module) {
+		if(module.includes("!")) {
+			module = module.split("!");
+			module[1] = js.normalize(uri, module[1]);
+			module = module.join("!");
+		} else {
+			module = js.normalize(uri, module);
+		}
+		return module;
+	}
 
 	return (Factory = Factory(require, {
 		prototype: {
@@ -85,9 +95,30 @@ define(function(require) {
 			_sourceUri: null,
 
 			constructor: function(parentRequire, uri, sourceUri) {
-				this._parentRequire = parentRequire;
+				// this._parentRequire = parentRequire;
+				// this._uri = uri;
+				// sourceUri && (this._sourceUri = sourceUri);
+
+				sourceUri = sourceUri || uri;
+
+/*- TODO clean up */				
+				function thisRequire(modules, success, error) {
+					if(modules instanceof Array) {
+						modules = modules.map(module => normalize(sourceUri.split("!").pop(), module));
+					} else {
+						modules = normalize(sourceUri.split("!").pop(), modules);
+					}
+					return parentRequire(modules, success, error);
+				}
+				
+				for(var k in parentRequire) {
+					thisRequire[k] = parentRequire[k];
+				}
+
+				this._parentRequire = thisRequire;
 				this._uri = uri;
 				sourceUri && (this._sourceUri = sourceUri);
+				// arguments.length === 4 && (this._setIsRoot = setIsRoot);
 			},
 			toString: function() {
                 return String.format("%n#%s#%d", this.constructor, this._uri, 
@@ -141,7 +172,7 @@ define(function(require) {
 				var require = me._parentRequire;
 
 				/*- Parse the source into a JS structure */
-				var tree = parse(source, me._uri, js.normalize);
+				var tree = parse(source, me._uri, js.normalize, require);
 				/*- Make sure there is always something to require */
 				tree.factories.push("module");
 				tree.classes.push("module");
