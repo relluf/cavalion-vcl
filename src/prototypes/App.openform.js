@@ -1,4 +1,4 @@
-"../util/Fullscreen, vcl/ui/Element, vcl/ui/FormContainer";
+"vcl/ui/Element, vcl/ui/FormContainer";
 
 // var Fullscreen = require("../../util/Fullscreen");
 // var Element = require("vcl/ui/Element");
