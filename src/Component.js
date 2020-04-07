@@ -2,6 +2,7 @@ define(function (require) {
 
     var Component = require("js/defineClass");
     var Type = require("js/Type");
+    var Method = require("js/Method");
     var Property = require("js/Property");
     var Listeners = require("./Listeners");
     var Factory = require("js/referenceClass!./Factory");
@@ -396,6 +397,18 @@ define(function (require) {
                 if (Object.keys(this._listeners._listeners).length === 0) {
                     delete this._listeners;
                 }
+            },
+            hook: function(method, callback) {
+            	var root = this;
+				var hk = {
+					destroy() {
+						Method.disconnect(root, method, hk, "callback")
+					},
+					callback() {
+						callback.apply(this, arguments);
+					}
+				};
+				Method.connect(root, "dispatchChildEvent", hk, "callback");
             },
             isLoading: function () {
 	            /**
