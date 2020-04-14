@@ -5,6 +5,8 @@ define(function(require) {
 	var Element = require("./Element");
 
 	var Tab = {
+		SELECT_TIMEOUT_MS: 128,
+		
 		inherits: Element,
 		prototype: {
 			// "@css": {
@@ -23,6 +25,7 @@ define(function(require) {
 			_closeable: false,
 			_control: null,
 			_onCloseClick: null,
+			_onControlChanged: null,
 			_onMenuClick: null,
 
 			initializeNodes: function() {
@@ -50,7 +53,7 @@ define(function(require) {
 						this._control.setVisible(true);
 						this._control.bringToFront();
 						this._control.setFocus();
-					}.bind(this), 175);
+					}.bind(this), Tab.SELECT_TIMEOUT_MS);
 					
 					var app = this.app();
 					app.setTimeout("render", function() {
@@ -94,6 +97,9 @@ define(function(require) {
 				}
 
 				return classes;
+			},
+			oncontrolchanged: function() {
+				return this.fire("onControlChanged", arguments);
 			},
 			oncloseclick: function() {
 				return this.fire("onCloseClick", arguments);
@@ -150,6 +156,7 @@ define(function(require) {
 			setControl: function(value) {
 				if(this._control !== value) {
 					this._control = value;
+					this.dispatch("controlchanged");
 				}
 			}
 		},
@@ -171,6 +178,8 @@ define(function(require) {
 				set: Function,
 				type: Class.Type.INTEGER },
 			"onCloseClick": {
+				type: Class.Type.EVENT },
+			"onControlChanged": {
 				type: Class.Type.EVENT },
 			"onMenuClick": {
 				type: Class.Type.EVENT }
