@@ -1,3 +1,6 @@
+### 2020-04-13 - 1.0.73
+- 'vcl/Control.prototype.toggleClass()` was buggy, introduced workaround. Needs more investigation to fix.
+
 ### 2020-04-06 - 1.0.72
 - Implemented relative require (hard work was already done in cavalion-blocks)
 - 'Cosmetic' changes for readibilty when code is in 'collapsed' state
