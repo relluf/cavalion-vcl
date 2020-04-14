@@ -1,3 +1,6 @@
+### 2020-04-14 - 1.0.74
+- Tab selection timeout is now configurable --_well, at least via vcl/ui/Tab-prototype for now_ ;-)
+
 ### 2020-04-13 - 1.0.73
 - 'vcl/Control.prototype.toggleClass()` was buggy, introduced workaround. Needs more investigation to fix.
 
