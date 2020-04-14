@@ -735,6 +735,7 @@ define(function(require) {
 					if(!(classes instanceof Array)) {
 						classes = classes.split(" ");
 					}
+	/*- BUG: following code doesn't work
 					classes.forEach(function(cls, index) {
 						if((index = this._classes_rt.indexOf(cls)) === -1) {
 							this._classes_rt.push(cls);
@@ -747,6 +748,17 @@ define(function(require) {
 					if(changed) {
 						this.setState(ControlState.classesInvalidated, true);
 					}
+					
+		Replaced with following fragment
+	*/
+	
+					classes.forEach(function(cls, index) {
+						if(this.hasClass(cls)) {
+							this.removeClass(cls);
+						} else {
+							this.addClass(cls);
+						}
+					}, this);
 				}
 			},
 			replaceClass: function(find, replace) {
