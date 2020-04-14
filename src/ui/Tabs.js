@@ -136,8 +136,10 @@ define(function(require) {
     				} else {
     					if(direction < 0) {
 	    					tabs = selected.up().udown("vcl/ui/Tabs" + query);
+	    					if(!tabs) tabs = selected.up().udown("vcl/ui/Tabs");
     					} else {
     						tabs = this.down("vcl/ui/Tabs" + query);
+	    					if(!tabs) tabs = this.down("vcl/ui/Tabs");
     					}
 						selected.setParent(tabs);
 						selected._control && selected._control.setParent(tabs && tabs.up());
@@ -245,6 +247,7 @@ define(function(require) {
         				this._history.push(selected);
         			}
     				var r = this.inherited(arguments);
+    				// selected.update();
     				if((selected = this.getSelectedControl(1)) !== null) {
     					selected.update(this.checkOverflow.bind(this));	
     				}
