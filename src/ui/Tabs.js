@@ -1,9 +1,10 @@
 define(function(require) {
 
     var Tabs = require("js/defineClass");
+    
+    var js = require("js");
     var Bar = require("./Bar");
     var Type = require("js/Type");
-    var js = require("js");
 
     return (Tabs = Tabs(require, {
     	inherits: Bar,

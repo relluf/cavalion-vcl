@@ -98,11 +98,17 @@ define(function(require) {
 					if(typeof obj !== "object") {
 						obj = {'.':'.'};
 					}
-					js.keys(obj).forEach(function(key) {
-						if(keys.indexOf(key) === -1) {
-							keys.push(key);
-						}
-					});
+					if(typeof obj.getAttributeNames === "function") {
+						obj.getAttributeNames.apply(this, arguments).forEach(function(name) {
+							if(keys.indexOf(name) === -1) keys.push(name);
+						});
+					} else {
+						js.keys(obj).forEach(function(key) {
+							if(keys.indexOf(key) === -1) {
+								keys.push(key);
+							}
+						});
+					}
 				});
 
 				return keys;
@@ -110,10 +116,14 @@ define(function(require) {
 			getAttributeValue: function(name, index) {
 				/** @overrides ../data/Source.prototype.getAttributeValue */
 				this.assertArray(index);
+				var obj = this.getObject(index || 0);
 				if(name === ".") {
-					return this.getObject(index || 0);
+					return obj;
 				}
-				var value = js.get(name, this.getObject(index || 0));
+				var value = typeof obj.getAttributeValue === "function" ? 
+					obj.getAttributeValue(name) : 
+					js.get(name, this.getObject(index || 0));
+					
 				if(this._onGetAttributeValue !== null) {
 					value = this.fire("onGetAttributeValue", [name, index, value]);
 				}
@@ -124,7 +134,11 @@ define(function(require) {
 				this.assertArray(index);
 				try {
 					if(name !== ".") {
-						return js.set(name, value, this.getObject(index));
+						var obj = this.getObject(index);
+						if(typeof obj.setAttributeValue === "function") {
+							return obj.setAttributeValue(name, value);
+						}
+						return js.set(name, value, obj);
 					} else if(this._onFilterObject !== null) {
 						index = this._array.indexOf(this._arr[index]);
 					}
@@ -275,6 +289,8 @@ define(function(require) {
 			sort: function() {
 				this.assertArray();
 				try {
+					// TODO Hmm, this sorting of _arr feels a lil' dodgy TBH...
+					this._arr && window.Array.prototype.sort.apply(this._arr, arguments);
 					return window.Array.prototype.sort.apply(this._array, arguments);
 				} finally {
 					this.arrayChanged();

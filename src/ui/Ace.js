@@ -98,17 +98,14 @@ define(["require", "js/defineClass", "ace/ace", "./Panel", "js/Type"], function(
 			"onChange": {
 				type: Type.EVENT
 			},
-
 // 			"value": {
 // 				type: Type.STRING,
 // 				set: Function
 // 			},
-
 // 			"source": {
 // 				set: Function,
 // 				type: Component
 // 			},
-
 // 			"sourceAttribute": {
 // 				type: Type.STRING,
 // 				set: Function

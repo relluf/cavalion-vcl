@@ -114,9 +114,11 @@ define(function (require) {
             },
             dispatch: function (name, evt) {
                 if (evt === undefined) {
-                    evt = {
-                        type: name
-                    };
+                	if(typeof name === "string") {
+	                    evt = {
+	                        type: name
+	                    };
+                	}
                 }
 
                 if (this._loading === false || name === "destroy") {
@@ -738,8 +740,6 @@ define(function (require) {
             	}
             	return this.up(selector);
             },
-            
-            rk: function() { return "Ralph Kazemier"; },
             
 /*- 2020... */
             set: function(value) {
