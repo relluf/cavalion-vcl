@@ -44,6 +44,7 @@ define(function (require) {
                     "&.expanded>ol": {
                     	"display": "block"
                     },
+                    "&.seperator": "border-top: 1px solid #f0f0f0; padding-top: 6px; margin-top: 6px;",
                     ">.selection": {
                         position: "absolute",
                         left: "0",
@@ -68,12 +69,13 @@ define(function (require) {
                         }
                     },
                     ">.text": {
+                        "input[type=checkbox]": "position:relative;top:2px;",
                     	cursor: "pointer",
                         position: "relative",
 //        				width: "100%",
                         display: 'inline-block',
                         "margin-left": "2px",
-                        padding: "3px 4px 3px 4px"
+                        padding: "3px 4px 3px 4px",
                     },
                     "&.selected": {
                         ">.selection": {
