@@ -1,3 +1,9 @@
+### 2020-06-06 - 1.0.77
+- Adding `seperator` class for `vcl\ui\Node`
+
+### 2020-06-02 - 1.0.76
+- App.js - Button ???
+
 ### 2020-05-11 - 1.0.75
 - Updating
 
