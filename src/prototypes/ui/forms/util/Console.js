@@ -59,16 +59,19 @@ console.log("app.on('print', ...)");
 
         sizer.on("setControl", function (value) {
             var content = [];
+            var consoles = this.app().qsa("vcl/ui/Console").filter(c => c.isVisible());
+            //[scope.console];
+
             if (value !== null) {
                 if (value.getUri()) {
                     content.push(value.getUri());
                 }
                 content.push(String.format("%n", value));
-                if(sizer.getVar("meta") !== true) {
-                	scope.console.getNode("input").value = String.format("#%d // %s ", value.hashCode(), content.join(": "));
+                if(sizer.getVar("meta") === true) {
+                	consoles.forEach(c => c.getNode("input").value = String.format("#%d // %s ", value.hashCode(), content.join(": ")));
                 } else {
-					scope.console.getNode("input").value = String.format("#%d", value.hashCode());
-					scope.console.focus();
+					consoles.forEach(c => c.getNode("input").value = String.format("#%d", value.hashCode()));
+					consoles.forEach(c => c.focus());
 				}
                 if (value._owner) {
                     content.push(String.format("%n", value._owner));
