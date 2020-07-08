@@ -107,13 +107,6 @@ console.log("app.on('print', ...)");
                 	sizer.setVar("meta", evt.metaKey === true);
                 	
                     if (evt.shiftKey === false) {
-                    	if(evt.metaKey === true) {
-                    		if(me.isVisible()) {
-                    			me.hide();
-                    		} else {
-                    			me.show();
-                    		}
-                    	}
                         if (component instanceof Control) {
                             if (sizer._control === component) {
                                 component = null;
