@@ -100,7 +100,7 @@ define(function(require) {
 				var startPage = parseInt(start / this._limit, 10);
 				var endPage = parseInt(end / this._limit + 0.5, 10);
 				
-				while(startPage <= endPage) {
+				while(startPage < endPage) {
 					// console.debug(this._entity, "getObjects: page", startPage, "needed");
 					this.requestPage(startPage++); 
 				}
