@@ -65,6 +65,15 @@ var Handlers = {
 	        });
 	    });
     },
+    make_styles: function() {
+	    var ctx = requirejs.s.contexts._;
+        var scope = this.scope();
+	    var styles = this.vars(["styles"]).map(_ => "text!" + _.split("!").pop()).filter(_ => _);
+	    require(styles, function() {
+	    	var args = js.copy_args(arguments);
+	    	scope['extra-styles'].setValue(args.join("\n"));
+	    });
+    },
     set_lib: function() {
     	var scope = this.scope();
     	var modules = this.vars(["modules", true]);
@@ -99,6 +108,7 @@ $(["ui/Form"], {
     },
     caption: "Make",
     vars: {
+    	styles: [],
         modules: [],
         components: [],
         implicit_components: {}
@@ -143,6 +153,8 @@ $(["ui/Form"], {
 	        }
 	    }
 
+        scope.styles.setValue(JSON.stringify(vars.styles));
+
         scope.modules.setValue(JSON.stringify(vars.modules));
         scope.components.setValue(JSON.stringify(vars.components));
 
@@ -152,53 +164,70 @@ $(["ui/Form"], {
     
 }, [
     $("vcl/ui/Group", {}, [
-        $("vcl/ui/CheckGroup", "lib.js", {
-            text: "lib.js",
-            expanded: true
-        }, [
-            $("vcl/ui/Group", {}, [
-                $("vcl/ui/Input", "modules", {
-                    element: "textarea"
-                }),
-                $("vcl/ui/Input", "extra-modules", {
-                    element: "textarea"
-                }),
-            ]),
-            $("vcl/ui/Button", {
-                content: "Merge",
-                onClick: Handlers.merge_lib
-            }),
-            $("vcl/ui/Button", {
-                content: ">>>",
-                onClick: Handlers.set_lib
-            })
-        ]),
-        $("vcl/ui/CheckGroup", "app.js", {
+        $(("vcl/ui/CheckGroup"), "app.js", {
             text: "app.js",
             expanded: true
         }, [
-            $("vcl/ui/Group", {}, [
-                $("vcl/ui/Input", "components", {
+            $(("vcl/ui/Group"), {}, [
+                $(("vcl/ui/Input"), "components", {
                     element: "textarea"
                 }),
-                $("vcl/ui/Input", "extra-components", {
+                $(("vcl/ui/Input"), "extra-components", {
                     element: "textarea"
                 }),
-                $("vcl/ui/Input", "implicit-components", {
+                $(("vcl/ui/Input"), "implicit-components", {
                     element: "textarea"
                 })
             ]),
-            $("vcl/ui/Button", {
+            $(("vcl/ui/Button"), {
                 content: "Merge",
                 onClick: Handlers.merge_app
             }),
-            $("vcl/ui/Button", {
+            $(("vcl/ui/Button"), {
                 content: ">>>",
                 onClick: Handlers.set_app
             }),
-            $("vcl/ui/Button", {
+            $(("vcl/ui/Button"), {
                 content: "Make",
                 onClick: Handlers.make_app
+            })
+        ]),
+        $(("vcl/ui/CheckGroup"), "styles.less", {
+            text: "styles.less",
+            expanded: true
+        }, [
+            $(("vcl/ui/Group"), {}, [
+                $(("vcl/ui/Input"), "styles", {
+                    element: "textarea"
+                }),
+                $(("vcl/ui/Input"), "extra-styles", {
+                    element: "textarea"
+                }),
+            ]),
+            $(("vcl/ui/Button"), {
+                content: "Make",
+                onClick: Handlers.make_styles
+            })
+        ]),
+        $(("vcl/ui/CheckGroup"), "lib.js", {
+            text: "lib.js",
+            expanded: true
+        }, [
+            $(("vcl/ui/Group"), {}, [
+                $(("vcl/ui/Input"), "modules", {
+                    element: "textarea"
+                }),
+                $(("vcl/ui/Input"), "extra-modules", {
+                    element: "textarea"
+                }),
+            ]),
+            $(("vcl/ui/Button"), {
+                content: "Merge",
+                onClick: Handlers.merge_lib
+            }),
+            $(("vcl/ui/Button"), {
+                content: ">>>",
+                onClick: Handlers.set_lib
             })
         ])
     ])
