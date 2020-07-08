@@ -1,3 +1,7 @@
+### 2020-07-068 - 1.0.78
+- Fixed a paging-related bug in **entities/Query**
+- Changed the behaviour of Alt[+Cmd]+Click: click doesn't toggle visibility of console anymore
+
 ### 2020-06-06 - 1.0.77
 - Adding `seperator` class for `vcl\ui\Node`
 - Updating `prototypes/ui/forms/util/Console` (better Alt+Click)
