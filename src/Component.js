@@ -673,7 +673,25 @@ define(function (require) {
                 // console.log("Component.prototype.scope() --with-selector")
                 return this.getScope()[arguments[0]];
             },
-            up: function(selector, allowAll) {
+            up: function(selector, allowAll, callback) {
+            	if(selector instanceof Array) {
+            		// up() will throw if any of the calls returns null
+            		if(typeof allowAll === "function") {
+            			callback = allowAll;
+            			delete allowAll;
+            		}
+            		for(var i = 0, s; i < selector.length; ++i) {
+            			if(selector[i] = this.up((s = selector[i]), allowAll) === null) {
+            				throw new Error(js.sf("Root %s not found", s));
+            			}
+            		}
+            		if(typeof callback === "function") {
+            			callback(selector);
+            		}
+            		return selector;
+            	}
+            	
+            	
 	            /*- Queries all components for the given selector and filters out
 	                those matches which are an owner of the calling component. The
 	                result closest match (in the owner hierarchy) is returned, or 

@@ -1,4 +1,5 @@
-### 2020-07-068 - 1.0.78
+### 2020-07-08 - 1.0.79
+- **vcl/Component.prototype.up** - now supports multiple selectors (might throw 'Root {EXPECTED_ROOT} not found')
 - Fixed a paging-related bug in **entities/Query**
 - Changed the behaviour of Alt[+Cmd]+Click: click doesn't toggle visibility of console anymore
 
