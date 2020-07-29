@@ -8,7 +8,8 @@ define(function(require) {
 		inherits: Input,
 		prototype: {
 			'@css': {
-				display: "inline-block"
+				display: "inline-block",
+				">input": "margin-right: 4px; vertical-align: middle; margin-top: 1px;"
 			},
 
 			_element: "div",
