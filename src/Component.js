@@ -678,15 +678,15 @@ define(function (require) {
             		// up() will throw if any of the calls returns null
             		if(typeof allowAll === "function") {
             			callback = allowAll;
-            			delete allowAll;
+            			allowAll = undefined;
             		}
             		for(var i = 0, s; i < selector.length; ++i) {
-            			if(selector[i] = this.up((s = selector[i]), allowAll) === null) {
+            			if((selector[i] = this.up((s = selector[i]), allowAll)) === null) {
             				throw new Error(js.sf("Root %s not found", s));
             			}
             		}
             		if(typeof callback === "function") {
-            			callback(selector);
+            			callback.apply(this, selector);
             		}
             		return selector;
             	}
