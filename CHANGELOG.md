@@ -1,7 +1,11 @@
-### 2020-07-08 - 1.0.79
+### 2020-07-28 - 1.1.1 (*)
+- **vcl/Action** - improved _hotkey validness detection_ by defaulting to the enabled state, that is to say that when the action in question is disabled, its hotkey is as well
+- **vcl/ui/Checkbox** - Finetuning vertical aligning of label and check (again)
+
+### 2020-07-08
 - **vcl/Component.prototype.up** - now supports multiple selectors (might throw 'Root {EXPECTED_ROOT} not found')
-- Fixed a paging-related bug in **entities/Query**
-- Changed the behaviour of Alt[+Cmd]+Click: click doesn't toggle visibility of console anymore
+- **entities/Query** - Fixed a paging-related bug in 
+- Changed the behaviour of Al[+Cmd]+Click: click doesn't toggle visibility of console anymore
 
 ### 2020-06-06 - 1.0.77
 - Adding `seperator` class for `vcl\ui\Node`
