@@ -159,7 +159,7 @@ define(function (require) {
                     return false;
                 }
 
-                return true;
+                return this.isEnabled();
             },
             parentChanged: function () {
                 this.dispatch("change", {what:["parent"]});
@@ -340,7 +340,9 @@ define(function (require) {
                                     if (value !== "*") {
                                         evt.preventDefault(); // FIXME property?
                                     }
-                                    me.execute(evt);
+                                    if(me.isEnabled()) {
+                                    	me.execute(evt);
+                                    }
                                 }
                             }
                         }));
