@@ -74,7 +74,7 @@ define(function(require) {
 
 			_autoColumns: false,
 			_formatDates: true,
-
+			
 			_source: null,
 			_sourceMonitor: null,
 			_rowHeight: 23,
@@ -418,26 +418,30 @@ define(function(require) {
 				}
 				if(value === null || value === undefined) {
 					value = "";
-				} else if(this._formatDates === true && 
-				        value instanceof Date) {
+				} else if(this._formatDates === true && value instanceof Date) {
 					// FIXME
 					value = this.formatDate(value);
 				}
 				
 				if(value === null || value === undefined || value === "") {
-					value = " &nbsp; ";
+					value = "   ";
 				} else if(value instanceof Array) {
+					// TODO (could be [string, date, null, undefined, etc])
 					if(typeof value[0] !== "object") {
 						value = value.join("");
 					} else {
 						value = String(value.length);
 					}
 				} else {
-					value = String.format("%H", value);
+					value = js.sf("%n", value);
 				}
 
-				column.autoWidth(value, cell);
-				cell.innerHTML = value;
+				if(column._rendering === "textContent") {
+					cell.textContent = value;
+				} else {
+					cell.innerHTML = value;
+				}
+				column.autoWidth(cell.textContent, cell);
 			},
 			formatDate: function(value) {
 				return String.format("%d/%02d/%02d %02d:%02d", value.getFullYear(), value.getMonth() + 1,

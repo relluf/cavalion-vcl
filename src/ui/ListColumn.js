@@ -54,6 +54,7 @@ define(function(require) {
 			_classNameCells: "",
 
 			_displayFormat: "",
+			_rendering: "textContent",
 
 			_onGetValue: null,
 			_onRenderCell: null,
@@ -261,9 +262,9 @@ define(function(require) {
 			autoWidth: function(value, cell) {
 				if(arguments.length === 0) {
 					value = this._autoWidthValue;
-					this._autoWidthValue = "";
+					this._autoWidthValue = {length:-1};
 				}
-				value = value || "&nbsp;";
+				value = value || this._content || "&nbsp;";
 				if(this._autoWidthValue.length <= value.length) {
 					this.setAutoWidthValue(value);
 				}
@@ -420,6 +421,9 @@ define(function(require) {
 			}
 		},
 		properties: {
+			"rendering": {
+				type: ["textContent", "innerHTML"]
+			},
 			"caption": {
 				set: "setContent",
 				type: Class.Type.STRING
