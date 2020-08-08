@@ -2,10 +2,94 @@
 
 var Node = require("vcl/ui/Node");
 var FormContainer = require("vcl/ui/FormContainer");
+var Form = require("vcl/ui/Form");
 
 var Handlers = {
 	"client.onDispatchChildEvent": function(component, name, evt, f, args) {
-		if(component._parent !== this || name.indexOf("form") !== 0) {
+		
+		var form_scope, root_scope = this.scope();
+		var form;
+
+		if(component instanceof FormContainer) {
+    		if(name === "formloadstart") {
+    			root_scope.description.setContent("<img src='/shared/vcl/images/loading.gif'>");
+    		} else if((form = component.getForm()) !== null) {
+    			form_scope = form.getScope();
+    			if(name === "formload" && !form_scope.left) {
+	    			root_scope.description.revertPropertyValue("content");
+    			}
+    			if(form_scope.left && form_scope.left._uri.endsWith("prototypes/ui/forms/View")) {
+    	    		if(name === "formload") {
+    	    			form_scope.left.setVisible(false);
+    	    		} else if(name === "formactivate") {
+    	    			root_scope.left_content.hide();
+    	    			form_scope.left_content.setParent(root_scope.left);
+
+    	    		// 	form_scope.menubar.setParent(null);
+    	    		// 	form_scope.menubar.setAlign("none");
+    	    		// 	form_scope.menubar.setParent(form_scope.left_content);
+
+    	    		} else if(name ==="formdeactivate" || name === "formclose") {
+    	    			form_scope.left_content.setParent(form_scope.left);
+
+    	    		// 	form_scope.menubar.setParent(null);
+    	    		// 	form_scope.menubar.setAlign("top");
+    	    		// 	form_scope.menubar.setParent(form_scope['@owner']);
+
+    	    			root_scope.left_content.show();
+    	    		}
+    			}
+    			if(form_scope.tree && form_scope.tree._uri.endsWith("prototypes/ui/forms/Home")) {
+    	    		if(name === "formload") {
+	    				var parent = root_scope.tree.getSelection()[0];
+	    				if(parent.isSelected()) {
+	    					//parent.setCss(js.mixIn(form_scope.tree.getCss()));
+    						form_scope.tree.fire("onSelectionChange", [[parent]]);
+	    				}
+    	    		}
+    			}
+    		}
+		} else if(component instanceof Form) {
+				// this.print(component, js.sf("%s - %s", component.distanceToParentComponent(this._owner), name));
+				form_scope = component.scope();
+				
+    			if(form_scope.left && form_scope.left._uri.endsWith("prototypes/ui/forms/View")) {
+    	    		if(name === "load") {
+    	    		} else if(name === "activate") {
+    	    			root_scope.left_content.hide();
+    	    			form_scope.left.setVisible(false);
+    	    			form_scope.left_content.setParent(root_scope.left);
+
+    	    		// 	form_scope.menubar.setParent(null);
+    	    		// 	form_scope.menubar.setAlign("none");
+    	    		// 	form_scope.menubar.setParent(form_scope.left_content);
+
+    	    		} else if(name === "deactivate" || name === "close") {
+    	    			form_scope.left_content.setParent(form_scope.left);
+
+    	    		// 	form_scope.menubar.setParent(null);
+    	    		// 	form_scope.menubar.setAlign("top");
+    	    		// 	form_scope.menubar.setParent(form_scope['@owner']);
+
+    	    			root_scope.left_content.show();
+    	    		}
+    			}
+    			if(form_scope.tree && form_scope.tree._uri.endsWith("prototypes/ui/forms/Home")) {
+    	    		if(name === "load") {
+	    				var parent = root_scope.tree.getSelection()[0];
+	    				if(parent.isSelected()) {
+	    					//parent.setCss(js.mixIn(form_scope.tree.getCss()));
+    						// form_scope.tree.fire("onSelectionChange", [[parent]]);
+	    				}
+    	    		}
+    			}
+		}
+		
+		return this.inherited(arguments);
+	},
+	"client.onDispatchChildEvent_v1": function(component, name, evt, f, args) {
+
+		if(name.indexOf("form") !== 0 || component._parent !== this) {
 			return this.inherited(arguments);
 		}
 
@@ -25,7 +109,6 @@ var Handlers = {
     	    			form_scope.left.setVisible(false);
     	    		} else if(name === "formactivate") {
     	    			root_scope.left_content.hide();
-
     	    			form_scope.left_content.setParent(root_scope.left);
 
     	    		// 	form_scope.menubar.setParent(null);

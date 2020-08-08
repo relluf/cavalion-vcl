@@ -1,4 +1,9 @@
-### 2020-07-28 - 1.1.1 (*)
+### 2020-08-03 - 1.1.1 (*)
+- Some improvements made to vcl/ui/Console
+	- delete selected values
+	- clear now leaves selected values selected
+
+### 2020-07-28
 - **vcl/Action** - improved _hotkey validness detection_ by defaulting to the enabled state, that is to say that when the action in question is disabled, its hotkey is as well
 - **vcl/ui/Checkbox** - Finetuning vertical aligning of label and check (again)
 
