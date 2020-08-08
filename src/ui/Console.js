@@ -7,6 +7,7 @@ define(function(require) {
 	var Component = require("../Component");
 	var Panel = require("./Panel");
 	var HE = require("util/HtmlElement");
+	var Event = require("util/Event");
 	var evaluate = require("./Console.evaluate");
 
 	var Type = Class.Type;
@@ -194,8 +195,12 @@ define(function(require) {
 					}
 				}
 				
-				// TODO find better way to extend/inherit/override eval context
+				// -1- remove keys from this
+				this.sel && this.sel.map((o, i) => delete this[i]);
+				// TODO 20200729-1 find better way to extend/inherit/override eval context
 				this.sel = this._nodes.console.qsa(".selected.node").map(_ => _._line._value);
+				// -1- add keys to this
+				this.sel.map((o, i) => this[i] = o);
 				
 				return this.inherited(arguments);
 			},
@@ -233,8 +238,19 @@ define(function(require) {
 
 				if(evt.ctrlKey === true) {
 					if(evt.keyCode === 76) {
-						this.clear();//_nodes.console.innerHTML = "";
-						evt.preventDefault();
+						if(evt.shiftKey === true) {
+							
+						} else {
+							var nodes = this._nodes.console.qsa(".selected.node").map(_ => { 
+								_.parentNode.removeChild(_);
+								return _;
+							});
+							this.clear();
+							evt.preventDefault();
+							nodes.map(_ => this._nodes.console.appendChild(_));
+						}
+					} else if(evt.keyCode === 75) {
+						this._nodes.console.qsa(".selected.node").map(_ => HE.removeClass(_, "selected"));
 					}
 				} else if(evt.keyCode === 38) {
 					if(this._history.index > 0) {
@@ -248,6 +264,10 @@ define(function(require) {
 						this._nodes.input.value = this._history[this._history.index];
 					}
 					evt.preventDefault();
+				} else if(evt.keyCode === 46) { 
+					this._nodes.console.qsa(".selected.node").map(_ => _.parentNode.removeChild(_));
+				} else {
+					// console.log(evt.keyCode);
 				}
 
 				return r;
