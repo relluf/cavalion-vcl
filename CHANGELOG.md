@@ -1,4 +1,11 @@
-### 2020-08-03 - 1.1.1 (*)
+### 2020-08-15 - 1.1.3
+- Introducing property `vcl/Action:on`
+
+### 2020-08-08 - 1.1.2
+- Bugfixing several rendering errors for ListColumn where columns would be rendered incorrectly in case of all empty values
+- Adding `rendering`-property for ListColumn to control whether to render to `textContent` or `innerHTML`
+
+### 2020-08-03
 - Some improvements made to vcl/ui/Console
 	- delete selected values
 	- clear now leaves selected values selected
