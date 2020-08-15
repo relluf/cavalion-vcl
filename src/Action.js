@@ -480,6 +480,11 @@ define(function (require) {
                 get: Function,
                 set: Function
             },
+            "on": {
+                type: Type.EVENT,
+                get: "getOnExecute",
+                set: "setOnExecute"
+            },
             "onExecute": {
                 type: Type.EVENT,
                 set: Function
