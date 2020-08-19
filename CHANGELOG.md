@@ -1,3 +1,9 @@
+### 2020-08-15 - 1.1.4
+- vcl/ui/List: Bugfix for Safari where incorrect rendering of null-values would cause a displacement of 6 pixels (or so) vertically
+ 
+>> ![image](https://user-images.githubusercontent.com/686773/90589946-f0428980-e1a4-11ea-9b8a-1784245095da.png)
+
+
 ### 2020-08-15 - 1.1.3
 - Introducing property `vcl/Action:on`
 

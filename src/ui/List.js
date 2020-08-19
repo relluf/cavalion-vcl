@@ -417,14 +417,14 @@ define(function(require) {
 				    }
 				}
 				if(value === null || value === undefined) {
-					value = "";
 				} else if(this._formatDates === true && value instanceof Date) {
 					// FIXME
 					value = this.formatDate(value);
 				}
 				
 				if(value === null || value === undefined || value === "") {
-					value = "   ";
+					// value = "   ";
+					value = column._rendering === "textContent" ? String.fromCharCode(0) : "&nbsp;";
 				} else if(value instanceof Array) {
 					// TODO (could be [string, date, null, undefined, etc])
 					if(typeof value[0] !== "object") {
