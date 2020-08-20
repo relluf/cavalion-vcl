@@ -1,3 +1,6 @@
+### 2020-08-19 - 1.1.5
+- Introducing vcl/Component.prototype.ud (and loving it!)
+
 ### 2020-08-15 - 1.1.4
 - vcl/ui/List: Bugfix for Safari where incorrect rendering of null-values would cause a displacement of 6 pixels (or so) vertically
  

@@ -713,7 +713,8 @@ define(function (require) {
         		
         		return allowAll ? all : all[0] || null;
             },
-            udown: function(selectorUp, selectorDown) {
+            ud: function(selectorUp, selectorDown) {
+            	// OMG I LOVE this function name :-D */
             	if(arguments.length === 0) {
             		return this.up();
             	}
@@ -729,6 +730,9 @@ define(function (require) {
             	var up = this.up(selectorUp);
             	return up && up.down(selectorDown);
             },
+            // udown: function() {
+            // 	return this.ud.apply(this, arguments);
+            // } //alias `#vcl-20200819-1`
 	        down: function(selector) {
 	            /*- Return the first element of a call to ::qsa with the same
 	                selector arguments or null when nothing matches. */
@@ -1486,6 +1490,9 @@ define(function (require) {
             }
         }
     });
+    
+    // alias `#vcl-20200819-1`
+    Component.prototype.udown = Component.prototype.ud;
 
     Property.registerReferencedClass(Component);
 
