@@ -228,13 +228,13 @@ define(function (require) {
             },
             
             onnodekeyup: function(evt) {
-                if(Event.eventModifiersMatch(evt, [])) {
+                if(Event.modifiersMatch(evt, [])) {
                     if(evt.keyCode === evt.KEY_F5) {
                         this._selection.forEach(function(node) {
                             node.reloadChildNodes();
                         });
                     }
-                } else if(Event.eventModifiersMatch(evt, ["alt"])) {
+                } else if(Event.modifiersMatch(evt, ["alt"])) {
                     if(evt.keyCode === evt.KEY_LEFT_ARROW) {
                         console.log("alt <-");
                         this._history.back();
