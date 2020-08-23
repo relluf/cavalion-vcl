@@ -418,6 +418,15 @@ define(function(require) {
 					this._onRenderCell = value;
 					this.propertyChanged("onRenderCell", value);
 				}
+			},
+			getOnSortValues: function() {
+				return this._onSortValues;
+			},
+			setOnSortValues: function(value) {
+				if(this._onSortValues !== value) {
+					this._onSortValues = value;
+					this.propertyChanged("onSortValues", value);
+				}
 			}
 		},
 		properties: {
@@ -473,6 +482,13 @@ define(function(require) {
 				type: Class.Type.EVENT,
 				editorInfo: {
 					defaultValue: "(function(cell, value, column, row, source, orgValue) {})"
+				}
+			},
+			"onSortValues": {
+				set: Function,
+				type: Class.Type.EVENT,
+				editorInfo: {
+					defaultValue: "(function(value1, value2) {})"
 				}
 			}
 		}
