@@ -20,6 +20,7 @@ define(function(require) {
 			_onFilterObject: null,
     		_notifications: null,
 
+			_onUpdate: null,
     		_onBusyChanged: null,
     		_onActiveChanged: null,
     		_onGetAttributeValue: null,
