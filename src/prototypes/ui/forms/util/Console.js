@@ -102,10 +102,17 @@ console.log("app.on('print', ...)");
                     }
                 }
                 if (name === "dblclick" && evt.altKey === true) {
+                    sizer.setControl(component);
+		            var consoles = me.app().qsa("vcl/ui/Console").filter(c => c.isVisible());
+                    if(consoles.length === 0) {
+                    	me.ud("#toggle-console").execute({});
+                    }
+                    consoles.forEach(_ => { 
+                    	_.getNode("input").value = ""; 
+                    	_.print(js.sf("#%d", component.hashCode()), component);
+                    });
                 } else if (name === "click" && evt.altKey === true) {
-                	
                 	sizer.setVar("meta", evt.metaKey === true);
-                	
                     if (evt.shiftKey === false) {
                         if (component instanceof Control) {
                             if (sizer._control === component) {
@@ -200,9 +207,6 @@ console.log("app.on('print', ...)");
                     {uri: uri}));
             }
 
-            /**
-             *
-             */
             function runAtServer(c, params, content) {
                 return Command.execute(c, params, content);
             }
