@@ -28,6 +28,7 @@ define(function(require) {
     		_orderBy: "",
     		_parameters: null,
     		_limit: 100,
+    		_base: 0, // `#CVLN-20200821-2`
     		_raw: false,
     		_count: true,
     		_distinct: false,
@@ -49,6 +50,14 @@ define(function(require) {
 			loaded: function() {
 			/** @overrides ../vcl/Compopnent.prototype.loaded */
 				return this.inherited(arguments);
+			},
+			getBase: function() { 
+				// `#CVLN-20200821-2`
+				return this._base;
+			},
+			setBase: function(value) {
+				// `#CVLN-20200821-2`
+				this._base = value;
 			},
 			getSize: function() {
 			/** @overrides ../data/Source.prototype.getSize */
@@ -350,7 +359,7 @@ define(function(require) {
 				var instances = res.instances;
 				var tuples = res.tuples;
 				var size = instances.length;
-				var base = page * this._limit;
+				var base = page * this._limit + this._base;
 				
 				if(res.names !== undefined) {
 					this._attributes = res.names.join(",");
