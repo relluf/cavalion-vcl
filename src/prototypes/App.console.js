@@ -1,6 +1,7 @@
 "use override";
 
 var override = require("override");
+var Event = require("util/Event");
 
 $([], {
     onLoad: function() {
@@ -13,18 +14,18 @@ $([], {
 	    		return inherited.apply(this, arguments);
     		};
     	});
-
     	return this.inherited(arguments);
     }
 }, [
-    $("vcl/Action", "toggle-console", {
+    $("vcl/Action", ("toggle-console"), {
         hotkey: `
 keyup:Ctrl+Escape|keydown:Ctrl+Escape|
 keyup:Ctrl+Shift+D|keydown:Ctrl+Shift+D|
 keyup:Alt+Shift+X|keydown:Alt+Shift+X|
 keyup:MetaCtrl+192`,
 		onLoad() {
-			this.readStorage("visible", (visible) => visible && this.execute({}));
+			// TODO #CVLN-20200822-2
+			this.readStorage("visible", (visible) => eval(visible) && this.execute({}));
 		},
         onExecute(evt) {
             var scope = this.scope();
@@ -38,22 +39,78 @@ keyup:MetaCtrl+192`,
             } else {
                 if (!scope.console.isVisible()) {
                     scope.console.show();
+                    scope['align-enabled'].setState(true);
                 } else {
+                    scope['align-enabled'].setState(false);
                     scope.console.hide();
                     focused = this.removeVar("focused");
                     if (focused && focused !== scope.console) {
                         this.setTimeout("focus", function() {
-                            console.log("setFocus", focused);
+                            // console.log("setFocus", focused);
                             focused.setFocus();
                         }, 250);
                     }
                 }
             }
-            
+
             this.writeStorage("visible", scope.console.isVisible());
             
             return this.inherited(arguments);
         }
+    }),
+    $("vcl/Action", ("align-enabled"), {
+    	enabled: "state",
+    	state: false
+    }),
+    $("vcl/Action", ("align-size-vertically"), {
+    	hotkey: "keyup:Ctrl+Alt+Down|keyup:Ctrl+Alt+Up",
+    	enabled: "parent",
+    	parent: "align-enabled",
+    	on(evt) { 
+    		var console = this.scope().console;
+    		var delta = evt.keyCode === Event.keys.KEY_UP_ARROW ? 100 : -100;
+    		var height = console.getHeight() + delta;
+    		if(console._align !== "bottom" && console._align !== "top") {
+    			console.setAlign(delta === -100 ? "bottom" : "top");
+    			height = console.vars("height") || 200;
+    		} else {
+	    		if(height < 100) {
+	    			height = 100;
+	    		} else {
+    				var cs = console._parent.getComputedStyle();
+	    			if(height > parseInt(cs.height, 10)) {
+	    				height = parseInt(cs.height, 10);
+	    			}
+	    		}
+    		}
+    		console.setHeight(height);
+    		console.vars("height", height);
+    	}
+    }),
+    $("vcl/Action", ("align-size-horizontally"), {
+    	hotkey: "Ctrl+Alt+Left|Ctrl+Alt+Right",
+    	enabled: "parent",
+    	parent: "align-enabled",
+    	on(evt) { 
+    		var console = this.scope().console;
+    		var delta = evt.keyCode === Event.keys.KEY_RIGHT_ARROW ? 100 : -100;
+    		var width = console.getWidth() + delta;
+    		if(console._align !== "left" && console._align !== "right") {
+    			console.setAlign(delta === -100 ? "left" : "right");
+    			width = console.vars("width") || 375;
+    		} else {
+	    		if(width < 100) {
+	    			width = 100;
+	    		} else {
+    				var cs = console._parent.getComputedStyle();
+	    			if(width > parseInt(cs.width, 10) - 175) {
+	    				width = parseInt(cs.width, 10) - 175;
+	    			}
+	    		}
+    		}
+    		console.setWidth(width);
+    		console.vars("width", width);
+    	}
     }),
     $(["ui/forms/util/Console"], "console", {
     	align: "bottom",
