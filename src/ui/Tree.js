@@ -11,9 +11,7 @@ define(function (require) {
     var platform = window.navigator.platform;
 
     return (Tree = Tree(require, {
-
         inherits: Panel,
-
         prototype: {
 
             '@css': {
@@ -243,6 +241,7 @@ define(function (require) {
                         this._history.forward();
                     }
                 }
+                return true;
             },
             onkeyup: function(evt) {
                 if(evt.keyCode === evt.KEY_F5) {
@@ -298,7 +297,6 @@ define(function (require) {
             }
 
         },
-
         properties: {
         	"focusable": {
         		type: Type.BOOLEAN,
@@ -311,7 +309,6 @@ define(function (require) {
                 type: Type.EVENT
             }
         }
-
     }));
 
 });
