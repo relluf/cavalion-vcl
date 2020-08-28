@@ -30,7 +30,7 @@ keyup:MetaCtrl+192`,
         onExecute(evt) {
             var scope = this.scope();
             var focused;
-
+// console.log(evt.type, {evt: evt});
             if (evt.type === "keydown") {
                 focused = require("vcl/Control").focused;
                 if (focused !== scope.console.getScope().console) {
@@ -85,6 +85,9 @@ keyup:MetaCtrl+192`,
     		}
     		console.setHeight(height);
     		console.vars("height", height);
+    		if((console = console.qs("#console")).hasClass("no-time")) { 
+    			console.removeClass("no-time"); 
+    		}
     	}
     }),
     $("vcl/Action", ("align-size-horizontally"), {
@@ -92,7 +95,7 @@ keyup:MetaCtrl+192`,
     	enabled: "parent",
     	parent: "align-enabled",
     	on(evt) { 
-    		var console = this.scope().console;
+    		var console = this.scope().console, cons = console.qs("#console");
     		var delta = evt.keyCode === Event.keys.KEY_RIGHT_ARROW ? 100 : -100;
     		var width = console.getWidth() + delta;
     		if(console._align !== "left" && console._align !== "right") {
@@ -110,6 +113,9 @@ keyup:MetaCtrl+192`,
     		}
     		console.setWidth(width);
     		console.vars("width", width);
+    		if(!(console = console.qs("#console")).hasClass("no-time")) { 
+    			console.addClass("no-time"); 
+    		}
     	}
     }),
     $(["ui/forms/util/Console"], "console", {
