@@ -7,7 +7,6 @@ define(function(require) {
 	return (Radiobutton = Radiobutton(require, {
 
 		inherits: Input,
-
 		prototype: {
 
 			'@css': {
@@ -100,9 +99,7 @@ define(function(require) {
 			}
 
 		},
-
 		properties: {
-
 			checked: {
 				type: Type.BOOLEAN,
 				set: Function

@@ -63,7 +63,7 @@ define(function(require) {
 
 			constructor: function(owner) {
 				this._rule = Stylesheet.createCssRule("width: 130px;", 5);
-				this._rule.style.setProperty("display", "none", "important");
+				// this._rule.style.setProperty("display", "none", "important");
 				//this._rule.style.setProperty("transition", "width 50ms");
 			},
 			destroy: function() {

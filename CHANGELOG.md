@@ -1,11 +1,21 @@
+### 2020-08-26 - 1.1.8
+* When Ctrl+F11 is pressed rapidly in succession, the current `#editors-tabs` is kept visible or hidden, (depending on the state before the first keypress).
+* Introducing Component.prototype.udr()
+
+### 2020-08-24 - 1.1.7
+* Fixed long standing (though not reported) bug `#CVLN-20200824-5` - console now shows when even a vcl/ui/Node is focused
+
+### 2020-08-22 - 1.1.6
+- **vcl/ui/ListColumn**: Developing sort properties
+- **prototypes**: Tweaking console usage and the Alt+Clicky-stuff
+
 ### 2020-08-19 - 1.1.5
-- Introducing vcl/Component.prototype.ud (and loving it!)
+- Introducing `vcl/Component.prototype.ud` (and loving the contrast/similarity with `up` ;-))
 
 ### 2020-08-15 - 1.1.4
-- vcl/ui/List: Bugfix for Safari where incorrect rendering of null-values would cause a displacement of 6 pixels (or so) vertically
+- **vcl/ui/List**: Bugfix for Safari where incorrect rendering of null-values would cause a displacement of 6 pixels (or so) vertically
  
 >> ![image](https://user-images.githubusercontent.com/686773/90589946-f0428980-e1a4-11ea-9b8a-1784245095da.png)
-
 
 ### 2020-08-15 - 1.1.3
 - Introducing property `vcl/Action:on`
@@ -15,7 +25,7 @@
 - Adding `rendering`-property for ListColumn to control whether to render to `textContent` or `innerHTML`
 
 ### 2020-08-03
-- Some improvements made to vcl/ui/Console
+- Some improvements made to `vcl/ui/Console`
 	- delete selected values
 	- clear now leaves selected values selected
 
