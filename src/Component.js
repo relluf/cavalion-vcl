@@ -730,6 +730,15 @@ define(function (require) {
             	var up = this.up(selectorUp);
             	return up && up.down(selectorDown);
             },
+            udr: function() {
+            	// #CVLN-20200826-1
+            	var me = this, r = null;
+            	while(r === null && me !== null) {
+            		r = me.ud.apply(me, arguments);
+            		me = me.up();
+            	}
+            	return r;
+            },
             // udown: function() {
             // 	return this.ud.apply(this, arguments);
             // } //alias `#vcl-20200819-1`
