@@ -1,8 +1,8 @@
-### 2020-08-26 - 1.1.8
+### 2020-08-26 - 1.1.7
 * When Ctrl+F11 is pressed rapidly in succession, the current `#editors-tabs` is kept visible or hidden, (depending on the state before the first keypress).
 * Introducing Component.prototype.udr()
 
-### 2020-08-24 - 1.1.7
+### 2020-08-24
 * Fixed long standing (though not reported) bug `#CVLN-20200824-5` - console now shows when even a vcl/ui/Node is focused
 
 ### 2020-08-22 - 1.1.6
