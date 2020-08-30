@@ -2,6 +2,7 @@ define(function(require) {
 
 	var Class = require("js/Class");
 	var Method = require("js/Method");
+	var Browser = require("../../util/Browser");
 	var HtmlElement = require("../../util/HtmlElement");
 	var Source = require("../../data/Source");
 	var SourceEvent = require("../../data/SourceEvent");
@@ -425,7 +426,7 @@ define(function(require) {
 				
 				if(value === null || value === undefined || value === "") {
 					// value = "   ";
-					value = column._rendering === "textContent" ? String.fromCharCode(32) : "&nbsp;";
+					value = column._rendering === "textContent" ? List.space : "&nbsp;";
 				} else if(value instanceof Array) {
 					// TODO (could be [string, date, null, undefined, etc])
 					if(typeof value[0] !== "object") {
@@ -917,6 +918,9 @@ define(function(require) {
 			}
 		},
 		statics: {
+			
+			space: String.fromCharCode(require("util/Browser").win ? 32 : 0)
+			
 
 		}
 	};
