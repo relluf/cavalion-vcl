@@ -1,3 +1,6 @@
+### 2020-08-27
+* Fixing **vcl/ui/List** rendering bug in Safari (again)
+
 ### 2020-08-26 - 1.1.7
 * When Ctrl+F11 is pressed rapidly in succession, the current `#editors-tabs` is kept visible or hidden, (depending on the state before the first keypress).
 * Introducing Component.prototype.udr()
