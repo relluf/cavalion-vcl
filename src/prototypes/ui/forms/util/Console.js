@@ -31,7 +31,7 @@ $(["ui/Form"], {
     //         } else {
     //             args.shift();
     //         }
-    //         scope.console.print.apply(scope.console, [String.format("%n - %s", sender, source)].concat(args));
+    //         scope.console.print.apply(scope.console, [js.sf("%n - %s", sender, source)].concat(args));
     //         return true;
     //     }
 
@@ -64,13 +64,21 @@ console.log("app.on('print', ...)");
 
             if (value !== null) {
                 if (value.getUri()) {
-                    content.push(value.getUri());
+                    
+                    // `#CVLN-20200904-3`
+					var root = value.isRootComponent() ? ":root" : "";
+					var uri = value.isRootComponent() ? value._uri : value.getUri();
+					var selected = value.isSelected && value.isSelected() ? ":selected" : "";
+					var disabled = value.isEnabled && value.isEnabled() ? "" : ":disabled";
+                    
+                    content.push(js.sf("%s%s%s%s", uri, root, selected, disabled));
                 }
-                content.push(String.format("%n", value));
+                content.push(js.sf("%n", value));
                 if(sizer.getVar("meta") === true) {
-                	consoles.forEach(c => c.getNode("input").value = String.format("#%d // %s ", value.hashCode(), content.join(": ")));
+                	consoles.forEach(c => c.getNode("input").value = js.sf("[#%d, \"%s\"]", 
+                		value.hashCode(), content.join("\", \"")));
                 } else {
-					consoles.forEach(c => c.getNode("input").value = String.format("#%d", value.hashCode()));
+					consoles.forEach(c => c.getNode("input").value = js.sf("#%d", value.hashCode()));
 					consoles.forEach(c => c.focus());
 				}
                 if (value._owner) {
@@ -91,7 +99,14 @@ console.log("app.on('print', ...)");
                     if (sizer._control !== null) {
                         if (name === "keydown") {
                             down = Date.now();
-                            sizer.setControl(sizer._control._parent);
+                            if(evt.altKey === true) {
+                            	var root = sizer._control.up()
+                            	sizer.setControl(root === app ? null : root);
+                            } else if(evt.shiftKey === true) {
+                            	sizer.setControl(null);
+                            } else {
+                            	sizer.setControl(sizer._control._parent);
+                            }
                         }
                         if (name === "keyup") {
                             // if(down + 750 < Date.now()) {
@@ -165,11 +180,9 @@ console.log("app.on('print', ...)");
 
 }, [
     $(["ui/controls/Toolbar"], "toolbar", {
-        css: {
-            cursor: "ns-resize"
-        },
+        css: { cursor: "ns-resize" },
         draggable: true,
-        onDraggerNeeded: function () {
+        onDraggerNeeded() {
             var control = this._owner;
             var dragger = new Dragger(this);
 
