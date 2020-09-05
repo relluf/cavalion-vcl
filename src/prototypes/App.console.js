@@ -30,7 +30,7 @@ keyup:MetaCtrl+192`,
         onExecute(evt) {
             var scope = this.scope();
             var focused;
-// console.log(evt.type, {evt: evt});
+
             if (evt.type === "keydown") {
                 focused = require("vcl/Control").focused;
                 if (focused !== scope.console.getScope().console) {
