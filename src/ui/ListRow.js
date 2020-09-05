@@ -23,6 +23,7 @@ define(function(require) {
 				">.ListCell": {
 					display: "inline-block",
 					overflow: "hidden",
+					"vertical-align": "middle",
 					"padding-left": "6px",
 					"padding-top": "5px",
 					"text-overflow": "ellipsis"
