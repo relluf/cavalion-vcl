@@ -816,12 +816,12 @@ define(function (require) {
             print: function(key, value) {
             	var c = this._owner;
             	if(c !== null) {
-            		var id = js.sf("#%d [%s]", this.hashCode(), this._name || "anonymous");
+            		var id = js.sf("#%d%s", this.hashCode(), this._name ? js.sf(" [%s]", this._name) : "");
 	            	if(arguments.length === 1) {
 	            		value = key;
 	            		key = id;
 	            	} else if(typeof key === "string" && key.charAt(0) !== "#") {
-	            		key = id + " | " + key;
+	            		key = id + " " + key;
 	            	}
 	            	return c.print.apply(c, [key, value]);
             	}
@@ -1110,9 +1110,12 @@ define(function (require) {
                 return this['@properties'][name] !== undefined;
             },
             toggle: function(name) {
-            	var value = this.defineProperties()[name].get(this);
-            	var values = {}; values[name] = !value;
-            	this.setProperties(values);
+            	var prop = this.defineProperties()[name];
+            	if(prop) {
+	            	prop.set(this, !prop.get(this));
+	            	return prop.get(this);
+            	}
+            	return undefined;
             }
         },
         statics: {
