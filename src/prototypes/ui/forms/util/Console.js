@@ -100,7 +100,7 @@ console.log("app.on('print', ...)");
                         if (name === "keydown") {
                             down = Date.now();
                             if(evt.altKey === true) {
-                            	var root = sizer._control.up()
+                            	var root = sizer._control.up();
                             	sizer.setControl(root === app ? null : root);
                             } else if(evt.shiftKey === true) {
                             	sizer.setControl(null);
@@ -207,7 +207,7 @@ console.log("app.on('print', ...)");
     ]),
     $(("vcl/ui/Console"), "console", {
         onLoad() {
-        	this.print("window.location", window.location);
+        	this.up().print("document", window.location);
         },
         onEvaluate(expr) {
             var scope = this.scope();

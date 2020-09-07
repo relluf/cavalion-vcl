@@ -1,16 +1,17 @@
-$(["ui/Form"], {
+"use js";
+
+[["ui/Form"], {
     css: {
     	// TODO refactor to be 'singleton' (iykwim)
     	"#menubar": {
 	    	"padding": "4px",
 	    	"overflow": "hidden",
 			"border-bottom": "1px solid #f0f0f0",
-		    "&.loading": "background: url(/shared/vcl/images/loading.gif) no-repeat 50% 0;",
 			".disabled": "color: gray;",
 			".right": "float: right;",
 			".{Button}": {
 				outline: "none",
-				"&:not(.right)":  "margin-right: 16px;",
+				"&:not(.right)": "margin-right: 16px;",
 				"background": "none",
 				"background-color": "transparent",
 				"border": "none",
@@ -36,14 +37,16 @@ $(["ui/Form"], {
 			".{Tab}": {
 				cursor: "pointer",
 				padding: "2px 4px 2px 4px",
-				display: "inline-block", "margin-right": "16px",
+				display: "inline-block", 
+				"margin-right": "8px",
 				"border-radius": "3px",
 				"&.selected": "background-color: rgb(56, 121, 217); color: white;",
 				"&:not(.disabled):active": {
 				    color: "red",
 				    "background-color": "#f0f0f0"
 				}
-			}
+			},
+		    "&.loading": "background: url(/shared/vcl/images/loading.gif) no-repeat 50% 50%;"
     	},
     	"#left": {
         	"#left_content": {
@@ -81,23 +84,17 @@ $(["ui/Form"], {
     	"#description": "color: gray;"
     }
 }, [
-    $("vcl/ui/Panel", "left", {
-        align: "left",
-        width: 325
-    }, [
-        $("vcl/ui/Panel", "left_content", {
-        	align: "top",
-        	autoSize: "height"
-        }, [
-	        $("vcl/ui/Element", "description", {
-	            content: "A view form consists of a panel aligned to the left " +
-	            		"and one aligned client. The client panel usually shows a menubar " +
-	            		"aligned to the top."
-	        })
-        ])
-    ]),
-    $("vcl/ui/Panel", "menubar", {
-        align: "top", autoSize: "both",
-    }),
-    $("vcl/ui/Panel", "client", { align: "client" }, [])
-]);
+    ["vcl/ui/Panel", ("left"), { align: "left", width: 325 }, [
+        ["vcl/ui/Panel", ("left_content"), { align: "top", autoSize: "height" }, [
+	        ["vcl/ui/Element", ("description"), {
+	            content: [
+	            	"A view form consists of a panel aligned to the left ",
+	            	"and one aligned client. The client panel usually shows a menubar ",
+	            	"aligned to the top."
+	            ].join("")
+	        }]
+        ]]
+    ]],
+    ["vcl/ui/Panel", ("menubar"), { align: "top", autoSize: "both" }],
+    ["vcl/ui/Panel", ("client"), { align: "client" }, []]
+]];
