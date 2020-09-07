@@ -1,12 +1,23 @@
-### 2020-08-27
-* Fixing **vcl/ui/List** rendering bug in Safari (again)
+### 2020-09-06 - 1.1.8
+* Fix: `vcl/Component.prototype.toggle()` now returns the new value
+* Finetuning `vcl/Component.prototype.print`
+* Working around `#CVLN-20200906-2`
+
+### 2020-09-04
+`#CVLN-20200904-4` √
+
+* Enhancing Alt+Clicky while clicking with Alt+Cmd held down
+* Added Shift+Escape hotkey to cancel Alt+Clicky immediately (instead of pressing Escape 20 times to reach null)
+* Fixing **vcl/ui/List** Safari rendering bug again, but this time better, in CSS, `vertical-align: middle;` did the trick :-)
 
 ### 2020-08-26 - 1.1.7
 * When Ctrl+F11 is pressed rapidly in succession, the current `#editors-tabs` is kept visible or hidden, (depending on the state before the first keypress).
 * Introducing Component.prototype.udr()
 
 ### 2020-08-24
-* Fixed long standing (though not reported) bug `#CVLN-20200824-5` - console now shows when even a vcl/ui/Node is focused
+`#CVLN-20200824-5` √
+
+* Fixed long standing (though not reported) bug where the console would not popup/showup when the hotkey was pressed while a `vcl/ui/Node`-instance was focused
 
 ### 2020-08-22 - 1.1.6
 - **vcl/ui/ListColumn**: Developing sort properties
