@@ -9,9 +9,9 @@ define(function(require) {
 		
 		inherits: Element,
 		prototype: {
-			// "@css": {
-			// 	// see Tabs
-			// },
+			"@css": {
+				// see Tabs
+			},
 
 			//_element: "li",
 			_content:
