@@ -183,6 +183,7 @@ define(function(require) {
 			updateFilter: function(notify) {
 				if(this._onFilterObject !== null && this._array !== null) {
 					var arr = [];
+					this._arr = this._array;
 					for(var i = 0; i < this._array.length; ++i) {
 						var obj = this._array[i];
 						if(this.fire("onFilterObject", [obj, i, this]) !== true) {
