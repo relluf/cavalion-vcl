@@ -700,7 +700,7 @@ define(function(require) {
 			},
 			resetColumnAutoWidth: function() {
 				for(var i = 0; i < this._columns.length; ++i) {
-					this._columns[i].setAutoWidthValue("");
+					this._columns[i].setAutoWidthValue("", true);
 				}
 				this.render();
 			},
