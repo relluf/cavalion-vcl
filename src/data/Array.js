@@ -19,7 +19,7 @@ define(function(require) {
 			_busy: false,
 			_onFilterObject: null,
     		_notifications: null,
-
+    		
 			_onUpdate: null,
     		_onBusyChanged: null,
     		_onActiveChanged: null,
@@ -182,13 +182,14 @@ define(function(require) {
 			
 			updateFilter: function(notify) {
 				if(this._onFilterObject !== null && this._array !== null) {
-					this._arr = [];
+					var arr = [];
 					for(var i = 0; i < this._array.length; ++i) {
 						var obj = this._array[i];
-						if(this.fire("onFilterObject", [obj, i]) !== true) {
-							this._arr.push(obj);
+						if(this.fire("onFilterObject", [obj, i, this]) !== true) {
+							arr.push(obj);
 						}
 					}
+					this._arr = arr;
 				} else {
 					this._arr = this._array;
 				}
