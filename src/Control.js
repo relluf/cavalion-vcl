@@ -1,4 +1,5 @@
 define(function(require) {
+	"use strict";
 
 	var Control = require("js/defineClass");
 	var Type = require("js/Type");
@@ -481,7 +482,9 @@ define(function(require) {
 			createNode: function(documentNode) {
 				this._node = documentNode.createElement(this.getElement());
 				this._node.id = this.getNodeId();
-				this._node.innerHTML = this.getInnerHtml();
+				// if(this._rendering === "innerHTML") {
+					this._node.innerHTML = this.getInnerHtml();
+				// }
 				if(this._tabIndex !== -1) {
 					this._node.tabIndex = this._tabIndex;
 				}
@@ -554,8 +557,7 @@ define(function(require) {
 				return new Dragger(this);
 			},
 			getInnerHtml: function() {
-				return this._content || (this._action ?
-				        this._action.getContent(this) : "");
+				return this._content || (this._action ? this._action.getContent(this) : "");
 			},
 			render: function() {
 			    this.fire("onRender", arguments);
@@ -570,9 +572,7 @@ define(function(require) {
 				this.layoutChanged();
 			},
 			scrollIntoView: function() {
-			/**
-			 * Makes sure that the calling node is visible by scrolling it into view when necessary.
-			 */
+			/**  Makes sure that the calling node is visible by scrolling it into view when necessary. */
 				this.nodeNeeded().scrollIntoView();
 			},
 
@@ -871,11 +871,7 @@ define(function(require) {
 			},
 
 			hasState: function(state) {
-			/**
-			 *
-			 * @param state
-			 *            {String} ControlState
-			 * @returns
+			/** @param state {String} ControlState * @returns
 			 */
 				if(typeof state === "string") {
 					state = ControlState[state];
@@ -919,11 +915,7 @@ define(function(require) {
 				}
 			},
 			clearState: function(state, update, directly) {
-			/**
-			 *
-			 * @param state
-			 *            {String} ControlState
-			 * @param update
+			/** @param state {String} ControlState * @param update
 			 *            {Boolean} optional, default = true
 			 */
 				if(typeof state === "string") {
@@ -941,10 +933,10 @@ define(function(require) {
 				}
 			},
 
-			scrollIntoView: function() {
-				this.nodeNeeded();
-				this._node.scrollIntoView();
-			},
+			// scrollIntoView: function() {
+			// 	this.nodeNeeded();
+			// 	this._node.scrollIntoView();
+			// },
 			inDocument: function() {
 				var node = this._node;
 				while(node !== null && node !== document) {
@@ -1566,10 +1558,7 @@ this._updateCalls = this._updateCalls || 0; this._updateCalls++;
 				return this._element;
 			},
 			setElement: function(value) {
-			/**
-			 *
-			 * @param value
-			 */
+			/** @param value 
 				if(this._element !== value) {
 					this._element = value;
 					this.recreateNode();
@@ -1610,11 +1599,7 @@ this._updateCalls = this._updateCalls || 0; this._updateCalls++;
 				return this._draggable;
 			},
 			setDraggable: function(value) {
-			/**
-			 *
-			 * @param value
-			 *            {Boolean}
-			 */
+			/** @param value {Boolean} */
 				if(this._draggable !== value) {
 					this._draggable = value;
 					this.update();
@@ -1627,11 +1612,7 @@ this._updateCalls = this._updateCalls || 0; this._updateCalls++;
 				return this._enabled;
 			},
 			setEnabled: function(value) {
-			/**
-			 *
-			 * @param value
-			 *            {Boolean}
-			 */
+			/** @param value {Boolean} */
 				if(this._enabled !== value) {
 					this._enabled = value;
 					this.update();
@@ -1644,11 +1625,7 @@ this._updateCalls = this._updateCalls || 0; this._updateCalls++;
 				return this._readonly;
 			},
 			setReadonly: function(value) {
-			/**
-			 *
-			 * @param value
-			 *            {Boolean}
-			 */
+			/** @param value {Boolean} */
 				if(this._readonly !== value) {
 					this._readonly = value;
 					this.update();
@@ -1669,11 +1646,7 @@ this._updateCalls = this._updateCalls || 0; this._updateCalls++;
 				return this._visible;
 			},
 			setVisible: function(value) {
-			/**
-			 *
-			 * @param value
-			 *            {Boolean}
-			 */
+			/** @param value {Boolean} */
 				if(this._visible !== value) {
 					this._visible = value;
 					// FIXME is this too heavy?
@@ -1690,11 +1663,7 @@ this._updateCalls = this._updateCalls || 0; this._updateCalls++;
 				return this._selected;
 			},
 			setSelected: function(value) {
-			/**
-			 *
-			 * @param value
-			 *            {Boolean}
-			 */
+			/** @param value {Boolean} */
 				if(this._selected !== value) {
 					if(value === true && this._groupIndex !== -1 && this._parent !== null) {
 						this._parent.selectControl(this);
@@ -1711,11 +1680,7 @@ this._updateCalls = this._updateCalls || 0; this._updateCalls++;
 				return this._groupIndex;
 			},
 			setGroupIndex: function(value) {
-			/**
-			 *
-			 * @param value
-			 *            {Number}
-			 */
+			/** @param value {Number} */
 				if(this._groupIndex !== value) {
 					this._groupIndex = value;
 				}
