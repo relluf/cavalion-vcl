@@ -1,5 +1,4 @@
 define(function(require) {
-	"use strict";
 
 	var Control = require("js/defineClass");
 	var Type = require("js/Type");
@@ -1558,7 +1557,7 @@ this._updateCalls = this._updateCalls || 0; this._updateCalls++;
 				return this._element;
 			},
 			setElement: function(value) {
-			/** @param value 
+			/** @param value */
 				if(this._element !== value) {
 					this._element = value;
 					this.recreateNode();
@@ -1593,9 +1592,7 @@ this._updateCalls = this._updateCalls || 0; this._updateCalls++;
 				}
 			},
 			getDraggable: function() {
-			/**
-			 * Property accessor
-			 */
+			/** Property accessor */
 				return this._draggable;
 			},
 			setDraggable: function(value) {
