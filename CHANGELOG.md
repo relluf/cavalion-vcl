@@ -1,3 +1,9 @@
+improving filtering
+"force autowidth when true is passed as second param"
+
+### 2020-09-08 - 1.1.10
+* Fix: `Array.prototype.getObject()` returns correct value while filtering - fixed a bug where getObject() could fail while filtering"
+
 ### 2020-09-06 - 1.1.8
 * Fix: `vcl/Component.prototype.toggle()` now returns the new value
 * Finetuning `vcl/Component.prototype.print`
