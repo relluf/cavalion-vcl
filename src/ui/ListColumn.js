@@ -91,9 +91,7 @@ define(function(require) {
 				}
 			},
 			getInnerHtml: function() {
-			/**
-			 * @overrides ../Control.prototype.getInnerHtml
-			 */
+			/** @overrides ../Control.prototype.getInnerHtml */
 				if(this._autoWidth === true) {
 					return String.format("<div class=\"autowidth%s\">%s</div>%s",
 							this._attribute !== "" ? (" " + this.getAttributeClassName()) : "",
@@ -290,7 +288,7 @@ define(function(require) {
 				return r.join(" ");
 			},
 			getCaption: function() {
-				// DEPRECATED should refactored to content or text
+				// `#CVLN-20200909-1` DEPRECATED should refactored to content or text
 			    if(this._content instanceof Array) {
 			        return String.format.apply(String, this._content);
 			    }
