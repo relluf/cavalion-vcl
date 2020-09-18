@@ -46,10 +46,15 @@ define(["js/Deferred"], function(Deferred) {
 				}
 			}
 			
-			if(typeof inherits === "string" && inherits.charAt(0) === "@") {
-				return new PropertyValue(inherits.substring(1));
+			if(typeof inherits === "string") {
+				if(inherits.charAt(0) === "@") {
+					return new PropertyValue(inherits.substring(1));
+				}
+				if(inherits.charAt(0) === "#") {
+					return $i(inherits.substring(1), properties, children);
+				}
 			}
-			
+
 			if(typeof name !== "string") {
 				children = properties;
 				properties = name;
