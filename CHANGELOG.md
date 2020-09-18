@@ -1,6 +1,10 @@
 improving filtering
 "force autowidth when true is passed as second param"
 
+### 2020-09-18 - 1.1.11
+- Fixes a bug where referencing inherited components would lead to a crash while using the (new) blocks-like-syntax of vcl/Component-resources
+- Tweaking Tabs-appearances
+
 ### 2020-09-08 - 1.1.10
 * Fix: `Array.prototype.getObject()` returns correct value while filtering - fixed a bug where getObject() could fail while filtering"
 

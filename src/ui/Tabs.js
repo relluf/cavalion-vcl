@@ -67,7 +67,7 @@ define(function(require) {
 	                "margin-left": "3px",
 	                "margin-right": "3px",
 	                
-	                "&.selected": "background-color: white; border-color: #a0a0a0;",
+	                "&.selected": "background-color:white; border-color: #a0a0a0;",// font-weight:bold;",
                     "&.selected .hashcode": "font-size: 7pt;",
                     
 	                // Euh? move this to devtools?
@@ -76,7 +76,7 @@ define(function(require) {
 					
 					"a": "color: inherit; text-decoration: none;",
 					".text": "display:inline-block;max-width:250px;text-overflow:ellipsis;overflow:hidden;",
-					".menu:not(.close)": "vertical-align:text-top;",
+					// ".menu:not(.close)": "vertical-align:text-top;",
 					".close": {
 						"vertical-align": "top",
 						"margin-left": "4px",
@@ -87,10 +87,9 @@ define(function(require) {
 							color: "black"
 						}
 					},
-					i: "display:none;margin-left:4px;", 
+					i: "display:none;margin-left:4px;padding:2px;vertical-align:top;", 
 					"&:not(.without-menu).selected i": "display:inline-block;", 
 					"i:not(:hover)": "color:silver;"
-	                
 	            }
 	    	},
     	
