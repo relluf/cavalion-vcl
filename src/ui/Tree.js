@@ -42,7 +42,7 @@ define(function (require) {
                     "&.expanded>ol": {
                     	"display": "block"
                     },
-                    "&.seperator": "border-top: 1px solid #f0f0f0; padding-top: 6px; margin-top: 6px;",
+                    "&.seperator.top": "border-top: 1px solid #f0f0f0; padding-top: 6px; margin-top: 6px;",
                     ">.selection": {
                         position: "absolute",
                         left: "0",
