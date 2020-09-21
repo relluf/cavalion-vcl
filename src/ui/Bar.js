@@ -30,7 +30,7 @@ define(["require", "js/defineClass", "./Panel"], function(require, Bar, Panel) {
 	            "&.overflowing": {
 					"padding-right": "20px", 	// width of the overflow_handler
 					">div.overflow_handler": {
-						display: "block"
+						// display: "block"
 		            },
 				}
 			},
