@@ -1,6 +1,11 @@
 improving filtering
 "force autowidth when true is passed as second param"
 
+### 2020-09-20
+- Comgitted some cosmetic changes
+- Disabled overflow-feature of `vcl/ui/Bar`, for now (_funny how some things just lay around for ages_)
+
+
 ### 2020-09-18 - 1.1.11
 - Fixes a bug where referencing inherited components would lead to a crash while using the (new) blocks-like-syntax of vcl/Component-resources
 - Tweaking Tabs-appearances
