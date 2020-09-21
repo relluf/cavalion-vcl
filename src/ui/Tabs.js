@@ -70,7 +70,7 @@ define(function(require) {
 	                "&.selected": "background-color:white; border-color: #a0a0a0;",// font-weight:bold;",
                     "&.selected .hashcode": "font-size: 7pt;",
                     
-	                // Euh? move this to devtools?
+	                // Euh? move this to cavalion-devtools?
 	                "&:not(.selected) .hashcode": "display: none;",
 					"&:not(.closeable) .close": "display: none;",
 					
