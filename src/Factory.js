@@ -521,25 +521,33 @@ define(function(require) {
 				/** @overrides http://requirejs.org/docs/plugins.html#apiload */
 				var sourceUri = Factory.makeTextUri(name);
 
-				function f(source) {
+				function instantiate(source) {
 					var factory = new Factory(parentRequire, name, sourceUri);
 					factory.load(source, function() {
 						load(factory, source);
 					});
 				}
 
-				parentRequire([sourceUri], function(source) {
-					f(source);
-				}, function(err) {
-					// Source not found, assume it...
-					var source = Component.getImplicitSourceByUri(name);
-					if(source === "$([\"\"]);") {
-						source = "$(\"vcl/Component\", \"dead-end\");";
-					}
-					//console.log("304", name, "-->", source);
-					Factory.implicit_sources[sourceUri] = source;
-					f(source);
-				});
+				function fallback() {
+					parentRequire([sourceUri], instantiate, function(err) {
+						// Source not found, assume it...
+						var source = Component.getImplicitSourceByUri(name);
+						if(source === "$([\"\"]);") {
+							source = "$(\"vcl/Component\", \"dead-end\");";
+						}
+						//console.log("304", name, "-->", source);
+						Factory.implicit_sources[sourceUri] = source;
+						instantiate(source);
+					});
+				}
+				
+				this.fetch(name)
+					.then(source => source ? instantiate(source) : fallback())
+					.catch(fallback);
+			},
+			fetch: function(name) {
+				// returns Promise; overrides which resource should be considered first
+				return new Promise((resolve, reject) => resolve(null));
 			},
 			resolveUri: function(uri) {
 				if(uri.substring(uri.length - 2, uri.length) === "<>") {
