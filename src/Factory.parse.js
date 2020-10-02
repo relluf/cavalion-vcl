@@ -43,8 +43,11 @@ define(["js/Deferred"], function(Deferred) {
 					properties = {};
 					name = "";
 					inherits = [];
+					// alert("!! really do not understant this code but now we found a case !!");
 				}
 			}
+			
+			if(inherits === "") inherits = [];
 			
 			if(typeof inherits === "string") {
 				if(inherits.charAt(0) === "@") {
