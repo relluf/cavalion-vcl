@@ -1,5 +1,8 @@
-improving filtering
-"force autowidth when true is passed as second param"
+### 2020-10-02 - 1.1.12
+- Adding `prototypes/cavalion-blocks<>`
+- Improving filtering
+- "force autowidth when true is passed as second param"
+- `["", [], {}]`
 
 ### 2020-09-20
 - Comgitted some cosmetic changes
