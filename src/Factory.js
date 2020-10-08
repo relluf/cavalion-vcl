@@ -1,5 +1,10 @@
 define(function(require) {
 
+/*- devtools/Main<arcadis>
+
+		devtools/Main<arcadis>
+		
+
 	/*-	The letters refer to specific cases in ./Component.getImplicitBasesByUri
 
 		[A] ui/entities/Query<Channel.by:a.by:b>.A.B
@@ -521,14 +526,17 @@ define(function(require) {
 				/** @overrides http://requirejs.org/docs/plugins.html#apiload */
 				var sourceUri = Factory.makeTextUri(name);
 
-				function instantiate(source) {
-					var factory = new Factory(parentRequire, name, sourceUri);
+				function instantiate(source, local) {
+					var p = "";//local ? ".skip-fetch.local" : "";
+					var factory = new Factory(parentRequire, name + p, sourceUri + p);
+// console.log("instantiate", name + p);
 					factory.load(source, function() {
 						load(factory, source);
 					});
 				}
 
 				function fallback() {
+// console.log("fallback");
 					parentRequire([sourceUri], instantiate, function(err) {
 						// Source not found, assume it...
 						var source = Component.getImplicitSourceByUri(name);
@@ -541,9 +549,19 @@ define(function(require) {
 					});
 				}
 				
+				if(name.endsWith(".skip-fetch")) {
+console.log("skip-fetch", name);
+					name = name.split("."); 
+					name.pop();
+					name = name.join(".");
+					return fallback()
+				}
+
+// console.log("fetch", name);
 				this.fetch(name)
-					.then(source => source ? instantiate(source) : fallback())
+					.then(source => source ? instantiate(source, true) : fallback())
 					.catch(fallback);
+
 			},
 			fetch: function(name) {
 				// returns Promise; overrides which resource should be considered first

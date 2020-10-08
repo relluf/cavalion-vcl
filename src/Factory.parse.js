@@ -43,20 +43,20 @@ define(["js/Deferred"], function(Deferred) {
 					properties = {};
 					name = "";
 					inherits = [];
-					// alert("!! really do not understant this code but now we found a case !!");
+					// alert("!! really do not understand this code but now we found a case !!");
 				}
 			}
-			
-			if(inherits === "") inherits = [];
 			
 			if(typeof inherits === "string") {
 				if(inherits.charAt(0) === "@") {
 					return new PropertyValue(inherits.substring(1));
 				}
 				if(inherits.charAt(0) === "#") {
-					return $i(inherits.substring(1), properties, children);
+					return $i(inherits.substring(1), name, properties, children);
 				}
 			}
+
+			if(inherits === "") inherits = [];
 
 			if(typeof name !== "string") {
 				children = properties;
