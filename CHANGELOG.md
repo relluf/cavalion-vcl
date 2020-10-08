@@ -1,3 +1,8 @@
+### 2020-10-08 - 1.1.13
+- vcl/Factory: Several fixes for Blocks-syntax in VCL-comps and for locally fetching resources while still inheriting the correct implicit base component/block (**current workaround: add .skip-fetch** `#CVLN-20201008-1`)
+- vcl/ui/List: changing default display of Array-values, limiting autoColumns to 50 columns
+- App.console: Using block-syntax, introducing `.skip-print` class for vcl/ui/Console#console-instances that needs the be "skipped" (`#todo:open`)
+
 ### 2020-10-02 - 1.1.12
 - Adding `prototypes/cavalion-blocks<>`
 - Improving filtering
