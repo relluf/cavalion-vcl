@@ -61,6 +61,7 @@ define(function(require) {
 				},
 				"&.header-invisible .{./ListHeader}": "height:0;"
 			},
+			MAX_AUTOCOLUMNS: 50,
 
 			/** @overrides ../Control.prototype */
 			_align: "client",
@@ -432,7 +433,9 @@ define(function(require) {
 					if(typeof value[0] !== "object") {
 						value = value.join("");
 					} else {
-						value = String(value.length);
+						// value = value.map(_ => js.nameOf(_)).join(", ");
+						value = js.sf("%s, ... (%d)", js.nameOf(value[0]), value.length);
+						// value = String(value.length);
 					}
 				} else {
 					value = js.sf("%n", value);
@@ -680,7 +683,8 @@ define(function(require) {
 							attributes.push(attrs[i]);
 						}
 
-						for(i = 0; i < columns.length; ++i) {
+						// TODO `#CVLN-20201004-1` deal with a lot of columns
+						for(i = 0; i < columns.length && i < this.MAX_AUTOCOLUMNS; ++i) {
 							if(columns[i]._custom === false && (
 									columns[i]._attribute === "" ||
 									attributes.indexOf(columns[i]._attribute) === -1)) {
