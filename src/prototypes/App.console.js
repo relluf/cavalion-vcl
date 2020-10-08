@@ -2,22 +2,23 @@
 
 var override = require("override");
 var Event = require("util/Event");
-
-$([], {
-    onLoad: function() {
-    	override(require("vcl/Component").prototype, "print", function(inherited) {
+    	
+override(require("vcl/Component").prototype, "print", function(inherited) {
     		return function() {
 	    		var console = this.down("vcl/ui/Console#console");
-	    		if(console) {
+	    		if(console && !console.vars("skip-print")) {
 	    			return console.print.apply(console, arguments);
 	    		}
 	    		return inherited.apply(this, arguments);
     		};
     	});
+
+["", {
+    onLoad: function() {
     	return this.inherited(arguments);
     }
 }, [
-    $("vcl/Action", ("toggle-console"), {
+    ["vcl/Action", ("toggle-console"), {
         hotkey: `
 keyup:Ctrl+Escape|keydown:Ctrl+Escape|
 keyup:Ctrl+Shift+D|keydown:Ctrl+Shift+D|
@@ -57,12 +58,12 @@ keyup:MetaCtrl+192`,
             
             return this.inherited(arguments);
         }
-    }),
-    $("vcl/Action", ("align-enabled"), {
+    }],
+    ["vcl/Action", ("align-enabled"), {
     	enabled: "state",
     	state: false
-    }),
-    $("vcl/Action", ("align-size-vertically"), {
+    }],
+    ["vcl/Action", ("align-size-vertically"), {
     	hotkey: "keyup:Ctrl+Alt+Down|keyup:Ctrl+Alt+Up",
     	enabled: "parent",
     	parent: "align-enabled",
@@ -89,8 +90,8 @@ keyup:MetaCtrl+192`,
     			console.removeClass("no-time"); 
     		}
     	}
-    }),
-    $("vcl/Action", ("align-size-horizontally"), {
+    }],
+    ["vcl/Action", ("align-size-horizontally"), {
     	hotkey: "Ctrl+Alt+Left|Ctrl+Alt+Right",
     	enabled: "parent",
     	parent: "align-enabled",
@@ -117,14 +118,14 @@ keyup:MetaCtrl+192`,
     			console.addClass("no-time"); 
     		}
     	}
-    }),
-    $(["ui/forms/util/Console"], "console", {
+    }],
+    [["ui/forms/util/Console"], "console", {
     	align: "bottom",
 	    height: 250,
 	    visible: false,
 	    vars: "parent: window;"
-    })
-]);
+    }]
+]];
     // $("vcl/Action", "toggle-server", {
     //     hotkey: "Ctrl+F2",
     //     onExecute: function() {
