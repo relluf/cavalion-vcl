@@ -391,42 +391,40 @@ define(function(require) {
 			renderCell: function(cell, row, column) {
 				var value, orgValue;
 				if(column._attribute !== "") {
-					orgValue = (value = this._source.getAttributeValue(
-					    column._attribute, row));
+					orgValue = (value = this._source.getAttributeValue(column._attribute, row));
 				}
 
-				if(column._displayFormat !== "") {
-					value = String.format(column._displayFormat, value);
-				}
-				if(column._onGetValue !== null) {
-					value = column.fire("onGetValue", [
-					        value, row, this._source]);
-				}
-				if(this._onColumnGetValue !== null) {
-				    value = this.fire("onColumnGetValue", [
-				            column, value, row, this._source]);
-				}
-				if(column._onRenderCell !== null) {
-					if(column.fire("onRenderCell", [cell, value, column, 
-						    row, this._source, orgValue]) === false) {
-						return;
+				if(column._wantsNullValues || (value !== null && value !== undefined)) {
+					if(column._displayFormat !== "") {
+						value = String.format(column._displayFormat, value);
 					}
-				}
-				if(this._onColumnRenderCell !== null) {
-				    if(this.fire("onColumnRenderCell", [cell, value, column, 
-						    row, this._source, orgValue]) === false) {
-				        return;
-				    }
-				}
-				if(value === null || value === undefined) {
-					// value = "?";
-				} else if(this._formatDates === true && value instanceof Date) {
-					// FIXME
-					value = this.formatDate(value);
+					if(column._onGetValue !== null) {
+						value = column.fire("onGetValue", [
+						        value, row, this._source]);
+					}
+					if(this._onColumnGetValue !== null) {
+					    value = this.fire("onColumnGetValue", [
+					            column, value, row, this._source]);
+					}
+					if(column._onRenderCell !== null) {
+						if(column.fire("onRenderCell", [cell, value, column, 
+							    row, this._source, orgValue]) === false) {
+							return;
+						}
+					}
+					if(this._onColumnRenderCell !== null) {
+					    if(this.fire("onColumnRenderCell", [cell, value, column, 
+							    row, this._source, orgValue]) === false) {
+					        return;
+					    }
+					}
+					if(this._formatDates === true && value instanceof Date) {
+						// FIXME
+						value = this.formatDate(value);
+					}
 				}
 				
 				if(value === null || value === undefined || value === "") {
-					// value = "   ";
 					value = column._rendering === "textContent" ? List.space : "&nbsp;";
 				} else if(value instanceof Array) {
 					// TODO (could be [string, date, null, undefined, etc])
