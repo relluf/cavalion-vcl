@@ -1186,10 +1186,11 @@ define(function (require) {
                     }
                     return null;
                 }
-
+                
                 // ui/forms/persistence/View<X>.a
                 if (keys.classes.length > 0) {
                     delete keys.classes;
+                    // keys.classes.pop();
                     return Component.getUriByKeys(keys);
                 }
 

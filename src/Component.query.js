@@ -1,5 +1,18 @@
 define(function() {
 	
+	/*- 
+		Examples:
+		
+			uri: 
+			ctor:
+			classNames: .[[classes]-]class
+				- #0.qsa("devtools/NavigatorNode.-seperator")
+				- #0.qsa("*.-favorite.-root")
+			
+	
+	
+	*/
+	
 	// var CssSelectorParser = require("CssSelectorParser");
 	
 	function CssSelectorParser() {
@@ -631,7 +644,6 @@ define(function() {
 	    return CssSelectorParser;
 	
 	}());
-	
 	
 	var PARENT_HIERARCHY_OPERATOR = "<";
 	var Component;
