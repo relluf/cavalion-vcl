@@ -86,7 +86,7 @@ $([["ui/Form"]], {
 	            "border-bottom": "1px solid gray"
 	        },
 	        // "#title_outer": "color:green;",
-	        "#title": "display: inline-block; font-size: 17pt;",
+	        "#title": "display: inline-block; font-size: 17pt; margin-right: 16px;",
 	        "#title_location": "display: inline-block; font-size: 12pt;",
 	        "#title_right": {
 	            float: "right",
