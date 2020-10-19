@@ -1,3 +1,9 @@
+### 2020-10-19 - 1.1.15
+- **vcl/Component.query**: Added 'tools/' to be implicit while mathcing uris
+
+### 2020-10-10 - 1.1.14
+- **vcl/ui/List**: Trying to avoid passing on undefined/null-values to onGetValue-handlers
+
 ### 2020-10-08 - 1.1.13
 - vcl/Factory: Several fixes for Blocks-syntax in VCL-comps and for locally fetching resources while still inheriting the correct implicit base component/block (**current workaround: add .skip-fetch** `#CVLN-20201008-1`)
 - vcl/ui/List: changing default display of Array-values, limiting autoColumns to 50 columns
