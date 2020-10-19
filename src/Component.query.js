@@ -713,7 +713,10 @@ define(function() {
     function match_uri(rule, component) {
         var uri = component._uri;//getUri();
         
-        // TODO how to solve this?
+        // TODO how to solve this in a clean manner, or is this just pure framework-code? Well even then, it needs to be centralized and documented :-p
+        if(uri.indexOf("$HOME") === 0 && (i = uri.indexOf("/cavalion-blocks/tools/")) !== -1) {
+        	uri = uri.substring(i + 23);
+        }
         if(uri.indexOf("$HOME") === 0 && (i = uri.indexOf("/cavalion-blocks/")) !== -1) {
         	uri = uri.substring(i + 17);
         }
