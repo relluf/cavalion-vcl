@@ -1267,7 +1267,11 @@ this._updateCalls = this._updateCalls || 0; this._updateCalls++;
 
 				if(this._post_update !== undefined) {
 					while(this._post_update.length > 0) {
-						this._post_update.shift()();
+						try {
+							this._post_update.shift()();
+						} catch(e) {
+							console.warn("FIX THIS");
+						}
 					}
 					if(this._post_update.length === 0) {
 						delete this._post_update;
