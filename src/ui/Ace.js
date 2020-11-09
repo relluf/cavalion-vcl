@@ -1,6 +1,14 @@
-define(["require", "js/defineClass", "ace/ace", "./Panel", "js/Type"], function(require, Ace, ace, Panel, Type) {
+define(["require", "js/defineClass", "ace/ace", "ace/commands/default_commands", "./Panel", "js/Type"], 
+function(require, Ace, ace, DefaultCommands, Panel, Type) {
     
-    // Automatically scrolling cursor into view after selection change this will be disabled in the next version set editor.$blockScrolling = Infinity to disable this message
+    // Automatically scrolling cursor into view after selection change this will be disabled in the next version 
+    // set editor.$blockScrolling = Infinity to disable this message
+
+	// Somehow this got broken Cmd+Alt+0 (really missing it, spend over 2 hours (sigh!))
+	DefaultCommands.commands[12].exec = (editor) => { 
+		editor.session.foldAll(); 
+		while(editor.session.unfold(editor.getCursorPosition(), false)); 
+	};
 
 	return (Ace = Ace(require, {
 
