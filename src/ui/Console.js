@@ -26,7 +26,12 @@ define(function(require) {
 					"background-color": "white"
 				},
 				".selected > .key": {
-					"background-color": "yellow"
+					// "background-color": "rgb(56, 121, 217)",
+					"background-color": "yellow",
+					// "font-size": "smaller",
+					// "padding": "2px 2px",
+					// "font-weight": "bold",
+					// "color": "white"
 				},
 				"font-family": "menlo, 'lucida console'",
 				"font-size": "8pt",
@@ -53,6 +58,7 @@ define(function(require) {
 						"margin-bottom": "2px"
 					},
 					"&:hover>.key": "background-color: #f0f0f0;",
+					// "&:hover.selected>.key": "background-color: rgb(56, 121, 217);",
 					"&:hover.selected>.key": "background-color: yellow;",
 					"&.expandable": {
 						">.value": "cursor: pointer;",
