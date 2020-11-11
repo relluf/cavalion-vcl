@@ -76,6 +76,7 @@ define(function(require) {
 					
 					"a": "color: inherit; text-decoration: none;",
 					".text": "display:inline-block;max-width:250px;text-overflow:ellipsis;overflow:hidden;",
+					".hashcode": "vertical-align:text-top;",
 					// ".menu:not(.close)": "vertical-align:text-top;",
 					".close": {
 						"vertical-align": "top",
