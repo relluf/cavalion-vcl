@@ -99,7 +99,7 @@ define(["js/Deferred"], function(Deferred) {
 			return {
 				name: name,
 				properties: properties || {},
-				children: mapArrFn(children || [], arguments.callee)
+				children: mapArrFn(children || [], $)//arguments.callee)
 			};
 		}
 
