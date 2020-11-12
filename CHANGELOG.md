@@ -1,10 +1,10 @@
-### 2020-11-10 - 1.0.16
+### 2020-11-10 - 1.0.15
 - **vcl/Factory.parse**: Bugfix in new syntax (was: once inherited, always inherited)
 
 ### 2020-11-03
 - **vcl/ui/Ace**: Claiming/fixing Cmd+Alt+0 again...
 
-### 2020-10-19 - 1.1.15
+### 2020-10-19
 - **vcl/Component.query**: Added 'tools/' to be implicit while matching uris
 
 ### 2020-10-10 - 1.1.14
