@@ -79,7 +79,9 @@ function(require, Ace, ace, DefaultCommands, Panel, Type) {
 			},
 			setValue: function(value) {
 				this.nodeNeeded();
-				return this._editor.session.setValue(value);
+				// hmm, maybe this should be this.)editor.setValue()?
+				// return this._editor.session.setValue(value);
+				return this._editor.setValue(value);
 			},
 			setMode: function (mode) {
 				this.getEditor().session.setMode("ace/mode/" + mode);
