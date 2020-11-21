@@ -7,7 +7,7 @@ function draw(data, options) {
 /* TODO describe usage:
 	-vars: { graph, data, options }
 */
-    var graph = this.getVar("graph");
+    var graph = this.vars("graph");
     if (graph !== undefined) {
     	try {
         	graph.destroy();
@@ -19,23 +19,23 @@ function draw(data, options) {
     this.clearTimeout("update-history");
 
     if (data === undefined) {
-        data = this.getVar("data");
+        data = this.vars("data");
         if (data === undefined) {
             return;
         }
     } else {
-        this.setVar("data", data);
+        this.vars("data", data);
     }
 
     if (options === undefined) {
-        options = this.getVar("options");
+        options = this.vars("options");
     } else {
-        this.setVar("options", options);
+        this.vars("options", options);
     }
 
     var node = this.scope().host.getNode(), me = this;
     try {
-        this.setVar("graph", new Dygraph(node, data, js.mixIn({
+        this.vars("graph", new Dygraph(node, data, js.mixIn({
             rollPeriod: 1,
             showRoller: true,
             // customBars: true,
@@ -52,13 +52,13 @@ function draw(data, options) {
 			},
 			
 			drawCallback: function(g, is_initial) {
-				var history = me.getVar("history"), scope = me.scope(), b;
+				var history = me.vars("history"), scope = me.scope(), b;
 				if(history.block) {
 					if(--history.block === 0) {
 						delete history.block;
 					}
-					scope.back.update();
-					scope.forward.update();
+					scope.history_back.update();
+					scope.history_forward.update();
 				} else {
 					me.setTimeout("update-history", function() {
 						var item = {x: g.xAxisRange(), y: g.yAxisRange()};
@@ -68,8 +68,8 @@ function draw(data, options) {
 						) {
 							history.splice(history.index + 1);
 							history.index = history.push(item) - 1;
-							scope.back.update();
-							scope.forward.update();
+							scope.history_back.update();
+							scope.history_forward.update();
 						}
 					}, 450);
 				}
@@ -85,92 +85,75 @@ function draw(data, options) {
     	this.removeVar("graph");
     }
 }
+function clear() {
+    this.clearTimeout("update-history");
+    
+    var graph = this.removeVar("graph");
+    if (graph !== undefined) {
+    	try {
+        	graph.destroy();
+    	} catch(e) {
+    		console.error(e);
+    	}
+    }
+    var history = this.vars("history");
+    history.splice(0);
+    
+    this.scope().history_back.update();
+    this.scope().history_forward.update();
+}
 
-$(["./LineChart"], {
-    vars: { 
-    	clear: function() {
-		    this.clearTimeout("update-history");
-		    
-		    var graph = this.removeVar("graph");
-		    if (graph !== undefined) {
-		    	try {
-		        	graph.destroy();
-		    	} catch(e) {
-		    		console.error(e);
-		    	}
-		    }
-		    var history = this.getVar("history");
-		    history.splice(0);
-		    
-		    this.scope().back.update();
-		    this.scope().forward.update();
-    	},
-    	draw: draw 
-    },
+[["./LineChart"], {
+    vars: { clear: clear, draw: draw, history: [] },
     onLoad: function() {
-    	// this.override({
-    	// 	setVisible: function() {
-    	// 		var r = this.inherited(arguments), me = this;
-	    //         this.update(function() {
-	    //         	me.applyVar("draw", []);
-	    //         });
-    	// 		return r;
-    	// 	}
-    	// });
-    	this.setVar("resized", true);
-    	this.setVar("history", []);
+    	this.vars("resized", true);
+    	this.vars("history", []);
     	return this.inherited(arguments);
     },
     onActivate: function() {
     	if(this.removeVar("resized") === true) {
-	    	var me = this;
-	        this.update(function() {
-	        	me.applyVar("draw", []);
-	        });
+// this.print("onActivate -> update -> draw");
+	        this.update(() => draw.apply(this, []));
     	}
     	return this.inherited(arguments);
     },
     onResize: function () {
         if (this.isVisible() === false) {
-            this.setVar("resized", true);
+// this.print("onResize -> remember");
+            this.vars("resized", true);
         } else {
-        	var me = this;
-            this.update(function() {
-            	me.applyVar("draw", []);
-            });
+// this.print("onResize -> update");
+	        this.update(() => draw.apply(this, []));
         }
         return this.inherited(arguments);
     }
 }, [
-
-	$("vcl/Action", "back", {
+	["vcl/Action", ("history_back"), {
 		enabled: false,
 		onExecute: function() {
-			var g = this._owner.getVar("graph");
-			var history = this._owner.getVar("history");
+			var g = this._owner.vars("graph");
+			var history = this._owner.vars("history");
 			var item = history[--history.index];
 			history.block = (history.block || 0) + 1;
 			g.updateOptions({dateWindow: item.x, valueRange: item.y});
 		},
 		onUpdate: function() {
-			var history = this._owner.getVar("history");
+			var history = this._owner.vars("history");
 			this.setEnabled(history.length > 0 && history.index > 0);
 		}
-	}),
-	$("vcl/Action", "forward", {
+	}],
+	["vcl/Action", ("history_forward"), {
 		enabled: false,
 		onExecute: function() {
-			var g = this._owner.getVar("graph");
-			var history = this._owner.getVar("history");
+			var g = this._owner.vars("graph");
+			var history = this._owner.vars("history");
 			var item = history[++history.index];
 			history.block = (history.block || 0) + 1;
 			g.updateOptions({dateWindow: item.x, valueRange: item.y});
 		},
 		onUpdate: function() {
-			var history = this._owner.getVar("history");
+			var history = this._owner.vars("history");
 			this.setEnabled(history.index < history.length - 1);
 		}
-	}),
-	
-	
-]);
+	}]
+]];

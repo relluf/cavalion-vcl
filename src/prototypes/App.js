@@ -23,6 +23,5 @@ $("vcl/Application", {
 				"font-size": "9pt"
 			}
 		}
-    
     }, [])
 ]);
