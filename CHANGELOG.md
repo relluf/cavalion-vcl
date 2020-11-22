@@ -1,4 +1,11 @@
-### 2020-11-10 - 1.0.15
+### 2020-11-22 - 1.1.17
+- **vcl/Component.prototype.udown**: Fix for crash when component has no owner
+- **prototypes/App**: Improving defaults
+
+### 2020-11-20 - 1.1.16
+- **vcl/ui/Ace**: Using another API to set text (hopefully no side-effects ;-))
+
+### 2020-11-10 - 1.1.15
 - **vcl/Factory.parse**: Bugfix in new syntax (was: once inherited, always inherited)
 
 ### 2020-11-03
