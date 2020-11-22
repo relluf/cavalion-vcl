@@ -1,7 +1,9 @@
-"use override";
+"use override, util/Event, console/node/vcl/Component";
 
 var override = require("override");
 var Event = require("util/Event");
+
+require("console/node/vcl/Component").initialize();
     	
 override(require("vcl/Component").prototype, "print", function(inherited) {
     		return function() {
@@ -13,11 +15,7 @@ override(require("vcl/Component").prototype, "print", function(inherited) {
     		};
     	});
 
-["", {
-    onLoad: function() {
-    	return this.inherited(arguments);
-    }
-}, [
+["", [
     ["vcl/Action", ("toggle-console"), {
         hotkey: `
 keyup:Ctrl+Escape|keydown:Ctrl+Escape|
