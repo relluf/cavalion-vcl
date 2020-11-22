@@ -719,7 +719,7 @@ define(function (require) {
             		return this.up();
             	}
             	if(arguments.length === 1) {
-        			return this.up().down(selectorUp);
+        			return this._owner ? this._owner.down(selectorUp) : null;
             		// return this.up(selectorUp.shift()).down(selectorUp.join(" "));
             	}
             	
