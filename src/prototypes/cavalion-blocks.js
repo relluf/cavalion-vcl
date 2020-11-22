@@ -1,6 +1,6 @@
 "use B";
 
-$("vcl/ui/Panel", {
+["vcl/ui/Panel", {
 	align: "client",
 	onLoad() {
 		require("B").instantiate(js.sf("%s<%s>", this.getSpecializer(), this.vars("specializer") || ""), 
@@ -8,4 +8,4 @@ $("vcl/ui/Panel", {
 				_.setParent(this); // TODO why can't this be in property decl?
 			});
 	}
-});
+}];
