@@ -1,7 +1,7 @@
-$("vcl/Application", {
+["vcl/Application", {
 	onLoad: function() {
     	var img = document.body.childNodes[0];
-    	if(img.nodeName === "IMG") {
+    	if(img && img.nodeName === "IMG") {
     		img.parentNode.removeChild(img);
     	}
     	
@@ -11,11 +11,10 @@ $("vcl/Application", {
     		document.body);
 	}
 }, [
-    $("vcl/ui/Panel", "window", { 
+    ["vcl/ui/Panel", "window", { 
     	align: "client", 
     	classes: "animated",
 		css: {
-			// "background": "-webkit-linear-gradient(top, rgb(252, 252, 252) 0%, rgb(255, 255, 255) 50%, #fafafa 100%)",
 			"font-family": "Lucida Grande, Arial, sans-serif",
 			"font-size": "9pt",
 			".{./Button}": {
@@ -23,5 +22,5 @@ $("vcl/Application", {
 				"font-size": "9pt"
 			}
 		}
-    }, [])
-]);
+    }]
+]];
