@@ -868,6 +868,12 @@ define(function(require) {
 				}
 				return this._classes_rt !== null ? this._classes_rt.indexOf(value) !== -1 : false;
 			},
+			setClass: function(classes) {
+				Array.as(classes).forEach(cls => !this.hasClass(cls) && this.addClass(cls));
+			},
+			clearClass: function(classes) {
+				Array.as(classes).forEach(cls => { while(this.hasClass(cls)) this.removeClass(cls); });
+			},
 
 			hasState: function(state) {
 			/** @param state {String} ControlState * @returns
@@ -1454,8 +1460,12 @@ this._updateCalls = this._updateCalls || 0; this._updateCalls++;
 			onmouseup: function() {
 				this.fire("onMouseUp", arguments);
 			},
-			onmouseenter: function() {},
-			onmouseleave: function() {},
+			onmouseenter: function() {
+				this.fire("onMouseEnter", arguments);
+			},
+			onmouseleave: function() {
+				this.fire("onMouseLeave", arguments);
+			},
 			ontap: function() {
 				this.fire("onTap", arguments);
 			},
