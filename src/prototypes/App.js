@@ -1,3 +1,5 @@
+"use vcl/ui/Node, vcl/ui/Button";
+
 ["vcl/Application", {
 	onLoad: function() {
     	var img = document.body.childNodes[0];

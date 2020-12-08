@@ -1,3 +1,21 @@
+### 2020-12-08 - 1.1.21
+- Refactoring App
+
+### 2020-12-04 - 1.1.20
+
+- Now firing onMouseEnter- and -Leave-events
+- **/prototypes/ui/dygraphs/Timeline**: Persisting `dateWindow` and `valueRange` during render, defaulting to 1Y on first render
+    
+### 2020-11-30 - 1.1.19
+
+* **vcl/ui/Control**: introducing mouseenter, mouseleave clear/setClass
+
+### 2020-11-27 - 1.1.18
+
+* **vcl/Control.prototype** additions:
+	* setClass: function(classes) {
+	* clearClass: function(classes) {
+
 ### 2020-11-22 - 1.1.17
 - **vcl/Component.prototype.udown**: Fix for crash when component has no owner
 - **prototypes/App**: Improving defaults
