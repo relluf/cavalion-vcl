@@ -202,6 +202,10 @@ console.log("app.on('print', ...)");
         }),
         $([["ui/controls/SizeHandle"]], "size_handle", {
             classes: "vertical",
+        	onClick() {
+        		// this.udr("#toggle-console") doesn't work...
+        		this.up().down("#toggle-console").execute({sender: this});
+	        },
             vars: { control: "@owner" }
         })
     ]),
