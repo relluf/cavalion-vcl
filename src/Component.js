@@ -735,7 +735,7 @@ define(function (require) {
             	var me = this, r = null;
             	while(r === null && me !== null) {
             		r = me.ud.apply(me, arguments);
-            		me = me.up();
+            		me = me._owner;//me.up();
             	}
             	return r;
             },
