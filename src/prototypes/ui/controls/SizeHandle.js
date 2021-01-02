@@ -1,14 +1,14 @@
-"vcl/Dragger";
+"use vcl/Dragger";
 	
-$("vcl/ui/Element", {
+[("vcl/ui/Element"), {
 	draggable: true,
 	css: {
 		position: "absolute",
-    	top: "0",
-    	right: "0",
-    	zIndex: "999999999999",
+    	right: "0", top: "0",
+    	"z-index": "999999999999",
     	"background-repeat": "no-repeat",
     	"background-position": "center",
+    	// "background-color": "rgba(155,155,155,.25)",
 		"&.horizontal": {
 	    	"background-image": "url(/shared/vcl/images/statusbarResizerHorizontal.png)",
 	    	cursor: "ew-resize",
@@ -21,20 +21,26 @@ $("vcl/ui/Element", {
         	height: "8px",
         	"margin-top": "7px",
         	width: "20px"
-		}
+		},
+		'&.left': "left: 0;",
+		'&.bottom': "bottom: 0;"  // TODO move this to some central place (#0/window)
 	},
-	onLoad: function() {
-		var control = this.getVar("control");
+	onLoad() {
+		var control = this.vars("control");
+		var scope = this.scope();
+		var alt = this.vars("control-alt");
+		
 		if(!(control instanceof require("vcl/Control"))) {
-			var scope = this.getScope();
-			this.setVar("control", scope[control] || this);
-		} else {
-			// FIXME?
-			console.log("skipped");
+			this.vars("control", scope[control] || this);
 		}
+		
+		if(alt && !(alt instanceof require("vcl/Control"))) {
+			this.vars("control-alt", scope[alt] || this);
+		}
+
 		return this.inherited(arguments);
 	},
-	onDraggerNeeded: function() {
+	onDraggerNeeded() {
 		var control = this.getVar("control");
 		var dragger = new (require("vcl/Dragger"))(this);
 		var horizontal = this.hasClass("horizontal");
@@ -61,4 +67,4 @@ $("vcl/ui/Element", {
 		});
 		return dragger;
 	}
-});
+}];
