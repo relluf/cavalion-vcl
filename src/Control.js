@@ -1009,6 +1009,12 @@ define(function(require) {
 						return false;
 				}
 			},
+			isDragging: function() {
+				/**
+				 * Returns whether the calling control is currently being dragged.
+				 */
+				return this._dragger && this._dragger._hook.isActive();
+			},
 			isEnabled: function() {
 				if(this.isDesigning()) {
 					return true;
@@ -1415,7 +1421,9 @@ this._updateCalls = this._updateCalls || 0; this._updateCalls++;
 			},
 			ondragevent: function() {},
 			ondragcancel: function() {},
-			ondragend: function() {},
+			ondragend: function() {
+				this.fire("onDragEnd", arguments);
+			}, 
 			ondragenter: function(evt) {
 				this.fire("onDragEnter", arguments);
 			},
