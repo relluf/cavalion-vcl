@@ -199,6 +199,11 @@ define(function(require) {
 	    	    control.setSelected(true);
 	    	    this.makeVisible(control);
 	    	},
+	   // 	clearSelected: function(index, s) {
+				// while((s = this.getSelectedControl(index || 1))) {
+				// 	s.setSelected(false);
+				// }
+	   // 	},
 	    	makeVisible: function(control) {
 	    		/*- this assumes horizontal scrolling only */
 	    	    control.scrollIntoView(); 
