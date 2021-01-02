@@ -47,6 +47,7 @@ $([], {
     	parent: "window",
     	autoSize: "both",
     	autoPosition: "top-left-bottom-right",
+    	classes: "glassy-overlay",
     	css: {
 	   		".right-half-size-switch": {
 				height: "15px",
@@ -59,7 +60,6 @@ $([], {
     		left: "0",
     		bottom: "40px",
     		"z-index": "20000",
-    		font: "10pt arial",
     		"pointer-events": "none",
     		".{./Element}": {
     			"pointer-events": "all",
@@ -68,12 +68,14 @@ $([], {
     				cursor: "pointer"
     			},
     			//"background-color": "rgb(47, 150, 180)",
-    			"background-color": "white",
+    			// "background-color": "gold",
     			opacity: "0.75",
     			color: "black",
-    			padding: "8px",
-    			"padding-bottom": "7px",
-    			margin: "4px",
+    			"&.glassy": {
+	    			padding: "16px 24px",
+	    			margin: "4px",
+	    			'border-radius': "15px"
+    			},
     			//"min-width": "300px",
     			"float": "right",
     			"clear": "both",
@@ -86,6 +88,7 @@ $([], {
 
         		"&.no-clear": "clear: none;",
 
+    			"&.big": "font-size: 32pt;",
     			"&.fade": {
     				opacity: "0",
     				transition: "opacity 1s ease",
