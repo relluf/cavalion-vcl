@@ -1,3 +1,9 @@
+### 2021-01-02 - @1.1.22
+- Resize handle for _`("#left-sidebar")`_ now nested within _`("#editor-tabs")`_ and also, when it's clicked, the _`("#left-sidebar")`_ will be toggled
+- Fixes some code involving drag events `#CVLN-20210102-1`
+- Improves App.toast features
+
+
 ### 2020-12-08 - 1.1.21
 - Refactoring App
 
