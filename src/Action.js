@@ -311,6 +311,8 @@ define(function (require) {
 	            /**
 	             * Sets the -hotkey-property.
 	             */
+	            value = value.replace(/Cmd\+/g, "Meta+").replace(/\+Cmd/, "+Meta");
+
                 if (this._hotkey !== value) {
                     this._hotkey = value;
 
