@@ -29,8 +29,9 @@
 			".glassy-overlay": {
 				"": "pointer-events: none; color:rgba(5,5,5,0.95);",
 				">.{./Element}": "pointer-events: auto;",
+				">.glassy:not(.no-margin)": "margin: 32px;",
 				">.glassy": {
-					"": "margin: 32px; pointer-events: auto;",
+					"": "pointer-events: auto;",
 					// "&:hover": "backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);"
 				},
 	
