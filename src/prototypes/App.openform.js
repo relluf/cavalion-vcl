@@ -1,11 +1,8 @@
 "vcl/ui/Element, vcl/ui/FormContainer";
 
-// var Fullscreen = require("../../util/Fullscreen");
-// var Element = require("vcl/ui/Element");
 var FormContainer = require("vcl/ui/FormContainer");
-// var HtmlElement = require("../util/HtmlElement");
 
-$([], {
+["", {
 	onLoad: function() {
 		var scope = this.scope(), delegate;
 		this.on({
@@ -43,7 +40,7 @@ $([], {
         }
     },
 }, [
-    $("vcl/Action", "openform_modal", {
+    [("vcl/Action"), "openform_modal", {
         onExecute: function(evt) {
 
             var app = this.getApp();
@@ -132,9 +129,9 @@ $([], {
             var containers = client.getVar("containers", false, []);
             containers.push(container);
         }
-    }),
-    $i("window", [
-        $("vcl/ui/Panel", "modal_client", {
+    }],
+    ["#window", {}, [
+        [("vcl/ui/Panel"), "modal_client", {
             css: {
                 "pointer-events": "none",
                 "visibility": "hidden",
@@ -200,6 +197,6 @@ $([], {
 	                });
 	        	}
 	        }
-        })
-    ])
-]);
+        }]
+    ]]
+]];

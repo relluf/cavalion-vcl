@@ -214,11 +214,7 @@ var Handlers = {
 	}
 };
 
-var Interfaces = {
-	
-};
-    		
-$([], {
+["", {
 	vars: {
     	"App": {
     		getState: function() {
@@ -328,12 +324,12 @@ $([], {
 			container.setFormUri(params.uri);
 			if(params.params) {
 				container.setFormParams(params.params);
+				node.setVars(params.params);
 			}
 
 			// @overrides ui/forms/Home<>
 			container.setVisible(false);
 			container.setParent(scope.client);
-
 			node.setText(params.title || "&nbsp;");
 			node.setVar("control", container);
 			node.setParent(parent || scope.tree);
@@ -386,10 +382,10 @@ $([], {
 		}
 	}
 }, [
-    $i("client", {
-		onDispatchChildEvent: Handlers["client.onDispatchChildEvent"]
-    }),
-    $i("tree", {
+    [("#client"), { 
+    	onDispatchChildEvent: Handlers["client.onDispatchChildEvent"] 
+    }],
+    [("#tree"), { 
     	css: {
     	    "margin": "8px",
     		"padding-left": "16px",
@@ -442,5 +438,5 @@ $([], {
     	},
     	onNodesNeeded: Handlers["tree.onNodesNeeded"],
     	onSelectionChange: Handlers["tree.onSelectionChange"]
-    })
-]);
+    }]
+]];

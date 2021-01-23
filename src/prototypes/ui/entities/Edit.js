@@ -1,6 +1,6 @@
-$(["ui/forms/Home"], {
+"use vcl/ui/Input";
 
-	'@require': ["vcl/ui/Input"],
+[["ui/forms/Home"], {
 
 	vars: {
 		getCaption: function(instance) {
@@ -81,7 +81,17 @@ $(["ui/forms/Home"], {
 
 }, [
 
-    $("vcl/entities/Instance", "instance", {
+	["#menubar", { visible: "always", action: "busy", state: false }, [
+        ["vcl/ui/Button", { action: "commit" }],
+        ["vcl/ui/Button", { action: "revert" }],
+        ["vcl/ui/Button", "button_refresh", { action: "refresh" }],
+        ["vcl/ui/Button", { action: "remove" }]
+	]],
+	[("#client"), [
+	    ["vcl/ui/Panel", "client_editors", { align: "client" }]
+	]],
+	
+    ["vcl/entities/Instance", ("instance"), {
     	onNotifyEvent: function(event, data) {
     		var scope = this.getScope();
 
@@ -94,45 +104,18 @@ $(["ui/forms/Home"], {
     		}
 			this._owner.render();
     	}
-    }),
-
-	$i("menubar", {
-		visible: "always",
-		action: "busy",
-		state: false
-	}, [
-        $("vcl/ui/Button", {
-            action: "commit"
-        }),
-        $("vcl/ui/Button", {
-            action: "revert"
-        }),
-        $("vcl/ui/Button", "button_refresh", {
-            action: "refresh"
-        }),
-        $("vcl/ui/Button", {
-            action: "remove"
-        })
-	]),
-
-	$i("client", {}, [
-	    $("vcl/ui/Panel", "client_editors", {
-	    	align: "client"
-	    })
-	]),
-
-	$("vcl/Action", "busy", {
+    }],
+	["vcl/Action", ("busy"), {
 		enabled: "notState",
 		visible: "state",
 		state: false
-	}),
-
-	$("vcl/Action", "dirty", {
+	}],
+	["vcl/Action", ("dirty"), {
 		enabled: "state",
 		state: false
-	}),
+	}],
 
-    $("vcl/Action", "commit", {
+    ["vcl/Action", ("commit"), {
         content: "Save",
         enabled: "parent",
         parent: "dirty",
@@ -144,8 +127,8 @@ $(["ui/forms/Home"], {
             });
         },
         top: 192
-    }),
-    $("vcl/Action", "revert", {
+    }],
+    ["vcl/Action", ("revert"), {
         content: "Revert",
         enabled: "parent",
         parent: "dirty",
@@ -155,8 +138,8 @@ $(["ui/forms/Home"], {
             scope.instance.revert();
         },
         top: 232
-    }),
-    $("vcl/Action", "remove", {
+    }],
+    ["vcl/Action", ("remove"), {
         content: "Delete",
         enabled: true,
         left: 352,
@@ -167,8 +150,8 @@ $(["ui/forms/Home"], {
             });
         },
         top: 272
-    }),
-    $("vcl/Action", "refresh", {
+    }],
+    ["vcl/Action", ("refresh"), {
         content: "Refresh",
         enabled: true,
         left: 352,
@@ -192,7 +175,7 @@ $(["ui/forms/Home"], {
 
         },
         top: 312
-    })
+    }]
 
 
-]);
+]];
