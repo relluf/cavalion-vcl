@@ -825,6 +825,7 @@ define(function (require) {
 	            	}
 	            	return c.print.apply(c, [key, value]);
             	}
+            	console.log(key, value);
             },
             
             getProxy: function() {
