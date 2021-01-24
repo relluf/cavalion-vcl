@@ -1,3 +1,6 @@
+### 2021/01/24 - 1.1.24
+- Bugfix in vcl/entities/Query - now requesting last page
+
 ### 2021/01/23 - 1.1.23
 - Hmmmz, wat een toeval?
 - Working on Graph<FilterMeting.waterstand>
