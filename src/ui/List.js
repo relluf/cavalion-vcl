@@ -418,8 +418,7 @@ define(function(require) {
 					        return;
 					    }
 					}
-					if(this._formatDates === true && value instanceof Date) {
-						// FIXME
+					if(this._formatDates === true && this.isDate(value)) {
 						value = this.formatDate(value);
 					}
 				}
@@ -446,7 +445,12 @@ define(function(require) {
 				}
 				column.autoWidth(cell.textContent, cell);
 			},
+			isDate: function(value) {
+				return (value instanceof Date) || (typeof value === "string" && 
+					value.length === 24 && value.endsWith("Z"));
+			},
 			formatDate: function(value) {
+				if(!(value instanceof Date)) value = new Date(value);
 				return String.format("%d/%02d/%02d %02d:%02d", value.getFullYear(), value.getMonth() + 1,
 						value.getDate(), value.getHours(), value.getMinutes());
 				// return String.format("%d/%02d/%d %02d:%02d", value.getDate(), value.getMonth() + 1,
