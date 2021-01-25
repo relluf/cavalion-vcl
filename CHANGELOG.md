@@ -1,3 +1,6 @@
+### 2021/01/25 - 1.1.25
+* List: Auto-formatting date-like strings (ej. yyyy-mm-ddThh:nn:ss:lllZ)"
+
 ### 2021/01/24 - 1.1.24
 - Bugfix in vcl/entities/Query - now requesting last page
 
