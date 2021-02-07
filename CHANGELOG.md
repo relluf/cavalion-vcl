@@ -1,3 +1,6 @@
+### 2021/02/07 - 1.1.26
+* Popup: Fixing `_events` being null in document hook
+
 ### 2021/01/25 - 1.1.25
 * List: Auto-formatting date-like strings (ej. yyyy-mm-ddThh:nn:ss:lllZ)"
 
