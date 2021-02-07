@@ -28,6 +28,7 @@
 					cursor: "default"
 				},
 				"&:hover": "background-color: #f0f0f0;",
+				"&.pressed": "background-color: #f0f0f0;color:red;",
 				"&:not(.disabled):active": {
 				    color: "red",
 				    "background-color": "#f0f0f0"
