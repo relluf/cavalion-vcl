@@ -5,9 +5,7 @@ define(function(require) {
 	var Popup = require("./Popup");
 
 	var PopupButton = {
-
 		inherits: Button,
-
 		prototype: {
 
 			/**
@@ -32,9 +30,6 @@ define(function(require) {
 			_pressed: false,
 			_popup: null,
 
-			/**
-			 *
-			 */
 			determineClasses: function() {
 				var classes = this.inherited(arguments);
 				if(this._pressed === true) {
@@ -42,11 +37,8 @@ define(function(require) {
 				}
 				return classes;
 			},
-
-			/**
-			 * @overrides ../Control.prototype.onclick
-			 */
 			onclick: function() {
+				/** @overrides ../Control.prototype.onclick */
 				this.setPressed(!this._pressed);
 				if(this._popup !== null) {
 					if(this._pressed === true) {
@@ -61,25 +53,22 @@ define(function(require) {
 				return this.inherited(arguments);
 			},
 
-			/**
-			 *
-			 * @param value
-			 */
 			setPressed: function(value) {
+				/**
+				 *
+				 * @param value
+				 */
 				if(this._pressed !== value) {
 					this._pressed = value;
 					this.setState("classesInvalidated", true);
 				}
 			}
 		},
-
 		properties: {
-
 			"popup": {
 				type: Popup
 			}
 		}
-
 	};
 
 	return (PopupButton = Class.define(require, PopupButton));

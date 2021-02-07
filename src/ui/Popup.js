@@ -7,18 +7,13 @@ define(function(require) {
 	var Panel = require("./Panel");
 
 	var Popup = {
-
 		inherits: Panel,
-
 		prototype: {
 
-			/**
-			 *
-			 */
 			constructor: function() {
 				var popup = this;
 
-				this._hook = new DocumentHook(null, true);
+				this._hook = new DocumentHook(undefined, true);
 				js.mixIn(this._hook, {
 
 					/**
@@ -51,19 +46,18 @@ define(function(require) {
 
 			_visible: false,
 			_autoSize: "both",
-
 			_hook: null,
 
 			_onPopup: null,
 			_onClose: null,
 
-			/**
-			 *
-			 * @param position
-			 * @param relativeTo
-			 * @param onClose
-			 */
 			popup: function(position, relativeTo, onClose) {
+				/**
+				 *
+				 * @param position
+				 * @param relativeTo
+				 * @param onClose
+				 */
 				if(!this._hook.isActive()) {
 					var p = relativeTo.clientToDocument(0, 0);
 					var cs = relativeTo.getComputedStyle();
@@ -86,10 +80,6 @@ define(function(require) {
 					this.onpopup();
 				}
 			},
-
-			/**
-			 *
-			 */
 			close: function() {
 				if(this._hook.isActive()) {
 					this._hook.release();
@@ -97,60 +87,50 @@ define(function(require) {
 					this.onclose();
 				}
 			},
-
-			/**
-			 *
-			 */
 			onpopup: function() {
+				/**
+				 *
+				 */
 				this.fire("onPopup", arguments);
 			},
-
-			/**
-			 *
-			 */
 			onclose: function() {
+				/**
+				 *
+				 */
 				this.fire("onClose", arguments);
 			},
-
-			/**
-			 *
-			 */
 			getOnPopup: function() {
+				/**
+				 *
+				 */
 				return this._onPopup;
 			},
-
-			/**
-			 *
-			 */
 			setOnPopup: function(value) {
+				/**
+				 *
+				 */
 				this._onPopup = value;
 			},
-
-			/**
-			 *
-			 */
 			getOnClose: function() {
+				/**
+				 *
+				 */
 				return this._onClose;
 			},
-
-			/**
-			 *
-			 */
 			setOnClose: function(value) {
+				/**
+				 *
+				 */
 				this._onClose = value;
 			}
 		},
-
 		properties: {
-
 			"onPopup": {
 				type: Class.Type.EVENT
 			},
-
 			"onClose": {
 				type: Class.Type.EVENT
 			}
-
 		}
 	};
 
