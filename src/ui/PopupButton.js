@@ -37,8 +37,8 @@ define(function(require) {
 				}
 				return classes;
 			},
-			onclick: function() {
-				/** @overrides ../Control.prototype.onclick */
+			ontap: function() {
+				/** @overrides ../Control.prototype.ontap */
 				this.setPressed(!this._pressed);
 				if(this._popup !== null) {
 					if(this._pressed === true) {
