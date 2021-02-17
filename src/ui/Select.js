@@ -14,16 +14,16 @@ define(function(require) {
 			_options: null,
 			_onChange: null,
 			
-			loaded: function() {
-				/*
-				 * @see ../Component.prototype.loaded
-				 */
-				if(this.hasOwnProperty("_value")) {
-					this.nodeNeeded().value = this._value;
-					delete this._value;
-				}
-				return this.inherited(arguments);
-			},
+			// loaded: function() {
+			// 	/*
+			// 	 * @see ../Component.prototype.loaded
+			// 	 */
+			// 	if(this.hasOwnProperty("_value")) {
+			// 		this.nodeNeeded().value = this._value;
+			// 		delete this._value;
+			// 	}
+			// 	return this.inherited(arguments);
+			// },
 			initializeNodes: function() {
 	            /*
 	             *  @see ../Control.prototype.initializeNodes
@@ -40,15 +40,14 @@ define(function(require) {
 	            /*
 	             *  @see ../Control.prototype.render
 	             */
-				this._node.innerHTML = (this._options || []).
-				    map(function(option) {
-    				    if(typeof option === "string") {
-        					return String.format("<option>%H</option>", option);
-    				    } else {
-    				        return String.format("<option value=\"%s\">%H</option>", 
-    				            option.value, option.content);
-    				    }
-    				}).join("");
+				this._node.innerHTML = (this._options || []).map(option => {
+				    if(typeof option === "string") {
+    					return js.sf("<option>%H</option>", option);
+				    } else {
+				        return js.sf("<option value=\"%s\">%H</option>", option.value, option.content);
+				    }
+				}).join("");
+				this._node.value = this._value;
 			},
 			onchange: function() {
 				return this.fire("onChange", arguments);
@@ -68,7 +67,8 @@ define(function(require) {
 				if(this.isLoading()) {
 					this._value = value;
 				} else {
-					this.nodeNeeded().value = value;
+					this.nodeNeeded().value = (this._value = value);
+					this.dispatch("change");
 				}
 			},
 			setOptions: function(value) {
