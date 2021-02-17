@@ -30,6 +30,7 @@ define(function (require) {
             _stateIndex: -1,
 
             _hotkey: "",
+            _hotkeyPreventsDefault: true,
             _hotkeyListeners: null,
 
             _parent: null,
@@ -339,7 +340,7 @@ define(function (require) {
                             },
                             callback: function (evt, type) {
                                 if (this.type.indexOf(type) !== -1) {
-                                    if (value !== "*") {
+                                    if (value !== "*" && me._hotkeyPreventsDefault) {
                                         evt.preventDefault(); // FIXME property?
                                     }
                                     if(me.isEnabled()) {
@@ -481,6 +482,9 @@ define(function (require) {
                 type: Type.STRING,
                 get: Function,
                 set: Function
+            },
+            "hotkeyPreventsDefault": {
+            	type: Type.BOOLEAN
             },
             "on": {
                 type: Type.EVENT,
