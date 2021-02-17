@@ -559,7 +559,11 @@ define(function(require) {
 				return this._content || (this._action ? this._action.getContent(this) : "");
 			},
 			render: function() {
-			    this.fire("onRender", arguments);
+				if(this.isVisible()) {
+			    	this.fire("onRender", arguments);
+				} else {
+					this.setState("invalidated")
+				}
 			},
 			layoutChanged: function() {
 				if(this._parent !== null) {
@@ -1123,7 +1127,7 @@ define(function(require) {
 				}
 				
 				if(this._node !== null && isVisible && this.hasState(ControlState.invalidated)) {
-					// console.log("extra render", this);
+					// console.log("extra render blocked", this);
 					this.update(this.render.bind(this));
 				}
 
@@ -1254,8 +1258,8 @@ this._updateCalls = this._updateCalls || 0; this._updateCalls++;
 
 				if(this._node !== null) {
 					if(this.hasState(ControlState.invalidated)) {
-						this.render();
 						this.clearState(ControlState.invalidated);
+						this.render();
 					}
 					if(this.hasState(ControlState.classesInvalidated)) {
 						this.applyClasses();
