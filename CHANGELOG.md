@@ -1,3 +1,11 @@
+### 2021/02/16 - 1.1.28
+- Fixes a bug where previously invalidated controls would not render upon show
+- Adds the `hotkeyPreventsDefault` property ([Action](src/:))
+- Fixes a bug where the `value` property would not always reflect the correct value ([ui/Select](src/:))
+
+### 2021/02/12 - 1.1.27
+- ...
+
 ### 2021/02/07 - 1.1.26
 * Popup: Fixing `_events` being null in document hook
 
