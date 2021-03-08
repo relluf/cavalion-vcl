@@ -1,3 +1,8 @@
+### 2021/02/16 - 1.1.29
+
+- vcl/ui/Tabs: Fixing `selectNext()` - in case nothing selected, select 0th child
+- vcl/Control: Dispatching `enabled` and `disabled`
+
 ### 2021/02/16 - 1.1.28
 - Fixes a bug where previously invalidated controls would not render upon show
 - Adds the `hotkeyPreventsDefault` property ([Action](src/:))
