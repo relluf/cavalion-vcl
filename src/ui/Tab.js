@@ -58,7 +58,7 @@ define(function(require) {
 					var app = this.app();
 					app.setTimeout("render", function() {
 						// TODO MAYOR HACK !!!
-						app.down(":root").updateChildren(true, true);
+						app.qsa(":root").forEach(c => c.updateChildren && c.updateChildren(true, true));
 					}, 500);
 				}
 				this.inherited(arguments);
