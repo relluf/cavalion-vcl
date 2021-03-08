@@ -181,7 +181,8 @@ define(function(require) {
 	    		
 	    	},
 	    	selectNext: function() {
-	    	    var index = this.getSelectedControl(1).getIndex();
+	    	    var index = this.getSelectedControl(1);
+	    	    index = index ? index.getIndex() : -1;
 	    	    if(++index === this._controls.length) {
 	    	        index = 0;
 	    	    }
