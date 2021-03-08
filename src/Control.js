@@ -1352,8 +1352,14 @@ this._updateCalls = this._updateCalls || 0; this._updateCalls++;
 			setFocus: function() {
 				this.nodeNeeded().focus();
 			},
-			enable: function() {},
-			disable: function() {},
+			enable: function() { 
+				/* implement to _enable_ the control */ 
+				this.dispatch("enabled", arguments);
+			},
+			disable: function() { 
+				/* implement to _enable_ the control */ 
+				this.dispatch("disabled", arguments)
+			},
 			focus: function() {
 	    		this.nodeNeeded().focus();
 				Control.setFocused(this);
@@ -1391,6 +1397,8 @@ this._updateCalls = this._updateCalls || 0; this._updateCalls++;
 			},
 			onselected: function() {},
 			onunselected: function() {},
+			onenabled: function() {},
+			ondisabled: function() {},
 			onkeydown: function() {
 				return this.fire("onKeyDown", arguments);
 			},
