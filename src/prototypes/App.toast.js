@@ -1,5 +1,15 @@
-$([], {
+["", {
 	onToast: function(options) {
+		
+		/*- 
+			- options:
+				- timeout: defaults to 1500, false to disable
+				- content: HTML string
+				
+			- returns a controller:
+				- element: vcl/ui/Element holding the toast
+				- remove: API to remove toast
+		*/
 
 		var Element = require("vcl/ui/Element");
 		var scope = this.getScope();
@@ -10,23 +20,19 @@ $([], {
 		var classes = options.classes || "fade";
 
 		if(options.title !== undefined) {
-			content = String.format("<b>%s</b><div>%s</div>",
-					options.title, content);
+			content = String.format("<b>%s</b><div>%s</div>", options.title, content);
 		}
 
 		elem.setContent(content);
 		elem.setParent(scope.toasts);
 		elem.addClasses(classes);
-		elem.update(function() {
-			elem.addClass("appear");
-		});
+		elem.update(() => elem.addClass("appear"));
 
 		var controller = {
 			element: elem,
-
-			remove: function(timeout_) {
-				elem.setTimeout("disappear", function() {
-					var h = elem.on("transitionend", function() {
+			remove(timeout_) {
+				elem.setTimeout("disappear", () => {
+					var h = elem.on("transitionend", () => {
 						elem.un(h);
 						elem.setParent(null);
 					});
@@ -43,7 +49,7 @@ $([], {
 	}
 }, [
     /* TODO make a seperate component, pluggable stuff */
-    $("vcl/ui/Panel", "toasts", {
+    ["vcl/ui/Panel", "toasts", {
     	parent: "window",
     	autoSize: "both",
     	autoPosition: "top-left-bottom-right",
@@ -106,12 +112,12 @@ $([], {
     				"background-image": "url(/shared/vcl/images/loading.gif)",
     				"background-position": "95% center",
     				"background-repeat": "no-repeat",
-    				"padding-right": "32px"
+    				"padding-right": "40px"
     			},
         		"&.padding-right-20px": {
         			"padding-right": "20px"
         		},
     		}
     	}
-    })
-]);
+    }]
+]];
