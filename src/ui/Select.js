@@ -15,9 +15,7 @@ define(function(require) {
 			_onChange: null,
 			
 			// loaded: function() {
-			// 	/*
-			// 	 * @see ../Component.prototype.loaded
-			// 	 */
+			// 	/* @see ../Component.prototype.loaded */
 			// 	if(this.hasOwnProperty("_value")) {
 			// 		this.nodeNeeded().value = this._value;
 			// 		delete this._value;
@@ -25,9 +23,7 @@ define(function(require) {
 			// 	return this.inherited(arguments);
 			// },
 			initializeNodes: function() {
-	            /*
-	             *  @see ../Control.prototype.initializeNodes
-	             */
+	            /*  @see ../Control.prototype.initializeNodes */
 				["cut", "paste", "change"].forEach(function(e) {
 					var k = "on" + e;
 					if(this._node[k] === null) {
@@ -37,17 +33,18 @@ define(function(require) {
 			    return this.inherited(arguments);
 			},
 			render: function() {
-	            /*
-	             *  @see ../Control.prototype.render
-	             */
-				this._node.innerHTML = (this._options || []).map(option => {
+	            /*  @see ../Control.prototype.render */
+	            var options = (this._options || []), value;
+				this._node.innerHTML = options.map(option => {
 				    if(typeof option === "string") {
+				    	if(value === undefined) value = option;
     					return js.sf("<option>%H</option>", option);
 				    } else {
+				    	if(value === undefined) value = option.value;
 				        return js.sf("<option value=\"%s\">%H</option>", option.value, option.content);
 				    }
 				}).join("");
-				this._node.value = this._value;
+				this._node.value = this._value || value;
 			},
 			onchange: function() {
 				return this.fire("onChange", arguments);
