@@ -9,7 +9,7 @@ define(function(require) {
 		prototype: {
 			'@css': {
 				display: "inline-block",
-				">input": "margin-right: 4px; vertical-align: middle; margin-top: 1px;"
+				">input": "margin-right: 4px; vertical-align: middle; margin-top: 2px;"
 			},
 
 			_element: "div",
