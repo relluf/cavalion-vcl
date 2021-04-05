@@ -1,3 +1,12 @@
+### 2021/04/03 - 1.1.31
+
+* **Select**: Fix for using string values
+* **Checkbox**: Pixeltuning
+
+### 2021/03/10 - 1.1.30
+
+* Published for veldoffice-rapportage-vcl@v147
+
 ### 2021/02/16 - 1.1.29
 
 - vcl/ui/Tabs: Fixing `selectNext()` - in case nothing selected, select 0th child
