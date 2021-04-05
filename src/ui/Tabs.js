@@ -88,9 +88,9 @@ define(function(require) {
 							color: "black"
 						}
 					},
-					i: "display:none;margin-left:4px;padding:2px;vertical-align:top;", 
-					"&:not(.without-menu).selected i": "display:inline-block;", 
-					"i:not(:hover)": "color:silver;"
+					"i.menu": "display:none;margin-left:4px;padding:2px;vertical-align:top;", 
+					"&:not(.without-menu).selected i.menu": "display:inline-block;", 
+					"i.menu:not(:hover)": "color:silver;"
 	            }
 	    	},
     	
