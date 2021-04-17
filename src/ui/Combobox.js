@@ -109,6 +109,19 @@ define(function(require) {
 
 				return r;
 			},
+			itemclick(evt) {
+				/**
+				 *
+				 */
+				evt.itemIndex = this._getItemIndex(evt.target);
+				if(org.cavalion.comp.Component.fire(this, "onItemClick", [evt]) !== false) {
+					this._selectItem(evt.target, evt);
+					this._popup.close();
+					// call setFocus on this after this callstack is finished
+					org.cavalion.comp.Component.setTimeout(this, "setFocus", 0);
+				}
+			},
+			
 			_blur() {
 				/** @overrides org.cavalion.comp.ui.Edit.prototype.blurred */
 				js.lang.Class.__inherited(this, arguments);
@@ -131,18 +144,6 @@ define(function(require) {
 			},
 			_updateSourceValue() {
 				/** @overrides org.cavalion.comp.ui.Edit.prototype._updateSourceValue */
-			},
-			itemclick(evt) {
-				/**
-				 *
-				 */
-				evt.itemIndex = this._getItemIndex(evt.target);
-				if(org.cavalion.comp.Component.fire(this, "onItemClick", [evt]) !== false) {
-					this._selectItem(evt.target, evt);
-					this._popup.close();
-					// call setFocus on this after this callstack is finished
-					org.cavalion.comp.Component.setTimeout(this, "setFocus", 0);
-				}
 			},
 			_keypressed(evt) {
 				/**
@@ -352,11 +353,46 @@ define(function(require) {
 					// Last parameter indicates a DOM node to scroll into view of the popup.
 				}
 			},
+			
+			listSourceNotifyEvent(event, data) {
+				/**
+				 *
+				 */
+				if(event === org.cavalion.data.SourceEvent.activeChanged || event === org.cavalion.data.SourceEvent.changed) {
+					this._reflectList();
+				}
+			},
+			
+			activatePopup(showAll) {
+				/**
+				 *
+				 */
+				//var node, n;
+
+				this._ensurePopup();
+				this._refreshPopup(showAll);
+				this._popup.popup("below-above", this, undefined, undefined);//, n);
+			},
+			closePopup() {
+				/**
+				 *
+				 */
+				if(this.isPopupActive()) {
+					this._popup.close();
+				}
+			},
+			
 			isIndexSelected(index) {
 				/**
 				 *
 				 */
 				return this._listIndex === index;
+			},
+			isPopupActive() {
+				/**
+				 *
+				 */
+				return this._popup !== null ? this._popup.isShowing() : false;
 			},
 			getListIndex() {
 				/**
@@ -464,38 +500,6 @@ define(function(require) {
 				}
 
 				return r;
-			},
-			listSourceNotifyEvent(event, data) {
-				/**
-				 *
-				 */
-				if(event === org.cavalion.data.SourceEvent.activeChanged || event === org.cavalion.data.SourceEvent.changed) {
-					this._reflectList();
-				}
-			},
-			activatePopup(showAll) {
-				/**
-				 *
-				 */
-				//var node, n;
-
-				this._ensurePopup();
-				this._refreshPopup(showAll);
-				this._popup.popup("below-above", this, undefined, undefined);//, n);
-			},
-			closePopup() {
-				/**
-				 *
-				 */
-				if(this.isPopupActive()) {
-					this._popup.close();
-				}
-			},
-			isPopupActive() {
-				/**
-				 *
-				 */
-				return this._popup !== null ? this._popup.isShowing() : false;
 			},
 			getListSource() {
 				/**
