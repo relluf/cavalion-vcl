@@ -1,5 +1,7 @@
 define(function(require) {
 
+// 2021/02/02: ListColumn-maxwidth feature  
+
 	var Class = require("js/Class");
 	var Method = require("js/Method");
 	var Browser = require("../../util/Browser");
@@ -381,10 +383,12 @@ define(function(require) {
 				// }
 
 				if(end > start && this._source !== null && this._source.isActive()) {
-					this.setTimeout("render", function() {
-						this._source.getObjects(this._topRow, this._topRow + vrc);
-						this._source.getObjects(start, end);
-					}.bind(this), 50);
+					this.setTimeout("render", () => {
+						if(this._source.isActive() && this._source.getSize()) {
+							this._source.getObjects(this._topRow, this._topRow + vrc);
+							this._source.getObjects(start, end);
+						}
+					}, 50);
 				}
 				this._body.render();
 			},
