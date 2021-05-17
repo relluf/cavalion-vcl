@@ -212,6 +212,9 @@ define(function(require) {
 				
 				return criteria;
 			},
+			
+			getEntity() { return this._entity; },
+			
 			requestPage: function(page_, wasBusy_) {
 			    var me = this, criteria, wasBusy = wasBusy_ || this.isBusy();
 			    var page = isNaN(page_) ? this._pageReqs.length : page_;
