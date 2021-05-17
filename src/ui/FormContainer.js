@@ -172,10 +172,10 @@ define(function (require) {
 	                        /*- loaded() was blocked, call it now */
 	                        component.loaded();
 
-                            thisObj.dispatch("formload");
+                            thisObj.dispatch("formload", {target: component});
                             component.setParams(thisObj.getFormParamsValue());
                             component.setParent(thisObj);
-                            thisObj.dispatch("formopen");
+                            thisObj.dispatch("formopen", {target: component});
                         } else if (component !== null) {
                             throw new Error(String.format("%s is not a %n (but a %n)", uri, Form,
                                 typeof component.getClass === "function" ?
