@@ -234,6 +234,9 @@ define(function(require) {
 							delete this._poppingState;
 						}
 					}
+				} else {
+					// no state, so we must decode the url, same route though, just dispatch amd the handler figure it out
+					this.dispatch("statechange", null);
 				}
 			},
 			getIcon: function() {

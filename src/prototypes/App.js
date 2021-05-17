@@ -17,13 +17,13 @@
     	align: "client", 
     	classes: "animated",
 		css: {
+			// "font-family": "SF Pro Text, SF UI Text, system-ui, Helvetica Neue, Helvetica, Lucida Grande, Arial, sans-serif",
 			"font-family": "Lucida Grande, Arial, sans-serif",
 			"font-size": "9pt",
 			".{./Button}": {
 				"font-family": "Lucida Grande, Arial, sans-serif",
 				"font-size": "9pt"
 			},
-			
 			".with-shadow": "box-shadow:rgba(0, 0, 0, 0.4) 0px 3px 14px 0px;",
 			".transparent": "background-color:transparent;",
 			".glassy-overlay": {
@@ -51,7 +51,6 @@
 					">.text>img": "width:20px;height:20px;"
 				}
 			}
-			
 		}
     }]
 ]];

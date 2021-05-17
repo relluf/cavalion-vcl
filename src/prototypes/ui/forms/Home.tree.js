@@ -158,7 +158,7 @@ var Handlers = {
 		var scope = this.getScope();
 		var node = selection[0], control, caption = [];
 
-		this.getApp().pushState();
+		this.app().pushState();
 		this._owner.getVar("caption", false, this._owner._caption);
 
 		/*- Gather current path */

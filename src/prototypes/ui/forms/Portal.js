@@ -446,10 +446,10 @@ $([["ui/Form"]], {
         $("vcl/ui/Tabs", "tabs", {
         	align: "bottom",
             onChange: function (newTab, oldTab) {
-                if (this.getVar("passed") === undefined) {
-                    this.setVar("passed", true);
+                if (this.vars("passed") === undefined) {
+                    this.vars("passed", true);
                 } else {
-                    this.getApp().pushState();
+                    this.app().pushState();
                 }
             }
         })
