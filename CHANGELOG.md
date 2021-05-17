@@ -1,3 +1,11 @@
+### 2021/05/16 - 1.1.33
+
+* Working on reflecting app state in url and vice versa
+
+### 2021/05/05 - 1.1.32
+
+* **List**: Fix for rendering array without objects
+
 ### 2021/04/03 - 1.1.31
 
 * **Select**: Fix for using string values
