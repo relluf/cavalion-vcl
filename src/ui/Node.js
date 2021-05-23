@@ -35,13 +35,13 @@ define(function(require) {
 			_onExpand: null,
 			_onExpanded: null,
 			
-			laoded: function() {
-				var r = this.inherited(arguments);
-				if(this._expanded === true) {
-					this.childNodesNeeded();
-				}
-				return r;
-			},
+			// loaded: function() {
+			// 	var r = this.inherited(arguments);
+			// 	if(this._expanded === true) {
+			// 		this.childNodesNeeded();
+			// 	}
+			// 	return r;
+			// },
 
 			createNode: function() {
 				/** @overrides ../Component.prototype.loaded */
@@ -98,12 +98,31 @@ define(function(require) {
 			},
 			render: function() {
 				/** @overrides ../Control.prototype.render */
-				if(this._text instanceof Array) {
-					this._nodes.text.innerHTML = String.format.apply(String, this._text);
+				var tree = this.getTree(), text = this._text;
+				if(tree) {
+					var evt = { 
+						detail: { 
+							text: this._text, 
+							nodes: this._nodes, 
+							node: this._node 
+						},
+						target: this 
+					};
+					if((tree.dispatch("rendernode", evt)) === true) {
+						return;
+					}
+				}
+				
+				if(text instanceof Array) {
+					this._nodes.text.innerHTML = String.format.apply(String, text);
 				} else if(this._textReflects === "innerHtml") {
-					this._nodes.text.innerHTML = this._text;
+					this._nodes.text.innerHTML = text;
 				} else {
-					this._node.text = String.format("%H", this._text);
+					this._nodes.text.textContent = text;
+				}
+				
+				if(this._icon) {
+					this._nodes.icon.style.backgroundImage = js.sf("url(%s)", this._icon);
 				}
 			},
 
@@ -182,7 +201,7 @@ define(function(require) {
 			ondblclick: function(evt) {
 				/** @overrides ../Control.prototype.ondblclick */
 				var r = this.inherited(arguments);
-				if(r !== false && this.isExpandable()) {
+				if(r !== false && this.isExpandable() && evt.shiftKey !== true) {
 					if(this._expanded === true) {
 						this.dispatch("collapse", evt);
 					} else {
@@ -272,6 +291,19 @@ define(function(require) {
 					this.textChanged(this._text, value[1]);
 				}
 			},
+			getIcon: function() {
+				if(this.isDesigning()) {
+					return this._icon || this._name;
+				}
+				return this._icon;
+			},
+			setIcon: function(value) {
+				if(this._icon !== value) {
+					value = [value, this._icon];
+					this._icon = value[0];
+					this.setState("invalidated", true);
+				}
+			},
 			
 			expand: function() {
 				this.setExpanded(true);
@@ -345,6 +377,10 @@ define(function(require) {
 		},
 		properties: {
 			"text": {
+				set: Function,
+				type: Type.STRING
+			},
+			"icon": {
 				set: Function,
 				type: Type.STRING
 			},

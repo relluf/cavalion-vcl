@@ -124,11 +124,16 @@ define(function (require) {
                 }
             },
 
+            /** @overrides ../Control.prototype */
+			_executesAction: "onNodeDblClick",
+
+            /** @overrides ./Panel.prototype */
             _align: "client",
-            /** @overrides ./Panel.prototype._focusable */
             _focusable: true,
+            
             _onSelectionChange: null,
             _onNodesNeeded: null,
+            _onNodeRender: null,
             _selection: [],
             _element: "ol",
             
@@ -180,7 +185,7 @@ define(function (require) {
                 var r = this.inherited(arguments);
                 if (r !== false && component instanceof Node && component.isEnabled()) {
                     if (name === "keyup") {
-                        r = this.onnodekeyup(evt);
+                        r = this.do_keyup(evt);
                     } else if (name === "click") {
                         var rect = HtmlElement.getAbsoluteRect(component._nodes.icon);
                         if(rect.left < evt.clientX && 
@@ -225,13 +230,49 @@ define(function (require) {
 			    node.scrollTop -= (top - pos.top);
             },
             
-            onnodekeyup: function(evt) {
+            do_keyup: function(evt) {
                 if(Event.modifiersMatch(evt, [])) {
                     if(evt.keyCode === evt.KEY_F5) {
-                        this._selection.forEach(function(node) {
-                            node.reloadChildNodes();
-                        });
-                    }
+                        this.refresh();
+                    } else if(evt.keyCode === 13 && this._selection.length) {
+						if(this._action && this._action.isEnabled() && this._executesAction === "onNodeDblClick") {
+							this._action.execute(evt, this);
+						}
+					} else if(evt.keyCode === 37) { // left
+						this._selection.forEach(node => node.collapse());
+						evt.preventDefault();
+					} else if(evt.keyCode === 39) { // right
+						this._selection.forEach(node => 
+							node.isExpandable() && node.expand());
+						evt.preventDefault();
+					} else if(evt.keyCode === 38) { // up
+						if(this._selection.length === 1) {
+							if(this._selection[0].getIndex() === 0) {
+								var parent = this._selection[0]._parent;
+								if(parent !== this) this.setSelection([parent]);
+							}
+						}
+						
+						this.setSelection(this._selection.map(
+							node => node._parent._controls[node.getIndex() - 1] 
+								|| node));
+						evt.preventDefault();
+					} else if(evt.keyCode === 40) { // down
+						if(this._selection.length === 1) {
+							if(this._selection[0].isExpanded()) {
+								this.setSelection([this._selection[0]._controls[0]]);
+							}
+						}
+					
+						if(!this._selection.length && this._controls.length) {
+							this.setSelection([this._controls[0]]);
+						} else {
+							this.setSelection(this._selection.map(
+								node => node._parent._controls[node.getIndex() + 1] 
+									|| node));
+						}
+						evt.preventDefault();
+					}
                 } else if(Event.modifiersMatch(evt, ["alt"])) {
                     if(evt.keyCode === evt.KEY_LEFT_ARROW) {
                         console.log("alt <-");
@@ -243,12 +284,40 @@ define(function (require) {
                 }
                 return true;
             },
+            
+            onnodesneeded: function (parent) {
+                return this.fire("onNodesNeeded", [parent]);
+            },
+            onnoderender: function(evt) {
+                return this.fire("onNodeRender", [evt]);
+            },
             onkeyup: function(evt) {
-                if(evt.keyCode === evt.KEY_F5) {
-                	this.refresh();
-                }
+                // this.do_keyup(evt);
                 return this.inherited(arguments);
             },
+			onkeydown: function(evt) {
+				/** @overrides ../Control.prototype.onkeydown */
+				var r = this.inherited(arguments);
+				if(r !== false) {
+					if(evt.keyCode === 13 && this._selection.length) {
+						if(this._action && this._action.isEnabled() && this._executesAction === "onNodeDblClick") {
+							this._action.execute(evt, this);
+						}
+					} else if(evt.keyCode === 39) { // right
+						this.getSelection().forEach(n => n.isExpandable() && n.expand());
+					} else if(evt.keyCode === 38) { // up
+						this.setSelection(this.getSelection().map(function(node) {
+							return node._parent._controls[node.getIndex() - 1] || node;
+						}));
+					} else if(evt.keyCode === 40) { // down
+						this.setSelection(this.getSelection().map(function(node) {
+							return node._parent._controls[node.getIndex() + 1] || node;
+						}));
+					}
+				}
+				return r;
+			},
+
             onclick: function (evt) {
             /**
              * @overrides ../Control.prototype.onclick
@@ -261,9 +330,6 @@ define(function (require) {
             },
             onselectionchange: function () {
                 return this.fire("onSelectionChange", [this.getSelection()]);
-            },
-            onnodesneeded: function (parent) {
-                return this.fire("onNodesNeeded", [parent]);
             },
             
             getSelection: function () {
@@ -298,7 +364,10 @@ define(function (require) {
 
         },
         properties: {
-        	"focusable": {
+			"executesAction": {
+				type: ["No", "onClick", "onNodeDblClick"]
+			},
+           	"focusable": {
         		type: Type.BOOLEAN,
         		set: Function
         	},
@@ -306,6 +375,9 @@ define(function (require) {
                 type: Type.EVENT
             },
             "onNodesNeeded": {
+                type: Type.EVENT
+            },
+            "onNodeRender": {
                 type: Type.EVENT
             }
         }
