@@ -1,3 +1,8 @@
+### 2021/05/16 - 1.1.34
+
+* Introducing new properties `vcl/ui/Tree:onNodeRender` and `vcl/ui/Node:icon`
+* The event `dblclick` now only expands tree nodes when Shift is not held down
+
 ### 2021/05/16 - 1.1.33
 
 * Working on reflecting app state in url and vice versa
@@ -45,7 +50,6 @@
 - Resize handle for _`("#left-sidebar")`_ now nested within _`("#editor-tabs")`_ and also, when it's clicked, the _`("#left-sidebar")`_ will be toggled
 - Fixes some code involving drag events [`#CVLN-20210102-1`](issue:)
 - Improves App.toast features
-
 
 ### 2020-12-08 - 1.1.21
 - Refactoring App
