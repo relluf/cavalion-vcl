@@ -321,12 +321,17 @@ var Handlers = {
 				}
 			});
 			node.addClass("closeable");
-
+			
 			var container = new FormContainer(node);
 			container.setFormUri(params.uri);
 			if(params.params) {
 				container.setFormParams(params.params);
 				node.setVars(params.params);
+			}
+
+			if(params.path) {
+				node.print("varring path", params.path);
+				node.vars("path", params.path);
 			}
 
 			// @overrides ui/forms/Home<>

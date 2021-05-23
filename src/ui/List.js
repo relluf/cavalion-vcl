@@ -928,10 +928,7 @@ define(function(require) {
 			}
 		},
 		statics: {
-			
 			space: String.fromCharCode(require("util/Browser").win ? 32 : 0)
-			
-
 		}
 	};
 

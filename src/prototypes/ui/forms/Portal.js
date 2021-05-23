@@ -13,7 +13,7 @@ var Component = require("vcl/Component");
 				- wordt gedaan door open_form (Factory?)
 */	
 
-$([["ui/Form"]], {
+[["ui/Form"], {
     css: {
 		"#tabs": {
 	        "padding-top": "2px",
@@ -161,7 +161,7 @@ $([["ui/Form"]], {
             }]
         }
     },
-    onLoad: function () {
+    onLoad() {
         var scope = this.getScope();
         var forms = this.getVar("ui/forms/Portal.forms") || [];
 
@@ -176,6 +176,10 @@ $([["ui/Form"]], {
         this.override({
             setCaption: function (value) {
             	this.setTimeout("updateCaption", function() {
+            		// if(value.indexOf("<i") === 0) {
+            		// 	// alert(value);
+            		// 	// value = value.substring(value.indexOf("</i>") + 5);
+            		// }
 	                document.title = String.format("%s", value);
             	}, 250);
                 return this.inherited(arguments);
@@ -191,23 +195,23 @@ $([["ui/Form"]], {
         return this.inherited(arguments);
     }
 }, [
-    $("vcl/Action", "go_back", {
+    ["vcl/Action", ("go_back"), {
         content: "&#9664;",
         enabled: false,
-        onExecute: function () {
+        on: function () {
             window.history.back();
         }
-    }),
-    $("vcl/Action", "go_forward", {
+    }],
+    ["vcl/Action", ("go_forward"), {
         content: ">",
         enabled: false,
-        onExecute: function () {
+        on: function () {
             window.history.forward();
         }
-    }),
-    $("vcl/Action", "go_next_tab", {
+    }],
+    ["vcl/Action", ("go_next_tab"), {
         hotkey: "keydown:MetaCtrl+32|keyup:MetaCtrl+32|keydown:Shift+MetaCtrl+32|keyup:Shift+MetaCtrl+32",
-        onExecute: function (evt) {
+        on: function (evt) {
             var scope = this.getScope();
 
             if (evt.type === "keyup" && evt.keyCode === 32) { // && evt.altKey === false) {
@@ -240,10 +244,9 @@ $([["ui/Form"]], {
                 }
             }
         }
-    }),
-    $("vcl/Action", "update_location", {
-        left: 96,
-        onExecute: function (evt, sender) {
+    }],
+    ["vcl/Action", ("update_location"), {
+        on: function (evt, sender) {
             var scope = this.getScope();
             var tab = scope.tabs.getSelectedControl(1);
             var portalCaption = this.getVar("caption", false, this._owner._caption); //this._owner.getPropertyValue("caption");
@@ -261,21 +264,10 @@ $([["ui/Form"]], {
                 }
             }
             scope.title_location.setContent(tab !== null ? tab.getText() : "&nbsp;");
-        },
-        top: 272
-    }),
-    $i("form_close", {
-        top: 112
-    }),
-    $i("url_state_push", {
-        top: 152
-    }),
-    $i("url_state_pop", {
-        top: 192
-    }),
-    $("vcl/Action", "open_form", {
-        left: 96,
-        onExecute: function onExecute(uri, options) {
+        }
+    }],
+    ["vcl/Action", ("open_form"), {
+        on(uri, options) {
         	/** options: 
         	 *		- caption
         	 *		- text
@@ -401,57 +393,56 @@ $([["ui/Form"]], {
             tab._update();
             return tab;
         },
-        top: 232
-    }),
-    $("vcl/ui/Panel", "top", {
+    }],
+    ["vcl/ui/Panel", ("top"), {
         align: "top",
         classes: "single",
         autoSize: "height"
     }, [
-        $("vcl/ui/Group", "top_inner", {}, [
-            $("vcl/ui/Group", "title_outer", {}, [
-                $("vcl/ui/Group", "title_inner", {}, [
-                    $("vcl/ui/Group", "title_browse", {}, [
-                        $("vcl/ui/Element", "title_back", {
+        ["vcl/ui/Group", ("top_inner"), {}, [
+            ["vcl/ui/Group", ("title_outer"), {}, [
+                ["vcl/ui/Group", ("title_inner"), {}, [
+                    ["vcl/ui/Group", ("title_browse"), {}, [
+                        ["vcl/ui/Element", ("title_back"), {
                             action: "go_back"
-                        }),
-                        $("vcl/ui/Element", "title_forward", {
+                        }],
+                        ["vcl/ui/Element", ("title_forward"), {
                             action: "go_forward",
                             visible: false
-                        })
-                    ]),
-                    $("vcl/ui/Element", "title", {
+                        }] 
+                    ]],
+                    ["vcl/ui/Element", ("title"), {
                         content: "Application Title Here"
-                    }),
-                    $("vcl/ui/Group", "title_right", {}, [
-                        $("vcl/ui/Element", "title_username", {
+                    }],
+                    ["vcl/ui/Group", ("title_right"), {}, [
+                        ["vcl/ui/Element", ("title_username"), {
                             content: "user@domain.com"
-                        }),
-                        $("vcl/ui/Element", "title_signout", {
+                        }],
+                        ["vcl/ui/Element", ("title_signout"), {
                             content: "Sign Out",
                             classes: "link"
-                        })
-                    ])
-                ]),
-                $("vcl/ui/Group", "title_sub", {}, [
-                    $("vcl/ui/Element", "title_location", {
+                        }] 
+                    ]]
+                ]],
+                ["vcl/ui/Group", "title_sub", {}, [
+                    ["vcl/ui/Element", ("title_location"), {
                         content: "Location"
-                    }),
-                    $("vcl/ui/Element", "title_workspace", {
-                        content: "Customer",
-                    })
-                ])
-            ]),
-        ]),
-        $("vcl/ui/Tabs", "tabs", {
+                    }],
+                    ["vcl/ui/Element", ("title_workspace"), {
+                        content: "Customer"
+                    }] 
+                ]]
+            ]],
+        ]],
+        ["vcl/ui/Tabs", ("tabs"), {
         	align: "bottom",
-            onChange: function (newTab, oldTab) {
+            onChange(newTab, oldTab) {
                 if (this.vars("passed") === undefined) {
                     this.vars("passed", true);
                 } else {
                     this.app().pushState();
                 }
             }
-        })
-    ])
-]);
+        }]
+    ]]
+]];
