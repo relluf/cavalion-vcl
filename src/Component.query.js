@@ -728,7 +728,8 @@ define(function() {
         if(rule.ctor === "*") {
             return true;
         }
-        return component.constructor === rule.ctor;
+        return component.constructor === rule.ctor; // TODO
+        // return (component.constructor === rule.ctor) || component.constructor instanceof rule.ctor;
     }
     function match_classNames(rule, component) {
     	Component = Component || require("vcl" + "/Component");
@@ -868,6 +869,7 @@ define(function() {
             return match(rule, component._owner, undefined, context);
         }
         
+        
         return component !== null &&
             (!rule.uri || match_uri(rule, component)) &&
             (!rule.ctor || match_ctor(rule, component)) &&
@@ -879,6 +881,7 @@ define(function() {
     function parse(selector) {
         var parser = new CssSelectorParser();
         parser.registerNestingOperators(">");
+        parser.registerNestingOperators("~");
         parser.registerNestingOperators(PARENT_HIERARCHY_OPERATOR);
         
         tree = parser.parse(selector

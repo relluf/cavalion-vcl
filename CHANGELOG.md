@@ -1,3 +1,10 @@
+### 2021/06/08 - 1.1.35
+
+* Developing [`#VA-20201218-3`]()
+* Workaround for use of font-awesome in location
+* Improving handling `prototypes/ui/forms/util/Console` via mouse and keyboard
+* Still developing `origin`-property for [vcl/ui/Popup]()
+
 ### 2021/05/16 - 1.1.34
 
 * Introducing new properties `vcl/ui/Tree:onNodeRender` and `vcl/ui/Node:icon`

@@ -5,7 +5,7 @@ define(function(require) {
 	var Element = require("./Element");
 
 	var Tab = {
-		SELECT_TIMEOUT_MS: 128,
+		SELECT_TIMEOUT_MS: 0,
 		
 		inherits: Element,
 		prototype: {

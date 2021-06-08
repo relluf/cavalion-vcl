@@ -18,6 +18,10 @@ $(["./App.openform.toast"], {
         var scope = this.getScope();
         var form = scope.client._form;
         if(form) {
+        	// var r = form.applyVar("App.getState", [], "silent");
+        	// this.print("onGetState", r);
+        	// return r;
+        	
             return form.applyVar("App.getState", [], "silent");
         }
         return {
@@ -29,7 +33,6 @@ $(["./App.openform.toast"], {
     onSetState: function(state) {
         state && state.restore && state.restore(state);
     }
-
 }, [
     $i("window", [
         $("vcl/ui/FormContainer", "client", {
