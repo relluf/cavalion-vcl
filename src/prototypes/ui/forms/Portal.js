@@ -15,6 +15,7 @@ var Component = require("vcl/Component");
 
 [["ui/Form"], {
     css: {
+    	// TODO refactor to higher level (one inmem-css-decl please)
 		"#tabs": {
 	        "padding-top": "2px",
 	        "margin-left": "32px",
@@ -176,10 +177,10 @@ var Component = require("vcl/Component");
         this.override({
             setCaption: function (value) {
             	this.setTimeout("updateCaption", function() {
-            		// if(value.indexOf("<i") === 0) {
-            		// 	// alert(value);
-            		// 	// value = value.substring(value.indexOf("</i>") + 5);
-            		// }
+            		if(value.indexOf("<i") === 0) {
+            			// alert(value);
+            			value = value.substring(value.indexOf("</i>") + 5);
+            		}
 	                document.title = String.format("%s", value);
             	}, 250);
                 return this.inherited(arguments);
