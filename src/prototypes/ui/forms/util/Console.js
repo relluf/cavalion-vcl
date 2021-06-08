@@ -12,7 +12,13 @@ var Deferred = require("js/Deferred");
 var JsObject = require("js/JsObject");
 var Dragger = require("vcl/Dragger");
 
-$(["ui/Form"], {
+
+var deselect = () => {
+	window.getSelection && window.getSelection().removeAllRanges();
+	document.selection && document.selection.empty();
+};
+
+[["ui/Form"], {
     activeControl: "console",
     align: "bottom",
     height: 250,
@@ -38,29 +44,26 @@ $(["ui/Form"], {
     //     return this.inherited(arguments);
     // },
     onActivate() {
-        this._vars.sizer.setControl(null);
+        // this._vars.sizer.setControl(null);
     },
     onLoad() {
-        var me = this;
-        var scope = this.getScope();
-        var sizer = this.setVar("sizer", new Sizer(this));
+        var me = this, scope = this.scope();
+        var sizer = this.vars("sizer", new Sizer(this));
 
-        var app = this.getApp();
-        app.on("print", function() {
-console.log("app.on('print', ...)");
-            scope.console.print.apply(scope.console, arguments);
-        });
-        
-        var parent = this.scope()[this.getVar("parent")];
+        var parent = this.scope()[this.vars("parent")];
         if(parent) { this.setParent(parent); }
 
         // FIXME
         document.body.style.overflow = "hidden";
 
         sizer.on("setControl", function (value) {
-            var content = [];
             var consoles = this.app().qsa("vcl/ui/Console").filter(c => c.isVisible());
-            //[scope.console];
+            var content = [];
+
+            if(consoles.length === 0) {
+            	me.show();
+            	consoles = [scope.console];
+            }
 
             if (value !== null) {
                 if (value.getUri()) {
@@ -90,7 +93,7 @@ console.log("app.on('print', ...)");
 
         var down;
         // FIXME overriding dispatcher, Application.prototype.dispatchEvent(...)
-        app._dispatcher.override({
+        this.app()._dispatcher.override({
             dispatch: function (component, name, evt) {
 				// if(name.indexOf("key") === 0) {
 				// 	console.log(evt.keyCode, name, {ctrl: evt.ctrlKey, alt: evt.altKey, shift: evt.shiftKey, meta: evt.metaKey});
@@ -116,52 +119,58 @@ console.log("app.on('print', ...)");
                         }
                     }
                 }
-                if (name === "dblclick" && evt.altKey === true) {
-                    sizer.setControl(component);
-		            var consoles = me.app().qsa("vcl/ui/Console").filter(c => c.isVisible());
-                    if(consoles.length === 0) {
-                    	me.ud("#toggle-console").execute({});
-                    }
-                    consoles.forEach(_ => { 
-                    	_.getNode("input").value = ""; 
-                    	_.print(js.sf("#%d", component.hashCode()), component);
-                    });
-                } else if (name === "click" && evt.altKey === true) {
-                	sizer.setVar("meta", evt.metaKey === true);
-                    if (evt.shiftKey === false) {
-                        if (component instanceof Control) {
-                            if (sizer._control === component) {
-                                component = null;
-                            	//me.getScope().console.setFocus();
-                            }
-                            sizer.setControl(component);
-                            return false;
-                        }
-                    } else {
-                        var fc = component;
-                        while (fc instanceof Control) {
-                            if (fc instanceof FormContainer) {
-                                if(evt.metactrlKey === true) {
-                                    var keys = Component.getKeysByUri(fc._formUri);
-
-                                    if (confirm(String.format("Rescaffold %s?", fc.getForm().getUri())) === true) {
-                                        fc.reloadForm();
-                                        return false;
-                                    }
-                                } else {
-                                    if (confirm(String.format("Reload %s?", fc.getForm().getUri())) === true) {
-                                        fc.reloadForm();
-                                        return false;
-                                    }
-                                }
-                            }
-                            fc = fc._parent;
-                        }
-                    }
-                } else if(name ==="touchstart" || name === "touchmove") {
-                	if(evt.touches.length > 3) {
-                		app.getScope().toggle_console.execute(evt);
-                	}
+                if(evt.altKey === true) {
+	                if (name === "dblclick" && evt.metaKey) {
+	                    sizer.setControl(component);
+			            var consoles = me.app().qsa("vcl/ui/Console").filter(c => c.isVisible());
+	                    if(consoles.length === 0) {
+	                    	me.ud("#toggle-console").execute({});
+	                    }
+	                    consoles.forEach(_ => { 
+	                    	_.getNode("input").value = ""; 
+	                    	_.print(js.sf("#%d", component.hashCode()), component);
+	                    });
+	                } else if (name === "click") {
+	                	// sizer.vars("meta", evt.metaKey === true);
+	                    if (evt.metaKey === true) {
+	                        if (component instanceof Control) {
+	                            if (sizer._control === component) {
+	                            	// deselect
+	                                component = null;
+	                            }
+	                            sizer.setControl(component);
+	                            return false;
+	                        }
+	                    } else if(evt.shiftKey === true) {
+	                        var fc = component;
+	                        evt.preventDefault();
+	                        deselect();
+	                        me.setTimeout("deselect", () => {
+		                        while (fc instanceof Control) {
+		                            if (fc instanceof FormContainer) {
+		                                if(evt.metactrlKey === true) {
+		                                    var keys = Component.getKeysByUri(fc._formUri);
+		
+		                                    if (confirm(String.format("Rescaffold %s?", fc.getForm().getUri())) === true) {
+		                                        fc.reloadForm();
+		                                        return false;
+		                                    }
+		                                } else {
+		                                    if (confirm(String.format("Reload %s?", fc.getForm().getUri())) === true) {
+		                                        fc.reloadForm();
+		                                        return false;
+		                                    }
+		                                }
+		                            }
+		                            fc = fc._parent;
+		                        }
+	                        }, 100);
+	                    }
+	                } else if(name ==="touchstart" || name === "touchmove") {
+	                	if(evt.touches.length > 3) {
+	                		app.getScope().toggle_console.execute(evt);
+	                	}
+	                }
                 }
 
                 return this.inherited(arguments);
@@ -179,7 +188,7 @@ console.log("app.on('print', ...)");
     }
 
 }, [
-    $(["ui/controls/Toolbar"], "toolbar", {
+    [["ui/controls/Toolbar"], "toolbar", {
         css: { cursor: "ns-resize" },
         draggable: true,
         onDraggerNeeded() {
@@ -197,19 +206,19 @@ console.log("app.on('print', ...)");
         }
 
     }, [
-        $("vcl/ui/Element", "sizer_selection", {
+        ["vcl/ui/Element", "sizer_selection", {
             css: "padding: 4px; display: inline-block; cursor: default;"
-        }),
-        $([["ui/controls/SizeHandle"]], "size_handle", {
+        }],
+        [[["ui/controls/SizeHandle"]], "size_handle", {
             classes: "vertical",
         	onClick() {
         		// this.udr("#toggle-console") doesn't work...
         		this.up().down("#toggle-console").execute({sender: this});
 	        },
             vars: { control: "@owner" }
-        })
-    ]),
-    $(("vcl/ui/Console"), "console", {
+        }]
+    ]],
+    [("vcl/ui/Console"), "console", {
         onLoad() {
         	this.up().print("document", window.location);
         },
@@ -254,5 +263,5 @@ console.log("app.on('print', ...)");
             /* jshint evil: true; */
             return eval(expr);
         }
-    })
-]);
+    }]
+]];
