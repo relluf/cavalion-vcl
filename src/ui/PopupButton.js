@@ -8,13 +8,6 @@ define(function(require) {
 		inherits: Button,
 		prototype: {
 
-			/**
-			 *
-			constructor: function() {
-
-			},
-			 */
-
 			"@css": {
 				".pressed": {
 					"text-shadow": "0 0px 0 rgba(0, 0, 0, 0.2)",
@@ -29,6 +22,7 @@ define(function(require) {
 
 			_pressed: false,
 			_popup: null,
+			_origin: null,
 
 			determineClasses: function() {
 				var classes = this.inherited(arguments);
@@ -43,7 +37,7 @@ define(function(require) {
 				if(this._popup !== null) {
 					if(this._pressed === true) {
 						var thisObj = this;
-						this._popup.popup({origin: "bottom-left", dx: 0, dy: 4}, this, function() {
+						this._popup.popup({origin: this._origin || "bottom-left", dx: 0, dy: 4}, this, function() {
 							thisObj.setPressed(false);
 						});
 					} else {
@@ -54,10 +48,7 @@ define(function(require) {
 			},
 
 			setPressed: function(value) {
-				/**
-				 *
-				 * @param value
-				 */
+				/* @param value */
 				if(this._pressed !== value) {
 					this._pressed = value;
 					this.setState("classesInvalidated", true);
@@ -67,6 +58,9 @@ define(function(require) {
 		properties: {
 			"popup": {
 				type: Popup
+			},
+			"origin": {
+				type: Class.Type.STRING
 			}
 		}
 	};

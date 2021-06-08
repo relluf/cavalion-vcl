@@ -61,11 +61,20 @@ define(function(require) {
 				if(!this._hook.isActive()) {
 					var p = relativeTo.clientToDocument(0, 0);
 					var cs = relativeTo.getComputedStyle();
+					var cs_ = this.getComputedStyle();
 
-					p = this._parent.documentToClient(p);
+					if(this._parent) {
+						p = this._parent.documentToClient(p);
+					}
 
-					this.setLeft(p.x + (position.dx || 0));
-					this.setTop(p.y + parseInt(cs.height, 10) + (position.dy || 0));
+					if(position.origin === "bottom-left") {
+						this.setLeft(p.x + (position.dx || 0));
+						this.setTop(p.y + parseInt(cs.height, 10) + (position.dy || 0));
+					} else if(position.origin === "bottom-right") {
+						this.setLeft(p.x + parseInt(cs.width, 10) + (position.dx || 0) - parseInt(cs_.width, 10));
+						this.setTop(p.y + parseInt(cs.height, 10) + (position.dy || 0));
+					}
+					
 					this.setVisible(true);
 
 					this._hook.activate();
