@@ -39,7 +39,9 @@ define(function(require) {
 				},
 				".autowidth": {
 					visibility: "hidden",
-					height: "0px"
+					height: "0px",
+					// "max-width": "350px",
+					"overflow": "hidden"
 				}
 			},
 

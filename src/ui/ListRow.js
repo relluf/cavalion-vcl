@@ -26,7 +26,8 @@ define(function(require) {
 					"vertical-align": "middle",
 					"padding-left": "6px",
 					"padding-top": "5px",
-					"text-overflow": "ellipsis"
+					"text-overflow": "ellipsis",
+					 //"max-width":"362px"
 				}
 			},
 			_autoSize: "width",

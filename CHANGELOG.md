@@ -1,3 +1,11 @@
+### 2021/09/02 - 1.1.36*
+
+
+
+### 2021/08/21
+
+* Introducing vcl/Component.getFactories
+
 ### 2021/06/08 - 1.1.35
 
 * Developing [`#VA-20201218-3`]()

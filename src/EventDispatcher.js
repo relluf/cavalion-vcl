@@ -33,20 +33,12 @@ define(function(require) {
 		inherits: DocumentHook,
 
 		prototype: {
-
 			_component: null,
 			_mousemove_evt: null,
 
-			/**
-			 *
-			 */
 			constructor: function() {
 				this._events = ["*"].concat(this._events);
 			},
-
-			/**
-			 *
-			 */
 			dispatch: function(component, name, evt) {
 				var r;
 				if(typeof this[name] === "function") {
@@ -62,15 +54,8 @@ define(function(require) {
 
 				return r;
 			},
-
-			/**
-			 *
-			 */
 			handle: function(evt) {
 
-				/**
-				 *
-				 */
                 function dispatch_hint() {
 					this.dispatch(this._component, "hint", this._mousemove_evt);
 				}
@@ -140,14 +125,8 @@ define(function(require) {
 		},
 
 		statics: {
-
 			elementKey: elementKey,
-
-			/**
-			 * @overrides DocumentHook.handleEvent
-			 */
 			handleEvent: DocumentHook.handleEvent
-
 		}
 	}));
 });

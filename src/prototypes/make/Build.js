@@ -23,14 +23,21 @@ var Handlers = {
 	    var ctx = requirejs.s.contexts._;
 	    var source = [];
 	    var count = 0;
-	    var vars = this._owner.getVars();
+	    var vars = this._owner.getVars(), v, k;
 	    
-	    source.push("/*- Implicit Sources */");
-	    for(var k in Factory.implicit_sources) {
-	    	var v = Factory.implicit_sources[k];
+	    source.push("/*- Implicit Sources (vcl) */");
+	    for(k in Factory.implicit_sources) {
+	    	v = Factory.implicit_sources[k];
 
 	    	source.push(String.format("define(\"%s\", %s);", k, 
 	    		JSON.stringify(v)));
+	    }
+	    source.push("\n\n/*- Implicit Sources (blocks) */");
+	    Factory = require("blocks/Factory");
+	    for(k in Factory.implicit_sources) {
+	    	v = Factory.implicit_sources[k];
+
+	    	source.push(String.format("define(\"%s\", %s);", k, JSON.stringify(v)));
 	    }
 	    
 	    source.push("\n\n/*- Sources */");
