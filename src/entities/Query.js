@@ -233,7 +233,6 @@ define(function(require) {
 			    this._pageReqs[page] = WAITING;
 			    if((criteria = this.getRequestCriteria(page)) === null) {
 					// console.debug(this._entity, "requestPage: page", page, "no criteria, skip");
-					
 					delete me._pageReqs[page];
 			    	return;
 			    }

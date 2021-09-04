@@ -721,8 +721,16 @@ define(function() {
         	uri = uri.substring(i + 17);
         }
         
-        return ((rule.exact && uri === rule.uri) ||
-            (uri.split(".")[0] + "<").indexOf(rule.uri + "<") === 0);
+        var uris = [uri].concat(require("vcl/Component").getFactories(component).map(factory => factory._uri));
+        return uris.some(uri => {
+	        if(uri.startsWith("vcl-comps:")) {
+	        	uri = uri.substring("vcl-comps:".length)
+	        }
+	        
+	        return ((rule.exact && uri === rule.uri) ||
+	            (uri.split(".")[0] + "<").indexOf(rule.uri + "<") === 0);
+        });
+        
     }
     function match_ctor(rule, component) {
         if(rule.ctor === "*") {
@@ -871,11 +879,11 @@ define(function() {
         
         
         return component !== null &&
+            (!rule.pseudos || match_pseudos(rule, component, context, all)) &&
             (!rule.uri || match_uri(rule, component)) &&
             (!rule.ctor || match_ctor(rule, component)) &&
             (!rule.classNames || match_classNames(rule, component)) &&
             (!rule.id || match_id(rule, component)) &&
-            (!rule.pseudos || match_pseudos(rule, component, context, all)) &&
             (!rule.attrs || match_properties(rule, component));
     }
     function parse(selector) {

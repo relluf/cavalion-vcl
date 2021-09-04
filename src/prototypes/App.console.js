@@ -20,7 +20,7 @@ override(require("vcl/Component").prototype, "print", function(inherited) {
         hotkey: `
 keyup:Ctrl+Escape|keydown:Ctrl+Escape|
 keyup:Ctrl+Shift+D|keydown:Ctrl+Shift+D|
-keyup:Alt+Shift+X|keydown:Alt+Shift+X|
+keyup:Alt+Shift+Z|keydown:Alt+Shift+Z|
 keyup:MetaCtrl+192`,
 		onLoad() {
 			// TODO #CVLN-20200822-2

@@ -1361,7 +1361,21 @@ define(function (require) {
 	             * @overrides http://requirejs.org/docs/plugins.html#apiload
 	             */
                 console.log(name);
-            }
+            },
+            
+			getFactories: (comp) => { 
+				var r = [], f = comp['@factory'];
+				
+				function gather(factory) {
+					var factories = factory._root.factories || [];
+					r.push(factory);
+					factories.forEach(f => gather(f));
+					return r;
+				}
+				
+				return f ? gather(f).filter((o, i, a) => a.indexOf(o) === i) : r;
+			}
+            
         },
         properties: {
             "components": {
@@ -1501,7 +1515,12 @@ define(function (require) {
             },
             "onMessage": {
                 type: Type.EVENT
-            }
+            },
+            
+            "isRoot": { type: Type.BOOLEAN, set: function(value) {
+            	console.warn("yep! actually used :-)")
+            	this.setIsRoot(value);
+            } }
         }
     });
     
