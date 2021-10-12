@@ -3,9 +3,14 @@ define(function(require) {
 	var Class = require("js/Class");
 	var Control = require("../Control");
 	var Element = require("./Element");
+	
+	var SELECT_TIMEOUT_MS = 128;
 
 	var Tab = {
-		SELECT_TIMEOUT_MS: 64,
+		statics: {
+			DEFAULT_SELECT_TIMEOUT_MS: SELECT_TIMEOUT_MS,
+			SELECT_TIMEOUT_MS: SELECT_TIMEOUT_MS
+		},
 		
 		inherits: Element,
 		prototype: {
@@ -43,31 +48,42 @@ define(function(require) {
 				}
 			},
 			select: function() {
+console.log("select", arguments);
 				/** @overrides ../Control.prototype.select */
 				if(this._control !== null) {
+
+					Tab.SELECT_TIMEOUT_MS += 50;
+					
 					this.setTimeout("selected", function() {
 						if(this.isSelected() === false) return;
 						
-						// console.log("delayed select");
+						Tab.SELECT_TIMEOUT_MS = Tab.DEFAULT_SELECT_TIMEOUT_MS;
 						
+						// console.log("delayed select");
+
 						this._control.setVisible(true);
 						this._control.bringToFront();
 						this._control.setFocus();
+	
+						var app = this.app();
+						app.setTimeout("render", function() {
+							// TODO MAYOR HACK !!!
+							app.qsa(":root").forEach(c => c.updateChildren && c.updateChildren(true, true));
+						}, 500);
+	
 					}.bind(this), Tab.SELECT_TIMEOUT_MS);
 					
-					var app = this.app();
-					app.setTimeout("render", function() {
-						// TODO MAYOR HACK !!!
-						app.qsa(":root").forEach(c => c.updateChildren && c.updateChildren(true, true));
-					}, 500);
 				}
 				this.inherited(arguments);
 			},
 			unselect: function() {
+console.log("unselect", arguments);
 				/** @overrides ../Control.prototype.unselect */
 				if(this._control !== null) {
+					if(this.isSelected() === true) return;
+					
 					this._control.setVisible(false);
-					this.clearTimeout("selected");
+					this.clearTimeout("unselected");
 				}
 				this.inherited(arguments);
 			},
