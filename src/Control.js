@@ -1286,7 +1286,7 @@ this._updateCalls = this._updateCalls || 0; this._updateCalls++;
 						try {
 							this._post_update.shift()();
 						} catch(e) {
-							console.warn("FIX THIS");
+							console.warn("Fix this, I said...", {catched: e});
 						}
 					}
 					if(this._post_update.length === 0) {

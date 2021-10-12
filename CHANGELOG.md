@@ -1,6 +1,10 @@
-### 2021/09/02 - 1.1.36*
+### 2021/10/12 - 1.1.37
 
+* Adds support for .`root-invisible`-class for [vcl/ui/Node]().
 
+### 2021/09/24 - 1.1.36
+
+* Adding support for calling [vcl/data/Array]().prototype.sort() with as single string as attribute, indicating which attributes, seperated by a comma, to sort upon
 
 ### 2021/08/21
 
