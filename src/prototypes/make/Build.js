@@ -1,4 +1,4 @@
-"js/minify";
+"js/minify, devtools/Resources";
 
 var Handlers = {
 	merge_lib: function() {
@@ -71,6 +71,12 @@ var Handlers = {
                 callback(uri);
 	        });
 	    });
+    },
+    push_app: function() {
+		var RM = require("devtools/Resources");
+		var uri = this.vars(["app-js"]);
+		var text = this.ud("#extra-components").getValue();
+		this.print("pushing", RM.update(uri, { text: text }));
     },
     make_styles: function() {
 	    var ctx = requirejs.s.contexts._;
@@ -197,6 +203,10 @@ $(["ui/Form"], {
             $(("vcl/ui/Button"), {
                 content: "Make",
                 onClick: Handlers.make_app
+            }),
+            $(("vcl/ui/Button"), {
+                content: "Push",
+                onClick: Handlers.push_app
             })
         ]),
         $(("vcl/ui/CheckGroup"), "styles.less", {
