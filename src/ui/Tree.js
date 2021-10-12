@@ -19,6 +19,10 @@ define(function (require) {
                 "-webkit-user-select": "none",
                 "margin": "0",
                 "line-height": "15px",
+				">.{Node}.root-invisible": {
+					"> *:not(ol)": "display:none;color:blue;",
+					"> ol": "padding-left: 0;"
+				},
                 ".{./Node}": {
     		        display: "block",
                     "list-style-type": "none",
