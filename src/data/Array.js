@@ -290,6 +290,23 @@ define(function(require) {
 				return window.Array.prototype.concat.apply(this._array, arguments);
 			},
 			sort: function() {
+				if(arguments.length === 1 && typeof arguments[0] === "string") {
+					var attrs = arguments[0].split(",");
+					
+					var fns = attrs.map(a => (i1, i2) => i1[a] === i2[a] ? 0 : i1[a] < i2[a] ? -1 : 1);	
+					
+					return this.sort((i1, i2) => {
+						var r = 0;
+						for(var i = 0; r === 0 && i < fns.length; ++i) {
+							if((r = fns[i](i1, i2)) !== 0) {
+								return r;	
+							}
+						}
+						// hmm, can not return 0... right?
+						return r;
+					});
+				}
+
 				this.assertArray();
 				try {
 					// TODO Hmm, this sorting of _arr feels a lil' dodgy TBH...
