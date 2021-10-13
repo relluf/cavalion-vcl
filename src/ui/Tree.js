@@ -7,8 +7,11 @@ define(function (require) {
     var Event = require("../../util/Event");
     var HtmlElement = require("../../util/HtmlElement");
     var jquery = require("jquery");
+    var Browser = require("util/Browser");
 
     var platform = window.navigator.platform;
+    
+    var checkbox_top =  Browser.safari ? 0 : 2;
 
     return (Tree = Tree(require, {
         inherits: Panel,
@@ -71,7 +74,7 @@ define(function (require) {
                         }
                     },
                     ">.text": {
-                        "input[type=checkbox]": "position:relative;top:2px;",
+                        "input[type=checkbox]": `position:relative;top:${checkbox_top}px;`,
                     	cursor: "pointer",
                         position: "relative",
 //        				width: "100%",
