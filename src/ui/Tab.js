@@ -48,7 +48,7 @@ define(function(require) {
 				}
 			},
 			select: function() {
-console.log("select", arguments);
+// console.log("select", arguments);
 				/** @overrides ../Control.prototype.select */
 				if(this._control !== null) {
 
@@ -77,7 +77,7 @@ console.log("select", arguments);
 				this.inherited(arguments);
 			},
 			unselect: function() {
-console.log("unselect", arguments);
+// console.log("unselect", arguments);
 				/** @overrides ../Control.prototype.unselect */
 				if(this._control !== null) {
 					if(this.isSelected() === true) return;
