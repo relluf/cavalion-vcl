@@ -1,8 +1,15 @@
-### 2021/10/12 - 1.1.37
+### 2021/10/23 - 1.1.37
 
-* Adds support for .`root-invisible`-class for [vcl/ui/Node]().
+* Updating
 
-### 2021/09/24 - 1.1.36
+### 2021/10/12 - 1.1.36
+
+* Adds support for .`root-invisible`-class for [vcl/ui/Node]()
+* Advances build features (make/Build)
+* Fixes issues with the "delayed selecting of Tab-linked controls"-feature
+* Fixes alignment of checkboxes in [vcl/ui/Tree]() and/or [-Node]() in Safari
+
+### 2021/09/24
 
 * Adding support for calling [vcl/data/Array]().prototype.sort() with as single string as attribute, indicating which attributes, seperated by a comma, to sort upon
 
@@ -514,7 +521,7 @@
 - Bug fixed where parent could not be nulled in a vcl resource
 - Refactoring/bugfixing scaffolding
 
-	$(["View<Logger>.select"]);
+>>	$(["View<Logger>.select"]);
 
 ### 2017-02-24
 - Bugfixing vcl/Control.update, where controls could be updated while not anticipated for and leave them in a inconsistent state in relation to the DOM (mailny they would be removed from the DOM)
