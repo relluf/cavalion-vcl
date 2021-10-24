@@ -74,7 +74,7 @@ var Handlers = {
     },
     push_app: function() {
 		var RM = require("devtools/Resources");
-		var uri = this.vars(["app-js"]);
+		var uri = this.vars(["app-js"]); if(!uri) { return alert("app-js not set"); }
 		var text = this.ud("#extra-components").getValue();
 		this.print("pushing", RM.update(uri, { text: text }));
     },
@@ -104,7 +104,7 @@ var Handlers = {
     }
 };
 
-$(["ui/Form"], {
+[["ui/Form"], {
     css: {
         padding: "8px",
         "textarea": {
@@ -176,7 +176,7 @@ $(["ui/Form"], {
     }
     
 }, [
-    $("vcl/ui/Group", {}, [
+    ["vcl/ui/Group", {}, [
         $(("vcl/ui/CheckGroup"), "app.js", {
             text: "app.js",
             expanded: true
@@ -247,5 +247,5 @@ $(["ui/Form"], {
                 onClick: Handlers.set_lib
             })
         ])
-    ])
-]);
+    ]]
+]];
