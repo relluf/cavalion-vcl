@@ -61,10 +61,10 @@ define(function (require) {
                     },
                     ">.icon": {
                         display: "inline-block",
-                        height: "20px",
+                        // height: "20px",
                         width: "12px",
-                        "padding-top": "3px",
-                        "vertical-align": "top",
+                        // "padding-top": "3px",
+                        "vertical-align": "text-top",
                         "&::before": {
                             content: "' '",
                             display: "inline-block",
