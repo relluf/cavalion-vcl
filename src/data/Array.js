@@ -21,6 +21,7 @@ define(function(require) {
     		_notifications: null,
     		
 			_onUpdate: null,
+			_onChange: null,
     		_onBusyChanged: null,
     		_onActiveChanged: null,
     		_onGetAttributeValue: null,
@@ -86,6 +87,8 @@ define(function(require) {
 					this.fire("onActiveChanged", args);
 				} else if(event === SourceEvent.updated) {
 					this.fire("onUpdate", args);
+				} else if(event === SourceEvent.changed) {
+					this.fire("onChange", args);
 				}
 				this.emit("event", arguments);
 			},
@@ -329,6 +332,9 @@ define(function(require) {
     			type: Type.EVENT
 			},
     		"onUpdate": {
+    			type: Type.EVENT
+			},
+			"onChange": {
     			type: Type.EVENT
 			},
 			"onFilterObject": {

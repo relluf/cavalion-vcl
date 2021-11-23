@@ -368,7 +368,7 @@ define(function(require) {
 					this.notify(SourceEvent.layoutChanged);
 				}
 
-				if(this._arr === null) {
+				if(this._arr === null || this._arr.length === 0) {
 					if(!res.hasOwnProperty("count")) {
 						if(this._count === false && page === 0 && res.instances.length === 0) {
 							res.count = 0;
@@ -380,6 +380,8 @@ define(function(require) {
 					}
 					while(instances.length < res.count) {
 						instances.push(Source.Pending);
+					}
+					while(tuples.length < res.count) {
 						tuples.push(Source.Pending);
 					}
 					this._tuples = tuples;
@@ -420,7 +422,6 @@ define(function(require) {
 				this.requestWhenNeeded();
 			},
 			setAll: function(entity, attributes, where, groupBy, having, orderBy, count, refresh /*refresh and count default to true*/) {
-				console.debug("setAll");
 				if(this._request !== null) {
 					var me = this;
 					console.debug(this._entity, "waiting for current request to finish");
