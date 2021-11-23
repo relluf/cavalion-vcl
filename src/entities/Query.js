@@ -386,6 +386,7 @@ define(function(require) {
 					}
 					this._tuples = tuples;
 					this.setArray(instances);
+					this.notify(SourceEvent.updated, {}); // TODO #VA-20211123-1 
 				} else {
 					for(var i = 0; i < size; ++i) {
 						this._array[i + base] = instances[i];
