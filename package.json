@@ -1,6 +1,6 @@
 {
   "name": "cavalion-vcl",
-  "version": "1.1.39a",
+  "version": "1.1.40",
   "description": "Visual Component Library for vcl-comps",
   "main": "index.js",
   "scripts": {
