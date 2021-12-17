@@ -1,3 +1,7 @@
+### 2021/12/17 - 1.1.41
+
+* Working around autoWidth bug (ListColumn)
+
 ### 2021/12/07 - 1.1.40
 
 * Updating
