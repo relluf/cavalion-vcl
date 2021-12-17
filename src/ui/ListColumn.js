@@ -38,9 +38,9 @@ define(function(require) {
 					}
 				},
 				".autowidth": {
+					// "max-width": "350px",
 					visibility: "hidden",
 					height: "0px",
-					// "max-width": "350px",
 					"overflow": "hidden"
 				}
 			},
@@ -342,8 +342,13 @@ define(function(require) {
 				return this._autoWidthValue;
 			},
 			setAutoWidthValue: function(value, force) {
-				if(value === "&nbsp;") value = " ";
 				value = value.trim();
+				if(value === "&nbsp;") value = " ";
+				
+				if(value.length <= 10) {
+					value += "W";
+				}
+				
 				if(force === true || (this._autoWidthValue !== value && value.length > this._autoWidthValue.length)) {
 					this._autoWidthValue = value;
 					if(this._node !== null) {
