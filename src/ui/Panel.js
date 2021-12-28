@@ -32,25 +32,11 @@ define(function (require) {
         };
         return animations[animation];
     }
-
-    /**
-     *
-     */
     function swap(obj, a1, a2) {
         var v = obj[a1];
         obj[a1] = obj[a2];
         obj[a2] = v;
     }
-
-    /**
-     *
-     * @param control
-     * @param left
-     * @param top
-     * @param right
-     * @param bottom
-     * @param callback
-     */
     function setBounds(control, left, top, right, bottom, callback) {
         if (control.setBounds(left, top, right, bottom, undefined, undefined, callback) === undefined) {
             callback();
@@ -145,7 +131,7 @@ define(function (require) {
  */
                                 if (align === "top") {
                                     setBounds(control, cr.left, cr.top, cr.right, U, function () {
-                                    	if(zoom != 1.0) {
+                                    	if(zoom !== 1.0) {
                                     		console.log("alignControls", control._name, control);
                                         	cr.top += (control._height * zoom);
                                     	} else {
@@ -155,7 +141,7 @@ define(function (require) {
                                     });
                                 } else if (align === "bottom") {
                                     setBounds(control, cr.left, U, cr.right, cr.bottom, function () {
-                                    	if(zoom != 1.0) {
+                                    	if(zoom !== 1.0) {
                                     		console.log("alignControls", control._name, control);
                                         	cr.bottom += (control._height / zoom);
                                     	} else {
@@ -177,6 +163,7 @@ define(function (require) {
                                     });
                                 }
                             }
+                            // console.log(thisObj._name, align, js.mixIn(cr));
                         } else {
                             controls.splice(i, 1);
                             next();
@@ -251,11 +238,11 @@ define(function (require) {
 					cr = {
 	                    left: parseFloat(cs.getPropertyValue("padding-left")) || 0,
 	                    top: parseFloat(cs.getPropertyValue("padding-top")) || 0,
-	                    right: w - (w * (1 / this._zoom) * f),
-	                    bottom: h - (h * (1 / this._zoom) * f)
-	                    // TODO, Erhm, what about the padding?
-	                    // right: f * (parseFloat(cs.getPropertyValue("padding-right")) || 0),
-	                    // bottom: f * (parseFloat(cs.getPropertyValue("padding-bottom")) || 0)
+	                    // right: w - (w * (1 / this._zoom) * f),
+	                    // bottom: h - (h * (1 / this._zoom) * f)
+	                    // TODO, Erhm, what about the padding? #CVLN-20211228-1
+	                    right: f * (parseFloat(cs.getPropertyValue("padding-right")) || 0),
+	                    bottom: f * (parseFloat(cs.getPropertyValue("padding-bottom")) || 0)
     	            };
 				}
             // console.log(this._name, JSON.stringify(cr));
@@ -478,7 +465,7 @@ define(function (require) {
                         height: this._node.clientHeight
                     });
                 }
-
+console.log(this, "setBounds", bounds);
                 this.alignControls();
             },
             setBoundsValidated: function (left, top, right, bottom, width, height) {

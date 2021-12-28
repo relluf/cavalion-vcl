@@ -1,3 +1,7 @@
+### 2021/12/28 -  1.1.42
+
+- Fix alignment bug `#CVLN-20211228-1` 
+
 ### 2021/12/17 - 1.1.41
 
 * Working around autoWidth bug (ListColumn)

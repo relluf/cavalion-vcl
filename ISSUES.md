@@ -1,3 +1,12 @@
+# BUG Panel.prototype.getClientRect `#CVLN-20211228-1`
+
+	// TODO, Erhm, what about the padding? #CVLN-20211228-1
+
+* padding is not handled correctly ()
+* publiek-putten
+* details > right > [tabs | containers]
+
+
 # BUG Rendering rows fails 
 
 When `#source` (linked to `#list`) updates while `#list` is not visible, the following usually occurs (no rows visible):
