@@ -222,19 +222,20 @@ define(function(require) {
 			    	var index;
 			    	if(this._pageQueue && (index = this._pageQueue.indexOf(page)) !== -1) {
 			    		if(index !== this._pageQueue.length - 1) {
+			    			/* make more urgent */
 				    		this._pageQueue.splice(index, 1);
 				    		this._pageQueue.push(page);
 			    		}
 			    	}
-			    	return;
+			    	return this._pageReqs[page]; // Promise.resolve( ... ) 
 			    }
 			    
 			    /*- make sure additional requests for 'page' are ignored */
 			    this._pageReqs[page] = WAITING;
 			    if((criteria = this.getRequestCriteria(page)) === null) {
 					// console.debug(this._entity, "requestPage: page", page, "no criteria, skip");
-					delete me._pageReqs[page];
-			    	return;
+					delete this._pageReqs[page];
+			    	return Promise.resolve(null);
 			    }
 
 			    if(this._request !== null) {
@@ -244,14 +245,14 @@ define(function(require) {
 					}
 					
 					this._pageQueue.push(page);
-			    	this._request.then(function() {
+			    	return this._request.then(function() {
 			    		var page = me._pageQueue.pop();
 						// console.debug(me._entity, "popping page", page);
 						
 						delete me._pageReqs[page]; /* delete WAITING tag */
-			    		me.requestPage(page, true); /*- make sure that we remain busy */
+			    		return me.requestPage(page, true); /*- make sure that we remain busy */
 			    	});
-			    	return;
+			    	// return;
 			    }
 			    
 			    var EM = this.getEM(); var start = Date.now();
@@ -297,6 +298,8 @@ define(function(require) {
 				if(!wasBusy) {
 					this.notify(SourceEvent.busyChanged, true, page);
 				}
+				
+				return this._request;
 			},
 			getAttributeValue: function(name, index) {
 				/** @overrides ../data/Source.prototype.getAttributeValue */
