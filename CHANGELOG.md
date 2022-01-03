@@ -1,3 +1,8 @@
+### 2022/01/03 -  1.1.44
+
+* Adding `context` parameter to Array:onFilterObject-event, which can be used as a cache for a specific filter context (updateFilter-call)
+* Introducing List.prototype.**valueByColumnAndRow** - used to obtain the value that will be rendered (useful for inline filtering)
+
 ### 2021/12/29 -  1.1.43
 
 - Styling glassy-overlays with text-shadow

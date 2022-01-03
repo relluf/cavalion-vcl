@@ -580,6 +580,15 @@ define(function(require) {
 				}
 				return null;
 			},
+			getColumnByName: function(name) {
+				for(var i = 0, l = this._columns.length; i < l; ++i) {
+					var c = this._columns[i];
+					if(c._custom === false && c._name === name) {
+						return c;
+					}
+				}
+				return null;
+			},
 			insertColumn: function(column, index) {
 				this._columns.push(column);
 				column._list = this;
@@ -814,28 +823,32 @@ define(function(require) {
 			oncolumndrop: function() {
 				return this.fire("onColumnDropped", arguments);
 			},
-			
+
+			valueByColumnAndRow(column, row) {
+				var value, orgValue;
+				if(column._attribute !== "") {
+					orgValue = (value = this._source.getAttributeValue(column._attribute, row));
+				}
+				if(column._wantsNullValues || (value !== null && value !== undefined)) {
+					if(column._displayFormat !== "") {
+						value = String.format(column._displayFormat, value);
+					}
+					if(column._onGetValue !== null) {
+						value = column.fire("onGetValue", [value, row, this._source]);
+					}
+					if(this._onColumnGetValue !== null) {
+					    value = this.fire("onColumnGetValue", [column, value, row, this._source]);
+					}
+					if(this._formatDates === true && this.isDate(value)) {
+						value = this.formatDate(value);
+					}
+				}
+				return value;
+			},
 			groupByColumn(column) {
 				var r = {};
 				this._source.getObjects().forEach((obj, row) => {
-					var value, orgValue;
-					if(column._attribute !== "") {
-						orgValue = (value = this._source.getAttributeValue(column._attribute, row));
-					}
-					if(column._wantsNullValues || (value !== null && value !== undefined)) {
-						if(column._displayFormat !== "") {
-							value = String.format(column._displayFormat, value);
-						}
-						if(column._onGetValue !== null) {
-							value = column.fire("onGetValue", [value, row, this._source]);
-						}
-						if(this._onColumnGetValue !== null) {
-						    value = this.fire("onColumnGetValue", [column, value, row, this._source]);
-						}
-						if(this._formatDates === true && this.isDate(value)) {
-							value = this.formatDate(value);
-						}
-					}
+					var value = this.getValueByColumnAndRow(column, row);
 					(r[value] = r[value] || []).push(obj);
 				});
 				return r;
