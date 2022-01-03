@@ -1,6 +1,6 @@
 "use vcl/ui/Node, vcl/ui/Button";
 
-["vcl/Application", {
+[("vcl/Application"), {
 	onLoad: function() {
     	var img = document.body.childNodes[0];
     	if(img && img.nodeName === "IMG") {
@@ -13,7 +13,7 @@
     		document.body);
 	}
 }, [
-    ["vcl/ui/Panel", "window", { 
+    [("vcl/ui/Panel"), "window", { 
     	align: "client", 
     	classes: "animated",
 		css: {
@@ -27,7 +27,7 @@
 			".with-shadow": "box-shadow:rgba(0, 0, 0, 0.4) 0px 1px 2px 0px;",
 			".transparent": "background-color:transparent;",
 			".glassy-overlay": {
-				"": "pointer-events: none; color:rgba(5,5,5,0.95);",
+				"": "pointer-events: none; color:rgba(5,5,5,0.95); text-shadow: rgb(255 255 255) 0px 0px 12px, #00000094 0px 0px 5px;",
 				">.{./Element}": "pointer-events: auto;",
 				">.glassy:not(.no-margin)": "margin: 32px;",
 				">.glassy": {

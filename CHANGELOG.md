@@ -1,3 +1,10 @@
+### 2021/12/29 -  1.1.43
+
+- Styling glassy-overlays with text-shadow
+- **ui/Tabs**: Fixing styling bug
+- **ui/List**: Introducing `groupByColumn()`
+- **data/Query**: `requestPage()` now returns a Promise
+
 ### 2021/12/28 -  1.1.42
 
 - Fix alignment bug `#CVLN-20211228-1` 

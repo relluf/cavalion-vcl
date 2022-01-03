@@ -1,17 +1,19 @@
 "js/minify, devtools/Resources";
 
+var RM = require("devtools/Resources");
+
 var Handlers = {
-	merge_lib: function() {
+	merge_lib() {
         var vars = this._owner.getVars();
         vars.modules = vars.modules.concat(vars.extraModules);
         this._owner.render();
     },
-    merge_app: function() {
+    merge_app() {
         var vars = this._owner.getVars();
         vars.components = vars.components.concat(vars.extraComponents);
         this._owner.render();
 	},
-    make_app: function() {
+    make_app() {
         // FIXME This should be moved to Factory?
 
 	    var Component = require("vcl/Component");
@@ -29,8 +31,7 @@ var Handlers = {
 	    for(k in Factory.implicit_sources) {
 	    	v = Factory.implicit_sources[k];
 
-	    	source.push(String.format("define(\"%s\", %s);", k, 
-	    		JSON.stringify(v)));
+	    	source.push(String.format("define(\"%s\", %s);", k, JSON.stringify(v)));
 	    }
 	    source.push("\n\n/*- Implicit Sources (blocks) */");
 	    Factory = require("blocks/Factory");
@@ -48,8 +49,7 @@ var Handlers = {
 		        if(uri.indexOf(".js") === uri.length - 3) {
 		        	text = minify(text);
 		        }
-	            source.push(String.format("define(\"%s\", %s);",
-	                    uri, JSON.stringify(text)));
+	            source.push(String.format("define(\"%s\", %s);", uri, JSON.stringify(text)));
 	    	}
             if(--count === 0) {
                 scope['extra-components'].setValue(source.join("\n"));
@@ -72,13 +72,24 @@ var Handlers = {
 	        });
 	    });
     },
-    push_app: function() {
-		var RM = require("devtools/Resources");
-		var uri = this.vars(["app-js"]); if(!uri) { return alert("app-js not set"); }
+    push_app(evt) {
+		var uri = this.vars(["app-js"]); 
+		if(!uri) { 
+			return alert("app-js not set"); 
+		}
+		
+		if(confirm("Make?")) {
+			Handlers.make_app.apply(this, [evt]);
+		}
+		
 		var text = this.ud("#extra-components").getValue();
-		this.print("pushing", RM.update(uri, { text: text }));
+		RM.get(uri).then(res => {
+			res.text = text;
+			res = RM.update(uri, res).then(res => alert("Pushed"));
+			this.print("Push app-js", res);
+		});
     },
-    make_styles: function() {
+    make_styles() {
 	    var ctx = requirejs.s.contexts._;
         var scope = this.scope();
 	    var styles = this.vars(["styles"]).map(_ => "text!" + _.split("!").pop()).filter(_ => _);
@@ -87,7 +98,7 @@ var Handlers = {
 	    	scope['extra-styles'].setValue(args.join("\n"));
 	    });
     },
-    set_lib: function() {
+    set_lib() {
     	var scope = this.scope();
     	var modules = this.vars(["modules", true]);
     	var components = this.vars(["components", true]);
@@ -95,7 +106,7 @@ var Handlers = {
     	var all = JSON.parse(scope.modules.getValue());
     	scope['extra-modules'].setValue(all.join("\n"));
     },
-    set_app: function() {
+    set_app() {
     	var scope = this.scope();
     	var components = this.vars(["components", true]);
     	
@@ -176,76 +187,76 @@ var Handlers = {
     }
     
 }, [
-    ["vcl/ui/Group", {}, [
-        $(("vcl/ui/CheckGroup"), "app.js", {
+    [("vcl/ui/Group"), {}, [
+        [("vcl/ui/CheckGroup"), "app.js", {
             text: "app.js",
             expanded: true
         }, [
-            $(("vcl/ui/Group"), {}, [
-                $(("vcl/ui/Input"), "components", {
+            [("vcl/ui/Group"), {}, [
+                [("vcl/ui/Input"), "components", {
                     element: "textarea"
-                }),
-                $(("vcl/ui/Input"), "extra-components", {
+                }],
+                [("vcl/ui/Input"), "extra-components", {
                     element: "textarea"
-                }),
-                $(("vcl/ui/Input"), "implicit-components", {
+                }],
+                [("vcl/ui/Input"), "implicit-components", {
                     element: "textarea"
-                })
-            ]),
-            $(("vcl/ui/Button"), {
+                }]
+            ]],
+            [("vcl/ui/Button"), {
                 content: "Merge",
                 onClick: Handlers.merge_app
-            }),
-            $(("vcl/ui/Button"), {
+            }],
+            [("vcl/ui/Button"), {
                 content: ">>>",
                 onClick: Handlers.set_app
-            }),
-            $(("vcl/ui/Button"), {
+            }],
+            [("vcl/ui/Button"), {
                 content: "Make",
                 onClick: Handlers.make_app
-            }),
-            $(("vcl/ui/Button"), {
+            }],
+            [("vcl/ui/Button"), {
                 content: "Push",
                 onClick: Handlers.push_app
-            })
-        ]),
-        $(("vcl/ui/CheckGroup"), "styles.less", {
+            }]
+        ]],
+        [("vcl/ui/CheckGroup"), "styles.less", {
             text: "styles.less",
             expanded: true
         }, [
-            $(("vcl/ui/Group"), {}, [
-                $(("vcl/ui/Input"), "styles", {
+            [("vcl/ui/Group"), {}, [
+                [("vcl/ui/Input"), "styles", {
                     element: "textarea"
-                }),
-                $(("vcl/ui/Input"), "extra-styles", {
+                }],
+                [("vcl/ui/Input"), "extra-styles", {
                     element: "textarea"
-                }),
-            ]),
-            $(("vcl/ui/Button"), {
+                }],
+            ]],
+            [("vcl/ui/Button"), {
                 content: "Make",
                 onClick: Handlers.make_styles
-            })
-        ]),
-        $(("vcl/ui/CheckGroup"), "lib.js", {
+            }]
+        ]],
+        [("vcl/ui/CheckGroup"), "lib.js", {
             text: "lib.js",
             expanded: true
         }, [
-            $(("vcl/ui/Group"), {}, [
-                $(("vcl/ui/Input"), "modules", {
+            [("vcl/ui/Group"), {}, [
+                [("vcl/ui/Input"), "modules", {
                     element: "textarea"
-                }),
-                $(("vcl/ui/Input"), "extra-modules", {
+                }],
+                [("vcl/ui/Input"), "extra-modules", {
                     element: "textarea"
-                }),
-            ]),
-            $(("vcl/ui/Button"), {
+                }],
+            ]],
+            [("vcl/ui/Button"), {
                 content: "Merge",
                 onClick: Handlers.merge_lib
-            }),
-            $(("vcl/ui/Button"), {
+            }],
+            [("vcl/ui/Button"), {
                 content: ">>>",
                 onClick: Handlers.set_lib
-            })
-        ])
+            }]
+        ]]
     ]]
 ]];
