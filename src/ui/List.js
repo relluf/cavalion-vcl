@@ -815,6 +815,32 @@ define(function(require) {
 				return this.fire("onColumnDropped", arguments);
 			},
 			
+			groupByColumn(column) {
+				var r = {};
+				this._source.getObjects().forEach((obj, row) => {
+					var value, orgValue;
+					if(column._attribute !== "") {
+						orgValue = (value = this._source.getAttributeValue(column._attribute, row));
+					}
+					if(column._wantsNullValues || (value !== null && value !== undefined)) {
+						if(column._displayFormat !== "") {
+							value = String.format(column._displayFormat, value);
+						}
+						if(column._onGetValue !== null) {
+							value = column.fire("onGetValue", [value, row, this._source]);
+						}
+						if(this._onColumnGetValue !== null) {
+						    value = this.fire("onColumnGetValue", [column, value, row, this._source]);
+						}
+						if(this._formatDates === true && this.isDate(value)) {
+							value = this.formatDate(value);
+						}
+					}
+					(r[value] = r[value] || []).push(obj);
+				});
+				return r;
+			},
+			
 			hasSelection: function() {
 				return this._selection.length > 0;
 			},

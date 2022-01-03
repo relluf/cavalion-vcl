@@ -241,6 +241,11 @@ define(function(require) {
 				}
 				return r;
 			},
+			
+			
+			groupBy: function() {
+				return this._list.groupByColumn(this);	
+			},
 
 			sizing: function(evt) {
 			},
