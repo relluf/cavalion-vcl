@@ -185,11 +185,11 @@ define(function(require) {
 			
 			updateFilter: function(notify) {
 				if(this._onFilterObject !== null && this._array !== null) {
-					var arr = [];
+					var arr = [], context = {};
 					this._arr = this._array;
 					for(var i = 0; i < this._array.length; ++i) {
 						var obj = this._array[i];
-						if(this.fire("onFilterObject", [obj, i, this]) !== true) {
+						if(this.fire("onFilterObject", [obj, i, context]) !== true) {
 							arr.push(obj);
 						}
 					}
@@ -340,7 +340,7 @@ define(function(require) {
 			"onFilterObject": {
 				type: Type.FUNCTION,
 				editorInfo: {
-					defaultValue: "(function(object, index) {\n\t//return {true} to exclude item from exposed array\n})"
+					defaultValue: "(function(object, index, context) {\n\t//return {true} to exclude item from exposed array\n})"
 				}
 			},
 			"onGetAttributeValue": {
