@@ -14,13 +14,13 @@ define(function(require) {
 	            "background-color": "#f0f0f0",
 	            'height': "26px",
 	            "padding-left": "2px",
-	            "padding-top": "3px",
 	            // "border-top": "1px solid silver",
 	            
 	            "&.gradient":{
 	                "background-image": "-webkit-gradient(linear, 0% 0%, 0% 100%, from(#F5F5F5), to(#E5E5E5))",
 	            },
 	            "&:not(.bottom)": {
+		            "padding-top": "3px",
 	                "border-bottom": "1px solid silver"
 	            },
 	            "&.bottom.inset": {
