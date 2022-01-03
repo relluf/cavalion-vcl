@@ -465,7 +465,7 @@ define(function (require) {
                         height: this._node.clientHeight
                     });
                 }
-console.log(this, "setBounds", bounds);
+// console.log(this, "setBounds", bounds);
                 this.alignControls();
             },
             setBoundsValidated: function (left, top, right, bottom, width, height) {

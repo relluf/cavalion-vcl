@@ -16,7 +16,7 @@
 			'.right': "float: right;",
 			'.{Button}': {
 				outline: "none",
-				'&:not(.right)': "margin-right: 16px;",
+				'&:not(.right)': "margin-right: 8px;",
 				'background': "none",
 				'background-color': "transparent",
 				'border': "none",
