@@ -1,3 +1,11 @@
+### 2022/01/07 -  1.1.45
+
+* Fix for `context` parameter in data/Array:onFilterObject-event
+
+### 2022/01/04
+
+- Adding sort-features to ui/List, -Column and -Header
+
 ### 2022/01/03 -  1.1.44
 
 * Adding `context` parameter to Array:onFilterObject-event, which can be used as a cache for a specific filter context (updateFilter-call)

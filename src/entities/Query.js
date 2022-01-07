@@ -358,9 +358,6 @@ define(function(require) {
 				return this._attributes !== "" ? this._attributes.split(",") : [];
 			},
 			processResult: function(res, page, criteria) {
-				
-				//this.print("page/" + page + "/processResult", {res: res, criteria: criteria});
-
 				var instances = res.instances;
 				var tuples = res.tuples;
 				var size = instances.length;
@@ -371,7 +368,7 @@ define(function(require) {
 					this.notify(SourceEvent.layoutChanged);
 				}
 
-				if(this._arr === null || this._arr.length === 0) {
+				if(this._arr === null/* || this._arr.length === 0*/) {
 					if(!res.hasOwnProperty("count")) {
 						if(this._count === false && page === 0 && res.instances.length === 0) {
 							res.count = 0;

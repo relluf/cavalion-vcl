@@ -668,15 +668,6 @@ define(function(require) {
 						var changed = false;
 						var attrs = this._source.getAttributeNames();
 
-//						sort(function(i1, i2) {
-//						    var s1 = i1.split(".").length;
-//						    var s2 = i2.split(".").length;
-//						    if(s1 !== s2) {
-//						        return s1 < s2 ? -1 : 1;
-//						    }
-//						    return i1 < i2 ? -1 : 1;
-//						});
-
 						for(var i = 0; i < attrs.length; ++i) {
 							var column = this.getColumnByAttribute(attrs[i]);
 							if(column === null) {
@@ -825,10 +816,7 @@ define(function(require) {
 			},
 
 			valueByColumnAndRow(column, row) {
-				var value, orgValue;
-				if(column._attribute !== "") {
-					orgValue = (value = this._source.getAttributeValue(column._attribute, row));
-				}
+				var value = this._source.getAttributeValue(column._attribute, row);
 				if(column._wantsNullValues || (value !== null && value !== undefined)) {
 					if(column._displayFormat !== "") {
 						value = String.format(column._displayFormat, value);
@@ -845,13 +833,46 @@ define(function(require) {
 				}
 				return value;
 			},
-			groupByColumn(column) {
+			groupByColumn(column/*, ... TODO */) {
 				var r = {};
 				this._source.getObjects().forEach((obj, row) => {
 					var value = this.getValueByColumnAndRow(column, row);
 					(r[value] = r[value] || []).push(obj);
 				});
 				return r;
+			},
+			sortBy(column, dir, numeric) {
+				
+				if(typeof column === "string") {
+					column = column.split(" ");
+					if(arguments.length === 1) {
+						dir = column[1];
+					}
+					if(column.length === 2) {
+						numeric = column[2] === "numeric";
+					}
+					column = this.getColumnByName(column[0]);
+				} else if(typeof column === "number") {
+					column = this.getColumn();
+				}
+
+				this._source.sort((i1, i2) => {
+					
+					var row1 = this._source._array.indexOf(i1);
+					var row2 = this._source._array.indexOf(i2);
+
+					i1 = this.valueByColumnAndRow(column, row1);
+					i2 = this.valueByColumnAndRow(column, row2);
+					
+					if(numeric === true) {
+						if(isNaN(i1 = parseFloat(i1))) return 1;
+						if(isNaN(i2 = parseFloat(i2))) return -1;
+					}
+					
+					if(i1 === i2) return 0;
+					
+					return (dir === "desc" ? -1 : 1) * (i1 < i2 ? -1 : 1);
+				});
 			},
 			
 			hasSelection: function() {

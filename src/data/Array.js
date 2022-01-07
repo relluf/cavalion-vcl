@@ -185,7 +185,7 @@ define(function(require) {
 			
 			updateFilter: function(notify) {
 				if(this._onFilterObject !== null && this._array !== null) {
-					var arr = [], context = {};
+					var arr = [], context = { source: this };
 					this._arr = this._array;
 					for(var i = 0; i < this._array.length; ++i) {
 						var obj = this._array[i];
@@ -310,12 +310,15 @@ define(function(require) {
 					});
 				}
 
+				var A = this._arr;
 				this.assertArray();
 				try {
 					// TODO Hmm, this sorting of _arr feels a lil' dodgy TBH...
-					this._arr && window.Array.prototype.sort.apply(this._arr, arguments);
+					// this._arr && window.Array.prototype.sort.apply(this._arr, arguments);
+					this._arr = this._array;
 					return window.Array.prototype.sort.apply(this._array, arguments);
 				} finally {
+					this._arr = A;
 					this.arrayChanged();
 				}
 			}
