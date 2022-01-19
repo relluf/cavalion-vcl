@@ -242,9 +242,8 @@ define(function(require) {
 				return r;
 			},
 			
-			
 			groupBy: function() {
-				return this._list.groupByColumn(this);	
+				return this._list.groupBy(this);	
 			},
 
 			sizing: function(evt) {
