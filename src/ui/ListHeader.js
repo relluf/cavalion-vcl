@@ -9,9 +9,7 @@ define(function(require) {
 	var ListColumn = require("js/referenceClass!./List");
 
 	var ListHeader = {
-
 		inherits: Panel,
-
 		prototype: {
 
 			"@css": {
@@ -44,30 +42,17 @@ define(function(require) {
 				}
 			},
 
-			/**
-			 *
-			constructor: function() {
-			},
-			 */
-
-			/**
-			 * @overrides ../Control.prototype
-			 */
+			/** @overrides ../Control.prototype */
 			_align: "top",
 			_autoSize: "height",
 			_content: "<div></div>",
 
-			/**
-			 * @overrides ../Control.prototype.getClientNode
-			 */
 			getClientNode: function() {
+				/** overrides ../Control.prototype.getClientNode */
 				return this._node.childNodes[0];
 			},
-
-			/**
-			 * @overrides ../Control.prototype.setParent
-			 */
 			setParent: function(value) {
+				/** overrides ../Control.prototype.setParent */
 				if(this._parent !== value) {
 					if(this._parent !== null) {
 						Method.disconnect(this._parent, "notifyEvent", this, "listNotifyEvent");
@@ -81,11 +66,8 @@ define(function(require) {
 					}
 				}
 			},
-
-			/**
-			 * @overrides ../Control.prototype.dispatchChildEvent
-			 */
 			dispatchChildEvent: function(component, name, evt, f) {
+				/** overrides ../Control.prototype.dispatchChildEvent */
 				if(component instanceof ListColumn && component._parent === this) {
 					if(name === "dragstart" && component.hasClass("size") === false) {
 						var listview = this.getList();
@@ -141,25 +123,16 @@ define(function(require) {
 				return this.inherited(arguments);
 			},
 
-			/**
-			 *
-			 */
 			listNotifyEvent: function(event, data) {
 				if(event === "setScrollLeft" && this._node !== null) {
 					this._node/*.childNodes[0]*/.scrollLeft = data;
 				}
 			},
-
-			/**
-			 *
-			 */
 			getList: function() {
 				return this._parent !== null ? this._parent : null;
 			}
 		},
-
 		properties: {
-
 			"align": {
 				set: Method,
 				type: Panel.ALIGN
