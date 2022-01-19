@@ -212,7 +212,7 @@ define(function(require) {
 					var topRow = parseInt(me._nodes.body.scrollTop / me._rowHeight, 10);
 					me._topRow = topRow;
 					
-					me.render();
+					me.render_();
 				}
 
 				return this.inherited(arguments);
@@ -336,7 +336,7 @@ define(function(require) {
 			},
 
 			notifyEvent: function(event, data) {},
-			render: function(bodyUpdateRows/*TODO*/) {
+			render_: function(bodyUpdateRows/*TODO*/) {
 				if(bodyUpdateRows) return this._body.updateRows();
 				
 				var vrc = this.getVisibleRowCount(true);
@@ -388,7 +388,7 @@ define(function(require) {
 						}
 					}, 50);
 				}
-				this._body.render();
+				this._body.render_();
 			},
 			renderCell: function(cell, row, column) {
 				var value, orgValue;
@@ -487,7 +487,7 @@ define(function(require) {
 					}
 					this.setSelection([]);
 					//this.alignControls();
-					this.render();
+					this.render_();
 				}
 			},
 
@@ -531,7 +531,7 @@ define(function(require) {
 			setVisibleRowCount: function(value) {
 				if(this._visibleRowCount !== value) {
 					this._visibleRowCount = value;
-					this.render();
+					this.render_();
 				}
 			},
 			
@@ -711,7 +711,7 @@ define(function(require) {
 				for(var i = 0; i < this._columns.length; ++i) {
 					this._columns[i].setAutoWidthValue("", true);
 				}
-				this.render();
+				this.render_();
 			},
 			getAutoColumns: function() {
 				return this._autoColumns;

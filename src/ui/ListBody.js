@@ -53,7 +53,7 @@ define(function(require) {
 			getList: function() {
 				return this._parent !== null ? this._parent : null;
 			},
-			render: function() {
+			render_: function() {
 				var list = this.getList();
 				if(list.getCount() === 0) {
 					this._firstRow = 0;
