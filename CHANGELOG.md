@@ -1,3 +1,10 @@
+### 2022/01/18 -  1.1.46
+
+**ui/List**: 
+
+* Adding "ignore-busy" class behaviour
+* Refactoring `groupByColumn(...)` -> `groupBy(column, ...)`
+
 ### 2022/01/07 -  1.1.45
 
 * Fix for `context` parameter in data/Array:onFilterObject-event
