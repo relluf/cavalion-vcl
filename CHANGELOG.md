@@ -1,7 +1,15 @@
+### 2022/01/18 -  1.1.47
+
+`#CVLN-20220118-1`
+
+* Workaround for weird rendering bug in ui/List
+
 ### 2022/01/18 -  1.1.46
 
 * **ui/List**: Adding "ignore-busy" class behaviour
 * **ui/List**: Refactoring `groupByColumn(...)` -> `groupBy(column, ...)`
+* **ui/List**: Refactoring `render` => `render_` (vcl/Control.prototype.render was not being overridden/nameclashing)
+
 
 ### 2022/01/07 -  1.1.45
 

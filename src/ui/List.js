@@ -102,6 +102,15 @@ define(function(require) {
 			_onColumnGetValue: null,
 			_onColumnRenderCell: null,
 
+/**--		#CVLN-20220118-1-workaround */			
+			visibleChanged() {
+				if(this.isVisible()) {
+					// this.print("#CVLN-20220118-1 Calling rowHeightChanged-workaround");
+					this._body.rowHeightChanged();
+				}
+				return this.inherited(arguments);
+			},
+
 /**--		overrides ../Component.prototype */
 			destroy: function() {
 				/** @overrides ../Component.prototype.destroy */
