@@ -337,7 +337,7 @@ var Handlers = {
 			// @overrides ui/forms/Home<>
 			container.setVisible(false);
 			container.setParent(scope.client);
-			node.setText(params.title || "&nbsp;");
+			node.setText(params.text || params.title || "&nbsp;");
 			node.setVar("control", container);
 			node.setParent(parent || scope.tree);
 			node.update(function() {
