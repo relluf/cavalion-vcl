@@ -346,8 +346,6 @@ define(function(require) {
 				}
 
 				var start = this._topRow - this._rowBuffer;
-
-
 				var end = start + vrc + this._rowBuffer * 2;
 
 				if(start < 0) {
@@ -655,12 +653,13 @@ define(function(require) {
 				this.notifyEvent("columnsChanged");
 			},
 			updateColumns: function() {
-				this.resetColumnAutoWidth(); 
-				
 				var updateColumns = this.updateColumns;
 				this.updateColumns = function() {
 					console.log("updateColumns blocked");
 				};
+
+				this.resetColumnAutoWidth(); 
+				
 				try {
 					if(this._source !== null) {
 						var columns = [].concat(this._columns);
@@ -751,7 +750,7 @@ define(function(require) {
 						break;
 
 					case SourceEvent.busyChanged:
-						if(data && this._topRow > 0) { /* TODO what about scrolling up? */
+						if((data && this._topRow > 0) || this.hasClass("ignore-busy")) { /* TODO what about scrolling up? */
 							return;
 						}
 						this.setTimeout("update-busy", function() {
@@ -833,10 +832,10 @@ define(function(require) {
 				}
 				return value;
 			},
-			groupByColumn(column/*, ... TODO */) {
+			groupBy(column/*, ... TODO */) {
 				var r = {};
 				this._source.getObjects().forEach((obj, row) => {
-					var value = this.getValueByColumnAndRow(column, row);
+					var value = this.valueByColumnAndRow(column, row);
 					(r[value] = r[value] || []).push(obj);
 				});
 				return r;
