@@ -27,7 +27,7 @@ define(function(require) {
 			_onReflectHash: null,
 			
 			onshow: function() {
-				/** s ../Control.prototype.onshow */
+				/** @overrides ../Control.prototype.onshow */
 				if(this.fire("onShow", arguments) !== false) {
 				    var me = this;
 				    (function() {
@@ -43,12 +43,12 @@ define(function(require) {
 				}
 			},
 			onhide: function() {
-				/** s ../Control.prototype.onhide */
+				/** @overrides ../Control.prototype.onhide */
 				if(this.fire("onHide", arguments) !== false) {
 				}
 			},
 			visibleChanged: function() {
-				/** s ../Control.prototype.visibleChanged */
+				/** @overrides ../Control.prototype.visibleChanged */
 				var r = this.inherited(arguments);
 
 				if(this.isVisible()) {
