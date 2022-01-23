@@ -1,3 +1,9 @@
+### 2022/01/22 - 1.1.48
+
+* Removed obsolete files (./vcl-comps/*)
+* Adding extra onLoad-event to cavalion-blocks
+* Working on prototypes/ui/forms/Home.tree
+
 ### 2022/01/18 -  1.1.47
 
 `#CVLN-20220118-1`
