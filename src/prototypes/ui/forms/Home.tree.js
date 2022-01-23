@@ -17,6 +17,7 @@ var Handlers = {
     			form_scope = form.getScope();
     			if(name === "formload" && !form_scope.left) {
 	    			root_scope.description.revertPropertyValue("content");
+	    			// root_scope.description.setContent(form.vars(["description"]) || (form.qs("#description") || {})._content);
 // console.log(js.sf("%n / description set to: %s", root_scope.description, root_scope.description._content));
     			}
     			if(form_scope.left && form_scope.left._uri.endsWith("prototypes/ui/forms/View")) {
@@ -104,6 +105,7 @@ var Handlers = {
     			form_scope = form.getScope();
     			if(name === "formload" && !form_scope.left) {
 	    			root_scope.description.revertPropertyValue("content");
+	    			// /*!!!*/root_scope.description.setContent("--reverted1--");
     			}
     			if(form_scope.left && form_scope.left._uri.endsWith("prototypes/ui/forms/View")) {
     	    		if(name === "formload") {
@@ -195,6 +197,7 @@ var Handlers = {
 		}
 
 		scope.description.revertPropertyValue("content");
+		// /*!!!*/scope.description.setContent("--reverted2--");
 // console.log(js.sf("%n / description set to: %s", scope.description, scope.description._content));
 
 		// Is there a node selected?
