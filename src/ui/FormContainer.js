@@ -155,7 +155,7 @@ define(function (require) {
 
                         if(component !== null) {
                         	if(!(component instanceof Form)) {
-	                            console.error(String.format("%s is not a %n (but a %n)", uri, Form,
+	                            console.warn(String.format("[warning] %s is not a %n (but a %n)", uri, Form,
 	                                typeof component.getClass === "function" ?
 	                                    component.getClass() : component));
 	                                    
