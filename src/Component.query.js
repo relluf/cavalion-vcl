@@ -653,7 +653,7 @@ define(function() {
     Result.prototype = [];
     
     /*- Prototype methods of Component, Control, Action to mixin */
-    "on,un,listen,unlisten,connect,disconnect,execute,show,hide,render,dispatch,emit,fire,once,selectNext,selectPrevious,toggleClass,print".split(",").forEach(function(name) {
+    "on,un,once,dispatch,emit,fire,listen,unlisten,connect,disconnect,get,set,execute,toggle,show,hide,render,selectNext,selectPrevious,selectNth,selectFirst,selectLast,toggleClass,print".split(",").forEach(function(name) {
 	        Result.prototype[name] = function() {
 	            for(var i = 0; i < this.length; ++i) {
 	                if(typeof this[i][name] === "function") {
