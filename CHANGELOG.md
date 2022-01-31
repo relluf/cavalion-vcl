@@ -1,3 +1,11 @@
+### 2022/01/30 - 1.1.50
+
+- Extending the methods that can be called on a `Component.prototype.query`-result
+
+### 2022/01/28 - 1.1.49
+
+* Fix for `vcl/Component.prototype.set` when called with a single string parameter (parsed by `js.str2obj`)
+
 ### 2022/01/22 - 1.1.48
 
 * Removed obsolete files (./vcl-comps/*)
