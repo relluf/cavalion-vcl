@@ -780,7 +780,7 @@ define(function (require) {
             			values[value] = arguments[1];
             			return this.set(values);
             		}
-            		return this.setProperties.apply(this, js.str2obj(value));
+            		return this.setProperties.apply(this, [js.str2obj(value)]);
             	}
             	return this.setProperties.apply(this, arguments);
             },
@@ -1462,7 +1462,7 @@ define(function (require) {
                 	this.override(value, true);
                 },
                 type: Type.OBJECT
-            },
+            }, // Yuk!
             "override": {
             	fixUp: true,
                 set: function(value) {
