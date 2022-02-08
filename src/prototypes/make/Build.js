@@ -33,16 +33,12 @@ var Handlers = {
 
 	    	source.push(String.format("define(\"%s\", %s);", k, JSON.stringify(v)));
 	    }
-	    source.push("\n\n/*- Implicit Sources (blocks) */");
-	    Factory = require("blocks/Factory");
-	    for(k in Factory.implicit_sources) {
-	    	v = Factory.implicit_sources[k];
 
-	    	source.push(String.format("define(\"%s\", %s);", k, JSON.stringify(v)));
-	    }
-	    
-	    source.push("\n\n/*- Sources */");
-	    
+	    Factory = require("blocks/Factory");
+	    source.push("\n\n/*- Implicit Sources (blocks) */");
+	    source.push(js.sf("define(\"blocks/Factory.implicit_sources\", function() { return (%s); });", 
+	    	js.b(JSON.stringify(Factory.implicit_sources))));
+
 	    function callback(uri, text) {
 	    	if(text) {
 		        text = text.replace(/\r/g, "");
@@ -55,6 +51,8 @@ var Handlers = {
                 scope['extra-components'].setValue(source.join("\n"));
             }
         }
+
+	    source.push("\n\n/*- Sources */");
 
 	    vars.components.forEach(function(uri) {
 	        count++;
