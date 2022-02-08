@@ -1,3 +1,8 @@
+### 2022/02/07 - 1.1.51
+
+* **prototypes/build/Make**: Code generation adjusted to recent refactoring of `blocks/Factory.implicit_sources`
+* Adjusted Component.prototype.hook
+
 ### 2022/01/30 - 1.1.50
 
 - Extending the methods that can be called on a `Component.prototype.query`-result
