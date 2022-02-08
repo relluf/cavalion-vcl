@@ -401,16 +401,11 @@ define(function (require) {
                 }
             },
             hook: function(method, callback) {
-            	var root = this;
-				var hk = {
-					destroy() {
-						Method.disconnect(root, method, hk, "callback")
-					},
-					callback() {
-						callback.apply(this, arguments);
-					}
+				var hook = {
+					destroy: () => Method.disconnect(this, method, hook, "callback"),
+					callback: () => callback.apply(this, arguments)
 				};
-				Method.connect(root, "dispatchChildEvent", hk, "callback");
+				Method.connect(this, method, hook, "callback");
             },
             isLoading: function () {
 	            /**
