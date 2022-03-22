@@ -53,6 +53,9 @@ define(function(require) {
 				if(this._control !== null) {
 
 					Tab.SELECT_TIMEOUT_MS += 50;
+					if(Tab.SELECT_TIMEOUT_MS > 350) {
+						Tab.SELECT_TIMEOUT_MS = 350;
+					}
 					
 					this.setTimeout("selected", function() {
 						if(this.isSelected() === false) return;
