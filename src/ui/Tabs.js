@@ -181,22 +181,23 @@ define(function(require) {
 	    		
 	    	},
 	    	selectNext: function() {
-	    	    var index = this.getSelectedControl(1);
-	    	    index = index ? index.getIndex() : -1;
-	    	    if(++index === this._controls.length) {
+	    		var controls = this._controls.filter(c => c._groupIndex === 1);
+	    		var index = controls.indexOf(this.getSelectedControl(1));
+	    	    if(++index === controls.length) {
 	    	        index = 0;
 	    	    }
-	    	    this.selectNth(index);
+	    	    this.selectNth(controls[index]);
 	    	},
 	    	selectPrevious: function() {
-	    	    var index = this.getSelectedControl(1).getIndex();
+	    		var controls = this._controls.filter(c => c._groupIndex === 1);
+	    		var index = controls.indexOf(this.getSelectedControl(1));
 	    	    if(--index < 0) {
-	    	        index = this._controls.length - 1;
+	    	        index = controls.length - 1;
 	    	    }
-	    	    this.selectNth(index);
+	    	    this.selectNth(controls[index]);
 	    	},
-	    	selectNth: function(index) {
-	    	    var control = this.getControl(index);
+	    	selectNth: function(index) { // index can be reference to control as well
+	    	    var control = typeof index === "number" ? this.getControl(index) : index;
 	    	    control.setSelected(true);
 	    	    this.makeVisible(control);
 	    	},
