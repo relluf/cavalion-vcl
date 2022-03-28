@@ -1,3 +1,12 @@
+### 2022/03/28 -  1.1.52
+
+* Refactoring animation classes for glassy-containers
+
+### 2022/03/22
+
+* **Tabs**: Fixed selectNext() and selectPrevious() **f'n finally!!!**
+* **Tabs**: Fixed/finetuned select-timeout-feature
+
 ### 2022/02/07 - 1.1.51
 
 * **prototypes/build/Make**: Code generation adjusted to recent refactoring of `blocks/Factory.implicit_sources`
