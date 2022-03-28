@@ -38,7 +38,7 @@
  				".glassy": "background-color: rgba(155, 155, 155, 0.35); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);",
 				".loading": "background: rgba(155, 155, 155, 0.35) url(/shared/vcl/images/loading.gif) 50% 50% no-repeat;",
 				".rounded": "padding: 4px; border-radius: 5px;",
-				".animate-width": "transition: width 250ms ease-in;",
+				".animate-width-height": "transition: width 250ms ease-in, height 250ms ease-in;",
 				// ".glassy": {
 				// 	"": "background: rgba(155, 155, 155, 0.35); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);",
 				// 	// "&:not(.no-animation)": "transition: backdrop-filter 350ms ease-in, -webkit-backdrop-filter 350ms ease-in;",
