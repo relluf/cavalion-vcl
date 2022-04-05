@@ -460,12 +460,15 @@ define(function(require) {
 				return (value instanceof Date) || (typeof value === "string" && 
 					value.length === 24 && value.endsWith("Z"));
 			},
-			formatDate: function(value) {
+			formatDate: function(value, opts) {
 				if(!(value instanceof Date)) value = new Date(value);
+				if(opts && opts.utc) {
+				return String.format("%d/%02d/%02d %02d:%02d", value.getUTCFullYear(), value.getUTCMonth() + 1,
+						value.getUTCDate(), value.getUTCHours(), value.getUTCMinutes());
+				}
+				
 				return String.format("%d/%02d/%02d %02d:%02d", value.getFullYear(), value.getMonth() + 1,
 						value.getDate(), value.getHours(), value.getMinutes());
-				// return String.format("%d/%02d/%d %02d:%02d", value.getDate(), value.getMonth() + 1,
-				// 		value.getFullYear(), value.getHours(), value.getMinutes());
 			},
 
 			getBodyWidth: function() {

@@ -1,6 +1,10 @@
+### 2022/04/05 -  1.1.53*
+
+- **ui/List**: Adding support for UTC to `formatDate()`
+
 ### 2022/03/28 -  1.1.52
 
-* Refactoring animation classes for glassy-containers
+* Refactoring animation classes for `glassy-overlay` containers
 
 ### 2022/03/22
 
