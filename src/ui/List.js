@@ -463,8 +463,8 @@ define(function(require) {
 			formatDate: function(value, opts) {
 				if(!(value instanceof Date)) value = new Date(value);
 				if(opts && opts.utc) {
-				return String.format("%d/%02d/%02d %02d:%02d", value.getUTCFullYear(), value.getUTCMonth() + 1,
-						value.getUTCDate(), value.getUTCHours(), value.getUTCMinutes());
+					return String.format("%d/%02d/%02d %02d:%02d", value.getUTCFullYear(), value.getUTCMonth() + 1,
+							value.getUTCDate(), value.getUTCHours(), value.getUTCMinutes());
 				}
 				
 				return String.format("%d/%02d/%02d %02d:%02d", value.getFullYear(), value.getMonth() + 1,
