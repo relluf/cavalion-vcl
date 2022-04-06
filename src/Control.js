@@ -778,6 +778,15 @@ define(function(require) {
 					}
 				}
 			},
+			swapClass: function(a, b) {
+				if(this.hasClass(a)) {
+					this.removeClass(a);
+					this.addClass(b);
+				} else if(this.hasClass(b)) {
+					this.removeClass(b);
+					this.addClass(a);
+				}
+			},
 			addClass: function(value, directly) {
 
 				//directly && console.warn("addClass directly can be replaced with a call to _update");
