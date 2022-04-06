@@ -5,7 +5,7 @@ var HtmlElement = require("util/HtmlElement");
 var Element = require("vcl/ui/Element");
 var FormContainer = require("vcl/ui/FormContainer");
 
-$(["./App.openform.toast"], {
+[["./App.openform.toast"], {
 	onDispatchChildEvent: function(component, name, evt, f, args) {
 		if(name === "touchstart") {
 			if(!Fullscreen.hasRequested()) {
@@ -34,9 +34,9 @@ $(["./App.openform.toast"], {
         state && state.restore && state.restore(state);
     }
 }, [
-    $i("window", [
-        $("vcl/ui/FormContainer", "client", {
+    ["#window", [
+        ["vcl/ui/FormContainer", "client", {
         	formUri: "./ui/forms/Portal<>"
-        }),
-    ])
-]);
+        }],
+    ]]
+]];
