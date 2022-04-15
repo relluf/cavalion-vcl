@@ -613,7 +613,7 @@ define(function(require) {
 			},
 
 
-/**-- style/css/classes */
+/**-- style/css/classes -- TODO 2022/04/12 it's a bit messy/asymmetric when update() is called/or not*/
 			getComputedStyle: function() {
 				if(this._computedStyle === null) {
 					this._computedStyle = HtmlElement.getComputedStyle(this.nodeNeeded());
@@ -754,12 +754,11 @@ define(function(require) {
 					
 		Replaced with following fragment
 	*/
-	
 					classes.forEach(function(cls, index) {
 						if(this.hasClass(cls)) {
-							this.removeClass(cls);
+							this.removeClass(cls, true);
 						} else {
-							this.addClass(cls);
+							this.addClass(cls, true);
 						}
 					}, this);
 				}
@@ -859,6 +858,7 @@ define(function(require) {
 				}
 			},
 			removeClasses: function(classes, directly) {
+				// why does this method exist where all the others in this group accept classes
 				if(typeof classes === "string") {
 					classes = classes.split(" ");
 				}
@@ -887,7 +887,21 @@ define(function(require) {
 			clearClass: function(classes) {
 				Array.as(classes).forEach(cls => { while(this.hasClass(cls)) this.removeClass(cls); });
 			},
-
+			syncClass: function(classes, states) {
+				// classes = classes || classes?.split(" ")
+				if(classes.split) {
+					classes = classes.split(" ");
+				}
+				classes.forEach((cls, index) => {
+					var state = this.hasClass(cls);
+					if(state && !states[index]) {
+						this.removeClass(cls);
+					} else if(!state && states[index]) {
+						this.addClass(cls)
+					}
+				});
+				this.applyClasses();
+			},
 			hasState: function(state) {
 			/** @param state {String} ControlState * @returns
 			 */

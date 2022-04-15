@@ -1,6 +1,10 @@
-### 2022/04/05 -  1.1.53*
+### 2022/04/06 -  1.1.54
 
 - **ui/List**: Adding support for UTC to `formatDate()`
+
+### 2022/04/03 -  1.1.53
+
+- **Control**: Introducing `swapClass`
 
 ### 2022/03/28 -  1.1.52
 
