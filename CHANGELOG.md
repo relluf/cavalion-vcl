@@ -1,3 +1,7 @@
+### 2022/04/15 -  1.1.55
+
+* Minor fixes in vcl/Control-style methodes
+
 ### 2022/04/06 -  1.1.54
 
 - **ui/List**: Adding support for UTC to `formatDate()`
