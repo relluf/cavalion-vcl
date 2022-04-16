@@ -1,6 +1,6 @@
-### 2022/04/15 -  1.1.55
+### 2022/04/15 -  1.1.57
 
-* Minor fixes in vcl/Control-style methodes
+* Minor fixes in vcl/Control-style methodes (causing big updates)
 
 ### 2022/04/06 -  1.1.54
 

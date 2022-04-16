@@ -889,9 +889,8 @@ define(function(require) {
 			},
 			syncClass: function(classes, states) {
 				// classes = classes || classes?.split(" ")
-				if(classes.split) {
-					classes = classes.split(" ");
-				}
+				if(classes.split) classes = classes.split(" ");
+				if(!(states instanceof Array)) states = [states];
 				classes.forEach((cls, index) => {
 					var state = this.hasClass(cls);
 					if(state && !states[index]) {
