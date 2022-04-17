@@ -1,3 +1,9 @@
+
+### 2022/04/17 -  1.1.58
+
+* Adding prototypes description to [.md]()
+* **vcl/ui/Tabs**: Fix (sort of) for long standing annoyance where borders disappear at certain zoom-levels
+
 ### 2022/04/15 -  1.1.57
 
 * Minor fixes in vcl/Control-style methodes (causing big updates)

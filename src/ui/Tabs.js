@@ -11,17 +11,21 @@ define(function(require) {
     	prototype: {
 	    	'@css': {
 	            // typical usage vertical: 4px 16px 4px
-	            "background-color": "#f0f0f0",
+	            'background-color': "#f0f0f0",
 	            'height': "26px",
-	            "padding-left": "2px",
-	            // "border-top": "1px solid silver",
+	            'padding-left': "2px",
+	            'padding-bottom': "0",
+
+	            'z-index': "999", // Ace really f's things up
 	            
 	            "&.gradient":{
 	                "background-image": "-webkit-gradient(linear, 0% 0%, 0% 100%, from(#F5F5F5), to(#E5E5E5))",
 	            },
-	            "&:not(.bottom)": {
-		            "padding-top": "3px",
-	                "border-bottom": "1px solid silver"
+	            '&:not(.bottom)': {
+		            'padding-top': "3px",
+		            'margin-top': "1px",
+	                'border-top': "0.5px solid silver",
+	                'border-bottom': "0.5px solid silver"
 	            },
 	            "&.bottom.inset": {
 	                "padding-top": "0px",
@@ -32,8 +36,10 @@ define(function(require) {
 	            },
 	            
 	            "&.bottom": {
+	                'margin-bottom': '1px',
 	                "padding-top": "0px",
 	                "border-top": "1px solid silver",
+	                // "border-bottom": "0.5px solid silver",
 	                ".{./Tab}": {
 	                    // border: "1px solid silver",
 	                    "&.selected": {
@@ -43,7 +49,7 @@ define(function(require) {
 	                    "border-top": "none",
 	                    "margin-top": "0",
 	                    "height": "20px"
-	                }
+	                },
 	            },
 	            
 	            "&.sizeable": {
@@ -62,7 +68,7 @@ define(function(require) {
 	                display: "inline-block",
 	                border: "1px solid transparent",
 	                "border-bottom": "none",
-	                padding: "2px 4px 2px 4px",
+	                padding: "2px 4px 0px 4px",
 	                "margin-top": "2px",
 	                "margin-left": "3px",
 	                "margin-right": "3px",
