@@ -3,48 +3,32 @@ define(["require", "js/defineClass", "./Element", "js/Type"], function(require, 
 	return (Container = Container(require, {
 		inherits: Element,
 		prototype: {
-
-			/**
-			 * @overrides ../Control.prototype.getInnerHtml
-			 */
 			getInnerHtml: function() {
+				/** @overrides ../Control.prototype.getInnerHtml */
 				return this._content || "";
 			},
-
-			/**
-			 * @overrides ../Control.prototype.isContainer
-			 */
 			isContainer: function() {
+				/** @overrides ../Control.prototype.isContainer */
 				return true;
 			},
 			
             align: function (control, origin) {
             	// No hay nada de hacer yo creo
 			},
-
-			/**
-			 * @overrides ../Control.prototype.storeScroll
-			 */
 			storeScroll: function() {
+				/** @overrides ../Control.prototype.storeScroll */
 				this.hasOwnProperty("_controls") && this._controls.forEach(function(control) {
 					control.storeScroll();
 				});
 				return this.inherited(arguments);
 			},
-
-			/**
-			 * @overrides ../Control.prototype.restoreScroll
-			 */
 			restoreScroll: function() {
+				/** @overrides ../Control.prototype.restoreScroll */
 				this.hasOwnProperty("_controls") && this._controls.forEach(function(control) {
 					control.restoreScroll();
 				});
 				return this.inherited(arguments);
 			},
-
-			/**
-			 *
-			 */
 			parentScrolled: function(parent, evt) {
 				if(this.hasOwnProperty("_controls")) {
 					for (var i = 0, l = this._controls.length; i < l; ++i) {
@@ -54,7 +38,6 @@ define(["require", "js/defineClass", "./Element", "js/Type"], function(require, 
 			}
 		},
 		properties: {
-
 			"controls": {
 				type: Type.ARRAY,
 				visible: false,
