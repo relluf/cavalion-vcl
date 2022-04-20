@@ -183,11 +183,11 @@ define(function(require) {
 			dispatchChildEvent: function(component, name, evt, f, args) {
 			/** @overrides ./Component.prototype.dispatchChildEvent */
 				// FIXME Pure non-Control instances do not fwd to owner
-				return this.inherited(arguments) &&
+				return this.inherited(arguments) && (
 					this._parent !== null ?	this._parent.dispatchChildEvent(
 							component, name, evt, f, args) :
 						this._owner !== null ? this._owner.dispatchChildEvent(
-									component, name, evt, f, args) : true;
+									component, name, evt, f, args) : true);
 			},
 			isContainer: function() {
 				return false;
