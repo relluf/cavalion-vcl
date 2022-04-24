@@ -23,7 +23,7 @@ define(function(require) {
 			"   width: 6px;\n" +
 			"   height: 6px;\n" +
 			"   line-height: 6px;\n" +
-			"   z-index: 400;\n" +
+			"   z-index: 4000;\n" +
 			"}";
 
 		var head = document.getElementsByTagName("head")[0];

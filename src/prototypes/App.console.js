@@ -124,27 +124,3 @@ keyup:MetaCtrl+192`,
 	    vars: "parent: window;"
     }]
 ]];
-    // $("vcl/Action", "toggle-server", {
-    //     hotkey: "Ctrl+F2",
-    //     onExecute: function() {
-    //         this.getApp().prompt("switchto", "ralph", function(server) {
-    //             if(server !== null) {
-    //                 var arr = window.location.toString().split("/");
-    //                 arr[2] = server;
-    //                 window.location = arr.join("/");
-    //             }
-    //         });
-    //     }
-    // }),
-    // $("vcl/Action", "open-debug", {
-    //     hotkey: "Ctrl+F3",
-    //     onExecute: function() {
-    //     }
-    // }),
-	// onLoad() {
- //   	var me = this.down("#console");
- //   	this.print = function() {
- //   		me.print.apply(me, arguments);
- //   	};
-	//     return this.inherited(arguments);
-	// }

@@ -23,9 +23,7 @@ define(function(require) {
 	            },
 	            '&:not(.bottom)': {
 		            'padding-top': "3px",
-		            'margin-top': "1px",
-	                'border-top': "0.5px solid silver",
-	                'border-bottom': "0.5px solid silver"
+	                'border-bottom': "1px solid silver"
 	            },
 	            "&.bottom.inset": {
 	                "padding-top": "0px",
@@ -36,10 +34,8 @@ define(function(require) {
 	            },
 	            
 	            "&.bottom": {
-	                'margin-bottom': '1px',
 	                "padding-top": "0px",
 	                "border-top": "1px solid silver",
-	                // "border-bottom": "0.5px solid silver",
 	                ".{./Tab}": {
 	                    // border: "1px solid silver",
 	                    "&.selected": {

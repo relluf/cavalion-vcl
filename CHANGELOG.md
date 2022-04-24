@@ -1,22 +1,28 @@
+### 2022/04/24 - 1.1.59
 
-### 2022/04/17 -  1.1.58
+* Cosmetic changes, cleaning up dead code
+
+### 2022/04/20 - 1.1.58
+
+* Fix in Control.prototype.dispatchChildEvent - _hoe is het mogelijk na zoveel tijd?!_
+
+### 2022/04/17
 
 * Adding prototypes description to [.md]()
-* **vcl/ui/Tabs**: Fix (sort of) for long standing annoyance where borders disappear at certain zoom-levels
 
-### 2022/04/15 -  1.1.57
+### 2022/04/15 - 1.1.57
 
 * Minor fixes in vcl/Control-style methodes (causing big updates)
 
-### 2022/04/06 -  1.1.54
+### 2022/04/06 - 1.1.54
 
 - **ui/List**: Adding support for UTC to `formatDate()`
 
-### 2022/04/03 -  1.1.53
+### 2022/04/03 - 1.1.53
 
 - **Control**: Introducing `swapClass`
 
-### 2022/03/28 -  1.1.52
+### 2022/03/28 - 1.1.52
 
 * Refactoring animation classes for `glassy-overlay` containers
 
@@ -44,20 +50,20 @@
 * Adding extra onLoad-event to cavalion-blocks
 * Working on prototypes/ui/forms/Home.tree
 
-### 2022/01/18 -  1.1.47
+### 2022/01/18 - 1.1.47
 
 `#CVLN-20220118-1`
 
 * Workaround for weird rendering bug in ui/List
 
-### 2022/01/18 -  1.1.46
+### 2022/01/18 - 1.1.46
 
 * **ui/List**: Adding "ignore-busy" class behaviour
 * **ui/List**: Refactoring `groupByColumn(...)` -> `groupBy(column, ...)`
 * **ui/List**: Refactoring `render` => `render_` (vcl/Control.prototype.render was not being overridden/nameclashing)
 
 
-### 2022/01/07 -  1.1.45
+### 2022/01/07 - 1.1.45
 
 * **data/Array**: Fix for `context` parameter in `onFilterObject`-event
 
@@ -65,19 +71,19 @@
 
 - Adding sort-features to ui/List, -Column and -Header
 
-### 2022/01/03 -  1.1.44
+### 2022/01/03 - 1.1.44
 
 * Adding `context` parameter to Array:onFilterObject-event, which can be used as a cache for a specific filter context (updateFilter-call)
 * Introducing List.prototype.**valueByColumnAndRow** - used to obtain the value that will be rendered (useful for inline filtering)
 
-### 2021/12/29 -  1.1.43
+### 2021/12/29 - 1.1.43
 
 - Styling glassy-overlays with text-shadow
 - **ui/Tabs**: Fixing styling bug
 - **ui/List**: Introducing `groupByColumn()`
 - **data/Query**: `requestPage()` now returns a Promise
 
-### 2021/12/28 -  1.1.42
+### 2021/12/28 - 1.1.42
 
 - Fix alignment bug `#CVLN-20211228-1` 
 

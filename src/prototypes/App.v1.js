@@ -34,7 +34,7 @@ var FormContainer = require("vcl/ui/FormContainer");
         state && state.restore && state.restore(state);
     }
 }, [
-    ["#window", [
+    [("#window"), [
         ["vcl/ui/FormContainer", "client", {
         	formUri: "./ui/forms/Portal<>"
         }],
