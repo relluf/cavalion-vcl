@@ -1,3 +1,8 @@
+### 2022/04/25 - 1.1.60
+
+* Introducing [prototypes/App.glassy](src/:.js)
+* Refactoring App-classes
+
 ### 2022/04/24 - 1.1.59
 
 * Cosmetic changes, cleaning up dead code
