@@ -5,7 +5,20 @@ var HtmlElement = require("util/HtmlElement");
 var Element = require("vcl/ui/Element");
 var FormContainer = require("vcl/ui/FormContainer");
 
-[["./App.openform.toast"], {
+[["./App.openform.toast.glassy"], {
+	onLoad: function() {
+    	var img = document.body.childNodes[0];
+    	if(img && img.nodeName === "IMG") {
+    		img.parentNode.removeChild(img);
+    	}
+    	
+		var scope = this.scope(), delegate;
+        scope.window.setParentNode(this.isDesigning() ?
+    		scope.window.getDesigner().getParentNode() : 
+    		document.body);
+    		
+    	return this.inherited(arguments);
+	},
 	onDispatchChildEvent: function(component, name, evt, f, args) {
 		if(name === "touchstart") {
 			if(!Fullscreen.hasRequested()) {
@@ -34,7 +47,17 @@ var FormContainer = require("vcl/ui/FormContainer");
         state && state.restore && state.restore(state);
     }
 }, [
-    [("#window"), [
+    [("#window"), {
+		css: {
+			".{./Button}": {
+				"font-family": "Lucida Grande, Arial, sans-serif",
+				"font-size": "9pt"
+			},
+			// "font-family": "SF Pro Text, SF UI Text, system-ui, Helvetica Neue, Helvetica, Lucida Grande, Arial, sans-serif",
+			"font-family": "Lucida Grande, Arial, sans-serif",
+			"font-size": "9pt"
+		}
+    }, [
         ["vcl/ui/FormContainer", "client", {
         	formUri: "./ui/forms/Portal<>"
         }],
