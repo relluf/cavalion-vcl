@@ -49,13 +49,13 @@ var FormContainer = require("vcl/ui/FormContainer");
 }, [
     [("#window"), {
 		css: {
-			".{./Button}": {
-				"font-family": "Lucida Grande, Arial, sans-serif",
-				"font-size": "9pt"
-			},
-			// "font-family": "SF Pro Text, SF UI Text, system-ui, Helvetica Neue, Helvetica, Lucida Grande, Arial, sans-serif",
-			"font-family": "Lucida Grande, Arial, sans-serif",
-			"font-size": "9pt"
+			// ".{./Button}": {
+			// 	"font-family": "Lucida Grande, Arial, sans-serif",
+			// 	"font-size": "9pt"
+			// },
+			// // "font-family": "SF Pro Text, SF UI Text, system-ui, Helvetica Neue, Helvetica, Lucida Grande, Arial, sans-serif",
+			// "font-family": "Lucida Grande, Arial, sans-serif",
+			// "font-size": "9pt"
 		}
     }, [
         ["vcl/ui/FormContainer", "client", {

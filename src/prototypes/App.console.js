@@ -1,10 +1,10 @@
-"use override, util/Event, console/node/vcl/Component";
+"use override, util/Event, util/HtmlElement, console/node/vcl/Component";
 
 var override = require("override");
 var Event = require("util/Event");
+var HtmlElement = require("util/HtmlElement");
 
 require("console/node/vcl/Component").initialize();
-    	
 override(require("vcl/Component").prototype, "print", function(inherited) {
     		return function() {
 	    		var console = this.down("vcl/ui/Console#console");
@@ -15,7 +15,7 @@ override(require("vcl/Component").prototype, "print", function(inherited) {
     		};
     	});
 
-["", [
+[(""), [
     ["vcl/Action", ("toggle-console"), {
         hotkey: `
 keyup:Ctrl+Escape|keydown:Ctrl+Escape|
@@ -76,7 +76,8 @@ keyup:MetaCtrl+192`,
 	    		if(height < 100) {
 	    			height = 100;
 	    		} else {
-    				var cs = console._parent.getComputedStyle();
+    				// var cs = console._parent.getComputedStyle();
+    				var cs = HtmlElement.getComputedStyle(console.getParentNode());
 	    			if(height > parseInt(cs.height, 10)) {
 	    				height = parseInt(cs.height, 10);
 	    			}
@@ -96,6 +97,7 @@ keyup:MetaCtrl+192`,
     	on(evt) { 
     		var console = this.scope().console, cons = console.qs("#console");
     		var delta = evt.keyCode === Event.keys.KEY_RIGHT_ARROW ? 100 : -100;
+			if(console._align === "right") delta = -delta;
     		var width = console.getWidth() + delta;
     		if(console._align !== "left" && console._align !== "right") {
     			console.setAlign(delta === -100 ? "left" : "right");
@@ -104,7 +106,8 @@ keyup:MetaCtrl+192`,
 	    		if(width < 100) {
 	    			width = 100;
 	    		} else {
-    				var cs = console._parent.getComputedStyle();
+    				// var cs = console._parent.getComputedStyle();
+    				var cs = HtmlElement.getComputedStyle(console.getParentNode());
 	    			if(width > parseInt(cs.width, 10) - 175) {
 	    				width = parseInt(cs.width, 10) - 175;
 	    			}
