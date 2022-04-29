@@ -423,9 +423,7 @@ define(function(require) {
 				return reference;
 			},
 			getParentNode: function() {
-			/**
-			 * @return {HtmlElement}
-			 */
+			/** @return {HtmlElement} */
 				if(this._parentNode !== null) {
 					return this._parentNode;
 				} else if(this._parent !== null) {

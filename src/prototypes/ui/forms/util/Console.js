@@ -23,26 +23,6 @@ var deselect = () => {
     align: "bottom",
     height: 250,
     visible: true,
-    css: "background-color: white border-top: 1px solid silver z-index: 10000",
-    // onMessage: function (name, params, sender) {
-    //     var scope = this.getScope();
-    //     if (name === "log") {
-            
-    //         console.warn("onMessage will be deprecated, migrate code to Component.prototype.emit and Component.prototype.query[All]");
-            
-    //         var args = js.copy_args(params);
-    //         var source = params[0];
-    //         if (typeof source !== "string") {
-    //             source = "[source-unknown]";
-    //         } else {
-    //             args.shift();
-    //         }
-    //         scope.console.print.apply(scope.console, [js.sf("%n - %s", sender, source)].concat(args));
-    //         return true;
-    //     }
-
-    //     return this.inherited(arguments);
-    // },
     onActivate() {
         // this._vars.sizer.setControl(null);
     },
@@ -51,10 +31,11 @@ var deselect = () => {
         var sizer = this.vars("sizer", new Sizer(this));
 
         var parent = this.scope()[this.vars("parent")];
-        if(parent) { this.setParent(parent); }
-
-        // FIXME
-        document.body.style.overflow = "hidden";
+        if(parent) { 
+        	this.setParent(parent); 
+        } else { 
+        	this.setParentNode(this.vars(["#console.parentNode"]) || document.body);
+        }
 
         sizer.on("setControl", function (value) {
             var consoles = this.app().qsa("vcl/ui/Console").filter(c => c.isVisible());
@@ -206,13 +187,13 @@ var deselect = () => {
         }
 
     }, [
-        ["vcl/ui/Element", "sizer_selection", {
+        [("vcl/ui/Element"), "sizer_selection", {
             css: "padding: 4px; display: inline-block; cursor: default;"
         }],
-        [[["ui/controls/SizeHandle"]], "size_handle", {
+        [["ui/controls/SizeHandle"], "size_handle", {
             classes: "vertical",
         	onClick() {
-        		// this.udr("#toggle-console") doesn't work...
+        		// this.udr("#toggle-console") doesn't work...?
         		this.up().down("#toggle-console").execute({sender: this});
 	        },
             vars: { control: "@owner" }
@@ -223,42 +204,10 @@ var deselect = () => {
         	this.up().print("document", window.location);
         },
         onEvaluate(expr) {
-            var scope = this.scope();
-            var app = this.app();
             var pr = this.print.bind(this);
-            
-            var me = this;
-            function open(uri, opts) {
-                me.bubble("openform", js.mixIn(js.mixIn(opts || {}),
-                    {uri: uri}));
-            }
-
-            function runAtServer(c, params, content) {
-                return Command.execute(c, params, content);
-            }
-
-            if (expr.charAt(scope || Documents || 0) === ":") {
-                expr = expr.substring(1).split(" ");
-                if (expr.length > 0) {
-                    expr = String.format("Utils.%s(scope, %s)", expr.shift(), expr.join(" "));
-                } else {
-                    expr = String.format("Utils.%s(scope)", expr.shift());
-                }
-            }
-
-            if(expr === "@!") {
-                expr = "@ reset()";
-            }
-
-            if (expr.substring(0, 1) === "@") {
-                if (expr.substring(0, 2) === "@(") {
-                    expr = "runAtServer(" + expr.substring(2);
-                } else {
-                    expr = String.format("runAtServer(\"scaffold.js/lib/eval\", %s);", JSON.stringify({
-                        text: expr.substring(1)
-                    }));
-                }
-            }
+            var open = (uri, opts) => this.bubble(
+            	"openform",
+            	js.mixIn(js.mixIn(opts || {}), {uri: uri}));
 
             /* jshint evil: true; */
             return eval(expr);
