@@ -44,7 +44,7 @@ define(function(require) {
 			_onToast: null,
 
 			constructor: function() {
-				instances.push(this);
+				instances.push((this.hashCode(), this));
 			},
 			destroy: function() {
 				instances.splice(instances.indexOf(this), 1);
