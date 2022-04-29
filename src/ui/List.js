@@ -758,7 +758,7 @@ define(function(require) {
 						this.setCount(this._source.getSize());
 						this.notifyEvent("updateRows", {start: 0, end: this._source.getSize() - 1});
 /*- FIXME Following line is necessary in order to make sure that the scrollbars are visible */
-						this.alignControls();
+						this.isVisible() && this.alignControls();
 						break;
 
 					case SourceEvent.busyChanged:
