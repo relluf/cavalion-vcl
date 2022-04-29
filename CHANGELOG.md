@@ -1,3 +1,9 @@
+### 2022/04/29 - 1.1.61
+
+* 3a78624 - ui/List: onNodeCreated was triggered while visible=false
+* c7288af - prototypes/App<>: further implementing/refactoring App.glassy
+* 849fc6c - vcl/Application: Making sure app is #0
+
 ### 2022/04/25 - 1.1.60
 
 * Introducing [prototypes/App.glassy](src/:.js)
