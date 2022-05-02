@@ -189,7 +189,7 @@ define(function(require) {
 					this._arr = this._array;
 					for(var i = 0; i < this._array.length; ++i) {
 						var obj = this._array[i];
-						if(this.fire("onFilterObject", [obj, i, context]) !== true) {
+						if(obj === Source.Pending || this.fire("onFilterObject", [obj, i, context]) !== true) {
 							arr.push(obj);
 						}
 					}
