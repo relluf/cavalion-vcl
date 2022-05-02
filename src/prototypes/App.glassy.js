@@ -4,11 +4,11 @@ var CssRules = require("vcl/CssRules");
 
 var css = {
 	".with-shadow": "box-shadow:rgba(0, 0, 0, 0.4) 0px 1px 2px 0px;",
+	".with-text-shadow": "text-shadow: rgb(255 255 255) 0px 0px 12px, #00000094 0px 0px 5px;",
 	".transparent": "background-color:transparent;",
 	".glassy-overlay": {
 		"": "pointer-events: none; color:rgba(5,5,5,0.95);",
  		".glassy": "background-color: rgba(155, 155, 155, 0.35); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);",
-		".with-text-shadow": "text-shadow: rgb(255 255 255) 0px 0px 12px, #00000094 0px 0px 5px;",
 		".loading": "background: rgba(155, 155, 155, 0.35) url(/shared/vcl/images/loading.gif) 50% 50% no-repeat;",
 		".rounded": "padding: 4px; border-radius: 5px;",
 		".animate-width-height": "transition: width 250ms ease-in, height 250ms ease-in;",

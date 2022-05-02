@@ -28,8 +28,9 @@ define(function(require) {
 	            "&.bottom.inset": {
 	                "padding-top": "0px",
 	                ".{./Tab}": {
+	                	"border-radius": "5px",
 	                    "margin-top": "2px",
-	                    "&.selected": "border: 1px inset;"
+	                    "&.selected": "border: 1px inset; background-color: rgba(25,25,25,0.2);"
 	                }
 	            },
 	            
