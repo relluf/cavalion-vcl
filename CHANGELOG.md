@@ -1,4 +1,12 @@
-### 2022/04/29 - 1.1.61
+### 2022/05/02 - 1.1.62
+
+* 4de4125 - Clogging
+* 5df5d74 - vcl/data/Array: Fixes filtering huge datasets
+* 382d44e - vcl/ui/Tab(s): Rounded corners and darkened background when selected
+
+### 2022/04/25 - 1.1.61
+
+* √ CVLN-20220429-2
 
 * 3a78624 - ui/List: onNodeCreated was triggered while visible=false
 * c7288af - prototypes/App<>: further implementing/refactoring App.glassy
