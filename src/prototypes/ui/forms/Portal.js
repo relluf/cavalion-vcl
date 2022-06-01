@@ -176,13 +176,7 @@ var Component = require("vcl/Component");
 
         this.override({
             setCaption: function (value) {
-            	this.setTimeout("updateCaption", function() {
-            		if(value.indexOf("<i") === 0) {
-            			// alert(value);
-            			value = value.substring(value.indexOf("</i>") + 5);
-            		}
-	                document.title = String.format("%s", value);
-            	}, 250);
+            	this.setTimeout("updateCaption", () => document.title = String.format("%s", value), 250);
                 return this.inherited(arguments);
             }
         });
@@ -292,6 +286,7 @@ var Component = require("vcl/Component");
             	uri = uri.replace(/<>/, "<" + keys.specializer + ">");
             }
             
+            tab.setTextReflects("innerHTML");
             tab.override({
                 setText: function () {
                     var r = this.inherited(arguments);
