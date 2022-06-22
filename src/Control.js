@@ -1642,7 +1642,7 @@ this._updateCalls = this._updateCalls || 0; this._updateCalls++;
 				if(value) {
 					this.setFocus();
 				} else {
-					this.blur();
+					this.blur(); // setFocus(false) - this seems broken
 				}
 			},
 			getDraggable: function() {
