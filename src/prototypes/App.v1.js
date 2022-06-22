@@ -10,6 +10,9 @@ var FormContainer = require("vcl/ui/FormContainer");
     	var img = document.body.childNodes[0];
     	if(img && img.nodeName === "IMG") {
     		img.parentNode.removeChild(img);
+    	} else {
+    		img = document.body.querySelector("img.loading_");
+    		img && img.parentNode.removeChild(img);
     	}
     	
 		var scope = this.scope(), delegate;

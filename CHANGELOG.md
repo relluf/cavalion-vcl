@@ -1,6 +1,11 @@
+### 2022/06/23 - 1.1.64
+
+* 
+
 ### 2022/05/31 - 1.1.63
 
-* Fixes document.title bug in (prototypes/ui/forms/Portal)
+* 837510b - fixes document.title bug 
+	* [prototypes/ui/forms/Portal](src/:.js)
 
 ### 2022/05/02 - 1.1.62
 
@@ -11,7 +16,6 @@
 ### 2022/04/25 - 1.1.61
 
 * √ CVLN-20220429-2
-
 * 3a78624 - ui/List: onNodeCreated was triggered while visible=false
 * c7288af - prototypes/App<>: further implementing/refactoring App.glassy
 * 849fc6c - vcl/Application: Making sure app is #0

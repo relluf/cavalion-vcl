@@ -16,7 +16,7 @@ define(function(require) {
 	            'padding-left': "2px",
 	            'padding-bottom': "0",
 
-	            'z-index': "999", // Ace really f's things up
+	            // 'z-index': "999", // Ace really f's things up
 	            
 	            "&.gradient":{
 	                "background-image": "-webkit-gradient(linear, 0% 0%, 0% 100%, from(#F5F5F5), to(#E5E5E5))",
