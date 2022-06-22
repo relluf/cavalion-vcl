@@ -33,7 +33,7 @@ define(function(require) {
 						if(!HtmlElement.hasParent(evt.target, popup._node)) {
 							popup.close();
 							evt.bubbleUp = false;
-							//evt.preventDefault();
+							evt.preventDefault(); // for A's
 						}
 					}
 				});
