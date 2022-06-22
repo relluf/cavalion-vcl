@@ -305,7 +305,7 @@ define(function(require) {
 		properties: {
 			"executesAction": {
 				/** @overrides ../Element.properties.executesAction */
-				type: ["No", "onClick", "onEnterPressed"]
+				type: ["no", "onClick", "onEnterPressed"]
 			},
 			"detectChangeTimeout": {
 				type: Type.INTEGER
