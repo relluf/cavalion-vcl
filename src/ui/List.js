@@ -404,8 +404,10 @@ define(function(require) {
 				if(column._attribute !== "") {
 					orgValue = (value = this._source.getAttributeValue(column._attribute, row));
 				}
-
-				if(column._wantsNullValues || (value !== null && value !== undefined)) {
+				
+				if(value === Source.Pending) {
+					value = "-";
+				} else if(column._wantsNullValues || (value !== null && value !== undefined)) {
 					if(column._displayFormat !== "") {
 						value = String.format(column._displayFormat, value);
 					}
