@@ -718,15 +718,12 @@ define(function(require) {
 				var classes = this.determineClasses();
 				delete this._computedStyle;
 				classes = String.trim(classes.join(" "));
-				//if(classes !== this._node.className) {
+				if(this._node) {
 				    this._node.className = classes;
     				if(this.inDocument()) {
     					this.layoutChanged();
     				}
-				// } else {
-				//     console.trace("Control.applyClasses-blocked", 
-				//          this.hashCode(), this);
-				// }
+				}
 			},
 			toggleClass: function(classes) {
 				if(this._classes_rt === null) {
