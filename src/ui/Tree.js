@@ -64,7 +64,7 @@ define(function (require) {
                         // height: "20px",
                         width: "12px",
                         // "padding-top": "3px",
-                        "vertical-align": "text-top",
+                        // "vertical-align": "text-top",
                         "&::before": {
                             content: "' '",
                             display: "inline-block",
