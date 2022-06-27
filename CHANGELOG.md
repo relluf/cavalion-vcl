@@ -1,6 +1,16 @@
+### 2022/06/27 - 1.1.65
+
+* 52c79ea - fixes bug where applyClasses was called without a _node being allocated/available
+* 90bba04 - foolproofing rendering (vcl/ui/List) while reseting array during usage - needs performance boost with splice
+* 89db212 - tweaking vertical-align
+
 ### 2022/06/23 - 1.1.64
 
-* 
+* ed814eb - updating
+* ca79dd6 - preventDefault when clicked A
+* 0e3c6e0 - rendering pending values as -
+* d1aeeae - fixes executesAction enum item No -> no
+* 2239c5b - cosmetic (5 days ago) <Ralph Kazemier>
 
 ### 2022/05/31 - 1.1.63
 
