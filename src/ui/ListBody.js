@@ -124,7 +124,7 @@ if(firstRow !== 0 && delta === 0) return;
 			},
 			updateRows: function(range) {
 				if(this.hasOwnProperty("_controls")) {
-					for(var i = 0; i < this._controls.length; ++i) {
+					for(var i = 0; i < Math.min(this._controls.length, this._parent.getCount()); ++i) {
 						var c = this._controls[i];
 						if(c._node !== null) {
 							// Update row when the range is unknown or it's rowIndex is within the range

@@ -496,12 +496,14 @@ define(function(require) {
 			setCount: function(value) {
 				if(this._count !== value) {
 					this._count = value;
+					this.setSelection([]);
 					if(value === 0) {
 						this.resetColumnAutoWidth();
 					}
-					this.setSelection([]);
 					//this.alignControls();
 					this.render_();
+					// this.nextTick(() => this._body.updateRows());
+					// value && this._body.updateRows();
 				}
 			},
 
