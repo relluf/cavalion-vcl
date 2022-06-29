@@ -47,6 +47,18 @@ define(function(require) {
 				this._monitors = [];
 				this._pageReqs = [];
 			},
+			error: function(e) {
+				if(this._onError) {
+					this._onError(e);
+				} else {
+					if(e && e.responseJSON && e.responseJSON.message) {
+						console.error(e.responseJSON.message, e);
+						throw e;
+					}
+					console.error(e);
+					throw e;
+				}
+			},
 			loaded: function() {
 			/** @overrides ../vcl/Compopnent.prototype.loaded */
 				return this.inherited(arguments);
@@ -284,12 +296,7 @@ define(function(require) {
 						}
 						return res;
 					}).catch(function(e) {
-						if(e && e.responseJSON && e.responseJSON.message) {
-							console.error(e.responseJSON.message, e)
-							throw e;
-						}
-						console.error(e);
-						throw e;
+						this.error(e);
 					})
 				);
 				
@@ -601,6 +608,12 @@ define(function(require) {
     			f: function(page, criteria) {
     				/*	This method provides an interface to dynamically determine the request criteria, based upon for example user input. This method must return a criteria object. The function receives the criteria as they are currently indicated by its properties. Return null to prevent the request from going out.
     				*/
+    			}
+    		},
+    		"onError": {
+    			type: Type.EVENT,
+    			f: function(e) {
+    				/*	This method provides an interface to handle errors, if not set an error will be thrown and logged to the console */
     			}
     		}
     	}
