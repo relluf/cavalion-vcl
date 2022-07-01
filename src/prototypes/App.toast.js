@@ -34,7 +34,7 @@
 				elem.setTimeout("disappear", () => {
 					var h = elem.on("transitionend", () => {
 						elem.un(h);
-						elem.setParent(null);
+						elem.destroy();
 					});
 					elem.replaceClass("appear", "disappear");
 				}, timeout_ !== undefined ? timeout_ : timeout);
