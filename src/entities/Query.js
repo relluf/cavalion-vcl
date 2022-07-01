@@ -296,7 +296,7 @@ define(function(require) {
 						}
 						return res;
 					}).catch(function(e) {
-						this.error(e);
+						me.error(e);
 					})
 				);
 				

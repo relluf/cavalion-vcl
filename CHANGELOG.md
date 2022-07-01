@@ -1,5 +1,7 @@
 ### 2022/06/27 - 1.1.66
 
+* 07c6e83 - introducing onError event-property
+
 ### 2022/06/27 - 1.1.65
 
 * 52c79ea - fixes bug where applyClasses was called without a _node being allocated/available
