@@ -235,7 +235,7 @@ define(function (require) {
             	}
             	return this.setTimeout(name, f, 0, args);
             },
-            setTimeout: function (name, f, ms, args) {
+            setTimeout: function(name, f, ms, args) {
 	            /**
 	             * @param name Used to identify the timeout. Successive calls will cancel a previous timeout with the same name.
 	             * @param f {String/Function} Identifies the function which should be called when at least ms has passed. Optional, when omitted it defaults to the same value as name. A string value to identify a member function or simply a reference to a function.
@@ -300,6 +300,13 @@ define(function (require) {
                 this.clearTimeout(name);
 
                 return (this._timeouts[name] = js.setTimeout(g, ms, this._timeouts[name]));
+            },
+            getTimeout: function(name) {
+	            /**
+	             * @param name Used to identify the timeout. 
+	             * @returns The timeout function set, if any, otherwise undefined
+	             */
+	             return this._timeouts[name];
             },
             hasTimeout: function(name) {
             	return this._timeouts.hasOwnProperty(name);
