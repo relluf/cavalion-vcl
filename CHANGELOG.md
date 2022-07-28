@@ -1,3 +1,18 @@
+### 2022/07/28 - 1.1.68
+
+* 768156d - fixes an issue where the vertical scrollbar was not accesible on macOS
+* cd60d4b - introduces new methods for vcl/Control: 
+	* reflectStates, 
+	* makeVisible and 
+	* selectVisible 
+* cd60d4b - changing some css/rendering details for Tree and Node 
+
+### 2022/07/04 - 1.1.67
+
+* 7dc04fb - adds Component.prototype.getTimeout
+* 52bebc9 - introducing Query.prototype.error
+* 18cd481 - destroying element upon remove (seems decent)
+
 ### 2022/06/27 - 1.1.66
 
 * 07c6e83 - introducing onError event-property
@@ -14,7 +29,7 @@
 * ca79dd6 - preventDefault when clicked A
 * 0e3c6e0 - rendering pending values as -
 * d1aeeae - fixes executesAction enum item No -> no
-* 2239c5b - cosmetic (5 days ago) <Ralph Kazemier>
+* 2239c5b - cosmetic 
 
 ### 2022/05/31 - 1.1.63
 
