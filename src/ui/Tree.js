@@ -74,13 +74,14 @@ define(function (require) {
                         }
                     },
                     ">.text": {
-                        "input[type=checkbox]": `position:relative;top:${checkbox_top}px;`,
+                        'input[type=checkbox]': `position:relative;top:${checkbox_top}px;`,
                     	cursor: "pointer",
                         position: "relative",
 //        				width: "100%",
                         display: 'inline-block',
-                        "margin-left": "2px",
+                        'margin-left': "2px",
                         padding: "3px 4px 3px 4px",
+                        // 'vertical-align': "top"
                     },
                     "&.selected": {
                         ">.selection": {
@@ -231,10 +232,14 @@ define(function (require) {
                 this.dispatch("nodesneeded", null);
             },
 			makeVisible: function(childNode) {
-			    var node = this.nodeNeeded();
-			    var pos = jquery(childNode.nodeNeeded()).position();
-			    var top = this.getAbsoluteRect().height / 3;
-			    node.scrollTop -= (top - pos.top);
+				if(childNode) {
+				    var node = this.nodeNeeded();
+				    var pos = jquery(childNode.nodeNeeded()).position();
+				    var top = this.getAbsoluteRect().height / 3;
+				    node.scrollTop -= (top - pos.top);
+				} else {
+					return this.inherited(arguments);
+				}
             },
             
             do_keyup: function(evt) {

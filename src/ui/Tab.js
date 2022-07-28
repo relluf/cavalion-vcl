@@ -168,7 +168,14 @@ define(function(require) {
 					this.setState("invalidated", true);
 				}
 			},
-		
+			
+			makeVisible: function(control) {
+				this.inherited(arguments);
+				if(!control && this._parent) {
+					this._parent.makeVisible(this);
+				}
+			},
+
 			getControl: function() {
 				return this._control;
 			},

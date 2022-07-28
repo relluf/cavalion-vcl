@@ -210,17 +210,21 @@ define(function(require) {
 				// }
 	   // 	},
 	    	makeVisible: function(control) {
-	    		/*- this assumes horizontal scrolling only */
-	    	    control.scrollIntoView(); 
-	    	    // HACK
-	    		this._node.scrollTop = 0;
-	    	    this.nextTick("position-scrollbar", function() {
-		    		if(this._node.scrollLeft < 100) {
-		    			this._node.scrollLeft = 0;
-		    		} else {
-		    			this._node.scrollLeft += 100;
-		    		}
-	    	    }.bind(this));
+	    		if(control) {
+		    		/*- this assumes horizontal scrolling only */
+		    	    control.scrollIntoView(); 
+		    	    // HACK
+		    		this.nodeNeeded().scrollTop = 0;
+		    	    this.nextTick("position-scrollbar", function() {
+			    		if(this._node.scrollLeft < 100) {
+			    			this._node.scrollLeft = 0;
+			    		} else {
+			    			this._node.scrollLeft += 100;
+			    		}
+		    	    }.bind(this));
+	    		} else {
+					return this.inherited(arguments);
+	    		}
 	    	},
     		initializeNodes: function(control) {
 	    		/** @overrides ../Control.prototype.initializeNodes */

@@ -958,6 +958,25 @@ define(function(require) {
 					}
 				}
 			},
+			reflectStates: function(states) {
+				if(typeof states === "string") {
+					states = states.split(",").map(state => ControlState[state]);
+				}
+				
+				states.forEach(state => {
+					switch(state) {
+						case ControlState.showing:
+							this.makeVisible();
+							break;
+							
+						case ControlState.selected:
+							this.setSelected(true);
+							break;
+					}
+					
+				})
+				
+			},
 
 			// scrollIntoView: function() {
 			// 	this.nodeNeeded();
@@ -1083,6 +1102,21 @@ define(function(require) {
 			},
 			hide: function() {
 				this.setVisible(false);
+			},
+			makeVisible: function(control) {
+				var parent = this._parent;
+				if(this._parent && !this._parent.isVisible()) {
+					this._parent.makeVisible();
+					this._parent.update(() => this.makeVisible());
+					return;
+				}
+				if(!this.isVisible()) {
+					this.show();
+				}
+			},
+			selectVisible: function() {
+				this.setSelected(true);
+				this.makeVisible();
 			},
 
 			allowsUpdateChildren: function() {
