@@ -13,7 +13,7 @@ define(function (require) {
     var ILLEGAL_COMPONENT_NAME_CHARS = "/";
     var ILLEGAL_COMPONENT_URI_CHARS = "/";
 
-    var all = [];
+    var all = [], nextTick = 1;
 
     Component = Component(require, {
         prototype: {
@@ -231,7 +231,7 @@ define(function (require) {
             	if(typeof name === "function") {
             		args = f;
             		f = name;
-            		name = "nextTick-" + Date.now();
+            		name = "nextTick-" + (nextTick++);
             	}
             	return this.setTimeout(name, f, 0, args);
             },
