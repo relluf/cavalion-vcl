@@ -1338,7 +1338,11 @@ define(function (require) {
                     r.classes = uri[0].split("/").pop().split(".");
                     r.classes.shift();
 
-                    uri = uri[0].substring(0, uri[0].length - r.classes.join(".").length - 1);
+					if(r.classes.length) {
+                    	uri = uri[0].substring(0, uri[0].length - r.classes.join(".").length - 1);
+					} else {
+						uri = uri[0];
+					}
 
                     r.template = "";
                     r.specializer = "";
