@@ -53,10 +53,13 @@ define(function(require) {
 				} else {
 					if(e && e.responseJSON && e.responseJSON.message) {
 						console.error(e.responseJSON.message, e);
-						throw e;
+						this.print(new Error(e.responseJSON.message));
+						// throw e;
+					} else {
+						console.error(e);
+						this.print(new Error(e));
 					}
-					console.error(e);
-					throw e;
+					// throw e;
 				}
 			},
 			loaded: function() {
@@ -275,28 +278,40 @@ define(function(require) {
 				    	criteria.attributes || this._attributes, 
 				    	criteria,
 				    	criteria.opts
-				    ).then(function(res) {
+				    )
+				    .then(res => {
 						/*- if this response does not belong to the current request */
-						if(me._pageReqs && (me._request !== me._pageReqs[page])) {
-							// console.debug(me._entity, "requestPage: page", page, "receveid, but IGNORED");
+						if(this._pageReqs && (this._request !== this._pageReqs[page])) {
+							// console.debug(this._entity, "requestPage: page", page, "receveid, but IGNORED");
 							/* ...it should be ignored */
 							return res;
 						}
 						
-			        	delete me._request;
+			        	delete this._request;
 						if(res instanceof Error) {
-							console.error(me._entity, "requestPage: page", page, "error received", err);
+							console.error(this._entity, "requestPage: page", page, "error received", err);
 						} else {
-							// console.debug(me._entity, "requestPage: page", page, "received", {time: Date.now() - start, res: res});
+							// console.debug(this._entity, "requestPage: page", page, "received", {time: Date.now() - start, res: res});
 						}
-						me.processResult(res, page, criteria);
+						this.processResult(res, page, criteria);
 						
-						if(!me.isBusy()) {
-							me.notifyEvent(SourceEvent.busyChanged, false, page);
-						}
 						return res;
-					}).catch(function(e) {
-						me.error(e);
+					})
+					.catch(e => {
+						/*- if this response does not belong to the current request */
+						if(this._pageReqs && (this._request !== this._pageReqs[page])) {
+							// console.debug(this._entity, "requestPage: page", page, "receveid, but IGNORED");
+							/* ...it should be ignored */
+							return res;
+						}
+						
+			        	delete this._request;
+						this.error(e);
+					})
+					.finally(() => {
+						if(!this.isBusy()) {
+							this.notifyEvent(SourceEvent.busyChanged, false, page);
+						}
 					})
 				);
 				
