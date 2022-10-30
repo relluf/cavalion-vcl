@@ -480,8 +480,10 @@ define(function(require) {
 					var column = this._columns[i];
 					if(column.isVisible() === true) {
 						if(i < this._header._controls.length) {
+							// this.print("getBodyWidth-adding", parseInt(this._header._controls[i].getComputedStylePropValue("width"), 10));
 							r += parseInt(this._header._controls[i].getComputedStylePropValue("width"), 10);
 						} else {
+							// this.print("getBodyWidth-adding", column.getWidth());
 							r += column.getWidth();
 						}
 					}
@@ -671,10 +673,8 @@ define(function(require) {
 			},
 			updateColumns: function() {
 				var updateColumns = this.updateColumns;
-				this.updateColumns = function() {
-					console.log("updateColumns blocked");
-				};
 
+				this.updateColumns = () => console.log("updateColumns blocked");
 				this.resetColumnAutoWidth(); 
 				
 				try {
@@ -767,9 +767,12 @@ define(function(require) {
 						break;
 
 					case SourceEvent.busyChanged:
-						if((data && this._topRow > 0) || this.hasClass("ignore-busy")) { /* TODO what about scrolling up? */
+						if((data && this._count > 0) || this.hasClass("ignore-busy")) { /* TODO what about scrolling up? */
 							return;
 						}
+						
+this.app().print(js.sf("data: %s => busy: %s, count: %s, topRow: %s", data, this.hasClass("busy"), this._count, this._topRow))
+						
 						this.setTimeout("update-busy", function() {
 							if(data && !this.hasClass("busy")) {
 								this.addClass("busy");
