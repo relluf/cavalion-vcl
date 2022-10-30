@@ -1,3 +1,10 @@
+### 2022/10/30 - 1.1.69
+
+`#VA-20221028-1`, `-2` & `-3`
+
+* ebae088 - lowers SELECT\_TIMEMOUT\_MS for [vcl/ui/Tab(s)](src/ui/Tabs.js)
+* 4bd2244 - simplifies ids used in [Component.protoype.nextTick]()()
+
 ### 2022/07/28 - 1.1.68
 
 * 768156d - fixes an issue where the vertical scrollbar was not accesible on macOS
