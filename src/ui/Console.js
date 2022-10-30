@@ -138,6 +138,7 @@ define(function(require) {
 			_content: "<div class='console'></div><div class='cmdline'><input></div>",
 			_history: null,
 			_onEvaluate: null,
+			_mouseTarget: null,
 
 			constructor: function() {
 				this._history = [];
@@ -278,6 +279,28 @@ define(function(require) {
 
 				return r;
 			},
+			
+			onmousemove: function(evt) {
+				if(evt.target.classList.contains("value") && evt.target.parentNode.classList.contains("node")) {
+					this.setMouseTarget(evt.target);
+				} else {
+					this.setMouseTarget(null);
+				}
+			},
+			setMouseTarget: function(value) {
+				if(value !== this._mouseTarget) {
+					if(this._mouseTarget) {
+						this._mouseTarget.title = this._mouseTarget.title$$;
+						delete this._mouseTarget.title$$;
+					}
+					this._mouseTarget = value;
+					if(value) {
+						value.title$$ = value.title;
+						value.title = value.textContent;
+					}
+				}
+			},
+			
 			setFocus: function(evt) {
 				/** @overrides ../../Control.prototype.setFocus */
 				this.nodeNeeded();
