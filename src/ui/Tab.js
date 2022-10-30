@@ -4,7 +4,7 @@ define(function(require) {
 	var Control = require("../Control");
 	var Element = require("./Element");
 	
-	var SELECT_TIMEOUT_MS = 128;
+	var SELECT_TIMEOUT_MS = 50;
 
 	var Tab = {
 		statics: {
