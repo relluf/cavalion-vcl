@@ -341,7 +341,7 @@ define(function(require) {
     			type: Type.EVENT
 			},
 			"onFilterObject": {
-				type: Type.FUNCTION,
+				type: Type.EVENT,
 				editorInfo: {
 					defaultValue: "(function(object, index, context) {\n\t//return {true} to exclude item from exposed array\n})"
 				}
