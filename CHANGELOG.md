@@ -1,9 +1,10 @@
-### 2022/10/30 - 1.1.69
+### 2022/10/30 - 1.1.70
 
 `#VA-20221028-1`, `-2` & `-3`
 
 * ebae088 - lowers SELECT\_TIMEMOUT\_MS for [vcl/ui/Tab(s)](src/ui/Tabs.js)
 * 4bd2244 - simplifies ids used in [Component.protoype.nextTick]()()
+* Fixes the bug where Query.properties.onFilterObject wasn't defined correctly
 
 ### 2022/07/28 - 1.1.68
 
