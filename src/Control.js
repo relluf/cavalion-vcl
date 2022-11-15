@@ -92,6 +92,8 @@ define(function(require) {
 			_onMouseMove: null,
 			_onMouseEnter: null,
 			_onMouseLeave: null,
+			_onMouseOut: null,
+			_onMouseOver: null,
 			_onDraggerNeeded: null,
 			_onDragStart: null,
 			_onDragEvent: null,
@@ -1537,6 +1539,12 @@ this._updateCalls = this._updateCalls || 0; this._updateCalls++;
 			onmouseleave: function() {
 				this.fire("onMouseLeave", arguments);
 			},
+			onmouseout: function() {
+				this.fire("onMouseOut", arguments);
+			},
+			onmouseleave: function() {
+				this.fire("onMouseOver", arguments);
+			},
 			ontap: function() {
 				this.fire("onTap", arguments);
 			},
@@ -2032,6 +2040,12 @@ this._updateCalls = this._updateCalls || 0; this._updateCalls++;
 				type: Type.EVENT
 			},
 			"onMouseLeave": {
+				type: Type.EVENT
+			},
+			"onMouseOut": {
+				type: Type.EVENT
+			},
+			"onMouseOver": {
 				type: Type.EVENT
 			},
 			"onNodeCreated": {

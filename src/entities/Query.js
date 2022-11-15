@@ -302,7 +302,7 @@ define(function(require) {
 						if(this._pageReqs && (this._request !== this._pageReqs[page])) {
 							// console.debug(this._entity, "requestPage: page", page, "receveid, but IGNORED");
 							/* ...it should be ignored */
-							return res;
+							return e;
 						}
 						
 			        	delete this._request;
