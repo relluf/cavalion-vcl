@@ -1,3 +1,11 @@
+### 2022/11/15 - 1.1.71
+
+* Updates the docs
+* Control: adds onmouseout and onmouseover event properties 
+* Query: fixes some bug in error handling 
+* List: improves rendering while loading
+
+
 ### 2022/10/30 - 1.1.70
 
 `#VA-20221028-1`, `-2` & `-3`
