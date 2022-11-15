@@ -753,6 +753,7 @@ define(function(require) {
 			},
 			
 			sourceNotifyEvent: function(event, data) {
+// this.app().print(js.sf("event: %s - data: %s => busy: %s, count: %s, topRow: %s", event, data, this.hasClass("busy"), this._count, this._topRow))
 				switch(event) {
 
 					case SourceEvent.activeChanged:
@@ -767,13 +768,11 @@ define(function(require) {
 						break;
 
 					case SourceEvent.busyChanged:
-						if((data && this._count > 0) || this.hasClass("ignore-busy")) { /* TODO what about scrolling up? */
-							return;
-						}
-						
-this.app().print(js.sf("data: %s => busy: %s, count: %s, topRow: %s", data, this.hasClass("busy"), this._count, this._topRow))
 						
 						this.setTimeout("update-busy", function() {
+							if((data && this._count > 0) || this.hasClass("ignore-busy")) { /* TODO what about scrolling up? */
+								return;
+							}
 							if(data && !this.hasClass("busy")) {
 								this.addClass("busy");
 							} else if(!data && this.hasClass("busy")) {
@@ -835,7 +834,7 @@ this.app().print(js.sf("data: %s => busy: %s, count: %s, topRow: %s", data, this
 			},
 
 			valueByColumnAndRow(column, row) {
-				var value = this._source.getAttributeValue(column._attribute, row);
+				var value = this._source.getAttributeValue(column._attribute, row, true);
 				if(column._wantsNullValues || (value !== null && value !== undefined)) {
 					if(column._displayFormat !== "") {
 						value = String.format(column._displayFormat, value);
