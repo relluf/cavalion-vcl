@@ -16,12 +16,10 @@ define(function(require) {
 			    overflow: "hidden",
 			    transition: "width 50ms",
 				">div": {
-//					background: "-webkit-linear-gradient(top,  rgba(240,240,240,1) 0%,rgba(227,227,227,1) 100%)", // Chrome10+,Safari5.1+
-					// "background-image": "-webkit-gradient(linear, 0% 0%, 0% 100%, from(rgb(245, 245, 245)), to(rgb(229, 229, 229)))",
-					
 					"background-image": "-webkit-gradient(linear, 0% 0%, 0% 100%, from(rgba(245, 245, 245, 0.9)), to(rgba(229, 229, 229, 0.9)))",
-					
-					// background: "rgba(255, 255, 255, 0.9)",
+			    	'line-height': "8px",
+			    	'padding-top': "3px",
+			    	'padding-bottom': "3px",
 /**
 					background: [
 						"rgb(240,240,240)", // Old browsers
@@ -38,7 +36,7 @@ define(function(require) {
 					"overflow": "hidden",
 					"white-space": "nowrap",
 					cursor: "default",
-					display: "inline-flex"
+					display: "inline-block"
 				}
 			},
 
