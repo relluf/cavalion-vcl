@@ -1,3 +1,7 @@
+### 2022/12/11 - 1.1.72
+
+* ListHeader: Fixes the rendering bug which appeared in Chrome 107+
+
 ### 2022/11/15 - 1.1.71
 
 * Updates the docs
