@@ -191,7 +191,7 @@ define(function(require) {
 					s.left = String.format("%dpx", bw);
 					s.top = String.format("%dpx", bh + rect.top);
 
-					thisObj._body.setBounds(rect.left, rect.top, undefined, undefined, bw, bh);
+					thisObj._body.setBounds(rect.left, rect.top - 3, undefined, undefined, bw, bh);
 				}];
 
 				args.callee = arguments.callee;
