@@ -15,25 +15,20 @@ define(function(require) {
 
 				this._hook = new DocumentHook(undefined, true);
 				js.mixIn(this._hook, {
-
-					/**
-					 *
-					 */
-					keydown: function(evt) {
+					keydown: (evt) => {
 						if(evt.keyCode === 27) {
 							popup.close();
 							evt.preventDefault();
 						}
 					},
-
-					/**
-					 *
-					 */
-					click: function(evt) {
-						if(!HtmlElement.hasParent(evt.target, popup._node)) {
+					click: (evt) => {
+						var hasParent = HtmlElement.hasParent(evt.target, popup._node);
+						if(popup._autoClose || !hasParent) {
 							popup.close();
-							evt.bubbleUp = false;
-							evt.preventDefault(); // for A's
+							if(!hasParent) {
+								evt.bubbleUp = false;
+								evt.preventDefault(); // for A's
+							}
 						}
 					}
 				});
@@ -45,6 +40,7 @@ define(function(require) {
 			},
 
 			_visible: false,
+			_autoClose: true,
 			_autoSize: "both",
 			_hook: null,
 
@@ -58,25 +54,29 @@ define(function(require) {
 				 * @param relativeTo
 				 * @param onClose
 				 */
+				const align = () => {
+	
+						var p = relativeTo.clientToDocument(0, 0);
+						var cs = relativeTo.getComputedStyle();
+						var cs_ = this.getComputedStyle();
+
+						if(this._parent) {
+							p = this._parent.documentToClient(p);
+						}
+						
+						if(position.origin === "bottom-left") {
+							this.setLeft(p.x + (position.dx || 0));
+							this.setTop(p.y + parseInt(cs.height, 10) + (position.dy || 0));
+						} else if(position.origin === "bottom-right") {
+							this.setLeft(p.x + parseInt(cs.width, 10) + (position.dx || 0) - parseInt(cs_.width, 10));
+							this.setTop(p.y + parseInt(cs.height, 10) + (position.dy || 0));
+						}
+					};
+
+				var n = 2;
 				if(!this._hook.isActive()) {
-					var p = relativeTo.clientToDocument(0, 0);
-					var cs = relativeTo.getComputedStyle();
-					var cs_ = this.getComputedStyle();
-
-					if(this._parent) {
-						p = this._parent.documentToClient(p);
-					}
-
-					if(position.origin === "bottom-left") {
-						this.setLeft(p.x + (position.dx || 0));
-						this.setTop(p.y + parseInt(cs.height, 10) + (position.dy || 0));
-					} else if(position.origin === "bottom-right") {
-						this.setLeft(p.x + parseInt(cs.width, 10) + (position.dx || 0) - parseInt(cs_.width, 10));
-						this.setTop(p.y + parseInt(cs.height, 10) + (position.dy || 0));
-					}
 					
 					this.setVisible(true);
-
 					this._hook.activate();
 
 					this._hook.release = function() {
@@ -86,8 +86,11 @@ define(function(require) {
 						onClose();
 					};
 
+					this.update(align);
 					this.onpopup();
 				}
+				
+				align();
 			},
 			close: function() {
 				if(this._hook.isActive()) {
@@ -134,6 +137,9 @@ define(function(require) {
 			}
 		},
 		properties: {
+			"autoClose": {
+				type: Class.Type.BOOLEAN
+			},
 			"onPopup": {
 				type: Class.Type.EVENT
 			},
