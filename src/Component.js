@@ -1232,7 +1232,8 @@ define(function (require) {
                 if (base !== null) {
                     var keys = Component.getKeysByUri(uri);
                     var classes = keys.classes;
-                    var spec_classes = keys.specializer_classes;
+                    var spec_classes = [].concat(keys.specializer_classes);
+                    
                     if (classes.length > 1) {
                         // [A] Each class expands
                         classes.forEach(function (cls) {
@@ -1240,10 +1241,11 @@ define(function (require) {
                             r.push(Component.getUriByKeys(keys));
                         });
                     } else if (classes.length === 1) {
-                        if (spec_classes.length > 1) {
+                        if (spec_classes.length/* > 1*/) {
                             // [B] Each specializer_class expands
                             spec_classes.forEach(function (cls) {
-                                keys.specializer_classes = [cls];
+                                keys.specializer_classes = [];
+                                keys.specializer = cls;
                                 r.push(Component.getUriByKeys(keys));
                             });
                         } else if (spec_classes.length === 1) {
@@ -1261,10 +1263,12 @@ define(function (require) {
                         } else {
                             // [J] equals [G], continue on prototypes/ prefix
                         }
-                    } else if (spec_classes.length > 1) {
+                    } else if (spec_classes.length/* > 1*/) {
                         // [E] Each specializer_class expands
                         spec_classes.forEach(function (cls) {
-                            keys.specializer_classes = [cls];
+                            // keys.specializer_classes = [cls];
+                            keys.specializer_classes = [];
+                            keys.specializer = cls;
                             r.push(Component.getUriByKeys(keys));
                         });
                     } else if (spec_classes.length === 1) {
