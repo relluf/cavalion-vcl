@@ -28,13 +28,14 @@ define(function (require) {
 				},
                 ".{./Node}": {
     		        display: "block",
+                	cursor: "pointer",
                     "list-style-type": "none",
                     "white-space": "nowrap",
                     ">.close": {
                     	position: "absolute",
                     	right: "4px",
                     	"padding-top": "2px",
-                    	cursor: "pointer",
+                    	// cursor: "pointer",
                     	display: "none"
                     },
                     ">ol": {
@@ -75,8 +76,8 @@ define(function (require) {
                     },
                     ">.text": {
                         'input[type=checkbox]': `position:relative;top:${checkbox_top}px;`,
-                    	cursor: "pointer",
                         position: "relative",
+                        // cursor: "pointer",//"default",
 //        				width: "100%",
                         display: 'inline-block',
                         'margin-left': "2px",
