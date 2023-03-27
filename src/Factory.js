@@ -527,8 +527,7 @@ define(function(require) {
 				var sourceUri = Factory.makeTextUri(name);
 
 				function instantiate(source, local) {
-					var p = "";//local ? ".skip-fetch.local" : "";
-					var factory = new Factory(parentRequire, name + p, sourceUri + p);
+					var factory = new Factory(parentRequire, name, sourceUri);
 // console.log("instantiate", name + p);
 					factory.load(source, function() {
 						load(factory, source);
@@ -536,7 +535,6 @@ define(function(require) {
 				}
 
 				function fallback() {
-// console.log("fallback");
 					parentRequire([sourceUri], instantiate, function(err) {
 						// Source not found, assume it...
 						var source = Component.getImplicitSourceByUri(name);
@@ -545,18 +543,11 @@ define(function(require) {
 						}
 						//console.log("304", name, "-->", source);
 						Factory.implicit_sources[sourceUri] = source;
+// console.log(name, "implicit source generated", source);
 						instantiate(source);
 					});
 				}
 				
-				if(name.endsWith(".skip-fetch")) {
-console.log("skip-fetch", name);
-					name = name.split("."); 
-					name.pop();
-					name = name.join(".");
-					return fallback()
-				}
-
 // console.log("fetch", name);
 				this.fetch(name)
 					.then(source => source ? instantiate(source, true) : fallback())

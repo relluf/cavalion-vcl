@@ -1233,6 +1233,9 @@ define(function (require) {
                     var keys = Component.getKeysByUri(uri);
                     var classes = keys.classes;
                     var spec_classes = [].concat(keys.specializer_classes);
+
+                    // Always inherit the implicit base first
+                    r.push(base);
                     
                     if (classes.length > 1) {
                         // [A] Each class expands
@@ -1283,8 +1286,6 @@ define(function (require) {
                         // empty specifier due to: ComponentClass<>
                     }
 
-                    // Always inherit the implicit base
-                    r.push(base);
 
                 } else if (uri.indexOf(Factory.PREFIX_PROTOTYPES) !== 0) {
                     r.push(String.format("%s%s", Factory.PREFIX_PROTOTYPES, uri));
