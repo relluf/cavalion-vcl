@@ -1,3 +1,7 @@
+### 2023/03/26 - 1.1.73
+
+* Fixes issues with Component.getImplicitBasesByUri
+
 ### 2022/12/11 - 1.1.72
 
 * ListHeader: Fixes the rendering bug which appeared in Chrome 107+
@@ -8,7 +12,6 @@
 * Control: adds onmouseout and onmouseover event properties 
 * Query: fixes some bug in error handling 
 * List: improves rendering while loading
-
 
 ### 2022/10/30 - 1.1.70
 
