@@ -219,7 +219,7 @@ var Handlers = {
 	}
 };
 
-["", {
+[(""), {
 	vars: {
     	"App": {
     		getState: function() {
@@ -297,7 +297,7 @@ var Handlers = {
 			}
 		}
 	},
-	onMessage: function(name, params, sender) {
+	onMessage: function(name, message, sender) {
 		var scope = this.getScope();
 
 		if(name === "openform") {
@@ -306,13 +306,7 @@ var Handlers = {
 
 			// TODO Merge with Portal
 
-			var parent = params.parent || scope.tree.getSelection()[0];
-
-			// TODO find the correct parent based upon the sender
-//			while(parent && parent.getVar("control")._form !== sender._owner) {
-//				parent = parent._parent;
-//			}
-
+			var parent = message.parent || scope.tree.getSelection()[0];
 			var node = new Node(this);
 			node.override({
 				onclick: function(evt) {
@@ -326,21 +320,22 @@ var Handlers = {
 			node.addClass("closeable");
 			
 			var container = new FormContainer(node);
-			container.setFormUri(params.uri);
-			if(params.params) {
-				container.setFormParams(params.params);
-				node.setVars(params.params);
+			container.setFormUri(message.uri);
+			if(message.params) {
+				container.setFormParams(message.params);
+				node.setVars(message.params);
 			}
 
-			if(params.path) {
-				node.print("varring path", params.path);
-				node.vars("path", params.path);
+			if(message.path) {
+				node.print("varring path", message.path);
+				node.vars("path", message.path);
 			}
 
 			// @overrides ui/forms/Home<>
 			container.setVisible(false);
 			container.setParent(scope.client);
-			node.setText(params.text || params.title || "&nbsp;");
+			
+			node.setText(message.text || message.title || "&nbsp;");
 			node.setVar("control", container);
 			node.setParent(parent || scope.tree);
 			node.update(function() {
@@ -354,12 +349,12 @@ var Handlers = {
 				},
 				"formloadstart": function() {
 					node.addClass("loading");
-					node.setText(params.title || "&nbsp;");
+					node.setText(message.title || "&nbsp;");
 				},
 				"formloadend": function() {
 					node.removeClass("loading");
-					if(params.callback) {
-						params.callback(this._form);
+					if(message.callback) {
+						message.callback(this._form);
 					}
 				},
 				"formload": function() {
@@ -370,7 +365,7 @@ var Handlers = {
                         if (text instanceof Array) {
                             node.setText(text.join(""));
                         } else {
-                            node.setText(String.format("%H", text || params.title));
+                            node.setText(String.format("%H", text || message.title));
                         }
 					}
 					form.on("captionchanged", f);
@@ -382,17 +377,17 @@ var Handlers = {
 				parent.setExpanded(true);
 			}
 
-			if(params.activate !== false) {
+			if(message.activate !== false) {
 				scope.tree.setSelection([node]);
-			} else if(params.lazyLoad !== true) {
+			} else if(message.lazyLoad !== true) {
 				container.forceLoad();
 			}
 			
-			parent && parent.setTimeout("update", () => {
-				// Hmprf, what is going on here?
-				parent._parent.updateChildren(true, true);
-				parent._parent.updateChildren(true, true);
-			}, 500);
+			// parent && parent.setTimeout("update", () => {
+			// 	// Hmprf, what is going on here?
+			// 	parent._parent.updateChildren(true, true);
+			// 	parent._parent.updateChildren(true, true);
+			// }, 500);
 
 			return true;
 		}
