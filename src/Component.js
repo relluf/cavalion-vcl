@@ -1522,7 +1522,7 @@ define(function (require) {
                 type: Type.EVENT
             },
             "onDispatchChildEvent": {
-                type: Type.EVENT
+                type: Type.EVENT // component, name, evt, f, args) {
             },
             "onMessage": {
                 type: Type.EVENT

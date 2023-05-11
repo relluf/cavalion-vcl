@@ -141,21 +141,17 @@ define(function(require) {
 			},
 			load: function(source, success, failure) {
                 if(source.charAt(0) === "\"" && source.indexOf("\"use strict\";") !== 0) {
-                	if(source.indexOf("\"use ") === 0) {
-                		// TODO this should be the default
-                		source = "\"" + source.substring(5);
-                	}
     				/*- Parse require section */
+                	if(source.indexOf("\"use ") === 0) {
+                		source = "\"" + source.substring(5); // TODO this should be the default
+                	}
                     var i = source.indexOf("\";");
                     if(i !== -1) {
-                        deps = source.substring(1, i).replace(/\s/g, "");
-                        deps = deps.split(",");
-                        
+                        var deps = source.substring(1, i).replace(/\s/g, "");
                         /*- require all dependecies */
-                        var me = this;
-                        return this._parentRequire(deps, function() {
-                            me.doLoad(source, success, failure);
-                        }, failure);
+                        return this._parentRequire(deps.split(","), 
+                        	() => this.doLoad(source, success, failure), 
+                        	failure);
                     }
                 }
                 return this.doLoad(source, success, failure);
@@ -515,6 +511,12 @@ define(function(require) {
 			DEFAULT_NAMESPACES: {
 			},
 			
+			overrides: function(reg, req) {
+				for(var k in reg) {
+					define(js.sf("vcl/Factory!%s", k), reg[k], new Factory(req || window.require, k))
+				}	
+			},
+
 			implicit_sources: {},
 
 			load: function(name, parentRequire, load, config) {
@@ -527,11 +529,10 @@ define(function(require) {
 				var sourceUri = Factory.makeTextUri(name);
 
 				function instantiate(source, local) {
-					var factory = new Factory(parentRequire, name, sourceUri);
+					var p = "";//local ? ".skip-fetch.local" : "";
+					var factory = new Factory(parentRequire, name + p, sourceUri + p);
 // console.log("instantiate", name + p);
-					factory.load(source, function() {
-						load(factory, source);
-					});
+					factory.load(source, () => load(factory, source));
 				}
 
 				function fallback() {
@@ -548,6 +549,14 @@ define(function(require) {
 					});
 				}
 				
+				if(name.endsWith(".skip-fetch")) {
+// console.log("skip-fetch", name);
+					name = name.split("."); 
+					name.pop();
+					name = name.join(".");
+					return fallback()
+				}
+
 // console.log("fetch", name);
 				this.fetch(name)
 					.then(source => source ? instantiate(source, true) : fallback())
@@ -651,6 +660,5 @@ define(function(require) {
 			},
 			getFactoryUri: getFactoryUri
 		}
-
 	}));
 });
