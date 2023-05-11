@@ -26,9 +26,6 @@ define(function(require) {
 			_uri: null,
 			_references: null,
 
-			/**
-			 *
-			 */
 			constructor: function(factory, root) {
 				this._factory = factory;
 				if(root !== undefined) {
@@ -36,17 +33,17 @@ define(function(require) {
 				}
 			},
 
-			/**
-			 * Read the source of a component. Basically instantiates a
-			 * component
-			 *
-			 * @param source
-			 *            The actual source
-			 * @param uri
-			 *            The uri of the source and thus the resulting root
-			 *            component
-			 */
 			read: function(source, uri) {
+				/**
+				 * Read the source of a component. Basically instantiates a
+				 * component
+				 *
+				 * @param source
+				 *            The actual source
+				 * @param uri
+				 *            The uri of the source and thus the resulting root
+				 *            component
+				 */
 				var deferred = new Deferred();
 				var thisObj = this;
 
@@ -81,22 +78,21 @@ define(function(require) {
 
 				return deferred;
 			},
-
-			/**
-			 * Instantiates a component based upon a definition hold by a node
-			 * which was delivered/parsed by Reader.evaluate. It figures out
-			 * whether the node references a inherited ComponentClass or
-			 * inherited component.
-			 *
-			 * @param node
-			 *            The actual node holding information to it's inherited
-			 *            prototypes, name, properties, children
-			 * @param success
-			 *            To receive the component
-			 * @param failure
-			 *            To receive errors
-			 */
 			instantiateComponent: function(node, success, failure) {
+				/**
+				 * Instantiates a component based upon a definition hold by a node
+				 * which was delivered/parsed by Reader.evaluate. It figures out
+				 * whether the node references a inherited ComponentClass or
+				 * inherited component.
+				 *
+				 * @param node
+				 *            The actual node holding information to it's inherited
+				 *            prototypes, name, properties, children
+				 * @param success
+				 *            To receive the component
+				 * @param failure
+				 *            To receive errors
+				 */
 				var component, me = this;
 				if(node.inherits instanceof Array) {
 					// inherits (a) ComponentClass-instance(s), require all the
@@ -133,10 +129,6 @@ define(function(require) {
 					success(component);
 				}
 			},
-
-			/**
-			 *
-			 */
 			createRootComponent: function(rootNode, success, failure) {
 				var me = this;
 
@@ -185,10 +177,6 @@ define(function(require) {
 					f(this._root);
 				}
 			},
-
-			/**
-			 *
-			 */
 			initializeComponent: function(component, node, success, failure) {
 				if(component !== this._root) {
 					// This is an owned/nested component
@@ -220,10 +208,6 @@ define(function(require) {
 					success(component);
 				}
 			},
-
-			/**
-			 *
-			 */
 			createComponents: function(nodes, success, failure) {
 				var count = nodes.length;
 				var result;
@@ -245,16 +229,12 @@ define(function(require) {
 					});
 				}
 			},
-
-			/**
-			 *
-			 */
 			setProperties: function(component, node) {
 				// extend properties
 				component['@properties'] = js.extend(component['@properties'] || {}, node.properties);
 
 				var properties = component.defineProperties();
-				for( var k in node.properties) {
+				for(var k in node.properties) {
 					var property;
 					if((property = properties[k]) === undefined) {
 //						console.warn(String.format("Property %n.%s does not exist - %n", component.constructor, k,
@@ -265,14 +245,13 @@ define(function(require) {
 					}
 				}
 			},
-
-			/**
-			 *
-			 * @param property
-			 * @param component
-			 * @param value
-			 */
 			setPropertyValue: function(property, component, value) {
+				/**
+				 *
+				 * @param property
+				 * @param component
+				 * @param value
+				 */
 				if(property.isReference()) {
 					this._references.push({
 						property: property,

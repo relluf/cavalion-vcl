@@ -79,7 +79,8 @@ define(function(require) {
 				type: Type.EVENT
 			},
 			"options": {
-				type: Type.ARRAY
+				type: Type.ARRAY,
+				set: Function
 			},
 			"value": {
 				type: Type.STRING,
