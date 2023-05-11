@@ -15,7 +15,7 @@
 		var scope = this.getScope();
 		var elem = new Element(this);
 
-		var timeout = options.hasOwnProperty("timeout") ? options.timeout : 1500;
+		var timeout = options.ms || (options.hasOwnProperty("timeout") ? options.timeout : 1500);
 		var content = options.content || "No toast content";
 		var classes = options.classes || "fade";
 
@@ -64,9 +64,10 @@
 			},
 			right: "0",
     		left: "0",
-    		bottom: "40px",
+    		bottom: "20px",
     		"z-index": "20000",
     		"pointer-events": "none",
+    		
     		".{./Element}": {
     			"pointer-events": "all",
     			"a": {
@@ -77,6 +78,7 @@
     			// "background-color": "gold",
     			opacity: "0.75",
     			color: "black",
+    			'max-width': "35%",
     			"&.glassy": {
 	    			padding: "16px 24px",
 	    			margin: "4px",
@@ -117,7 +119,18 @@
         		"&.padding-right-20px": {
         			"padding-right": "20px"
         		},
-    		}
+    		},
+    		
+    		"&.centered": {
+    			"text-align": "center",
+	    		".{./Element}": {
+	    			"margin-left": "auto",
+	    			"margin-right": "auto",
+	    			"text-align": "left",
+	    			"float": "none"
+	    		},
+	    	},
+    		
     	}
     }]
 ]];
