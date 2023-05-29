@@ -78,7 +78,6 @@
     			// "background-color": "gold",
     			opacity: "0.75",
     			color: "black",
-    			'max-width': "35%",
     			"&.glassy": {
 	    			padding: "16px 24px",
 	    			margin: "4px",
@@ -119,17 +118,20 @@
         		"&.padding-right-20px": {
         			"padding-right": "20px"
         		},
+	    		"&.centered": {
+	    			"text-align": "center",
+		    		// ".{./Element}": {
+		    			"margin-left": "auto",
+		    			"margin-right": "auto",
+		    			"text-align": "left",
+		    			"float": "none"
+		    		// },
+		    	},
+		    	"&.paragraph": {
+	    			'max-width': "35%"
+		    	}
     		},
     		
-    		"&.centered": {
-    			"text-align": "center",
-	    		".{./Element}": {
-	    			"margin-left": "auto",
-	    			"margin-right": "auto",
-	    			"text-align": "left",
-	    			"float": "none"
-	    		},
-	    	},
     		
     	}
     }]
