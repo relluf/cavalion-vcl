@@ -1,4 +1,4 @@
-"vcl/ui/LargeIcon, vcl/ui/Node, vcl/ui/FormContainer, vcl/ui/Node.closeable";
+"vcl/ui/LargeIcon, vcl/ui/Node, vcl/ui/FormContainer, vcl/ui/Node-closeable";
 
 var Node = require("vcl/ui/Node");
 var FormContainer = require("vcl/ui/FormContainer");
@@ -301,7 +301,7 @@ var Handlers = {
 		var scope = this.getScope();
 
 		if(name === "openform") {
-			var Node = require("vcl/ui/Node.closeable");
+			var Node = require("vcl/ui/Node-closeable");
 			var FormContainer = require("vcl/ui/FormContainer");
 
 			// TODO Merge with Portal
@@ -402,11 +402,11 @@ var Handlers = {
     		"padding-left": "16px",
     		".{./Node}": {
 		        "&.loading": {
-		        	"background-image": "url(/shared/vcl/images/loading.gif)",
-		        	"background-repeat": "no-repeat",
-		        	"background-position": "-8px 4px",
 		        	">.selection": {
-		        		"opacity": "0.5"
+			        	"background-image": "url(/shared/vcl/images/loading.gif)",
+			        	"background-repeat": "no-repeat",
+			        	"background-position": "10px 5px",
+		        		// "opacity": "0.5"
 		        	},
 		        	"&.selected >.text": {
 		        		"font-weight": "normal"
