@@ -1852,6 +1852,12 @@ this._updateCalls = this._updateCalls || 0; this._updateCalls++;
 			updateCallCount: 0,
 
 			focused: null,
+			
+			tree: (root) => root.getControls().reduce((r, c) => {
+					r[js.nameOf(c)] = Control.tree(c);
+					return r;	
+				}, Object.create(root, { hashCode: { value: () => ";-)" } })),
+			
 
 			findByNode: function(node) {
 				while(node !== null && node[EventDispatcher.elementKey] === undefined) {
