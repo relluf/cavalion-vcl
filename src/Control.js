@@ -1488,6 +1488,7 @@ this._updateCalls = this._updateCalls || 0; this._updateCalls++;
 			ondragcancel: function() {},
 			ondragend: function() {
 				this.fire("onDragEnd", arguments);
+				delete this._dragger;
 			}, 
 			ondragenter: function(evt) {
 				this.fire("onDragEnter", arguments);
@@ -1541,9 +1542,6 @@ this._updateCalls = this._updateCalls || 0; this._updateCalls++;
 			},
 			onmouseout: function() {
 				this.fire("onMouseOut", arguments);
-			},
-			onmouseleave: function() {
-				this.fire("onMouseOver", arguments);
 			},
 			ontap: function() {
 				this.fire("onTap", arguments);
