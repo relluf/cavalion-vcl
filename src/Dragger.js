@@ -16,9 +16,6 @@ define(function(require) {
 
 			_cursor: null,
 
-			/**
-			 * Constructor
-			 */
 			constructor: function(control, overrides) {
 				this._hook = new DocumentHook(undefined, false);
 				this._control = control;
@@ -32,20 +29,12 @@ define(function(require) {
 					this.override(overrides);
 				}
 			},
-
-			/**
-			 *
-			 */
 			handleEvent: function(evt, type) {
 				var f = this[type];
 				if(f !== undefined) {
 					f.apply(this, arguments);
 				}
 			},
-
-			/**
-			 *
-			 */
 			swapDocCursor: function() {
 				if(this.hasOwnProperty("_cursor")) {
 					var style = document.body.style;
@@ -54,17 +43,9 @@ define(function(require) {
 					this._cursor = cursor;
 				}
 			},
-
-			/**
-			 *
-			 */
 			getCursor: function() {
 				return this._cursor;
 			},
-
-			/**
-			 *
-			 */
 			setCursor: function(value) {
 				if( /* isdragging */ 0) {
 					document.body.style.cursor = value;
@@ -72,10 +53,6 @@ define(function(require) {
 					this._cursor = value;
 				}
 			},
-
-			/**
-			 *
-			 */
 			start: function(evt) {
 				HtmlElement.disableSelection();
 				this.swapDocCursor();
@@ -84,27 +61,16 @@ define(function(require) {
 				this._hook.activate();
 				this.createHandles(evt);
 			},
-
-			/**
-			 *
-			 */
 			end: function(evt) {
+				this._control.dispatch("dragend", evt);
 				this.destroyHandles(evt);
 				this._hook.release();
 				this.swapDocCursor();
 				HtmlElement.enableSelection();
 			},
-
-			/**
-			 *
-			 */
 			drop: function(evt) {
-
+				this._control.dispatch("dragdrop", evt); // ?
 			},
-
-			/**
-			 *
-			 */
 			keyup: function(evt) {
 				if(evt.keyCode === 27) {
 					evt.preventDefault();
@@ -112,40 +78,21 @@ define(function(require) {
 					this.end(evt);
 				}
 			},
-
-			/**
-			 *
-			 */
 			mouseup: function(evt) {
 				if(this._cancelled !== true) {
 					this.drop(evt);
 					this.end(evt);
 				}
 			},
-
-			/**
-			 *
-			 */
 			mousemove: function(evt) {
 				this.updateHandles(evt);
 			},
-
-			/**
-			 *
-			 */
-			createHandles: function() {
-			},
-
-			/**
-			 *
-			 */
+			createHandles: function() {},
 			destroyHandles: function() {
 			},
 
-			/**
-			 * This will just move the control, override to change behaviour
-			 */
 			updateHandles: function(evt) {
+				/** This will just move the control, override to change behaviour */
 				var x = this._sx;
 				var y = this._sy;
 
@@ -157,7 +104,6 @@ define(function(require) {
 				this._sx = evt.clientX;
 				this._sy = evt.clientY;
 			}
-
 		}
 	}));
 

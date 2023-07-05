@@ -96,6 +96,7 @@
         		"&.no-clear": "clear: none;",
 
     			"&.big": "font-size: 32pt;",
+    			"&.medium": "font-size: 14pt;",
     			"&.fade": {
     				opacity: "0",
     				transition: "opacity 1s ease",

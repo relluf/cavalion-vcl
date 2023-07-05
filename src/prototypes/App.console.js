@@ -123,6 +123,7 @@ keyup:MetaCtrl+192`,
     [["ui/forms/util/Console"], "console", {
     	align: "bottom",
 	    height: 250,
+	    css: "background-color:rgba(255,255,255,0.5);backdrop-filter:blur(10px);",
 	    visible: false,
 	    vars: "parent: window;"
     }]
