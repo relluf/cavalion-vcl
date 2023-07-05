@@ -1,3 +1,28 @@
+### 2023/07/05 - 1.1.75
+
+* Minor style changes
+* Bugfix for Control.properties.onMouseLeave
+
+### 2023/05/29 - 1.1.74
+
+* Node.closeable deprecated
+
+	* `af4757a` - refactors Node.closeable => Node-closeable updates loading style for Nodes adds SNIPPETS.md
+
+* Adding debugging tools 
+
+	* `3d7b43e` - adds Control.tree() - useful for debugging nested structure of controls
+	* `9421731` - adds dumpControls snippet removes comments fixes deps global
+
+* Working on vcl/prototype
+
+	* `1720907` - fixes message params situation
+	* `fc159df` - fixes ms situation with toasts fixes toast styles
+
+* Minor changes
+
+	* `6e3222b` - updates toast style
+
 ### 2023/03/26 - 1.1.73
 
 * Fixes issues with Component.getImplicitBasesByUri
