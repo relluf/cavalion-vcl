@@ -1623,12 +1623,14 @@ this._updateCalls = this._updateCalls || 0; this._updateCalls++;
 					var me = this;
 					if(this._action !== null) {
 						this._actionListeners = this._action.on({
-							"change": function() {
-								me.update();
-							},
-							"destroy": function() {
-								me.setAction(null);
-							}
+							"change"(evt) { 
+								if(me._node) {
+									if(evt && evt.what.includes && evt.what.includes("content")) {
+										me._node.innerHTML = me.getInnerHtml();
+									}
+								}
+								me.update(); },
+							"destroy"() { me.setAction(null); }
 						});
 					}
 
