@@ -1,6 +1,6 @@
 {
   "name": "cavalion-vcl",
-  "version": "1.1.75",
+  "version": "1.1.76",
   "description": "Visual Component Library for vcl-comps",
   "main": "index.js",
   "scripts": {
@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/relluf/cavalion-vcl/issues"
   },
-  "homepage": "https://github.com/relluf/cavalion-vcl#readme"
+  "homepage": "https://github.com/relluf/cavalion-vcl#readme",
+  "dependencies": {
+    "cavalion-js": "^1.0.74",
+    "cavalion-vcl": "^1.1.75"
+  }
 }

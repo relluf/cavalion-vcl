@@ -1,3 +1,7 @@
+### 2023/08/28 - 1.1.76
+
+* Fixes the bug with the vcl/Component `overrides`-property.
+
 ### 2023/07/05 - 1.1.75
 
 * Minor style changes
