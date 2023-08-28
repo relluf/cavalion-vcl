@@ -14,6 +14,32 @@ define(function (require) {
     var ILLEGAL_COMPONENT_URI_CHARS = "/";
 
     var all = [], nextTick = 1;
+    
+    var overrides_set = function(value) {
+    	const wrap = (method) => {
+    		const f = function() {
+				Method.setInherited(method, Method.getInherited(f));
+				return method.apply(this, arguments); 
+			};
+			return f;
+    	};
+this.print("@overrides", value);
+		for(var k in value) {
+			var method = wrap(value[k]); 
+			
+			var selector = k.split(" ");
+			var event = selector.pop();
+			if(!selector.length) {
+				selector = [this];
+			} else {
+    			selector = this.qsa(selector.join(" "));
+			}
+			selector.forEach(function(component) {
+				component.override(event, method, true);
+			});
+		}
+    };
+
 
     Component = Component(require, {
         prototype: {
@@ -1476,40 +1502,12 @@ define(function (require) {
             }, // Yuk!
             "override": {
             	fixUp: true,
-                set: function(value) {
-            		for(var k in value) {
-            			var method = value[k];
-            			var selector = k.split(" ");
-            			var event = selector.pop();
-            			if(!selector.length) {
-            				selector = [this];
-            			} else {
-	            			selector = this.qsa(selector.join(" "));
-            			}
-            			selector.forEach(function(component) {
-            				component.override(event, method, true);
-            			});
-            		}
-                },
+                set: overrides_set,
                 type: Type.OBJECT
             },
             "overrides": {
             	fixUp: true,
-                set: function(value) {
-            		for(var k in value) {
-            			var method = value[k];
-            			var selector = k.split(" ");
-            			var event = selector.pop();
-            			if(!selector.length) {
-            				selector = [this];
-            			} else {
-	            			selector = this.qsa(selector.join(" "));
-            			}
-            			selector.forEach(function(component) {
-            				component.override(event, method, true);
-            			});
-            		}
-                },
+            	set: overrides_set,
                 type: Type.OBJECT
             },
             "onLoad": {
