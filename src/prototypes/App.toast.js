@@ -121,12 +121,12 @@
         		},
 	    		"&.centered": {
 	    			"text-align": "center",
-		    		// ".{./Element}": {
+		    		".{./Element}": {
 		    			"margin-left": "auto",
 		    			"margin-right": "auto",
 		    			"text-align": "left",
 		    			"float": "none"
-		    		// },
+		    		},
 		    	},
 		    	"&.paragraph": {
 	    			'max-width': "35%"

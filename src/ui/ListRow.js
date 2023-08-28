@@ -75,6 +75,7 @@ define(function(require) {
 			},
 			determineClasses: function() {
 				/** @overrides ../Control.prototype.determineClasses */
+				if(this._rowIndex === -1) return [];
 				var classes = this.inherited(arguments);
 				if(this._rowIndex % 2 === 1) {
 					classes.push("odd");

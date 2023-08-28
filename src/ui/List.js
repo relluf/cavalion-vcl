@@ -706,7 +706,7 @@ define(function(require) {
 						}
 
 						// TODO `#CVLN-20201004-1` deal with a lot of columns
-						for(i = 0; i < columns.length && i < this.MAX_AUTOCOLUMNS; ++i) {
+						for(i = 0; i < columns.length; ++i) {
 							if(columns[i]._custom === false && (
 									columns[i]._attribute === "" ||
 									attributes.indexOf(columns[i]._attribute) === -1)) {
@@ -791,6 +791,7 @@ define(function(require) {
 					case SourceEvent.layoutChanged:
 						if(this._autoColumns === true) {
 							this.updateColumns();
+							this.render_(true);
 						}
 						break;
 				}

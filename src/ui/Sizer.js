@@ -475,7 +475,6 @@ define(function(require) {
 			}
 
 		}
-
 	}));
 
 });

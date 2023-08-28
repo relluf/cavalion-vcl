@@ -1,5 +1,15 @@
 "use B";
 
+/*- [["cavalion-blocks"]]
+
+	The following vars can be set to influence the default behaviour:
+
+	- vars.uri
+	- vars.specializer
+	- vars.onLoad
+	
+*/
+
 ["vcl/ui/Panel", {
 	align: "client",
 	onNodeCreated() {

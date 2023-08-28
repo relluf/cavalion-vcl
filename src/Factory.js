@@ -614,11 +614,14 @@ define(function(require) {
 			    try {
 			        factory = require(String.format("vcl/Factory!%s", name));
 			    } catch(e) {
+			    	console.error(e);
 			        return;
 			    }
 
 				requirejs.undef(String.format("vcl/Factory!%s", factory._uri));
 				requirejs.undef(Factory.makeTextUri(factory._uri));
+
+		    	console.info("vcl/Factory.unreq: " + name)
 
 			    var factories = factory._root.inherits;
 			    factories && factories.forEach(function(name) {

@@ -850,7 +850,7 @@ define(function() {
     }
     function match(rule, component, operator, context, all) {
     	if(operator === ">") {
-    		console.warn("DEPRECATED operator >");
+    		// console.warn("DEPRECATED operator >");
     		operator = PARENT_HIERARCHY_OPERATOR;
     	}
         if(operator === null) {

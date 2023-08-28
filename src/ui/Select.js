@@ -68,6 +68,7 @@ define(function(require) {
 					this.dispatch("change");
 				}
 			},
+			getOptions: function() { return this._options; },
 			setOptions: function(value) {
 			    this._options = value;
 			    this.setState("invalidated", true);
