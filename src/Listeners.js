@@ -32,7 +32,9 @@ define(function(require) {
 					var name = names[n];
 					var lis = this._listeners[name];
 					for(var l = 0; l < lis.length; ++l) {
-						Method.disconnect(this._owner, name, lis[l], "callback");
+						if(typeof this._owner[name] === "function") {
+							Method.disconnect(this._owner, name, lis[l], "callback");
+						}
 					}
 				}
 
