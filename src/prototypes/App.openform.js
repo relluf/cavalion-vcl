@@ -31,17 +31,17 @@ var FormContainer = require("vcl/ui/FormContainer");
         // FIXME Make abstracter
         if(name === "openform" || name === "openform-tabbed") {
         	/*- Delegate to Portal-form */
-            scope = scope.client.getForm().getScope();
-            scope.open_form.execute(msg.uri, msg);
+            scope.openform.execute({uri: msg.uri, msg: msg}, this);
         } else if(name === "openform_modal") {
             scope.openform_modal.execute(msg, sender);
         } else if(name === "log") {
+        	// DEPRECATED by this.print()
             scope.console.sendMessage(name, msg, sender);
         }
     },
 }, [
-    [("vcl/Action"), "openform_modal", {
-        onExecute: function(evt) {
+    ["vcl/Action", ("openform_modal"), {
+        on(evt) {
 
             var app = this.getApp();
             var scope = this.getScope();
@@ -129,6 +129,12 @@ var FormContainer = require("vcl/ui/FormContainer");
             var containers = client.getVar("containers", false, []);
             containers.push(container);
         }
+    }],
+    ["vcl/Action", ("openform"), {
+		on(evt, sender) {
+            var scope = this.ud("#client").getForm().getScope();
+            scope.open_form.execute(evt.uri, evt.msg);
+		}    	
     }],
     ["#window", {}, [
         [("vcl/ui/Panel"), "modal_client", {

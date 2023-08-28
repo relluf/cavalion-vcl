@@ -50,19 +50,9 @@ var FormContainer = require("vcl/ui/FormContainer");
         state && state.restore && state.restore(state);
     }
 }, [
-    [("#window"), {
-		css: {
-			// ".{./Button}": {
-			// 	"font-family": "Lucida Grande, Arial, sans-serif",
-			// 	"font-size": "9pt"
-			// },
-			// // "font-family": "SF Pro Text, SF UI Text, system-ui, Helvetica Neue, Helvetica, Lucida Grande, Arial, sans-serif",
-			// "font-family": "Lucida Grande, Arial, sans-serif",
-			// "font-size": "9pt"
-		}
-    }, [
-        ["vcl/ui/FormContainer", "client", {
-        	formUri: "./ui/forms/Portal<>"
+    [("#window"), { }, [
+        ["vcl/ui/FormContainer", "client", { 
+        	formUri: "./ui/forms/Portal<>" 
         }],
     ]]
 ]];
