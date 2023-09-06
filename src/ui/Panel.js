@@ -143,7 +143,7 @@ define(function (require) {
                                     setBounds(control, cr.left, U, cr.right, cr.bottom, function () {
                                     	if(zoom !== 1.0) {
                                     		console.log("alignControls", control._name, control);
-                                        	cr.bottom += (control._height / zoom);
+                                        	cr.bottom += (control._height * zoom);
                                     	} else {
                                         	cr.bottom += (parseInt(control.getComputedStylePropValue("height"), 10) || 0);
                                     	}
@@ -406,14 +406,14 @@ define(function (require) {
                 if (fixedWidth === true) {
                     bounds.width = this._width;
                     if(zoomed && this._zoom < 1) {
-                    	bounds.width /= this._zoom;
+                    	// bounds.width *= this._zoom;
                     }
                 }
 
                 if (fixedHeight === true) {
                     bounds.height = this._height;
                     if(zoomed && this._zoom < 1) {
-                    	bounds.height /= this._zoom;
+                    	// bounds.height *= this._zoom;
                     }
                 }
 
