@@ -1,14 +1,41 @@
 define(["require", "js/defineClass", "ace/ace", "ace/commands/default_commands", "./Panel", "js/Type"], 
 function(require, Ace, ace, DefaultCommands, Panel, Type) {
     
-    // Automatically scrolling cursor into view after selection change this will be disabled in the next version 
-    // set editor.$blockScrolling = Infinity to disable this message
-
 	// Somehow this got broken Cmd+Alt+0 (really missing it, spend over 2 hours (sigh!))
 	DefaultCommands.commands[12].exec = (editor) => { 
 		editor.session.foldAll(); 
 		while(editor.session.unfold(editor.getCursorPosition(), false)); 
 	};
+
+	const initCommands = (editor) => {
+		editor.commands.addCommand({
+		    name: "toggleNestedFolds",
+		    bindKey: { win: "Shift-F2", mac: "Shift-F2" }, // Define the key binding for both Windows and Mac
+		    exec: (editor) => {
+				var session = editor.getSession();
+		        var row = session.selection.getCursor().row;
+		        row = session.getRowFoldStart(row);
+		        var range = session.$toggleFoldWidget(row, { all: true });
+		        
+		        if (range) return;
+		        // handle toggleParent
+		        var data = session.getParentFoldRangeData(row, true);
+		        range = data.range || data.firstRange;
+		        
+		        if (range) {
+		            row = range.start.row;
+		            var fold = session.getFoldAt(row, session.getLine(row).length, 1);
+		
+		            if (fold) {
+		                session.removeFold(fold);
+		            } else {
+		                session.addFold("...", range);
+		            }
+		        }
+	        }
+		});
+	};
+	
 
 	return (Ace = Ace(require, {
 
@@ -43,12 +70,10 @@ function(require, Ace, ace, DefaultCommands, Panel, Type) {
 				
 				this._editor = ace.edit(this._node.childNodes[0]);
 				this._editor.$blockScrolling = Infinity;
-				
 				this._editor.setOption("useSoftTabs", false);
+				this._editor.on("change", (e) => this.dispatch("change", e));
 				
-				this._editor.on("change", function(e) {
-				    me.dispatch("change", e);    
-			    });
+				initCommands(this._editor);
 				
 				return this.inherited(arguments);
 			},
