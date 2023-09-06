@@ -41,10 +41,12 @@ define(function(require) {
 			},
 			render: function() {
 				/** @overrides ../Control.prototype.render */
-				if(this._textReflects === "textContent") {
-					this._nodes.text.textContent = this.getText();
-				} else {
-					this._nodes.text.innerHTML = this.getText();
+				if(this._onRender === null || this.fire("onRender") === false) {
+					if(this._textReflects === "textContent") {
+						this._nodes.text.textContent = this.getText();
+					} else {
+						this._nodes.text.innerHTML = this.getText();
+					}
 				}
 			},
 			select: function() {
