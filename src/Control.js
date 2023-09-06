@@ -1106,6 +1106,8 @@ define(function(require) {
 				this.setVisible(false);
 			},
 			makeVisible: function(control) {
+				// if(control === undefined) return;
+
 				var parent = this._parent;
 				if(this._parent && !this._parent.isVisible()) {
 					this._parent.makeVisible();
