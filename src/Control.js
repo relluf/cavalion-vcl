@@ -1114,13 +1114,14 @@ define(function(require) {
 					this._parent.update(() => this.makeVisible());
 					return;
 				}
+				
 				if(!this.isVisible()) {
 					this.show();
 				}
 			},
 			selectVisible: function() {
-				this.setSelected(true);
 				this.makeVisible();
+				this.update(() => this.setSelected(true));
 			},
 
 			allowsUpdateChildren: function() {

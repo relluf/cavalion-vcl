@@ -174,6 +174,14 @@ define(function(require) {
                         me.removeClass("expanding");
 						return res;
 					});
+				} else if(this._childNodesLoaded instanceof Promise) {
+					this.addClass("expanding");
+					this._childNodesLoaded.then(res => {
+							this.update(() => callback(res));
+							return res;
+						})
+						.finally(() => this.removeClass("expanding"));
+					
 				} else if(this._childNodesLoaded !== false && typeof callback === "function") {
 					callback();
 				}

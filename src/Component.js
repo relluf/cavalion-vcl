@@ -285,6 +285,7 @@ this.print("@overrides", value);
                     args = ms;
                     ms = f;
                     f = name;
+                    name = "timeout_" + (nextTick++);
                 }
                 
 // console.debug("setTimeout", name, [this, arguments]);
