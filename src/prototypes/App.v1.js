@@ -1,4 +1,4 @@
-"util/HtmlElement, util/Fullscreen, vcl/ui/Element, vcl/ui/FormContainer";
+"use util/HtmlElement, util/Fullscreen, vcl/ui/Element, vcl/ui/FormContainer, vcl/ui/Node, vcl/ui/Button";
 
 var Fullscreen = require("util/Fullscreen");
 var HtmlElement = require("util/HtmlElement");
@@ -50,7 +50,23 @@ var FormContainer = require("vcl/ui/FormContainer");
         state && state.restore && state.restore(state);
     }
 }, [
-    [("#window"), { }, [
+    [("#window"), { 
+    	css: {
+			'#close-x': {
+				'': "position:absolute;top:0;right:0;color:silver;padding:4px 8px;font-size:14pt;z-index:999999999999;",
+				'&:hover': "color:black;cursor:pointer;"
+			},
+			'font-family': "Lucida Grande, Arial, sans-serif", 
+			'font-size': "9pt",
+			'.{./Button}': {
+				'font-size': "9pt",
+				'font-family': "Lucida Grande, Arial, sans-serif",
+				'vertical-align': "top",
+				'&.disabled': "color:gray;",
+				'&:active': "line-height:12px; border:2px solid rgb(57,121,217); padding-top:5px; padding-bottom:3px; padding-left:8px; padding-right:6px; background:-webkit-linear-gradient(top, rgb(255, 255, 255) 10%, rgb(227, 227, 227) 100%);"
+			}
+    	}
+    }, [
         ["vcl/ui/FormContainer", "client", { 
         	formUri: "./ui/forms/Portal<>" 
         }],
