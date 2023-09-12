@@ -246,7 +246,7 @@ define(function (require) {
             do_keyup: function(evt) {
                 if(Event.modifiersMatch(evt, [])) {
                     if(evt.keyCode === evt.KEY_F5) {
-                        this.refresh();
+                        this._selection.forEach(node => node.reloadChildNodes());
                     } else if(evt.keyCode === 13 && this._selection.length) {
 						if(this._action && this._action.isEnabled() && this._executesAction === "onNodeDblClick") {
 							this._action.execute(evt, this);

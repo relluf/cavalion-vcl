@@ -27,7 +27,7 @@ var deselect = () => {
         // this._vars.sizer.setControl(null);
     },
     onLoad() {
-        var me = this, scope = this.scope();
+        var me = this, scope = this.scope(), app = this.app();
         var sizer = this.vars("sizer", new Sizer(this));
 
         var parent = this.scope()[this.vars("parent")];
@@ -38,11 +38,15 @@ var deselect = () => {
         }
 
         sizer.on("setControl", function (value) {
+        	if(value) {
+        		app.toast({ content: js.sf("%n", value), classes: "glassy fade"});
+        	}
+        	
             var consoles = this.app().qsa("vcl/ui/Console").filter(c => c.isVisible());
             var content = [];
 
             if(consoles.length === 0) {
-            	me.show();
+            	// me.show();
             	consoles = [scope.console];
             }
 
@@ -76,12 +80,9 @@ var deselect = () => {
         // FIXME overriding dispatcher, Application.prototype.dispatchEvent(...)
         this.app()._dispatcher.override({
             dispatch: function (component, name, evt) {
-				// if(name.indexOf("key") === 0) {
-				// 	console.log(evt.keyCode, name, {ctrl: evt.ctrlKey, alt: evt.altKey, shift: evt.shiftKey, meta: evt.metaKey});
-				// }
-                if (evt.keyCode === 27) {
+                if(evt.keyCode === 27 /* Escape */) {
                     if (sizer._control !== null) {
-                        if (name === "keydown") {
+                        if (name === "keydown" && evt.ctrlKey === false) {
                             down = Date.now();
                             if(evt.altKey === true) {
                             	var root = sizer._control.up();
@@ -96,62 +97,85 @@ var deselect = () => {
                             // if(down + 750 < Date.now()) {
                             //     sizer.setControl(null);
                             // }
-                            return false;
+                            if(evt.ctrlKey === false) {
+                        		return false;
+                            }
                         }
                     }
                 }
-                if(evt.altKey === true) {
-	                if (name === "dblclick" && evt.metaKey) {
-	                    sizer.setControl(component);
-			            var consoles = me.app().qsa("vcl/ui/Console").filter(c => c.isVisible());
-	                    if(consoles.length === 0) {
-	                    	me.ud("#toggle-console").execute({});
-	                    }
-	                    consoles.forEach(_ => { 
-	                    	_.getNode("input").value = ""; 
-	                    	_.print(js.sf("#%d", component.hashCode()), component);
-	                    });
-	                } else if (name === "click") {
-	                	// sizer.vars("meta", evt.metaKey === true);
-	                    if (evt.metaKey === true) {
-	                        if (component instanceof Control) {
-	                            if (sizer._control === component) {
-	                            	// deselect
-	                                component = null;
-	                            }
-	                            sizer.setControl(component);
-	                            return false;
-	                        }
-	                    } else if(evt.shiftKey === true) {
-	                        var fc = component;
-	                        evt.preventDefault();
-	                        deselect();
-	                        me.setTimeout("deselect", () => {
-		                        while (fc instanceof Control) {
-		                            if (fc instanceof FormContainer) {
-		                                if(evt.metactrlKey === true) {
-		                                    var keys = Component.getKeysByUri(fc._formUri);
-		
-		                                    if (confirm(String.format("Rescaffold %s?", fc.getForm().getUri())) === true) {
-		                                        fc.reloadForm();
-		                                        return false;
-		                                    }
-		                                } else {
-		                                    if (confirm(String.format("Reload %s?", fc.getForm().getUri())) === true) {
-		                                        fc.reloadForm();
-		                                        return false;
-		                                    }
-		                                }
+                
+                if(sizer._control !== null && name === "keyup" && evt.keyCode === 46 /*Delete*/) {
+                	const names = js.sf("%n", sizer._control).split("#");
+                	let n;
+                	if(confirm(js.sf("Choose OK in order to confirm the destruction of the following component:\n\n%s\n\n%d component%s will be destroyed.", 
+                		names.map((n, i) => js.sf("- %s%s", i ? "#" : "", n)).join("\n"),
+                		(n = sizer._control.qsa("*").length + 1), n === 1 ? "" : "s"
+                	))) {
+                		sizer._control.destroy();
+                		// sizer.setControl(null);
+                	}
+                }
+                
+                if(evt.target.nodeName !== "A") {
+                
+	                if(evt.altKey === true) {
+		                if (name === "dblclick" && evt.metaKey) {
+		                    sizer.setControl(component);
+				            var consoles = me.app().qsa("vcl/ui/Console").filter(c => c.isVisible());
+		                    if(consoles.length === 0) {
+		                    	me.ud("#toggle-console").execute({});
+		                    }
+		                    consoles.forEach(_ => { 
+		                    	_.getNode("input").value = ""; 
+		                    	_.print(js.sf("#%d", component.hashCode()), component);
+		                    });
+		                    return false;
+		                } else if (name === "click") {
+		                	// sizer.vars("meta", evt.metaKey === true);
+		                    if (evt.metaKey === true) {
+		                        if (component instanceof Control) {
+		                            if (sizer._control === component) {
+		                            	// deselect
+		                                component = null;
 		                            }
-		                            fc = fc._parent;
+		                            sizer.setControl(component);
+		                            return false;
 		                        }
-	                        }, 100);
-	                    }
-	                } else if(name ==="touchstart" || name === "touchmove") {
-	                	if(evt.touches.length > 3) {
-	                		app.getScope().toggle_console.execute(evt);
-	                	}
+		                    } else if(evt.shiftKey === true) {
+		                        var fc = component;
+		                        evt.preventDefault();
+		                        deselect();
+		                        me.setTimeout("deselect", () => {
+			                        while (fc instanceof Control) {
+			                            if (fc instanceof FormContainer) {
+			                                if(evt.metactrlKey === true) {
+			                                    var keys = Component.getKeysByUri(fc._formUri);
+			
+			                                    if (confirm(String.format("Rescaffold %s?", fc.getForm().getUri())) === true) {
+			                                        fc.reloadForm();
+			                                        return false;
+			                                    }
+			                                } else {
+			                                    if (confirm(String.format("Reload %s?", fc.getForm().getUri())) === true) {
+			                                        fc.reloadForm();
+			                                        return false;
+			                                    }
+			                                }
+			                            }
+			                            fc = fc._parent;
+			                        }
+		                        }, 100);
+		                    }
+		                } else if(name ==="touchstart" || name === "touchmove") {
+		                	if(evt.touches.length > 3) {
+		                		app.getScope().toggle_console.execute(evt);
+		                	}
+		                }
 	                }
+                }
+                
+                if(name.startsWith("mouse") || name.startsWith("key")) {
+                	me.setTimeout("sizer-update", () => sizer.update(), 50);
                 }
 
                 return this.inherited(arguments);
