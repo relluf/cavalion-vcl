@@ -39,7 +39,7 @@ var deselect = () => {
 
         sizer.on("setControl", function (value) {
         	if(value) {
-        		app.toast({ content: js.sf("%n", value), classes: "glassy fade"});
+        		// app.toast({ content: js.sf("%n", value), classes: "glassy fade"});
         	}
         	
             var consoles = this.app().qsa("vcl/ui/Console").filter(c => c.isVisible());
@@ -61,7 +61,7 @@ var deselect = () => {
                     
                     content.push(js.sf("%s%s%s%s", uri, root, selected, disabled));
                 }
-                content.push(js.sf("%n", value));
+                // content.push(js.sf("%n", value));
                 if(sizer.getVar("meta") === true) {
                 	consoles.forEach(c => c.getNode("input").value = js.sf("[#%d, \"%s\"]", 
                 		value.hashCode(), content.join("\", \"")));
@@ -74,6 +74,7 @@ var deselect = () => {
                 }
             }
             scope.sizer_selection.setContent(String.format("%H", content.join(" - ")));
+    		app.toast({ title: js.sf("%n", value), content: js.sf("<ul style='padding:0;padding-left:8px;'><li>%s</li></ul>", content.join("</li><li>")), classes: "glassy fade"});
         }, true);
 
         var down;
