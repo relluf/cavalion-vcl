@@ -479,7 +479,7 @@ this.print("@overrides", value);
                 this._designerHook = value;
             },
             isRootComponent: function () {
-                return this._isRoot;
+                return this._isRoot || (this._uri || "").endsWith(":root"); // TODO
             },
             inheritsFrom: function (root) {
                 if (!root.isRootComponent()) {
