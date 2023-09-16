@@ -861,6 +861,9 @@ define(function(require) {
 				return r;
 			},
 			sortBy(column, dir, numeric) {
+				const sv = column.get("onSortValues");
+
+				dir = dir === "desc" ? - 1 : 1;
 				
 				if(typeof column === "string") {
 					column = column.split(" ");
@@ -875,23 +878,31 @@ define(function(require) {
 					column = this.getColumn();
 				}
 
-				this._source.sort((i1, i2) => {
-					
-					var row1 = this._source._array.indexOf(i1);
-					var row2 = this._source._array.indexOf(i2);
+				this._source.sort(
+					(i1, i2) => {
+						var row1 = this._source._array.indexOf(i1);
+						var row2 = this._source._array.indexOf(i2);
+	
+						// i1 = this.valueByColumnAndRow(column, row1);
+						// i2 = this.valueByColumnAndRow(column, row2);
+						
+						i1 = this._source.getAttributeValue(column._attribute, row1, true);
+						i2 = this._source.getAttributeValue(column._attribute, row2, true);
 
-					i1 = this.valueByColumnAndRow(column, row1);
-					i2 = this.valueByColumnAndRow(column, row2);
-					
-					if(numeric === true) {
-						if(isNaN(i1 = parseFloat(i1))) return 1;
-						if(isNaN(i2 = parseFloat(i2))) return -1;
-					}
-					
-					if(i1 === i2) return 0;
-					
-					return (dir === "desc" ? -1 : 1) * (i1 < i2 ? -1 : 1);
-				});
+						if(sv) return dir * sv(i1, i2);
+						
+						if(i1 === i2) return 0;
+						
+						if(i1 === undefined || i1 == null) return dir * 1;
+						if(i2 === undefined || i2 == null) return dir * -1;
+
+						if(numeric === true) {
+							if(isNaN(i1 = parseFloat(i1))) return dir * 1;
+							if(isNaN(i2 = parseFloat(i2))) return dir * -1;
+						}
+	
+						return (i1 < i2 ? -1 : 1) * dir;
+					});
 			},
 			
 			hasSelection: function() {

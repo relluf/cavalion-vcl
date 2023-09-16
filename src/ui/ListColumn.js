@@ -151,6 +151,7 @@ define(function(require) {
 					}
 				}
 			},
+
 			mousemove: function(evt) {
 			/**
 			 * @overrides ../Control.prototype.mousemove
@@ -241,13 +242,13 @@ define(function(require) {
 				}
 				return r;
 			},
+			sizing: function(evt) {
+			},
 			
 			groupBy: function() {
 				return this._list.groupBy(this);	
 			},
 
-			sizing: function(evt) {
-			},
 			setList: function(value) {
 				if(this._list !== value) {
 					if(this._list !== null) {
