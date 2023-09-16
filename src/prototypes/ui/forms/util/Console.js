@@ -1,4 +1,4 @@
-"vcl/Component, vcl/Control, vcl/Dragger, util/Command, util/HotkeyManager, vcl/ui/Sizer, vcl/ui/FormContainer, entities/EM, entities/ExpressionBuilder, util/Rest, features/FM";
+"use vcl/Component, vcl/Control, vcl/Dragger, util/Command, util/HotkeyManager, vcl/ui/Sizer, vcl/ui/FormContainer, entities/EM, entities/ExpressionBuilder, util/Rest, features/FM";
 
 var Component = require("vcl/Component");
 var Control = require("vcl/Control");
@@ -11,7 +11,6 @@ var Rest = require("util/Rest");
 var Deferred = require("js/Deferred");
 var JsObject = require("js/JsObject");
 var Dragger = require("vcl/Dragger");
-
 
 var deselect = () => {
 	window.getSelection && window.getSelection().removeAllRanges();
@@ -229,8 +228,13 @@ var deselect = () => {
         	this.up().print("document", window.location);
         },
         onEvaluate(expr) {
-            var pr = this.print.bind(this);
-            var open = (uri, opts) => this.bubble(
+
+			const cl = console.log;
+			// const cc = require("clipboard-copy");
+			const pr = () => this.print.apply(this, arguments);
+			const me = this;
+
+            const open = (uri, opts) => this.bubble(
             	"openform",
             	js.mixIn(js.mixIn(opts || {}), {uri: uri}));
 
