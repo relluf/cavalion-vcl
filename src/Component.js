@@ -812,10 +812,13 @@ this.print("@overrides", value);
             		return this.setProperties.apply(this, [js.str2obj(value)]);
             	}
             	return this.setProperties.apply(this, arguments);
-            },
+            }, // TODO might be moved to JsObject (set/get)
             get: function(key) {
             	return this.defineProperties()[key].get(this);	
             },
+            // has: function(key) {
+            // 	return this.defineProperties().hasOwnProperty(key);
+            // },
             properties: function() {
             	return this.defineProperties();
             },
