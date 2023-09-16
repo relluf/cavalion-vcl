@@ -1,4 +1,6 @@
-### `2023/09/06` - 1.1.77*
+### `2023/09/16` - 1.1.78
+
+### `2023/09/06` - 1.1.77
 
 * **Panel**: Adjusts zoom-logic TODO
 * **Tab**: Implements onRender property
