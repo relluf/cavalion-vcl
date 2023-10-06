@@ -554,13 +554,17 @@ this.print("@overrides", value);
                 return (this._vars && this._vars.hasOwnProperty(key)) || false;
             },
             getVar: function (namePath, fallback_to_owner, defaultValue) {
-                if (defaultValue) {
+                if (this._vars !== null && arguments.length === 3) {
                     this._vars = this._vars || {};
                 }
 
                 var r = this._vars !== null ? js.get(namePath, this._vars, defaultValue) : undefined;
-                if (r === undefined && fallback_to_owner === true && this._owner !== null) {
-                    r = this._owner.getVar(namePath, true, defaultValue);
+                if (r === undefined) {
+                	if(fallback_to_owner === true && this._owner !== null) {
+                    	r = this._owner.getVar(namePath, true, defaultValue);
+                	} else if(arguments.length === 3) {
+                		r = defaultValue;
+                	}
                 }
                 return r;
             },

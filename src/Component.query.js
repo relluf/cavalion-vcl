@@ -653,7 +653,7 @@ define(function() {
     Result.prototype = [];
     
     /*- Prototype methods of Component, Control, Action to mixin */
-    "on,un,once,dispatch,emit,fire,listen,unlisten,connect,disconnect,get,set,execute,toggle,show,hide,render,selectNext,selectPrevious,selectNth,selectFirst,selectLast,toggleClass,print".split(",").forEach(function(name) {
+    "on,un,once,dispatch,emit,fire,listen,unlisten,override,connect,disconnect,get,set,execute,toggle,show,hide,render,selectNext,selectPrevious,selectNth,selectFirst,selectLast,toggleClass,print".split(",").forEach(function(name) {
 	        Result.prototype[name] = function() {
 	            for(var i = 0; i < this.length; ++i) {
 	                if(typeof this[i][name] === "function") {
@@ -790,13 +790,14 @@ define(function() {
             	return component instanceof require("vcl" + "/Application");//.app();
             } else if(pseudo.name === "instanceOf") {
             	return component instanceof require(pseudo.value.replace(/\\\//g, "/"));
-            } else if(pseudo.name === "withVars") {
+            } else if(pseudo.name === "withVars" || pseudo.name === "vars") {
             	var vars = component._vars || {};
-            	try {
-            		return eval("with(vars) { " + pseudo.value + "}");
-            	} catch(e) {
-            		return false;
-            	}
+            	// try {
+            		// return eval("with(vars) { " + pseudo.value + "}");
+            		return vars.hasOwnProperty(pseudo.value);
+            	// } catch(e) {
+            		// return false;
+            	// }
             }
             
             var value;

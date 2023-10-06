@@ -1143,6 +1143,8 @@ define(function(require) {
 				this._post_update = this._post_update || [];
 				if(f !== undefined) {
 					this._post_update.push(f);
+				} else {
+					debugger;
 				}
 			},
 			updateChildren: function(recursive, directly) {
@@ -1338,14 +1340,14 @@ this._updateCalls = this._updateCalls || 0; this._updateCalls++;
 				}
 
 				if(this._post_update !== undefined) {
-					while(this._post_update.length > 0) {
+					while(this._post_update && this._post_update.length > 0) {
 						try {
 							this._post_update.shift()();
 						} catch(e) {
 							console.warn("Fix this, I said...", {catched: e});
 						}
 					}
-					if(this._post_update.length === 0) {
+					if(this._post_update && this._post_update.length === 0) {
 						delete this._post_update;
 					}
 				}
