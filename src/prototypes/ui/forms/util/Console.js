@@ -17,6 +17,8 @@ var deselect = () => {
 	document.selection && document.selection.empty();
 };
 
+var cl = console.log;
+
 [["ui/Form"], {
     activeControl: "console",
     align: "bottom",
@@ -71,9 +73,9 @@ var deselect = () => {
                 if (value._owner) {
                     content.push(String.format("%n", value._owner));
                 }
+    			app.toast({ title: js.sf("%n", value), content: js.sf("<ul style='padding:0;padding-left:8px;'><li>%s</li></ul>", content.join("</li><li>")), classes: "glassy fade"});
             }
             scope.sizer_selection.setContent(String.format("%H", content.join(" - ")));
-    		app.toast({ title: js.sf("%n", value), content: js.sf("<ul style='padding:0;padding-left:8px;'><li>%s</li></ul>", content.join("</li><li>")), classes: "glassy fade"});
         }, true);
 
         var down;
@@ -105,10 +107,11 @@ var deselect = () => {
                 }
                 
                 if(sizer._control !== null && name === "keyup" && evt.keyCode === 46 /*Delete*/) {
-                	const names = js.sf("%n", sizer._control).split("#");
+                	const uri = js.sf("%s%s%s", sizer._control.getUri(), sizer._control.isSelected() ? ":selected" : "", sizer._control.isRootComponent() ? ":root" : "");
+                	const names = js.sf("%s#%n", uri, sizer._control).split("#");
                 	let n;
                 	if(confirm(js.sf("Choose OK in order to confirm the destruction of the following component:\n\n%s\n\n%d component%s will be destroyed.", 
-                		names.map((n, i) => js.sf("- %s%s", i ? "#" : "", n)).join("\n"),
+                		names.map((n, i) => js.sf("- %s%s", i > 1 ? "#" : "", n)).join("\n"),
                 		(n = sizer._control.qsa("*").length + 1), n === 1 ? "" : "s"
                 	))) {
                 		sizer._control.destroy();
@@ -228,7 +231,6 @@ var deselect = () => {
         	this.up().print("document", window.location);
         },
         onEvaluate(expr) {
-
 			const cl = console.log;
 			// const cc = require("clipboard-copy");
 			const pr = () => this.print.apply(this, arguments);

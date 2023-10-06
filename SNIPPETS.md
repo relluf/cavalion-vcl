@@ -1,3 +1,6 @@
+* [`req("vcl/Component").storageDB.name`](`!`)
+* [`req("vcl/Component").getFactories`](`!`)
+
 # `2023/05/06` Snippet
 
 	const dumpControls = (parent) => parent.getControls().reduce((r, c) => {
