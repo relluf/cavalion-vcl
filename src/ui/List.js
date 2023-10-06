@@ -17,6 +17,10 @@ define(function(require) {
 	var ListRow = require("./ListRow");
 	
 	// require("stylesheet!./List.less");
+	
+	// TODO centralize/utilize :-p
+	const capitalize = (s) => String.format("%s%s", s.charAt(0).toUpperCase(),
+			s.substring(1));
 
 	var List = {
 		inherits: Panel,
@@ -683,6 +687,8 @@ define(function(require) {
 						var attributes = [];
 						var changed = false;
 						var attrs = this._source.getAttributeNames();
+						var capit = this.vars("autoColumns.capitalize", 0, true);
+						var shuffle = this.vars("autoColumns.attributeInFront", 0, true);
 
 						for(var i = 0; i < attrs.length; ++i) {
 							var column = this.getColumnByAttribute(attrs[i]);
@@ -690,14 +696,17 @@ define(function(require) {
 								column = this.addColumn();
 								column.setAttribute(attrs[i]);
 								var s = attrs[i].split(":").pop().split(".");
-								if(s.length === 1) {
-									s = String.format("%s%s", s[0].charAt(0).toUpperCase(),
-											s[0].substring(1));
+								if(s.length > 1) {
+									if(shuffle) {
+										s = [s.pop()].concat(s).join(".");
+									} else {
+										s = s.join(".");
+									}
 								} else {
-									s = [s.pop(), s.join(".")];
-									s[0] = String.format("%s%s", s[0].charAt(0).toUpperCase(),
-									     			s[0].substring(1));
-                                    s = s.join(" - ");
+									s = s[0];
+								}
+								if(capit) {
+									s = capitalize(s);
 								}
 								column.setContent(s);
 								column.setList(this);
@@ -883,14 +892,16 @@ define(function(require) {
 						var row1 = this._source._array.indexOf(i1);
 						var row2 = this._source._array.indexOf(i2);
 	
-						// i1 = this.valueByColumnAndRow(column, row1);
-						// i2 = this.valueByColumnAndRow(column, row2);
-						
-						i1 = this._source.getAttributeValue(column._attribute, row1, true);
-						i2 = this._source.getAttributeValue(column._attribute, row2, true);
+						if(sv) {
+							i1 = this._source.getAttributeValue(column._attribute, row1, true);
+							i2 = this._source.getAttributeValue(column._attribute, row2, true);
+	
+							return dir * sv(i1, i2);
+						}
 
-						if(sv) return dir * sv(i1, i2);
-						
+						i1 = this.valueByColumnAndRow(column, row1);
+						i2 = this.valueByColumnAndRow(column, row2);
+
 						if(i1 === i2) return 0;
 						
 						if(i1 === undefined || i1 == null) return dir * 1;

@@ -95,7 +95,7 @@ define(function(require) {
 			getInnerHtml: function() {
 			/** @overrides ../Control.prototype.getInnerHtml */
 				if(this._autoWidth === true) {
-					return String.format("<div class=\"autowidth%s\">%s</div>%s",
+					return String.format("<div class=\"autowidth%s\">%H</div>%s",
 							this._attribute !== "" ? (" " + this.getAttributeClassName()) : "",
 							this._autoWidthValue,
 							this.getCaption()
