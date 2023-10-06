@@ -1,4 +1,21 @@
+### `2023/10/06` - 1.1.79
+
+* **List**: Introduces options for behaviour of auto creating columns updates sorting updates auto-widthing updates the docs
+* **Component**: Fixes an bug in prototype.getVar when dealing with default values 
+* **Component.query**: Fixes throwing exceptions when quering components for specific vars adds override to ComponentQueryResult-class
+
 ### `2023/09/16` - 1.1.78
+
+* cleans up code for readability
+* improves (and fixes?) sort algorithm/procedure - support for custom column sorting, based on value of attribute (not onGetValue)
+* cleans up code for readability
+* comments
+* see previous comment
+* :root => isRootComponent enchances toasting Sizer selection
+* fixes reloadChildNodes-situation changes behavior of ui/Console, ignores <a>nchors, activates console on dblclick
+* adds css styles to App.v1 simplifies code
+* adds css styles to App.v1 simplifies code
+* adjusts Component:setTimeout to automatically name unnamed timeout fixes Control:selectVisible which was pretty buggy - noticeably when trying to make workspace console or navigator visible fixes Node:childNodesNeeded so that callback is made correctly (fixes Cmd+F10 #resource-focus as well)
 
 ### `2023/09/06` - 1.1.77
 
