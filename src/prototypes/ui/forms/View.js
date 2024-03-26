@@ -3,7 +3,7 @@
 [["ui/Form"], {
     css: {
     	// TODO refactor to be 'singleton' (iykwim)
-    	'#menubar': {
+    	'#menubar#menubar#menubar': {
 		    '&.loading': "background: url(/shared/vcl/images/loading.gif) no-repeat 50% 50%;",
 		    '&.nested-in-tabs': {
 		    	'': "padding: 2px; border: none;",
@@ -101,9 +101,9 @@
         ["vcl/ui/Panel", ("left_content"), { align: "top", autoSize: "height" }, [
 	        ["vcl/ui/Element", ("description"), {
 	            content: [
-	            	"A view form consists of a panel aligned to the left ",
-	            	"and one aligned client. The client panel usually shows a menubar ",
-	            	"aligned to the top."
+	            	// "A view form consists of a panel aligned to the left ",
+	            	// "and one aligned client. The client panel usually shows a menubar ",
+	            	// "aligned to the top."
 	            ].join("")
 	        }]
         ]]

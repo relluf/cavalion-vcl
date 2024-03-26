@@ -23,7 +23,6 @@ define(function (require) {
 			};
 			return f;
     	};
-this.print("@overrides", value);
 		for(var k in value) {
 			var method = wrap(value[k]); 
 			
@@ -39,7 +38,6 @@ this.print("@overrides", value);
 			});
 		}
     };
-
 
     Component = Component(require, {
         prototype: {
@@ -1541,7 +1539,7 @@ this.print("@overrides", value);
         }
     });
     
-    // alias `#vcl-20200819-1`
+    // alias `#vcl-20200819-1` - is it really being used? maybe move it to Code/VCL-prototypes/v1
     Component.prototype.udown = Component.prototype.ud;
 
     Property.registerReferencedClass(Component);

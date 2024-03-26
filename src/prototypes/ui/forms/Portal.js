@@ -84,7 +84,7 @@ var Component = require("vcl/Component");
 	        },
 	        "&.line": {
 	            "padding-bottom": "8px",
-	            "border-bottom": "1px solid gray"
+	            // "border-bottom": "1px solid gray"
 	        },
 	        // "#title_outer": "color:green;",
 	        "#title": "display: inline-block; font-size: 17pt; margin-right: 16px;",

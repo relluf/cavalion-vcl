@@ -40,7 +40,7 @@ var cl = console.log;
 
         sizer.on("setControl", function (value) {
         	if(value) {
-        		// app.toast({ content: js.sf("%n", value), classes: "glassy fade"});
+        		// app.toast({ content: js.sf("SETCONTROL: %n", value), classes: "glassy fade"});
         	}
         	
             var consoles = this.app().qsa("vcl/ui/Console").filter(c => c.isVisible());
