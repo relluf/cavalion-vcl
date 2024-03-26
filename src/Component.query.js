@@ -832,20 +832,22 @@ define(function() {
     }
     function match_properties(rule, component) {
         return rule.attrs.every(function(attr) {
+
             if(attr.name === "uri") {
             	return match_uri({uri: attr.value.replace(/\\\//g, "/")}, component);
             }
+
             var prop = component.defineProperties()[attr.name];
             var value = prop && prop.get(component);
             if(value instanceof require("vcl/" + "Component")) {
             	value = value.getName();
             }
-            switch(attr.operator) {
-                case "=":
-                    return ("" + value) === ("" + attr.value);
-                
-                default:
-                    return false;
+
+            if(attr.operator === "=") {
+            	if(attr.value.startsWith("\\/") && attr.value.endsWith("\\/")) {
+            		return new RegExp(attr.value.substring(2, attr.value.length - 4)).test("" + value)
+            	}
+            	return ("" + value) === attr.value;
             }
         });
     }
