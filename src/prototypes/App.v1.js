@@ -53,8 +53,8 @@ var FormContainer = require("vcl/ui/FormContainer");
     [("#window"), { 
     	css: {
 			'#close-x': {
-				'': "position:absolute;top:0;right:0;color:silver;padding:4px 8px;font-size:14pt;z-index:999999999999;",
-				'&:hover': "color:black;cursor:pointer;"
+				'': "transition: opacity 1s; opacity: 0.1; position:absolute;top:0;right:0;color:silver;padding:4px 8px;font-size:14pt;z-index:999999999999;",
+				'&:hover': "color:black;cursor:pointer;opacity: 1;"
 			},
 			'font-family': "Lucida Grande, Arial, sans-serif", 
 			'font-size': "9pt",
@@ -63,7 +63,8 @@ var FormContainer = require("vcl/ui/FormContainer");
 				'font-family': "Lucida Grande, Arial, sans-serif",
 				'vertical-align': "top",
 				'&.disabled': "color:gray;",
-				'&:active': "line-height:12px; border:2px solid rgb(57,121,217); padding-top:5px; padding-bottom:3px; padding-left:8px; padding-right:6px; background:-webkit-linear-gradient(top, rgb(255, 255, 255) 10%, rgb(227, 227, 227) 100%);"
+				'&:not(:active)': "margin-bottom:4px;",
+				'&:active:active:active': "margin-bottom:0;margin-top:2px;border:2px solid rgb(57,121,217); padding-left:8px; padding-right:6px; background:-webkit-linear-gradient(top, rgb(255, 255, 255) 10%, rgb(227, 227, 227) 100%);"
 			}
     	}
     }, [

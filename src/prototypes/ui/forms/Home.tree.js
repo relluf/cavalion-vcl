@@ -12,7 +12,7 @@ var Handlers = {
 
 		if(component instanceof FormContainer) {
     		if(name === "formloadstart") {
-    			root_scope.description.setContent("<img src='/shared/vcl/images/loading.gif'>");
+    			// root_scope.description.setContent("<img src='/shared/vcl/images/loading.gif'>");
     		} else if((form = component.getForm()) !== null) {
     			form_scope = form.getScope();
     			if(name === "formload" && !form_scope.left) {
@@ -100,7 +100,7 @@ var Handlers = {
 
 		if(component instanceof FormContainer) {
     		if(name === "formloadstart") {
-    			root_scope.description.setContent("<img src='/shared/vcl/images/loading.gif'>");
+    			// root_scope.description.setContent("<img src='/shared/vcl/images/loading.gif'>");
     		} else if((form = component.getForm()) !== null) {
     			form_scope = form.getScope();
     			if(name === "formload" && !form_scope.left) {
