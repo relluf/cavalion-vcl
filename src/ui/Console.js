@@ -102,7 +102,7 @@ define(function(require) {
 					"&.function>.value": "color: purple;",
 					"&.function>.value>.proto": "color: silver;",
 					"&.function>.container>.code":
-						"margin: 8px; padding: 8px; background-color: #f0f0f0; overflow: auto;",
+						"margin: 8px; padding: 8px; background-color: #f0f0f0; overflow: auto;transition:height 1s;height:auto;",
 					"&.function>.container>.code:not(:hover)":
 						"max-height: 50px;",
 					"&.array>.value": "color: purple;",
@@ -180,7 +180,6 @@ define(function(require) {
 				
 				var node = evt.target;
 				if(evt.metactrlKey && HE.hasClass(node, "key")) {
-					var selection = this._nodes.console.qsa(".selected.node") || {};
 					
 					if(!HE.hasClass(node, "node")) {
 						node = node.up(".node");
@@ -190,6 +189,7 @@ define(function(require) {
 						return;
 					}
 					
+					var selection = this._nodes.console.qsa(".selected.node") || {};
 					var index = selection.indexOf(node);
 					if(index === -1) {
 						selection.push(node);
@@ -241,9 +241,20 @@ define(function(require) {
 			},
 			onkeydown: function(evt) {
 				/** @overrides ../../Control.prototype.onkeyup */
-				var r = this.inherited(arguments);
-
+				var r = this.inherited(arguments), clearQ = !!this._Q;
+				
 				if(evt.ctrlKey === true) {
+					if(evt.altKey === true && evt.keyCode === 13) {
+						var values, sel = this.sel || [];
+						
+						if(evt.shiftKey === false) {
+							sel = sel.length > 1 ? sel : sel[0];
+						} else {
+							sel = this._nodes.console.qsa(":scope > .node").map(n => n._line._value);
+						}
+						console.log(sel);
+						this.print(sel);
+					}
 					if(evt.keyCode === 76) {
 						if(evt.shiftKey === true) {
 							
@@ -259,22 +270,44 @@ define(function(require) {
 					} else if(evt.keyCode === 75) {
 						this._nodes.console.qsa(".selected.node").map(_ => HE.removeClass(_, "selected"));
 					}
-				} else if(evt.keyCode === 38) {
-					if(this._history.index > 0) {
-						this._history.index--;
-						this._nodes.input.value = this._history[this._history.index];
+				} else if(evt.keyCode === 38 || evt.keyCode === 40) {
+					clearQ = false;
+					if(!this._Q) {
+						const v = this._nodes.input.value;
+						
+						this._Q = this._history.filter(s => !v || s.startsWith(v));
+						this._Q = this._Q.concat(this._history.filter(s => s.includes(v)));
+						
+						if(this._Q.length === 0) {
+							this._Q = [v];
+						}
+						this._Q.index = this._Q.length;
 					}
-					evt.preventDefault();
-				} else if(evt.keyCode === 40) {
-					if(this._history.index < this._history.length - 1) {
-						this._history.index++;
-						this._nodes.input.value = this._history[this._history.index];
+					
+					if(evt.keyCode === 38) {
+						if(this._Q.index > 0) {
+							this._Q.index--;
+							this._nodes.input.value = this._Q[this._Q.index];
+						}
+						evt.preventDefault();
+					} else if(evt.keyCode === 40) {
+						if(this._Q.index < this._Q.length - 1) {
+							this._Q.index++;
+							this._nodes.input.value = this._Q[this._Q.index];
+						}
+						evt.preventDefault();
 					}
-					evt.preventDefault();
-				} else if(evt.keyCode === 46) { 
+				}
+				
+				
+				if(evt.keyCode === 46) { 
 					this._nodes.console.qsa(".selected.node").map(_ => _.parentNode.removeChild(_));
 				} else {
 					// console.log(evt.keyCode);
+				}
+
+				if(clearQ) {				
+					delete this._Q;
 				}
 
 				return r;
