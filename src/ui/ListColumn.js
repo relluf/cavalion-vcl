@@ -146,7 +146,8 @@ define(function(require) {
 				try {
 					return this.inherited(arguments);
 				} finally {
-					if(visible !== this.isVisible()) {
+					if(visible !== this.isVisible()) { // hmmz, shouldn't this be done through showNode/hideNode() functions?
+						this._rule.style.setProperty("display", visible ? "none" : "", "important");
 						this.propertyChanged("visible", this.isVisible());
 					}
 				}
@@ -265,6 +266,11 @@ define(function(require) {
 				}
 			},
 			autoWidth: function(value, cell) {
+				if(value === List.space) {
+					// console.log("adjusted")
+					value = "XXXX";
+				}
+				
 				if(arguments.length === 0) {
 					value = this._autoWidthValue;
 					this._autoWidthValue = {length:-1};
@@ -275,14 +281,16 @@ define(function(require) {
 				}
 			},
 			getAttributeClassName: function() {
-				return this._attribute.
-					replace(/\#/g, "-").
-					replace(/\./g, "-").
-					replace(/\(/g, "-").
-					replace(/\)/g, "-").
-					replace(/ /g, "-").
-					replace(/-$/g, "").
-					replace(/^$/g, "dot");
+				return Array.from(this._attribute).map(char => /[\w-]/.test(char) ? char : '_').join('');
+				
+				// return this._attribute.
+				// 	replace(/\#/g, "-").
+				// 	replace(/\./g, "-").
+				// 	replace(/\(/g, "-").
+				// 	replace(/\)/g, "-").
+				// 	replace(/ /g, "-").
+				// 	replace(/-$/g, "").
+				// 	replace(/^$/g, "dot");
 			},
 			getCellClassName: function() {
 				var r = [this._rule.selectorText.substring(1)];
