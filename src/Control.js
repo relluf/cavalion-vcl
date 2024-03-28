@@ -556,7 +556,27 @@ define(function(require) {
 				return new Dragger(this);
 			},
 			getInnerHtml: function() {
-				return this._content || (this._action ? this._action.getContent(this) : "");
+
+				const parse = (str) => {
+					const v = (function() { return this.vars.apply(this, arguments); }).bind(this);
+					const qs = this.qs.bind(this);
+					const qsa = this.qsa.bind(this);
+					const up = this.up.bind(this);
+					const ud = this.ud.bind(this);
+					const udr = this.udr.bind(this);
+					
+					// Replace the backticked expressions with their evaluations
+					return str.replace(/`([^`]+)`/g, (match, expression) => {
+						try {
+							return eval(js.sf("`%s`", expression));
+						} catch (error) {
+							console.error('Error evaluating expression:', expression);
+							return match; // Return the original match as a fallback
+						}
+					});					
+				};
+
+				return parse(this._content || (this._action ? this._action.getContent(this) : ""));
 			},
 			render: function() {
 				if(this.isVisible()) {
@@ -574,9 +594,13 @@ define(function(require) {
 				// As far as know the same applies...
 				this.layoutChanged();
 			},
-			scrollIntoView: function() {
+			scrollIntoView: function(options) {
 			/**  Makes sure that the calling node is visible by scrolling it into view when necessary. */
-				this.nodeNeeded().scrollIntoView();
+				if(arguments.length === 0) {
+					return this.nodeNeeded().scrollIntoView();
+				}
+				
+				return this.nodeNeeded().scrollIntoView(options);
 			},
 
 			documentToClient: function(x, y) {
@@ -1855,7 +1879,6 @@ this._updateCalls = this._updateCalls || 0; this._updateCalls++;
 		},
 		statics: {
 			updateCallCount: 0,
-
 			focused: null,
 			
 			tree: (root) => root.getControls().reduce((r, c) => {
@@ -1863,7 +1886,6 @@ this._updateCalls = this._updateCalls || 0; this._updateCalls++;
 					return r;	
 				}, Object.create(root, { hashCode: { value: () => ";-)" } })),
 			
-
 			findByNode: function(node) {
 				while(node !== null && node[EventDispatcher.elementKey] === undefined) {
 					node = node.parentNode || null; // IE
@@ -1924,7 +1946,40 @@ this._updateCalls = this._updateCalls || 0; this._updateCalls++;
 					proto["@className"] = className;
 				}
 				return className;
+			},
+			
+			updateAll(all, cb, track) {
+				
+				all = all.filter(c => c.isVisible());
+				
+				// track = track || (window.track = []);
+				
+				return new Promise((resolve, reject) => {
+					const total = all.length;
+					const done = () => resolve(cb ? cb() : total);
+					
+					if (total === 0) done();
+
+					let completed = 0;
+					all.forEach((obj) => {
+						
+						// track && track.push(obj);
+						
+						obj.update(() => {
+							
+							// if(track) track.splice(track.indexOf(obj), 1);
+							
+							completed++;
+							if (completed === total) {
+								done();
+							}
+						});
+					});
+				});
+
 			}
+			
+			
 		},
 		properties: {
 
