@@ -21,6 +21,15 @@ define(function(require) {
 	// TODO centralize/utilize :-p
 	const capitalize = (s) => String.format("%s%s", s.charAt(0).toUpperCase(),
 			s.substring(1));
+			
+	const workaroundColumnAlignment = (list) => {
+		const f = _ => list._columns.forEach(c => 
+			c._rule.style.setProperty("display", 
+				c.isVisible() ? "" : "none", "important"));
+				
+		list.setTimeout("workaround-column-alignment", f, 500);
+	};
+
 
 	var List = {
 		inherits: Panel,
@@ -228,6 +237,8 @@ define(function(require) {
 					
 					me.render_();
 				}
+
+workaroundColumnAlignment(this);
 
 				return this.inherited(arguments);
 			},
@@ -462,6 +473,8 @@ define(function(require) {
 					cell.innerHTML = value;
 				}
 				column.autoWidth(cell.textContent, cell);
+				
+workaroundColumnAlignment(this);
 			},
 			isDate: function(value) {
 				return (value instanceof Date) || (typeof value === "string" && 
@@ -689,6 +702,7 @@ define(function(require) {
 						var attrs = this._source.getAttributeNames();
 						var capit = this.vars("autoColumns.capitalize", 0, true);
 						var shuffle = this.vars("autoColumns.attributeInFront", 0, true);
+						var onInit = this.vars("autoColumns.onColumnInit");
 
 						for(var i = 0; i < attrs.length; ++i) {
 							var column = this.getColumnByAttribute(attrs[i]);
@@ -710,18 +724,19 @@ define(function(require) {
 								}
 								column.setContent(s);
 								column.setList(this);
+								onInit && onInit.apply(this, [column]);
 							}
 							attributes.push(attrs[i]);
 						}
 
 						// TODO `#CVLN-20201004-1` deal with a lot of columns
-						for(i = 0; i < columns.length; ++i) {
-							if(columns[i]._custom === false && (
-									columns[i]._attribute === "" ||
-									attributes.indexOf(columns[i]._attribute) === -1)) {
-								columns[i].destroy();
-							}
-						}
+						// for(i = 0; i < columns.length; ++i) {
+						// 	if(columns[i]._custom === false && (
+						// 			columns[i]._attribute === "" ||
+						// 			attributes.indexOf(columns[i]._attribute) === -1)) {
+						// 		columns[i].destroy();
+						// 	}
+						// }
 
 						if(changed === true) {
 							this.notifyEvent("columnsChanged");
@@ -910,6 +925,9 @@ define(function(require) {
 						if(numeric === true) {
 							if(isNaN(i1 = parseFloat(i1))) return dir * 1;
 							if(isNaN(i2 = parseFloat(i2))) return dir * -1;
+						} else if(typeof i1 === "object") {
+							i1 = js.nameOf(i1);
+							i2 = js.nameOf(i2);
 						}
 	
 						return (i1 < i2 ? -1 : 1) * dir;
@@ -990,6 +1008,9 @@ define(function(require) {
 				editorInfo: {
 					defaultValue: "(function(data) {})"
 				}
+			},
+			"onColumnsChanged": {
+				type: Class.Type.EVENT
 			},
 			"onColumnDropped": {
 				type: Class.Type.EVENT
