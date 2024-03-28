@@ -220,7 +220,7 @@ define(function(require) {
 				if(this._orderBy !== "") {
 					criteria.orderBy = this._orderBy.split(",");
 				}
-				
+
 				if(this.hasOwnProperty("_onGetRequestCriteria")) {
 					criteria = this.fire("onGetRequestCriteria", [criteria, page]);
 				}
@@ -453,6 +453,17 @@ define(function(require) {
 						return res;
 					}.bind(this));
 				} else {
+					if(entity && typeof entity === "object") {
+						refresh = entity.refresh || refresh;
+						count = entity.count || count;
+						orderBy = entity.orderBy || orderBy;
+						having = entity.having || having;
+						groupBy = entity.groupBy || groupBy;
+						where = entity.where || where;
+						attributes = entity.attributes || attributes;
+						entity = entity.entity || entity;
+					}
+					
 					this._attributes = attributes;
 					this._entity = entity;
 					if(where) {
