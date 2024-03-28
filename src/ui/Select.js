@@ -53,6 +53,12 @@ define(function(require) {
 				var options = this.nodeNeeded().options;
 				return (options[this._node.selectedIndex] || "").textContent;
 			},
+			getSelectedOption: function() {
+				return this.getOption();
+			},
+			getSelectedValue: function() {
+				return this.getValue();
+			},
 			hasValue: function() { return !!this.getValue(); },
 			getValue: function() {
 				if(this.isLoading()) {
@@ -63,10 +69,14 @@ define(function(require) {
 			setValue: function(value) {
 				if(this.isLoading()) {
 					this._value = value;
-				} else {
+				} else if(this._value !== value) {
 					this.nodeNeeded().value = (this._value = value);
 					this.dispatch("change");
 				}
+			},
+			getOption: function() {
+				const value = this.getValue();
+				return this.getOptions().find(o => o.value === value);
 			},
 			getOptions: function() { return this._options; },
 			setOptions: function(value) {
