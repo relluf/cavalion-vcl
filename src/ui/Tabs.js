@@ -212,16 +212,21 @@ define(function(require) {
 	    	makeVisible: function(control) {
 	    		if(control) {
 		    		/*- this assumes horizontal scrolling only */
-		    	    control.scrollIntoView(); 
+		    		if(control.getIndex() === 0) {
+		    			control.scrollIntoView();
+			    		this.nodeNeeded().scrollTop = 0; // HACK
+			    	    this.nextTick("position-scrollbar", function() {
+				    		if(this._node.scrollLeft < 100) {
+				    			this._node.scrollLeft = 0;
+				    		} else {
+				    			this._node.scrollLeft += 100;
+				    		}
+			    	    }.bind(this));
+		    		} else {
+		    	    	control.scrollIntoView({behavior: "smooth", block: /*control.getIndex() === 0 ? "start" :*/ "end"}); 
+		    		}
 		    	    // HACK
-		    		this.nodeNeeded().scrollTop = 0;
-		    	    this.nextTick("position-scrollbar", function() {
-			    		if(this._node.scrollLeft < 100) {
-			    			this._node.scrollLeft = 0;
-			    		} else {
-			    			this._node.scrollLeft += 100;
-			    		}
-		    	    }.bind(this));
+		    		// this.nodeNeeded().scrollTop = 0;
 	    		} else {
 					return this.inherited(arguments);
 	    		}
