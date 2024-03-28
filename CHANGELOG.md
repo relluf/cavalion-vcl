@@ -1,3 +1,31 @@
+### `2024/03/28` - 1.1.80
+
+* **Component**: Enhances querying attributes: now supports use of regexp, eg: app.qs("*[attr=/value/]")
+* **Control**:
+	* Itroduces dynamic content property 
+	* Introduces Control.updateAll() 
+	* Adds support for options parameter for scrollIntoView()
+* **Query**: Adds support for one-parameter-object to setAll()
+* **Ace**: Adds support for marking and patching diffs
+* **Console**: 
+	* Improves CSS styles
+	* Adds support for (shift+)ctrl+alt+Enter, printing and logging selection 
+	* Aadds support for filtering history 
+* **Select**: Introduces getSelectedOption and getSelectedValue, and getOption
+* **Tabs**: Improves makeVisible
+* **ListColumn**: 
+	* Updates display property according to setVisible() 
+	* Improves getAttributeClassName() and autoWidth-feature 
+* **List**:
+	* Adds workaroundColumnAlignment 
+	* Adds onColumnInit callback for autoColumns 
+	* Adds onColumnsChanged event
+
+### Prototypes
+
+* **App.v1**: Hacking CSS - makes Hovers closing X hardly visible, appears when hovered
+
+
 ### `2023/10/06` - 1.1.79
 
 * **List**: Introduces options for behaviour of auto creating columns updates sorting updates auto-widthing updates the docs
