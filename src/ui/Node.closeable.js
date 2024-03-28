@@ -23,14 +23,14 @@ define(function(require) {
 			_onClose: null,
 
 			loaded: function() {
-					var has = this.hasClass("closeable");
-					var value = this._closeable;
-					if(value && !has) {
-						this.addClass("closeable");
-					} else if(!value && has) {
-						this.removeClass("closeable");
-					}
-					this.setState("invalidated");
+				var has = this.hasClass("closeable");
+				var value = this._closeable;
+				if(value && !has) {
+					this.addClass("closeable");
+				} else if(!value && has) {
+					this.removeClass("closeable");
+				}
+				this.setState("invalidated");
 				return this.inherited(arguments);
 			},
 			render: function() {
@@ -77,5 +77,4 @@ define(function(require) {
 
 
 	}));
-
 });

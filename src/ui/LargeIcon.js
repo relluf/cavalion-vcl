@@ -36,22 +36,19 @@ define(function(require) {
 				}
 			},
 
-			/**
-			 * @overrides Control.prototype
-			 */
+			/** @overrides Control.prototype */
 			_width: 300,
 			_height: 150,
 
 			_allowHtmlMarkup: true,
-
 			_caption: "",
 			_text: "",
 			_image: "",
 
-			/**
-			 * @overrides Control.prototype._innerHtml
-			 */
 			getInnerHtml: function() {
+				/**
+				 * @overrides Control.prototype._innerHtml
+				 */
 				if(this._allowHtmlMarkup === true) {
 					return String.format(
 						"<div class=\"padding\">" +
@@ -76,36 +73,32 @@ define(function(require) {
 						this._image, this._caption, this._text);
 				}
 			},
-
-			/**
-			 * @overrides Control.prototype.initializeNodes
-			 */
 			initializeNodes: function() {
+				/**
+				 * @overrides Control.prototype.initializeNodes
+				 */
 				this.inherited(arguments);
 
 				this._nodes.image = this.getChildNode(0, 0, 0);
 				this._nodes.caption = this.getChildNode(0, 1);
 				this._nodes.text = this.getChildNode(0, 2);
 			},
-
-			/**
-			 * @overrides Control.prototype.isHoverable
-			 */
 			isHoverable: function(node) {
+				/**
+				 * @overrides Control.prototype.isHoverable
+				 */
 				return node !== this._node;
 			},
-
-			/**
-			 *
-			 */
 			getCaption: function() {
+				/**
+				 *
+				 */
 				return this._caption;
 			},
-
-			/**
-			 *
-			 */
 			setCaption: function(value) {
+				/**
+				 *
+				 */
 				if(this._caption !== value) {
 					this._caption = value;
 					if(this._nodes !== null) {
@@ -114,18 +107,16 @@ define(function(require) {
 					}
 				}
 			},
-
-			/**
-			 *
-			 */
 			getImage: function() {
+				/**
+				 *
+				 */
 				return this._image;
 			},
-
-			/**
-			 *
-			 */
 			setImage: function(value) {
+				/**
+				 *
+				 */
 				if(this._image !== value) {
 					this._image = value;
 					if(this._nodes !== null) {
@@ -134,18 +125,16 @@ define(function(require) {
 					}
 				}
 			},
-
-			/**
-			 *
-			 */
 			getText: function() {
+				/**
+				 *
+				 */
 				return this._text;
 			},
-
-			/**
-			 *
-			 */
 			setText: function(value) {
+				/**
+				 *
+				 */
 				if(this._text !== value) {
 					this._text = value;
 					if(this._nodes !== null) {
