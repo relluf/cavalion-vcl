@@ -267,7 +267,37 @@ define(function(require) {
 			splice: function() {
 				this.assertArray();
 				try {
-					return window.Array.prototype.splice.apply(this._array, arguments);
+					// return window.Array.prototype.splice.apply(this._array, 
+					// 	this._array.length === 0 ?
+					// 		[0, 0].concat(js.copy_args(arguments).slice(2)) :
+					// 		arguments);
+
+				    const MAX_SEGMENT_SIZE = 15000;
+				
+				    // Voorbereiding van argumenten en controleer de conditie
+				    let args;
+				    if (this._array.length === 0) {
+				        args = [0, 0, ...js.copy_args(arguments).slice(2)];
+				    } else {
+				        args = window.Array.prototype.slice.call(arguments);
+				    }
+				
+				    // Het eerste deel van de argumenten dat niet de daadwerkelijke elementen van res bevat
+				    const initialArgs = args.slice(0, 2);
+				    // De elementen van res die toegevoegd moeten worden
+				    const elementsToAdd = args.slice(2);
+				
+				    // Voer de splice in segmenten uit als het aantal elementen groter is dan MAX_SEGMENT_SIZE
+				    while (elementsToAdd.length > 0) {
+				        // Bepaal het huidige segment
+				        const currentSegment = elementsToAdd.splice(0, MAX_SEGMENT_SIZE);
+				        // Voer splice uit voor het huidige segment
+				        window.Array.prototype.splice.apply(this._array, [...initialArgs, ...currentSegment]);
+				        // Update initialArgs voor volgende iteraties: stel startIndex bij en reset deleteCount naar 0
+				        initialArgs[0] += MAX_SEGMENT_SIZE; // Verplaats de startindex
+				        initialArgs[1] = 0; // Geen elementen te verwijderen in volgende segmenten
+				    }
+
 				} finally {
 					this.arrayChanged();
 				}
