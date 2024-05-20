@@ -275,9 +275,9 @@ define(function(require) {
 					if(!this._Q) {
 						const v = this._nodes.input.value;
 						
-						this._Q = this._history.filter(s => !v || s.startsWith(v));
-						this._Q = this._Q.concat(this._history.filter(s => s.includes(v)));
-						
+						this._Q = this._history.filter((s, i, a) => (!i || a[i - 1] !== s) && (!v || s.startsWith(v)));
+						this._Q = this._Q.concat(this._history.filter(s => s.includes(v))).filter(Array.fn.unique);
+
 						if(this._Q.length === 0) {
 							this._Q = [v];
 						}
