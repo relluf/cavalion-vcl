@@ -49,25 +49,25 @@ define(function(require) {
 				this._selection = [];
 			},
 
-			"@css": {
+			'@css': {
 				overflow: "hidden",
-				"overflow-x": "auto",
-				"&.busy": {
-					"background": "url(/shared/vcl/images/loading.gif) no-repeat 4px 32px",
-					".body": {
+				'overflow-x': "auto",
+				'&.busy': {
+					'background': "url(/shared/vcl/images/loading.gif) no-repeat 4px 32px",
+					'.body': {
 						visibility: "hidden"
 					}
 				},
-				".body": {
+				'.body': {
 					overflow: "auto",
 					position: "absolute",
 					left: "0",
 					top: "0px",
 					right: "0",
 					bottom: "0",
-					"line-height": "13px",
-//					"background-color": "white",
-					".scroll": {
+					'line-height': "13px",
+					// 'background-color': "white",
+					'.scroll': {
 						position: "absolute",
 						width: "1px",
 						height: "1px",
@@ -75,7 +75,9 @@ define(function(require) {
 						'z-index': 2
 					}
 				},
-				"&.header-invisible .{./ListHeader}": "height:0;"
+				'&.header-invisible .{./ListHeader}': "height:0;",
+				'.{./ListColumn}': "transition: width 400ms, max-width 400ms",
+				'.ListCell': "transition: width 400ms, max-width 400ms"
 			},
 			MAX_AUTOCOLUMNS: 50,
 
