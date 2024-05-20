@@ -221,7 +221,7 @@ define(function (require) {
 				var cs = this.getComputedStyle();
 				var w = parseFloat(cs.width);
 				var h = parseFloat(cs.height);
-				var f = this._zoom < 1 ? -1 : 1;
+				var f = (this._zoom < 1 ? -1 : 1) * this.getZoom(true);
 				var cr;
 				
 				if(this._zoom < 1) {
@@ -845,6 +845,12 @@ define(function (require) {
             },
             isHeightStored: function () {
                 return this._align !== "left" && this._align !== "right" && this._align !== "client" && this._autoSize !== "height" && this._autoSize !== "both";
+            },
+            getZoom: function(parents) {
+            	if(parents && this._parent !== null) {
+            		return this._zoom * this._parent.getZoom(parents);
+            	}
+            	return this._zoom;
             },
             setZoom: function(f) {
             	if(this._zoom !== f) {
