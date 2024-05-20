@@ -80,8 +80,8 @@ var cl = console.log;
 
         var down;
         // FIXME overriding dispatcher, Application.prototype.dispatchEvent(...)
-        this.app()._dispatcher.override({
-            dispatch: function (component, name, evt) {
+    	this.app()._dispatcher.override({
+        	dispatch: function (component, name, evt) {
                 if(evt.keyCode === 27 /* Escape */) {
                     if (sizer._control !== null) {
                         if (name === "keydown" && evt.ctrlKey === false) {
