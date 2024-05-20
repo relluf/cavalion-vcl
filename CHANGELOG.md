@@ -1,3 +1,12 @@
+### `2024/05/20` - 1.1.81
+
+* **Panel**:
+	- Refines zoom calculations to recursively retrieve zoom factor from parent elements 
+* **ListColumn**:
+	- Animates the automatic adjustment of column width
+* **data/Array**:
+	- Enhances/optimizes prototype.**splice()** in order to avoid "_RangeError: Maximum call stack size exceeded_"-exception while adding "100s of 1000s" of items
+
 ### `2024/03/28` - 1.1.80
 
 * **Component**: Enhances querying attributes: now supports use of regexp, eg: app.qs("*[attr=/value/]")
