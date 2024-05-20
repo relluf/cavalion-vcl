@@ -494,11 +494,6 @@ define(function (require) {
             },
             
             vars: function(key, value) {
-            	/*- 
-            		this.vars("control") 
-            		this.vars("resource")
-            		this.vars(["resource", true])
-            	*/
             	if(arguments.length === 0) { 
             		return this.getVars();
             	}
@@ -506,7 +501,6 @@ define(function (require) {
             		return this.setVar("" + key, value);
             	}
             	if(arguments.length === 3) {
-            		value = arguments[3];
             		return this.getVar.apply(this, arguments);
             	}
             	if(key instanceof Array) {
@@ -561,7 +555,9 @@ define(function (require) {
                 	if(fallback_to_owner === true && this._owner !== null) {
                     	r = this._owner.getVar(namePath, true, defaultValue);
                 	} else if(arguments.length === 3) {
-                		r = defaultValue;
+                		if((r = defaultValue) !== undefined) {
+                			this.setVar(namePath, defaultValue);
+                		}
                 	}
                 }
                 return r;
