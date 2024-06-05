@@ -113,7 +113,7 @@ define(function(require) {
 							}
 						});
 					}
-				});
+				}, this);
 
 				return keys;
 			},
