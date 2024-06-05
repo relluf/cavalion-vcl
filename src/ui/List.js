@@ -362,7 +362,11 @@ workaroundColumnAlignment(this);
 				return r;
 			},
 
-			notifyEvent: function(event, data) {},
+			notifyEvent: function(event, data) {
+				if(event === "columnsChanged") {
+					this.fire("onColumnsChanged", data)
+				}
+			},
 			render_: function(bodyUpdateRows/*TODO*/) {
 				if(bodyUpdateRows) return this._body.updateRows();
 				
@@ -727,6 +731,7 @@ workaroundColumnAlignment(this);
 								column.setContent(s);
 								column.setList(this);
 								onInit && onInit.apply(this, [column]);
+								changed = true;
 							}
 							attributes.push(attrs[i]);
 						}
@@ -741,7 +746,7 @@ workaroundColumnAlignment(this);
 						// }
 
 						if(changed === true) {
-							this.notifyEvent("columnsChanged");
+							this.notifyEvent("columnsChanged", [], true);
 						}
 					} else {
 						this.destroyColumns();
