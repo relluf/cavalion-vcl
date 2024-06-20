@@ -8,6 +8,8 @@ define(function(require) {
 	var CssRules = 			require("./CssRules");
 
 	var instances = [];
+	
+
 
 	return (Application = Application(require, {
 		inherits: Component,
@@ -26,7 +28,64 @@ define(function(require) {
 			writeStorage: function(key, value, callback, errback) {
 				var app = this.get();
 				return app.writeStorage.apply(app, arguments);
+			},
+			
+			updateFavicons(htmldoc, basePath, sizes) {
+			    const head = htmldoc.head;
+			    const faviconTypes = {
+			        "16x16": "image/png",
+			        "32x32": "image/png",
+			        "192x192": "image/png",
+			        "512x512": "image/png",
+			        "ico": "image/x-icon",
+			        "apple-touch-icon": "image/png"
+			    };
+			
+			    // Ensure the basePath is an absolute URL relative to the htmldoc's location
+			    const absolutePath = new URL(basePath, htmldoc.location).href;
+			
+			    // Keep track of existing links to remove those not needed anymore
+			    const existingLinks = Array.from(htmldoc.querySelectorAll('link[rel="icon"], link[rel="apple-touch-icon"], link[rel="manifest"]'));
+			
+			    // Create or update favicon links
+			    sizes.forEach(size => {
+			        let type = faviconTypes[size] || "image/png";
+			        let rel = size === "ico" ? "icon" : (size === "apple-touch-icon" ? "apple-touch-icon" : "icon");
+			        let href = `${absolutePath}/favicon${size === "ico" ? "" : `-${size}`}.${size === "ico" ? "ico" : "png"}`;
+			        let link = htmldoc.querySelector(`link[rel="${rel}"][sizes="${size}"]`);
+			
+			        if (!link) {
+			            link = htmldoc.createElement("link");
+			            link.rel = rel;
+			            if (size !== "ico" && size !== "apple-touch-icon") {
+			                link.sizes = size;
+			            }
+			            link.type = type;
+			            link.href = href;
+			            head.appendChild(link);
+			        } else {
+			            link.href = href;
+			        }
+			
+			        // Remove the link from the existingLinks array as it is being reused
+			        existingLinks.splice(existingLinks.indexOf(link), 1);
+			    });
+			
+			    // Create or update manifest link
+			    let manifestLink = htmldoc.querySelector('link[rel="manifest"]');
+			    if (!manifestLink) {
+			        manifestLink = htmldoc.createElement("link");
+			        manifestLink.rel = "manifest";
+			        manifestLink.href = `${absolutePath}/site.webmanifest`;
+			        head.appendChild(manifestLink);
+			    } else {
+			        manifestLink.href = `${absolutePath}/site.webmanifest`;
+			    }
+			
+			    // Remove all remaining existing links that were not reused
+			    existingLinks.forEach(link => head.removeChild(link));
 			}
+
 		},
 		prototype: {
 			_dispatcher: null,
@@ -252,7 +311,7 @@ define(function(require) {
                         document.querySelector("html head").appendChild(link);
                     }
                     link.setAttribute("href", value);
-                    this._icon = value;
+                    // Application.updateFavicons(document, this._icon = value, ["16x16", "32x32", "192x192", "512x512", "ico", "apple-touch-icon"]);
                 }
 			},
 			getCssRules: function() {

@@ -43,7 +43,7 @@ define(function(require) {
 				var html = [];
 
 				for(var i = 0; i < columns.length; ++i) {
-					html.push(String.format(
+					html.push(js.sf(
 						"<div style=\"height: %dpx;\" class=\"%s %s\">" +
 	//						"<div style='float: left; padding: 5px;'></div>" +
 						"</div>",

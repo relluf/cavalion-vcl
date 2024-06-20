@@ -19,7 +19,7 @@ define(function(require) {
 	// require("stylesheet!./List.less");
 	
 	// TODO centralize/utilize :-p
-	const capitalize = (s) => String.format("%s%s", s.charAt(0).toUpperCase(),
+	const capitalize = (s) => js.sf("%s%s", s.charAt(0).toUpperCase(),
 			s.substring(1));
 			
 	const workaroundColumnAlignment = (list) => {
@@ -203,8 +203,8 @@ define(function(require) {
 					var bw = thisObj.getBodyWidth();
 					var bh = thisObj.getBodyHeight();
 					var s = thisObj._nodes.scroll.style;
-					s.left = String.format("%dpx", bw);
-					s.top = String.format("%dpx", bh + rect.top);
+					s.left = js.sf("%dpx", bw);
+					s.top = js.sf("%dpx", bh + rect.top);
 
 					thisObj._body.setBounds(rect.left, rect.top - 3, undefined, undefined, bw, bh);
 				}];
@@ -431,7 +431,7 @@ workaroundColumnAlignment(this);
 					value = "-";
 				} else if(column._wantsNullValues || (value !== null && value !== undefined)) {
 					if(column._displayFormat !== "") {
-						value = String.format(column._displayFormat, value);
+						value = js.sf(column._displayFormat, value);
 					}
 					if(column._onGetValue !== null) {
 						value = column.fire("onGetValue", [
@@ -489,11 +489,11 @@ workaroundColumnAlignment(this);
 			formatDate: function(value, opts) {
 				if(!(value instanceof Date)) value = new Date(value);
 				if(opts && opts.utc) {
-					return String.format("%d/%02d/%02d %02d:%02d", value.getUTCFullYear(), value.getUTCMonth() + 1,
+					return js.sf("%d/%02d/%02d %02d:%02d", value.getUTCFullYear(), value.getUTCMonth() + 1,
 							value.getUTCDate(), value.getUTCHours(), value.getUTCMinutes());
 				}
 				
-				return String.format("%d/%02d/%02d %02d:%02d", value.getFullYear(), value.getMonth() + 1,
+				return js.sf("%d/%02d/%02d %02d:%02d", value.getFullYear(), value.getMonth() + 1,
 						value.getDate(), value.getHours(), value.getMinutes());
 			},
 
@@ -869,7 +869,7 @@ workaroundColumnAlignment(this);
 				var value = this._source.getAttributeValue(column._attribute, row, true);
 				if(column._wantsNullValues || (value !== null && value !== undefined)) {
 					if(column._displayFormat !== "") {
-						value = String.format(column._displayFormat, value);
+						value = js.sf(column._displayFormat, value);
 					}
 					if(column._onGetValue !== null) {
 						value = column.fire("onGetValue", [value, row, this._source]);

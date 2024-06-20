@@ -552,6 +552,15 @@ define(function(require) {
 			},
 			finalizeNodes: function() {},
 
+			qsn: function() {
+				const node = this._nodeNeeded();
+				return node.qs.apply(node, arguments);
+			},
+			qsna: function() {
+				const node = this._nodeNeeded();
+				return node.qsa.apply(node, arguments);
+			},
+
 			createDragger: function() {
 				return new Dragger(this);
 			},
