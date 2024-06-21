@@ -397,56 +397,56 @@ var Handlers = {
     	onDispatchChildEvent: Handlers["client.onDispatchChildEvent"] 
     }],
     [("#tree"), { 
-    	css: {
-    	    "margin": "8px",
-    		"padding-left": "16px",
-    		".{./Node}": {
-		        "&.loading": {
-		        	">.selection": {
-			        	"background-image": "url(/shared/vcl/images/loading.gif)",
-			        	"background-repeat": "no-repeat",
-			        	"background-position": "10px 5px",
-		        		// "opacity": "0.5"
-		        	},
-		        	"&.selected >.text": {
-		        		"font-weight": "normal"
-		        	}
-		        },
-    			">.text": {
-                	"&:focus": {
-                		outline: "none"
-                	},
-    				// "padding-top": "2px"
-    			},
-    			">.selection": {
-    				//height: "20px"
-    				color: "red"
-    			},
-    			"&.disabled": {
-    		        cursor: "default",
-    				color: "silver"
-    			},
-    			"&.selected": {
-    				">.selection": {
-//    	    			    "background-color": "#f0f0f0"
-//    	    			    "background-color": "silver"
-    				},
-    				">.icon": {
-//        					color: "inherit"
-    				},
-                    ">.text": {
-	    				"font-weight": "bold",
-//    	    			    "background-color": "#f0f0f0",
-//    	    			    color: "inherit"
-    					"&:hover": {
-    						">.close": {
-            					visibility: "inherit",
-    						}
-    					}
-                    }
-    			}
-			}
-    	},
+//     	css: {
+//     	    "margin": "8px",
+//     		"padding-left": "16px",
+//     		".{./Node}": {
+// 		        "&.loading": {
+// 		        	">.selection": {
+// 			        	"background-image": "url(/shared/vcl/images/loading.gif)",
+// 			        	"background-repeat": "no-repeat",
+// 			        	"background-position": "10px 5px",
+// 		        		// "opacity": "0.5"
+// 		        	},
+// 		        	"&.selected >.text": {
+// 		        		"font-weight": "normal"
+// 		        	}
+// 		        },
+//     			">.text": {
+//                 	"&:focus": {
+//                 		outline: "none"
+//                 	},
+//     				// "padding-top": "2px"
+//     			},
+//     			">.selection": {
+//     				//height: "20px"
+//     				color: "red"
+//     			},
+//     			"&.disabled": {
+//     		        cursor: "default",
+//     				color: "silver"
+//     			},
+//     			"&.selected": {
+//     				">.selection": {
+// //    	    			    "background-color": "#f0f0f0"
+// //    	    			    "background-color": "silver"
+//     				},
+//     				">.icon": {
+// //        					color: "inherit"
+//     				},
+//                     ">.text": {
+// 	    				"font-weight": "bold",
+// //    	    			    "background-color": "#f0f0f0",
+// //    	    			    color: "inherit"
+//     					"&:hover": {
+//     						">.close": {
+//             					visibility: "inherit",
+//     						}
+//     					}
+//                     }
+//     			}
+// 			}
+//     	},
     	onNodesNeeded: Handlers["tree.onNodesNeeded"],
     	onSelectionChange: Handlers["tree.onSelectionChange"]
     }]
