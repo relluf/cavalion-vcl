@@ -18,7 +18,7 @@ var Node = require("vcl/ui/Node");
 	}
 }, [
     [("#menubar"), { visible: false }],
-    [("#client"), { css: "border-left: none;"}],
+    [("#client"), { css: "border-left: none;" }],
 	[("#left"), {}, [
 		[("vcl/ui/Tree"), "tree", {
 	    	onSelectionChange: function(selection) {
