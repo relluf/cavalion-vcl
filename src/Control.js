@@ -553,11 +553,11 @@ define(function(require) {
 			finalizeNodes: function() {},
 
 			qsn: function() {
-				const node = this._nodeNeeded();
+				const node = this.nodeNeeded();
 				return node.qs.apply(node, arguments);
 			},
 			qsna: function() {
-				const node = this._nodeNeeded();
+				const node = this.nodeNeeded();
 				return node.qsa.apply(node, arguments);
 			},
 
@@ -1662,11 +1662,7 @@ this._updateCalls = this._updateCalls || 0; this._updateCalls++;
 					if(this._action !== null) {
 						this._actionListeners = this._action.on({
 							"change"(evt) { 
-								if(me._node) {
-									if(evt && evt.what.includes && evt.what.includes("content")) {
-										me._node.innerHTML = me.getInnerHtml();
-									}
-								}
+								me.reflectActionEvent(evt);
 								me.update(); },
 							"destroy"() { me.setAction(null); }
 						});
@@ -1674,6 +1670,13 @@ this._updateCalls = this._updateCalls || 0; this._updateCalls++;
 
 					if(destroying !== true) {
 						this.update();
+					}
+				}
+			},
+			reflectActionEvent(evt) {
+				if(this._node) {
+					if(evt && evt.what.includes && evt.what.includes("content")) {
+						this._node.innerHTML = this.getInnerHtml();
 					}
 				}
 			},

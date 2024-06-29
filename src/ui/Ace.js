@@ -133,7 +133,8 @@ function(require, Ace, ace, DefaultCommands, Panel, Type, Text) {
 			setMode: function (mode) {
 				this.getEditor().session.setMode("ace/mode/" + mode);
 			},
-			
+
+			reflectActionEvent(evt) {},
 			getDiffs: function(originalText) {
 				var dmp = new Text.dmp();
 				var editor = this.getEditor();
