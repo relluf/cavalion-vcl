@@ -16,57 +16,57 @@ var Component = require("vcl/Component");
 [["ui/Form"], {
     css: {
     	// TODO refactor to higher level (one inmem-css-decl please)
-		"#tabs": {
-	        "padding-top": "2px",
-	        "margin-left": "32px",
-	        ".{./Tab}": {
-	            display: "inline-block",
-	            border: "1px solid transparent",
-	            "border-top-left-radius": "3px",
-	            "border-top-right-radius": "3px",
-	            "border-bottom": "none",
-	            padding: "3px 8px 2px 8px",
-	            // "margin-left": "3px",
-	            // "margin-right": "3px",
-	            cursor: "pointer",
-	            "background-color": "#f0f0f0",
-	            "border-color": "gray",
-	            color: "gray",
-	            "vertical-align": "bottom",
-	            "&:hover": {
-	            	// "padding-top": "4px",
-	            	color: "black",
-	                padding: "3px 8px 3px 8px",
-	            	"margin-top": "0"
-	            },
-	            "&.selected": {
-	            	// "padding-top": "4px",
-	                "background-color": "#fcfcfc",
-	                "border-color": "gray",
-	            	"margin-top": "0",
-	                padding: "3px 8px 3px 8px",
-	                color: "black"
-	            },
-	            "&.disabled": {
-	                cursor: "default",
-	                color: "silver"
-	            },
-	            ".hidden": {
-	                display: "none"
-	            }
-	        },
-	        "&.bottom": {
-	            "background-color": "#dfdfdf",
-	            "border-top": "1px solid #a3a3a3",
-	            "padding-top": "0px",
-	            "padding-bottom": "1px",
-	            ".{./Tab}": {
-	                border: "1px solid transparent",
-	                "border-top": "none"
-	            }
-	        }
-		},
 		"#top": {
+			"#tabs": {
+		        "padding-top": "2px",
+		        "margin-left": "32px",
+		        ".{./Tab}": {
+		            display: "inline-block",
+		            border: "1px solid transparent",
+		            "border-top-left-radius": "3px",
+		            "border-top-right-radius": "3px",
+		            "border-bottom": "none",
+		            padding: "3px 8px 2px 8px",
+		            // "margin-left": "3px",
+		            // "margin-right": "3px",
+		            cursor: "pointer",
+		            "background-color": "#f0f0f0",
+		            "border-color": "gray",
+		            color: "gray",
+		            "vertical-align": "bottom",
+		            "&:hover": {
+		            	// "padding-top": "4px",
+		            	color: "black",
+		                // padding: "3px 8px 3px 8px",
+		            	// "margin-top": "0"
+		            },
+		            "&.selected": {
+		            	// "padding-top": "4px",
+		                "background-color": "#fcfcfc",
+		                "border-color": "gray",
+		            	"margin-top": "0",
+		                padding: "3px 8px 3px 8px",
+		                color: "black"
+		            },
+		            "&.disabled": {
+		                cursor: "default",
+		                color: "silver"
+		            },
+		            ".hidden": {
+		                display: "none"
+		            }
+		        },
+		        "&.bottom": {
+		            "background-color": "#dfdfdf",
+		            "border-top": "1px solid #a3a3a3",
+		            "padding-top": "0px",
+		            "padding-bottom": "1px",
+		            ".{./Tab}": {
+		                border: "1px solid transparent",
+		                "border-top": "none"
+		            }
+		        }
+			},
 			// "background-color": "rgba(232, 240, 254)",
 			"padding-bottom": "8px",
 	        "padding-top": "8px",

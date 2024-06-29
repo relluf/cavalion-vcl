@@ -64,7 +64,7 @@ var FormContainer = require("vcl/ui/FormContainer");
 				'vertical-align': "top",
 				'&.disabled': "color:gray;",
 				'&:not(:active)': "margin-bottom:4px;",
-				'&:active:active:active': "margin-bottom:0;margin-top:2px;border:2px solid rgb(57,121,217); padding-left:8px; padding-right:6px; background:-webkit-linear-gradient(top, rgb(255, 255, 255) 10%, rgb(227, 227, 227) 100%);"
+				'&:active': "margin-bottom:0;margin-top:2px;border:2px solid rgb(57,121,217); padding-left:8px; padding-right:6px; background:-webkit-linear-gradient(top, rgb(255, 255, 255) 10%, rgb(227, 227, 227) 100%);"
 			}
     	}
     }, [

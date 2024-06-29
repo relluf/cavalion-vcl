@@ -284,7 +284,6 @@ define(function(require) {
 	            	control && this.makeVisible(control);
             	}.bind(this), 100);
             }
-
     	},
     	properties: {
     		"onChange": {

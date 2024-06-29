@@ -120,6 +120,7 @@ keyup:MetaCtrl+192`,
     		}
     	}
     }],
+    
     [["ui/forms/util/Console"], "console", {
     	align: "bottom",
 	    height: 250,
