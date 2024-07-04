@@ -102,7 +102,11 @@ define(function(require) {
 					} else if(evt.target.classList.contains("menu")) {
 						this.dispatch("menuclick", evt);
 					} else {
-						this.setSelected(this._groupIndex < -1 ? !this.getSelected() : true);
+						if(this.isSelected() && evt.altKey === true) {
+							this.setSelected(false);
+						} else {
+							this.setSelected(this._groupIndex < -1 ? !this.getSelected() : true);
+						}
 						//this._node.childNodes[0].blur();
 					}
 				}
