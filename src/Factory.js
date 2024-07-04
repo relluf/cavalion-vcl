@@ -157,6 +157,7 @@ define(function(require) {
                 return this.doLoad(source, success, failure);
 			},
 			doLoad: function(source, success, failure) {
+this._source = source;
 				if(typeof failure === "function") {
 					try {
 						return this.doLoad_(source, success, failure);
