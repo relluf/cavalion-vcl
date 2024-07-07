@@ -931,6 +931,28 @@ define(function(require) {
 				});
 				this.applyClasses();
 			},
+			syncClasses: function(classes, values) {
+				/*- The syncClasses method synchronizes the presence of specified CSS classes on an element based on corresponding boolean values or functions. 
+					**Parameters**:
+						- classes (Array of Strings): An array of class names to be synchronized.
+						- values (Array of Booleans/Functions): An array where each value determines whether the corresponding class should be present. If a function is provided, it is called with the element, class name, and current presence of the class, and should return a boolean.
+					**Returns** (Boolean): true if any class was added or removed; otherwise, false. */
+				let changed = false;
+				values.map((v, i) => {
+					const cl = classes[i];
+					const has = this.hasClass(cl);
+					const should = typeof v === "function" ? v(this, cl, has) : !!v;
+					
+					if(has && !should) {
+						this.removeClass(cl);
+						changed = true;
+					} else if(!has && should) {
+						this.addClass(cl);
+						changed = true;
+					}
+				});
+				return changed;
+			},
 			hasState: function(state) {
 			/** @param state {String} ControlState * @returns
 			 */
