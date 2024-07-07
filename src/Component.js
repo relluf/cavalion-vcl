@@ -487,7 +487,9 @@ define(function (require) {
             },
             revertPropertyValue: function (name) {
                 var property = this.defineProperties()[name];
-                property.set(this, this.getPropertyValue(name));
+                var value = this.getPropertyValue(name);
+                property.set(this, value);
+                return value;
             },
             getPropertyValue: function (name) {
                 return this['@properties'] ? this['@properties'][name] : undefined;
