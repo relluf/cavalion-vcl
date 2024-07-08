@@ -379,16 +379,11 @@ var Handlers = {
 
 			if(message.activate !== false) {
 				scope.tree.setSelection([node]);
+				node.update(() => node.scrollIntoView());
 			} else if(message.lazyLoad !== true) {
 				container.forceLoad();
 			}
 			
-			// parent && parent.setTimeout("update", () => {
-			// 	// Hmprf, what is going on here?
-			// 	parent._parent.updateChildren(true, true);
-			// 	parent._parent.updateChildren(true, true);
-			// }, 500);
-
 			return true;
 		}
 	}
