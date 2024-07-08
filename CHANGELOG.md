@@ -1,3 +1,24 @@
+### `2024/07/07` - 1.1.82
+
+* **cavalion-blocks<>:**
+	* Emits container-ready
+* **prototypes/ui/forms/Home.tree**:
+	* Scrolls new tree nodes into view upon creation
+* **Component**:
+	* Adjusts Component.prototype.revertPropertyValue() so that it returns the value which has been set 
+* ** Control**:
+	* Introduces Control.prototype.syncClasses()
+	* Fixes issues with qsn and qsna 
+	* Introduces reflectActionEvent, which is overridden by Ace, in order to block content from overwriting value/text
+* **Tabs**:
+	* Adds support for deselecting tabs with alt-modifier
+* **List**:
+	* Improves event columnsChanged
+* **Console**
+	* Adds support for logging to console
+* **Array**
+	* fixes a bug in getAttributeNames(), I just don't understand why it surfaced all the sudden, feel like it should've bothered me way before
+
 ### `2024/05/20` - 1.1.81
 
 * **Panel**:
