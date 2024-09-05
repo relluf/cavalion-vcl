@@ -312,7 +312,11 @@ var Handlers = {
 				onclick: function(evt) {
 					var r = this.inherited(arguments);
 					if(r !== false && evt.target.className === "close") {
-						this.getVar("control").getForm().close();
+						try {
+							this.getVar("control").getForm().close();
+						} catch(e) {
+							this.nextTick(() => this.destroy());
+						}
 					}
 					return r;
 				}
@@ -373,7 +377,7 @@ var Handlers = {
 				}
 			});
 
-			if(parent) {
+			if(parent && parent.setExpanded) {
 				parent.setExpanded(true);
 			}
 

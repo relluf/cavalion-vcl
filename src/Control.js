@@ -951,6 +951,9 @@ define(function(require) {
 						changed = true;
 					}
 				});
+				if(changed) {
+					this.applyClasses();
+				}
 				return changed;
 			},
 			hasState: function(state) {

@@ -1531,7 +1531,6 @@ define(function (require) {
             },
             
             "isRoot": { type: Type.BOOLEAN, set: function(value) {
-            	console.warn("yep! actually used :-)")
             	this.setIsRoot(value);
             } }
         }

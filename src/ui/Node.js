@@ -156,6 +156,8 @@ define(function(require) {
                 this.childNodesNeeded(callback);
 			},
 			childNodesNeeded: function(callback) {
+				callback = callback || function() {};
+				
 				if(!this.hasOwnProperty("_childNodesLoaded")) {
 					this._childNodesLoaded = this.dispatch("childnodesneeded");
 				}
@@ -461,6 +463,10 @@ define(function(require) {
 					}
 					if(!props.hasOwnProperty("text")) {
 						props.text = k;
+					}
+					if(props.aliases) {
+						props.vars = js.mixIn(props.vars || {}, { aliases: Array.as(props.aliases) });
+						delete props.aliases;
 					}
 					
 					arr.push($(Class, props.name || ("node_" + k), props, kids));

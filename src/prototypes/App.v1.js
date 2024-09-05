@@ -70,6 +70,6 @@ var FormContainer = require("vcl/ui/FormContainer");
     }, [
         ["vcl/ui/FormContainer", "client", { 
         	formUri: "./ui/forms/Portal<>" 
-        }],
+        }]
     ]]
 ]];

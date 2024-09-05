@@ -194,7 +194,6 @@ var cl = console.log;
     		scope.console.getNode("input").blur();
     	}
     }
-
 }, [
     [["ui/controls/Toolbar"], "toolbar", {
         css: { cursor: "ns-resize" },
@@ -212,7 +211,6 @@ var cl = console.log;
             });
             return dragger;
         }
-
     }, [
         [("vcl/ui/Element"), "sizer_selection", {
             css: "padding: 4px; display: inline-block; cursor: default;"
