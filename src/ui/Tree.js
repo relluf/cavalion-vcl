@@ -109,16 +109,18 @@ define(function (require) {
                     },
 					"&.expanding": {
 						background: "url(/shared/vcl/images/loading.gif) no-repeat right",
-                        ">.selection": {
-							"background-image": "url(/shared/vcl/images/loading.gif)",
-							"background-repeat": "no-repeat",
-							"background-position": "right"
+                        '>.selection': {
+							'background-image': "url(/shared/vcl/images/loading.gif)",
+							'background-repeat': "no-repeat",
+							'background-position': "right"
                         },
-						">.text": {
+						'>.text': {
 						}
 					},
                     "&.expandable:not(.expanding)": {
                         ">.icon::before": {
+                            transform: "translate(0, -2px)",
+                            'line-height': "0",
                             content: "'▸'" // http://www.alanwood.net/unicode/geometric_shapes.html
                         }
                     },
