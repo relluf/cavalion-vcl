@@ -258,7 +258,7 @@ var Handlers = {
         		// If there isn't a control associated with the calling node...
 				if(!(control instanceof Control)) {
 					// ... check to see if a form should be instantiated
-					if((value = this.getVar("formUri"))) {
+					if((value = this.getVar("formUri") || this.getVar("uri"))) {
 						// Create a new control
 						control = new (require("vcl/ui/FormContainer"))(this);
 						control.setVisible(false);
@@ -299,11 +299,11 @@ var Handlers = {
 	},
 	onMessage: function(name, message, sender) {
 		var scope = this.getScope();
-
 		if(name === "openform") {
 			var Node = require("vcl/ui/Node-closeable");
 			var FormContainer = require("vcl/ui/FormContainer");
-
+			var prefix = this.vars(["App.openform.prefix"]) || "";
+			
 			// TODO Merge with Portal
 
 			var parent = message.parent || scope.tree.getSelection()[0];
@@ -324,7 +324,9 @@ var Handlers = {
 			node.addClass("closeable");
 			
 			var container = new FormContainer(node);
-			container.setFormUri(message.uri);
+			container.setFormUri(message.uri.startsWith("/") ? 
+				message.uri.substring(1) : 
+				prefix + message.uri);
 			if(message.params) {
 				container.setFormParams(message.params);
 				node.setVars(message.params);
@@ -345,6 +347,9 @@ var Handlers = {
 			node.update(function() {
 				node.setExpanded(true);
 				node.setExpandable(false);
+				if(typeof message.callback_node === "function") { // TODO better API
+					message.callback_node(node);
+				}
 			});
 
 			container.on({
