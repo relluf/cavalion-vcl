@@ -1,4 +1,4 @@
-"use vcl/Component, vcl/Control, vcl/Dragger, util/Command, util/HotkeyManager, vcl/ui/Sizer, vcl/ui/FormContainer, entities/EM, entities/ExpressionBuilder, util/Rest, features/FM";
+"use vcl/Component, vcl/Control, vcl/Dragger, util/Command, util/HotkeyManager, vcl/ui/Sizer, vcl/ui/FormContainer, entities/EM, entities/ExpressionBuilder, util/Rest, features/FM, devtools/cavalion-devtools";
 
 var Component = require("vcl/Component");
 var Control = require("vcl/Control");
@@ -6,8 +6,6 @@ var FormContainer = require("vcl/ui/FormContainer");
 var Sizer = require("vcl/ui/Sizer");
 var Command = require("util/Command");
 var Rest = require("util/Rest");
-// var EM = require("entities/EM");
-// var FM = require("features/FM");
 var Deferred = require("js/Deferred");
 var JsObject = require("js/JsObject");
 var Dragger = require("vcl/Dragger");
@@ -16,8 +14,8 @@ var deselect = () => {
 	window.getSelection && window.getSelection().removeAllRanges();
 	document.selection && document.selection.empty();
 };
-
 var cl = console.log;
+window.H = (uri, vars) => B.i(["Hover<>", { vars: js.mi({ uri: uri }, vars)}]);
 
 [["ui/Form"], {
     activeControl: "console",
@@ -28,6 +26,11 @@ var cl = console.log;
         // this._vars.sizer.setControl(null);
     },
     onLoad() {
+    	
+		require("devtools/cavalion-devtools")
+			.init()
+			// .then(this.print("cavalion-devtools loaded", Date.now()));
+					
         var me = this, scope = this.scope(), app = this.app();
         var sizer = this.vars("sizer", new Sizer(this));
 
@@ -39,30 +42,44 @@ var cl = console.log;
         }
 
         sizer.on("setControl", function (value) {
-        	if(value) {
-        		// app.toast({ content: js.sf("SETCONTROL: %n", value), classes: "glassy fade"});
-        	}
-        	
             var consoles = this.app().qsa("vcl/ui/Console").filter(c => c.isVisible());
             var content = [];
 
             if(consoles.length === 0) {
-            	// me.show();
             	consoles = [scope.console];
             }
 
             if (value !== null) {
-                if (value.getUri()) {
-                    
-                    // `#CVLN-20200904-3`
-					var root = value.isRootComponent() ? ":root" : "";
-					var uri = value.isRootComponent() ? value._uri : value.getUri();
-					var selected = value.isSelected && value.isSelected() ? ":selected" : "";
-					var disabled = value.isEnabled && value.isEnabled() ? "" : ":disabled";
-                    
-                    content.push(js.sf("%s%s%s%s", uri, root, selected, disabled));
+                // `#CVLN-20200904-3`
+                content.push(js.sf("%s%s%s", 
+                	value.isRootComponent() ? ":root" : "", 
+                	value.isSelected && value.isSelected() ? ":selected" : "", 
+                	value.isEnabled && value.isEnabled() ? "" : ":disabled"));
+
+        		content.push(js.sf("[%s]", value));
+        		
+				var props = [], hashAndNameOrUri = (c) => [c.hashCode(), c._name ? "#" + c._name : " " + c._uri].filter(s => s !== "").join("");
+				if(value.up()) {
+					props.push(js.sf("up(): #%s", hashAndNameOrUri(value.up())));
+				}
+                if (value._owner) {
+                    props.push(js.sf("_owner: #%s", hashAndNameOrUri(value._owner)));
                 }
-                // content.push(js.sf("%n", value));
+                if(value._parent) {
+                	props.push(js.sf("_parent: #%s", hashAndNameOrUri(value._parent)));
+                }
+                if(value._vars) {
+                	props.push(js.sf("_vars: {%s}", Object.values(value._vars)
+                		.filter(v => v && typeof v !== "function")
+                		.map(v => js.n(v))
+                		.join(", ")));
+                }
+                content.push(js.sf("{%s}", props.join(", ")));
+                
+        		if(value['@factory']) {
+        			content.push(js.n(value['@factory']).split("#").slice(0, -1).join("!"));
+        		}
+
                 if(sizer.getVar("meta") === true) {
                 	consoles.forEach(c => c.getNode("input").value = js.sf("[#%d, \"%s\"]", 
                 		value.hashCode(), content.join("\", \"")));
@@ -70,12 +87,15 @@ var cl = console.log;
 					consoles.forEach(c => c.getNode("input").value = js.sf("#%d", value.hashCode()));
 					consoles.forEach(c => c.focus());
 				}
-                if (value._owner) {
-                    content.push(String.format("%n", value._owner));
-                }
-    			app.toast({ title: js.sf("%n", value), content: js.sf("<ul style='padding:0;padding-left:8px;'><li>%s</li></ul>", content.join("</li><li>")), classes: "glassy fade"});
             }
-            scope.sizer_selection.setContent(String.format("%H", content.join(" - ")));
+            scope.sizer_selection.setContent(String.format("%H", content.join(" ")));
+            
+            if(value !== null) {
+            	if(!content[0]) content.shift();
+                // content.pop();
+    			app.toast({ title: js.sf("%n", value), content: " " || js.sf("<ul style='padding:0;padding-left:8px;'><li>%s</li></ul>", content.join("</li><li>")), classes: "glassy fade"});
+            }
+            
         }, true);
 
         var down;
@@ -142,6 +162,7 @@ var cl = console.log;
 		                                component = null;
 		                            }
 		                            sizer.setControl(component);
+		                            evt.preventDefault();
 		                            return false;
 		                        }
 		                    } else if(evt.shiftKey === true) {
@@ -195,6 +216,33 @@ var cl = console.log;
     	}
     }
 }, [
+	["vcl/Action", ("toggle-visible-selection"), {
+		hotkey: "Shift+V",
+		hotkeyPreventsDefault: false,
+		on(evt) {
+			const selectedControl = this.vars(["sizer._control"]);
+
+			if(document.qsa("input:focus").length === 0 && 
+				document.qsa("textarea:focus").length === 0 && 
+				document.qsa("select:focus").length === 0
+			) {
+				const control = selectedControl;
+				if(control) {
+					control.toggle("visible");
+					evt.preventDefault();
+				} else {
+					// TODO toggle visibility of last value in console
+					this.print("no control selected")
+				}
+			} else {
+				// this.print(js.sf("input:%s, textarea: %s, select: %s", 
+				// 	document.qsa("input:focus").length,
+				// 	document.qsa("textarea:focus").length,
+				// 	document.qsa("select:focus").length));
+			}
+		}
+	}],
+	
     [["ui/controls/Toolbar"], "toolbar", {
         css: { cursor: "ns-resize" },
         draggable: true,
@@ -230,9 +278,8 @@ var cl = console.log;
         },
         onEvaluate(expr) {
 			const cl = console.log;
-			// const cc = require("clipboard-copy");
+			const cc = req("clipboard-copy");
 			const pr = () => this.print.apply(this, arguments);
-			const me = this;
 
             const open = (uri, opts) => this.bubble(
             	"openform",
