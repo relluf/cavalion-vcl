@@ -46,7 +46,7 @@ define(function(require) {
 
 			_onPopup: null,
 			_onClose: null,
-
+			
 			getControlBounds: function(control) {
 				var bounds = control.getAbsoluteRect();
 				var offset = control.clientToDocument(0, 0);

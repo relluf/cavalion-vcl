@@ -350,7 +350,7 @@ define(function(require) {
 			setExpandable: function(value) {
 				if(this._expandable !== value) {
 					this._expandable = value;
-					this.setState("classesInvalidated", true);
+					this.setState("classesInvalidated");
 				}
 			},
 

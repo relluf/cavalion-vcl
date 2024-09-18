@@ -5,6 +5,7 @@ define(function(require) {
     var js = require("js");
     var Bar = require("./Bar");
     var Type = require("js/Type");
+    var Tab = require("./Tab");
 
     return (Tabs = Tabs(require, {
     	inherits: Bar,

@@ -10,12 +10,10 @@ define(function (require) {
     var mixInR = require("js/mixInRecursive");
     var query = require("./Component.query");
     
-    var ILLEGAL_COMPONENT_NAME_CHARS = "/";
-    var ILLEGAL_COMPONENT_URI_CHARS = "/";
-
-    var all = [], nextTick = 1;
+    const all = []; 
+    let nextTick = 1;
     
-    var overrides_set = function(value) {
+    const overrides_set = function(value) {
     	const wrap = (method) => {
     		const f = function() {
 				Method.setInherited(method, Method.getInherited(f));
@@ -100,10 +98,11 @@ define(function (require) {
 	            /**
 	             * @overrides Object.prototype.toString
 	             */
-                if (this.hasOwnProperty("_name")) {
-                    return String.format("%n#%s#%d", this.constructor, this._name, this.hashCode());
+	            // var pre = js.n(!this._isRoot ? this._uri : js.get("@factory._uri", this) || this.constructor);
+                if (this._name) {
+                    return js.sf("%n#%s#%d", this.constructor, this._name, this.hashCode());
                 }
-                return String.format("%n#%d", this.constructor, this.hashCode());
+                return js.sf("%n#%d", this.constructor, this.hashCode());
             },
             destroy: function () {
                 all.splice(all.indexOf(this), 1);
