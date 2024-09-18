@@ -1,13 +1,13 @@
-define(["require", "js/defineClass", "ace/ace", "ace/commands/default_commands", "./Panel", "js/Type", "util/Text", "ace/Range"], 
-function(require, Ace, ace, DefaultCommands, Panel, Type, Text) {
+define(["require", "js/defineClass", "ace/ace"/*, "ace/commands/default_commands"*/, "./Panel", "js/Type", "util/Text"/*, "ace/Range"*/], 
+function(require, Ace, ace, /*DefaultCommands,*/ Panel, Type, Text) {
     
-	var Range = require("ace/Range").Range;
+	var Range = ace.Range;
 	
 	// Somehow this got broken Cmd+Alt+0 (really missing it, spend over 2 hours (sigh!))
-	DefaultCommands.commands[12].exec = (editor) => { 
-		editor.session.foldAll(); 
-		while(editor.session.unfold(editor.getCursorPosition(), false)); 
-	};
+	// DefaultCommands.commands[12].exec = (editor) => { 
+	// 	editor.session.foldAll(); 
+	// 	while(editor.session.unfold(editor.getCursorPosition(), false)); 
+	// };
 
 	const initCommands = (editor) => {
 		editor.commands.addCommand({
