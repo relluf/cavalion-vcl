@@ -300,7 +300,11 @@ this._source = source;
 							if(ref.value instanceof Component) {//ref.property._type) {
 								v = ref.value;
 							} else if(ref.value && (ref.value.charAt(0) === "#")) {
-								v = component.qs(ref.value);
+								if(ref.value.indexOf("#0 ") === 0) {
+									v = owner && owner.app().qs(ref.value.substring(3));
+								} else {
+									v = owner && owner.qs(ref.value)
+								}
 							} else {
 								v = (ref.value && ref.component.scope()[ref.value]);
 							}

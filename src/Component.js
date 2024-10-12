@@ -135,19 +135,23 @@ define(function (require) {
                     }
                 }
             },
+            createEvent: function(name) {
+            	if(typeof name === "string") {
+                    return { type: name };
+            	}
+            	return {};
+            },
             dispatch: function (name, evt) {
                 if (evt === undefined) {
-                	if(typeof name === "string") {
-	                    evt = {
-	                        type: name
-	                    };
-                	}
+                	evt = this.createEvent(name);
                 }
 
                 if (this._loading === false || name === "destroy") {
                     var f = this["on" + name];
+                    
                     var args = js.copy_args(arguments);
                     args.shift();
+                    if(args.length === 0) args.push(evt);
 
                     var enabled = (name === "destroy") || this.isEventEnabled(name, evt, f, args);
                     if (typeof f === "function" && enabled === true) {
@@ -260,8 +264,8 @@ define(function (require) {
             },
             setTimeout: function(name, f, ms, args) {
 	            /**
-	             * @param name Used to identify the timeout. Successive calls will cancel a previous timeout with the same name.
-	             * @param f {String/Function} Identifies the function which should be called when at least ms has passed. Optional, when omitted it defaults to the same value as name. A string value to identify a member function or simply a reference to a function.
+	             * @param name {String} [optional] Used to identify the timeout. Successive calls will cancel a previous timeout with the same name.
+	             * @param f {String/Function} [optional] Identifies the function which should be called when at least ms has passed. Optional, when omitted it defaults to the same value as name. A string value to identify a member function or simply a reference to a function.
 	             * @param ms {Number} Number of milliseconds
 	             * @param args {Array} Array of arguments to be passed to the function.
 	             * @returns The return value of js.setTimeout
@@ -271,6 +275,13 @@ define(function (require) {
                 if (!this.hasOwnProperty("_timeouts")) {
                     this._timeouts = {};
                 }
+                
+                // if(typeof name === "function") {
+                // 	args = ms;
+                // 	ms = f;
+                // 	f = name;
+                // 	name = "default"
+                // }
                 
                 if(typeof name === "object" && typeof name.f === "function") {
                     return this.setTimeout(name.name, name.f, name.ms, name.args);
@@ -550,14 +561,17 @@ define(function (require) {
                 if (this._vars !== null && arguments.length === 3) {
                     this._vars = this._vars || {};
                 }
-
-                var r = this._vars !== null ? js.get(namePath, this._vars, defaultValue) : undefined;
+                
+                var r = this._vars !== null ? js.get(namePath, this._vars) : undefined;
                 if (r === undefined) {
                 	if(fallback_to_owner === true && this._owner !== null) {
                     	r = this._owner.getVar(namePath, true, defaultValue);
                 	} else if(arguments.length === 3) {
                 		if((r = defaultValue) !== undefined) {
-                			this.setVar(namePath, defaultValue);
+			                if(typeof defaultValue === "function") {
+			                	r = defaultValue([this].concat(js.copy_args(arguments)));
+			                }
+                			this.setVar(namePath, r);
                 		}
                 	}
                 }
@@ -575,8 +589,10 @@ define(function (require) {
                     name = name.split(".");
                     var prop = name.pop();
                     r = [this.getVar(name.join("."))];
-                    r.push(r[0][prop]);
-                    delete r[0][prop];
+                    if(r[0]) {
+	                    r.push(r[0][prop]);
+	                    delete r[0][prop];
+                    }
                     r = r.pop();
                 } else if (this._vars !== null) {
                     r = this._vars[name];

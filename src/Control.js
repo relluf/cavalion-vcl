@@ -171,6 +171,9 @@ define(function(require) {
 					}
 				}
 			},
+			createEvent: function(name) {
+				return { type: name, target: this._node };
+			},
 			isEventEnabled: function(name, evt, f, args) {
 			/** @overrides ./Component.prototype.isEventEnabled */
 				var r = this.inherited(arguments) &&
@@ -1602,6 +1605,9 @@ this._updateCalls = this._updateCalls || 0; this._updateCalls++;
 			},
 			onmouseleave: function() {
 				this.fire("onMouseLeave", arguments);
+			},
+			onmouseover: function() {
+				this.fire("onMouseOver", arguments);
 			},
 			onmouseout: function() {
 				this.fire("onMouseOut", arguments);
