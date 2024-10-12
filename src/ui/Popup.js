@@ -1,9 +1,10 @@
 define(function(require) {
 
 	var Class = require("js/Class");
+	var Control = require("vcl/Control");
 	var js = require("js");
 	var DocumentHook = require("../../util/DocumentHook");
-	var HtmlElement = require("../../util/HtmlElement");
+	var HE = require("../../util/HtmlElement");
 	var Panel = require("./Panel");
 
 	var Popup = {
@@ -22,7 +23,7 @@ define(function(require) {
 						}
 					},
 					click: (evt) => {
-						var hasParent = HtmlElement.hasParent(evt.target, popup._node);
+						var hasParent = HE.hasParent(evt.target, popup._node);
 						if(popup._autoClose || !hasParent) {
 							popup.close();
 							if(!hasParent) {
@@ -67,46 +68,84 @@ define(function(require) {
 				return bounds;
 			},
 			popup: function(position, relativeTo, onClose) {
-				/**
-				 *
-				 * @param position
-				 * @param relativeTo
-				 * @param onClose
-				 */
+				
 				const align = () => {
-	
-					var ar = relativeTo.getAbsoluteRect();
-					var p = relativeTo.clientToDocument(0, 0);
-					var cs = relativeTo.getComputedStyle();
-					var cs_ = this.getComputedStyle();
-					var ar_ = this.getAbsoluteRect();
-					
-					var bounds = this.getControlBounds(this);
 
-					if(this._parent) {
-						p = this._parent.documentToClient(p);
-					}
-					
-					// this.print("popup", {
-					// 	bounds: bounds,
-					// 	ar: ar,
-					// 	ar_: ar_,
-					// 	cs: cs,
-					// 	cs_: cs_
-					// });
-					
-					if(position.origin === "bottom-left") {
-						this.setLeft(p.x + (position.dx || 0));
-						this.setTop(p.y + parseInt(cs.height, 10) + (position.dy || 0));
-					} else if(position.origin === "bottom-right") {
-						var l = p.x + parseInt(cs.width, 10) + (position.dx || 0) - this._node.scrollWidth; //(parseInt(cs_.width, 10) || 0);
-						var t = p.y + parseInt(cs.height, 10) + (position.dy || 0);
+					const align_dom = () => {
+						var ar = HE.getAbsoluteRect(relativeTo);
+						var p = { x: ar.left, y: ar.top }; // relativeTo.clientToDocument(0, 0);
+						var cs = HE.getComputedStyle(relativeTo);
+						var cs_ = this.getComputedStyle();
+						var ar_ = this.getAbsoluteRect();
 						
-						// this.print("popup-setTopLeft", js.sf("%d %d", p.x, p.y));
+						var bounds = this.getControlBounds(this);
+	
+						if(this._parent) {
+							p = this._parent.documentToClient(p);
+						}
 						
-						this.setLeft(l);
-						this.setTop(t);
+						// this.print("popup", {
+						// 	bounds: bounds,
+						// 	ar: ar,
+						// 	ar_: ar_,
+						// 	cs: cs,
+						// 	cs_: cs_
+						// });
+						
+						if(position.origin === "bottom-left") {
+							this.setLeft(p.x + (position.dx || 0));
+							this.setTop(p.y + parseInt(cs.height, 10) + (position.dy || 0));
+						} else if(position.origin === "bottom-right") {
+							var l = p.x + parseInt(cs.width, 10) + (position.dx || 0) - this._node.scrollWidth; //(parseInt(cs_.width, 10) || 0);
+							var t = p.y + parseInt(cs.height, 10) + (position.dy || 0);
+							
+							// this.print("popup-setTopLeft", js.sf("%d %d", p.x, p.y));
+							
+							this.setLeft(l);
+							this.setTop(t);
+						}
+					};
+	
+					const align_vcl = () => {
+	
+						var ar = relativeTo.getAbsoluteRect();
+						var p = relativeTo.clientToDocument(0, 0);
+						var cs = relativeTo.getComputedStyle();
+						var cs_ = this.getComputedStyle();
+						var ar_ = this.getAbsoluteRect();
+						
+						var bounds = this.getControlBounds(this);
+	
+						if(this._parent) {
+							p = this._parent.documentToClient(p);
+						}
+						
+						// this.print("popup", {
+						// 	bounds: bounds,
+						// 	ar: ar,
+						// 	ar_: ar_,
+						// 	cs: cs,
+						// 	cs_: cs_
+						// });
+						
+						if(position.origin === "bottom-left") {
+							this.setLeft(p.x + (position.dx || 0));
+							this.setTop(p.y + parseInt(cs.height, 10) + (position.dy || 0));
+						} else if(position.origin === "bottom-right") {
+							var l = p.x + parseInt(cs.width, 10) + (position.dx || 0) - this._node.scrollWidth; //(parseInt(cs_.width, 10) || 0);
+							var t = p.y + parseInt(cs.height, 10) + (position.dy || 0);
+							
+							// this.print("popup-setTopLeft", js.sf("%d %d", p.x, p.y));
+							
+							this.setLeft(l);
+							this.setTop(t);
+						}
+					};
+
+					if(relativeTo instanceof Control) {
+						return align_vcl();
 					}
+					return align_dom();
 				};
 
 				if(!this._hook.isActive()) {

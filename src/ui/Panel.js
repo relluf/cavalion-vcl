@@ -365,7 +365,7 @@ define(function (require) {
             	/** @required: this._node */
             	var zoomed = this.hasOwnProperty("_zoom");
             	var style = this._node.style;
-            	if(zoomed) {
+            	if(zoomed && parseFloat(this._zoom) !== 1) {
         			style.transform = String.format("scale3d(%s, %s, 1)", 
         				this._zoom, this._zoom);
         			style['transform-origin'] = "0 0";

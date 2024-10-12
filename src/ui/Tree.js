@@ -70,7 +70,7 @@ define(function (require) {
                             content: "' '",
                             display: "inline-block",
                             "font-size": platform === "MacIntel" ? "1.4em" : "1.75em",
-                            //"margin-top": platform === "MacIntel" ? "-2px" : "-8px",
+                            //"margin-top": platform === "MacIntel" ? "1px" : "-8px",
                             "padding-left": platform === "MacIntel" ? "2px" : "0"
                         }
                     },
@@ -103,8 +103,8 @@ define(function (require) {
                             "font-weight": "bold"
                         },
                         ">.icon": {
-                            opacity: "0.9",
-                            color: "white"
+                            'opacity': "0.9",
+                            'color': "white"
                         }
                     },
 					"&.expanding": {
@@ -296,6 +296,8 @@ define(function (require) {
                         console.log("alt ->");
                         this._history.forward();
                     }
+                } else {
+                	console.log("ignored for modifiers");	
                 }
                 return true;
             },

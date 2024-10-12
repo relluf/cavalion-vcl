@@ -18,13 +18,15 @@ define(function(require) {
 					display: "inline-block"
 				},
 				">.text": {
-					display: "inline-block",
-					position: "relative",
+					display: "inline-block", 
+					'padding': "1px",
+					'vertical-align': "top"
+					// position: "relative",
 					// top: "-3px"
 				},
 				">.container": {
 					display: "none",
-					"padding-left": "16px"
+					"padding-left": "16px", 'padding-top': "8px"
 				},
 				"&.expanded": {
 					">.container": {

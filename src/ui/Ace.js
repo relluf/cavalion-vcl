@@ -1,5 +1,5 @@
-define(["require", "js/defineClass", "ace/ace"/*, "ace/commands/default_commands"*/, "./Panel", "js/Type", "util/Text"/*, "ace/Range"*/], 
-function(require, Ace, ace, /*DefaultCommands,*/ Panel, Type, Text) {
+define(["require", "js/defineClass", "ace/ace", "./Panel", "js/Type", "util/Text"], 
+function(require, Ace, ace, Panel, Type, Text) {
     
 	var Range = ace.Range;
 	

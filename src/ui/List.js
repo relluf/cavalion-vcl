@@ -892,7 +892,6 @@ workaroundColumnAlignment(this);
 				return r;
 			},
 			sortBy(column, dir, numeric) {
-				const sv = column.get("onSortValues");
 
 				dir = dir === "desc" ? - 1 : 1;
 				
@@ -906,9 +905,10 @@ workaroundColumnAlignment(this);
 					}
 					column = this.getColumnByName(column[0]);
 				} else if(typeof column === "number") {
-					column = this.getColumn();
+					column = this.getColumn(column);
 				}
 
+				const sv = column.get("onSortValues");
 				this._source.sort(
 					(i1, i2) => {
 						var row1 = this._source._array.indexOf(i1);

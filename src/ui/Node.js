@@ -87,6 +87,13 @@ define(function(require) {
 				this._nodes.icon = this.getChildNode(1);
 				this._nodes.text = this.getChildNode(2);
 				this._nodes.container = this.getChildNode(3);
+				// this._nodes.menu = this.getChildNodes(4);
+				
+						// this._nodes.close = document.createElement("div");
+						// this._nodes.close.className = "close";
+						// this._nodes.close.innerHTML = "<a class='close'>" + String.fromCharCode(215) + "</a>";
+						// this._node.insertBefore(this._nodes.close, this._nodes.icon);
+				
 
 				if(!this._nodes.text) {
 					throw new Error("No text node");
@@ -124,6 +131,8 @@ define(function(require) {
 				if(this._icon) {
 					this._nodes.icon.style.backgroundImage = js.sf("url(%s)", this._icon);
 				}
+				
+				return this.inherited(arguments);
 			},
 
 			isExpanded: function() {
