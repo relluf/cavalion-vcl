@@ -1,21 +1,51 @@
-"use vcl/Component, vcl/Control, vcl/Dragger, util/Command, util/HotkeyManager, vcl/ui/Sizer, vcl/ui/FormContainer, entities/EM, entities/ExpressionBuilder, util/Rest, features/FM, devtools/cavalion-devtools";
+"use devtools/Resources, devtools/Parser, vcl/Component, vcl/Control, vcl/Dragger, util/Command, util/HotkeyManager, vcl/ui/Sizer, vcl/ui/FormContainer, entities/EM, entities/ExpressionBuilder, util/Rest, features/FM, devtools/cavalion-devtools, vcl/ui/Ace";
 
-var Component = require("vcl/Component");
-var Control = require("vcl/Control");
-var FormContainer = require("vcl/ui/FormContainer");
-var Sizer = require("vcl/ui/Sizer");
-var Command = require("util/Command");
-var Rest = require("util/Rest");
-var Deferred = require("js/Deferred");
-var JsObject = require("js/JsObject");
-var Dragger = require("vcl/Dragger");
+const Component = require("vcl/Component");
+const Control = require("vcl/Control");
+const FormContainer = require("vcl/ui/FormContainer");
+const Ace = require("vcl/ui/Ace");
+const Sizer = require("vcl/ui/Sizer");
+const Command = require("util/Command");
+const Rest = require("util/Rest");
+const Deferred = require("js/Deferred");
+const JsObject = require("js/JsObject");
+const Dragger = require("vcl/Dragger");
+const Resources = require("devtools/Resources");
+const Parser = require("devtools/Parser");
 
-var deselect = () => {
+const HOTKEY_ALWAYS_ENABLED = {
+	isHotkeyEnabled() { 
+		return this._owner.isEnabled(); 
+	}
+};
+const getAce = () => { 
+	return Control.focused instanceof Ace ? 
+		Control.focused :
+		require("vcl/Application").instances[0]
+			.qsa("#ace")
+			.filter(ace => ace.isVisible())
+			.pop();
+};
+
+const deselect = () => {
 	window.getSelection && window.getSelection().removeAllRanges();
 	document.selection && document.selection.empty();
 };
-var cl = console.log;
+
 window.H = (uri, vars) => B.i(["Hover<>", { vars: js.mi({ uri: uri }, vars)}]);
+window.RS = Resources;
+
+let cc = function() { // HM-20241010-1-method-auto-require-in-first-call
+	// const args = js.copy_args(arguments);
+	return Promise.resolve(req("clipboard-copy")).then(cc_ => {
+		cc = cc_;
+		
+		return cc.apply(window, arguments);
+	});
+};
+
+const cl = console.log;
+const facts = (comp) => Component.getFactories(comp);
 
 [["ui/Form"], {
     activeControl: "console",
@@ -28,7 +58,7 @@ window.H = (uri, vars) => B.i(["Hover<>", { vars: js.mi({ uri: uri }, vars)}]);
     onLoad() {
     	
 		require("devtools/cavalion-devtools")
-			.init()
+			.init();
 			// .then(this.print("cavalion-devtools loaded", Date.now()));
 					
         var me = this, scope = this.scope(), app = this.app();
@@ -56,6 +86,10 @@ window.H = (uri, vars) => B.i(["Hover<>", { vars: js.mi({ uri: uri }, vars)}]);
                 	value.isSelected && value.isSelected() ? ":selected" : "", 
                 	value.isEnabled && value.isEnabled() ? "" : ":disabled"));
 
+        		if(value['@factory']) {
+        			content.push(js.n(value['@factory']).split("#").slice(0, -1).join("!"));
+        		}
+
         		content.push(js.sf("[%s]", value));
         		
 				var props = [], hashAndNameOrUri = (c) => [c.hashCode(), c._name ? "#" + c._name : " " + c._uri].filter(s => s !== "").join("");
@@ -75,10 +109,6 @@ window.H = (uri, vars) => B.i(["Hover<>", { vars: js.mi({ uri: uri }, vars)}]);
                 		.join(", ")));
                 }
                 content.push(js.sf("{%s}", props.join(", ")));
-                
-        		if(value['@factory']) {
-        			content.push(js.n(value['@factory']).split("#").slice(0, -1).join("!"));
-        		}
 
                 if(sizer.getVar("meta") === true) {
                 	consoles.forEach(c => c.getNode("input").value = js.sf("[#%d, \"%s\"]", 
@@ -219,6 +249,10 @@ window.H = (uri, vars) => B.i(["Hover<>", { vars: js.mi({ uri: uri }, vars)}]);
 	["vcl/Action", ("toggle-visible-selection"), {
 		hotkey: "Shift+V",
 		hotkeyPreventsDefault: false,
+		overrides: {
+			isHotkeyEnabled: () => true
+		},
+		
 		on(evt) {
 			const selectedControl = this.vars(["sizer._control"]);
 
@@ -242,6 +276,78 @@ window.H = (uri, vars) => B.i(["Hover<>", { vars: js.mi({ uri: uri }, vars)}]);
 			}
 		}
 	}],
+    ["vcl/Action", ("format"), {
+    	hotkey: "Shift+MetaCtrl+F",
+		overrides: HOTKEY_ALWAYS_ENABLED,
+    	on(evt) {
+    		const ace = getAce();
+    		if(ace) {
+    			Parser.format(ace);
+    		}
+    	}
+    }],
+    ["vcl/Action", ("print"), {
+    	hotkey: "MetaCtrl+Enter|Shift+MetaCtrl+Enter",
+		overrides: HOTKEY_ALWAYS_ENABLED,
+    	on(evt) {
+    		const ace = evt.ace || getAce();
+    		if(ace) {
+	    		const resource = ace.vars(["resource"]);
+	    		const doc = ace.vars(["instance"]) || {};
+	    		const name = (uri) => uri.split("/").pop();
+	    		
+	    		let console = evt.shiftKey ? this.ud("#console") : (
+	    			evt.console || ace.ud("> #console"));
+	    		if(!console || !console.isVisible()) {
+	    			console = this.ud("#console");
+	    		}
+	    		
+	    		try {
+		    		const root = Parser.getRoot(ace, {
+		    			javascript: { eval_: (expr) => 
+		    				this.ud("#console")._onEvaluate(expr, { ace: ace })
+		    			}
+		    		});
+		    		
+					(console || this.app()).print(name(resource ? resource.uri : (doc.id || doc.naam || "")), root);
+	    		} catch(e) {
+					(console || this.app()).print(name(resource ? resource.uri : (doc.id || doc.naam || "")), e);
+	    		}
+    		}
+    	}
+    }],
+    ["vcl/Action", ("save-resource-local"), {
+    	hotkey: "Shift+MetaCtrl+Alt+S",
+    	on() {
+			const ace = getAce();
+			const resource = ace && ace.vars(["resource"]);
+
+    		if(resource && ace instanceof Ace) {
+				const text = ace.getValue();
+				const blob = new Blob([text], { type: "text/plain" });
+					
+				if(!resource.name) { // TODO Resources.extrapolate(resource);
+					resource.path = resource.uri.split("/");
+					resource.name = resource.path.pop();
+					resource.path = resource.path.join("/");
+					resource.ext = resource.name.split(".").pop();
+				}
+				
+				const link = document.createElement("a");
+				link.setAttribute("href", URL.createObjectURL(blob));
+				link.setAttribute("download", resource.name);
+				
+				document.body.appendChild(link);
+				this.nextTick(() => { 
+					link.click(); 
+					document.body.removeChild(link); 
+				});
+    		} else {
+    			this.app().toast({content:"No resource", classes: "fade glassy"});
+    		}
+    	}
+    }],
+
 	
     [["ui/controls/Toolbar"], "toolbar", {
         css: { cursor: "ns-resize" },

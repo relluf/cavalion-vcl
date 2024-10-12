@@ -37,7 +37,7 @@ var Handlers = {
 	    Factory = require("blocks/Factory");
 	    source.push("\n\n/*- Implicit Sources (blocks) */");
 	    source.push(js.sf("define(\"blocks/Factory.implicit_sources\", function() { return (%s); });", 
-	    	js.b(JSON.stringify(Factory.implicit_sources))));
+	    	(JSON.stringify(Factory.implicit_sources))));
 
 	    function callback(uri, text) {
 	    	if(text) {
@@ -220,7 +220,7 @@ var Handlers = {
         ]],
         [("vcl/ui/CheckGroup"), "styles.less", {
             text: "styles.less",
-            expanded: true
+            expanded: false
         }, [
             [("vcl/ui/Group"), {}, [
                 [("vcl/ui/Input"), "styles", {
