@@ -20,7 +20,7 @@
 		var classes = options.classes || "fade";
 
 		if(options.title !== undefined) {
-			content = String.format("<b>%s</b><div>%s</div>", options.title, content);
+			content = js.sf("<b>%s</b><div>%s</div>", options.title, content);
 		}
 
 		elem.setContent(content);
@@ -28,22 +28,27 @@
 		elem.addClasses(classes);
 		elem.update(() => elem.addClass("appear"));
 
-		var controller = {
+		const controller = {
 			element: elem,
 			remove(timeout_) {
 				elem.setTimeout("disappear", () => {
-					var h = elem.on("transitionend", () => {
-						elem.un(h);
-						elem.destroy();
-					});
+
+					elem.once("transitionend", () => elem.destroy());
 					elem.replaceClass("appear", "disappear");
+
 				}, timeout_ !== undefined ? timeout_ : timeout);
+			},
+			show() {
+				elem.replaceClass("disappear", "appear");
+			},
+			hide(timeout_) {
+				elem.setTimeout("disappear", () => 
+					elem.replaceClass("appear", "disappear"), 
+					timeout_ !== undefined ? timeout_ : timeout);
 			}
 		};
 
-		if(timeout) {
-			controller.remove();
-		}
+		timeout && controller.remove();
 
 		return controller;
 	}
