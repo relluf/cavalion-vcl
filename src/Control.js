@@ -339,7 +339,26 @@ define(function(require) {
 			sendToBack: function() {
 				this.setIndex(0);
 			},
-
+            getPreviousSibling: function() {
+            	if(this._parent) {
+            		var arr = this._parent.getControls();
+            		var index = this.getIndex();
+            		if(index > 0) {
+            			return arr[index - 1];
+            		}
+            	}
+            	return null;
+            },
+            getNextSibling: function() {
+            	if(this._parent) {
+            		var arr = this._parent.getControls();
+            		var index = this.getIndex();
+            		if(index < arr.length - 1) {
+            			return arr[index + 1];
+            		}
+            	}
+            	return null;
+            },
 			
 /**-- parent */
 			hasParent: function(parent) {

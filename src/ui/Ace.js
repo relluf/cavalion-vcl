@@ -133,6 +133,44 @@ function(require, Ace, ace, Panel, Type, Text) {
 			setMode: function (mode) {
 				this.getEditor().session.setMode("ace/mode/" + mode);
 			},
+			
+			append: function(content) {
+				const editor = this.getEditor();
+			    const session = editor.getSession();       // Get the current session
+			    const lastRow = session.getLength();       // Get the last row of the document
+			    
+			    session.insert({ row: lastRow, column: 0 }, '\n' + content);  // Insert content at the bottom
+			},
+			
+			getSelection: function() {
+				const editor = this.getEditor();
+
+				const selectionRange = editor.getSelectionRange();
+				const selectedText = editor.session.getTextRange(selectionRange);
+				
+				return selectedText.split('\n');				
+			},
+			setSelection: function(lines) {
+				const editor = this.getEditor();
+
+			    const selectionRange = editor.getSelectionRange();
+			    const startRow = selectionRange.start.row;
+			    const startColumn = selectionRange.start.column;
+			
+			    // Join the array of lines with newlines to recreate the multi-line text
+			    const textToInsert = lines.join('\n');
+			
+			    // Replace the selected text with the new content
+			    editor.session.replace(selectionRange, textToInsert);
+			
+			    // Move the cursor to the end of the inserted text
+			    const endRow = startRow + lines.length - 1;
+			    const endColumn = lines[lines.length - 1].length;
+			    editor.selection.setSelectionRange({
+			        start: { row: startRow, column: startColumn },
+			        end: { row: endRow, column: endColumn }
+			    });
+			},
 
 			reflectActionEvent(evt) {},
 			getDiffs: function(originalText) {
