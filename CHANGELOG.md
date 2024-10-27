@@ -1,3 +1,20 @@
+### `2024/10/24` - 1.1.83
+
+- 20241024 introduces Control.prototype.getNext/PreviousSibling introduces Ace.prototype.append
+- 20241012 optimizes declarations of util-functions in prototypes/ui/forms/util/Console
+- 20241012 improves App prototypes - improves glassy styles and prototypes - improves toasting - adds show/hide for static toasts refactors more CSS definitions to  App#window
+- 20241012 fine tunes styles of CheckGroup and Tree adds getKeys() and getValues() to vcl/ui/Console enhances sorting features of List improves Popup so that it can popup anywhere in the document (not parent bounds perse)
+- 20241012 adds Component.prototype.createEvent() method, used by .dispatch(), overridden by Control fine tunes Component.prototype.vars() for usage with default value and fallback_to_owner restores changes in setTimeout improves use of "#" in property definitions - allows for searching for global components with #0 prefix
+- 20240918 updates rendering details about selection of sizer adds hotkey for toggling visibility "sizer-selected" control refactors namespace of window.H
+- 20240918 adds support for App.openform.prefix
+- 20240918 adds support for ace#1.36.2
+- 20240918 updates icon height
+- 20240918 minor changes
+- 20240918 refactors App styles develops App.v2
+- 20240918 improves querying for components adds support for relative namespaces
+- 20240904 introducing App.v2
+- 20240904 fixes several minor bugs
+
 ### `2024/07/07` - 1.1.82
 
 * **cavalion-blocks<>:**

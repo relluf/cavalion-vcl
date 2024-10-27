@@ -1,14 +1,10 @@
-"use devtools/Resources, devtools/Parser, vcl/Component, vcl/Control, vcl/Dragger, util/Command, util/HotkeyManager, vcl/ui/Sizer, vcl/ui/FormContainer, entities/EM, entities/ExpressionBuilder, util/Rest, features/FM, devtools/cavalion-devtools, vcl/ui/Ace";
+"use devtools/Resources, devtools/Parser, vcl/Component, vcl/Control, vcl/Dragger, util/HotkeyManager, vcl/ui/Sizer, vcl/ui/FormContainer, devtools/cavalion-devtools, vcl/ui/Ace";
 
 const Component = require("vcl/Component");
 const Control = require("vcl/Control");
 const FormContainer = require("vcl/ui/FormContainer");
 const Ace = require("vcl/ui/Ace");
 const Sizer = require("vcl/ui/Sizer");
-const Command = require("util/Command");
-const Rest = require("util/Rest");
-const Deferred = require("js/Deferred");
-const JsObject = require("js/JsObject");
 const Dragger = require("vcl/Dragger");
 const Resources = require("devtools/Resources");
 const Parser = require("devtools/Parser");
@@ -33,7 +29,6 @@ const deselect = () => {
 };
 
 window.H = (uri, vars) => B.i(["Hover<>", { vars: js.mi({ uri: uri }, vars)}]);
-window.RS = Resources;
 
 let cc = function() { // HM-20241010-1-method-auto-require-in-first-call
 	// const args = js.copy_args(arguments);

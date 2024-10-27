@@ -1,8 +1,9 @@
-"use override, util/Event, util/HtmlElement, console/node/vcl/Component";
+"use override, util/Event, util/HtmlElement, console/node/vcl/Component, vcl/Control";
 
-var override = require("override");
-var Event = require("util/Event");
-var HtmlElement = require("util/HtmlElement");
+const override = require("override");
+const Event_ = require("util/Event");
+const HtmlElement = require("util/HtmlElement");
+const Control = require("vcl/Control");
 
 require("console/node/vcl/Component").initialize();
 override(require("vcl/Component").prototype, "print", function(inherited) {
@@ -40,15 +41,19 @@ keyup:MetaCtrl+192`,
                     scope.console.show();
                     scope['align-enabled'].setState(true);
                 } else {
-                    scope['align-enabled'].setState(false);
-                    scope.console.hide();
-                    focused = this.removeVar("focused");
-                    if (focused && focused !== scope.console) {
-                        this.setTimeout("focus", function() {
-                            // console.log("setFocus", focused);
-                            focused.setFocus();
-                        }, 250);
-                    }
+                	if(Control.focused === scope.console.getScope().console) {
+	                    scope['align-enabled'].setState(false);
+	                    scope.console.hide();
+	                    focused = this.removeVar("focused");
+	                    if (focused && focused !== scope.console) {
+	                        this.setTimeout("focus", function() {
+	                            // console.log("setFocus", focused);
+	                            focused.setFocus();
+	                        }, 250);
+	                    }
+                	} else {
+                		scope.console.setFocus();
+                	}
                 }
             }
 
@@ -67,7 +72,7 @@ keyup:MetaCtrl+192`,
     	parent: "align-enabled",
     	on(evt) { 
     		var console = this.scope().console;
-    		var delta = evt.keyCode === Event.keys.KEY_UP_ARROW ? 100 : -100;
+    		var delta = evt.keyCode === Event_.keys.KEY_UP_ARROW ? 100 : -100;
     		var height = console.getHeight() + delta;
     		if(console._align !== "bottom" && console._align !== "top") {
     			console.setAlign(delta === -100 ? "bottom" : "top");
@@ -96,7 +101,7 @@ keyup:MetaCtrl+192`,
     	parent: "align-enabled",
     	on(evt) { 
     		var console = this.scope().console, cons = console.qs("#console");
-    		var delta = evt.keyCode === Event.keys.KEY_RIGHT_ARROW ? 100 : -100;
+    		var delta = evt.keyCode === Event_.keys.KEY_RIGHT_ARROW ? 100 : -100;
 			if(console._align === "right") delta = -delta;
     		var width = console.getWidth() + delta;
     		if(console._align !== "left" && console._align !== "right") {
