@@ -6,13 +6,11 @@ define(function (require) {
     var Type = require("js/Type");
     var Event = require("../../util/Event");
     var HtmlElement = require("../../util/HtmlElement");
-    var jquery = require("jquery");
     var Browser = require("util/Browser");
 
     var platform = window.navigator.platform;
-    
     var checkbox_top =  Browser.safari ? 0 : 2;
-
+    
     return (Tree = Tree(require, {
         inherits: Panel,
         prototype: {
@@ -236,10 +234,11 @@ define(function (require) {
             },
 			makeVisible: function(childNode) {
 				if(childNode) {
-				    var node = this.nodeNeeded();
-				    var pos = jquery(childNode.nodeNeeded()).position();
-				    var top = this.getAbsoluteRect().height / 3;
-				    node.scrollTop -= (top - pos.top);
+				    // var node = this.nodeNeeded();
+				    // var pos = childNode.nodeNeeded().position();
+				    // var top = this.getAbsoluteRect().height / 3;
+				    // node.scrollTop -= (top - pos.top);
+				    childNode.scrollIntoView({ behavior: "auto", block: "center", inline: "nearest" });
 				} else {
 					return this.inherited(arguments);
 				}
