@@ -72,7 +72,8 @@ define(function (require) {
             _bottom: 0,
             _width: 0,
             _height: 0,
-            _zoom: 1.0,
+            _zoom: 1.0, 
+            _zoomOrigin: "0 0",
 
             _focusable: false,
             
@@ -368,7 +369,7 @@ define(function (require) {
             	if(zoomed && parseFloat(this._zoom) !== 1) {
         			style.transform = String.format("scale3d(%s, %s, 1)", 
         				this._zoom, this._zoom);
-        			style['transform-origin'] = "0 0";
+        			style['transform-origin'] = this._zoomOrigin;
             	} else {
             		style.transform = "";
             		style['transform-origin'] = "";
@@ -852,13 +853,19 @@ define(function (require) {
             	}
             	return this._zoom;
             },
-            setZoom: function(f) {
-            	if(this._zoom !== f) {
+            setZoom: function(f, o) {
+            	if(f instanceof Array) {
+            		// support for zoom: [1.5, "50% 0"]
+            		return this.setZoom(f[0], f[1]);
+            	}
+            	
+            	if(this._zoom !== f || this._zoomOrigin !== o) {
             		if(!this.hasClass("animated")) {
             			this.addClass("animated");
-            			return this.update(function() { this.setZoom(f); }.bind(this));	
+            			return this.update(function() { this.setZoom(f, o); }.bind(this));	
             		}
             		this._zoom = f;
+            		this._zoomOrigin = o;
             		this.nodeNeeded();
             		this.renderZoom();
             		this.setTimeout("align", 450);
