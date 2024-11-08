@@ -1,23 +1,12 @@
-"use vcl/CssRules, vcl/ui/Input";
+"use vcl/CssRules, vcl/ui/Input, vcl/ui/Tabs, vcl/ui/ListRow";
 
 var CssRules = require("vcl/CssRules");
 
 var css = {
 	'#close-x': {
-		'': "transition: opacity 1s, background-color 1s; opacity: 0.1; position:absolute;top:0;right:0;color:silver;padding:4px 8px;font-size:14pt;z-index:999999999999;border-radius:15px;background-color:rgba(255,255,255,0.5);",
-		'&:hover': "color:rgb(56,121,217);cursor:pointer;opacity: 1;"
+		'': "transition: opacity 1s; opacity: 0.1; position:absolute;top:0;right:0;color:silver;padding:4px 8px;font-size:14pt;z-index:999999999999;",
+		'&:hover': "color:black;cursor:pointer;opacity: 1;"
 	},
-	'font-family': "Lucida Grande, Arial, sans-serif", 
-	'font-size': "9pt",
-	'.{./Button}': {
-		'font-size': "9pt",
-		'font-family': "Lucida Grande, Arial, sans-serif",
-		'vertical-align': "top",
-		'&.disabled': "color:gray;",
-		'&:not(:active)': "margin-bottom:4px;",
-		'&:active': "margin-bottom:0;margin-top:2px;border:2px solid rgb(57,121,217); padding-left:8px; padding-right:6px;"// background:-webkit-linear-gradient(top, rgb(255, 255, 255) 10%, rgb(227, 227, 227) 100%);"
-	},
-	
 	".with-shadow": "box-shadow:rgba(0, 0, 0, 0.4) 0px 1px 2px 0px;",
 	".with-text-shadow": "text-shadow: rgb(255 255 255) 0px 0px 12px, #00000094 0px 0px 5px;",
 	".transparent": "background-color:transparent;",
@@ -26,7 +15,7 @@ var css = {
  		".glassy": "background-color: rgba(155, 155, 155, 0.35); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);",
 		".loading": "background: rgba(155, 155, 155, 0.35) url(/shared/vcl/images/loading.gif) 50% 50% no-repeat;",
 		".rounded": "padding: 4px; border-radius: 5px;",
-		".animate-width-height": "transition: z-index 400ms, width 250ms ease-in, height 250ms ease-in, transform 450ms;",
+		".animate-width-height": "transition: width 250ms ease-in, height 250ms ease-in;",
 		">.glassy:not(.no-margin)": "margin: 32px;",
 		">.glassy": {
 			"": "pointer-events: auto;",
@@ -53,7 +42,7 @@ var css = {
 			'border-radius': "5px",
 			'z-index': "1999",
 			// 'backdrop-filter': "blur(10px)",
-			'transition': "box-shadow 0.45s ease 0s, transform 0.45s ease 0s, left 0.45s ease 0s, right 0.45s ease 0s, top 0.45s ease 0s, bottom 0.45s ease 0s, width 0.45s ease 0s, height 0.45s ease 0s, border-width 0.45s ease 0s, transform-origin 0.45s ease 0s",
+			'transition': "box-shadow 0.45s ease 0s, transform 0.45s ease 0s, left 0.45s ease 0s, right 0.45s ease 0s, top 0.45s ease 0s, bottom 0.45s ease 0s, width 0.45s ease 0s, height 0.45s ease 0s, border-width 0.45s ease 0s",
 		},
 		'&:hover': {
 			'box-shadow': "0 0 10px 5px rgba(0,0,0,.2)",
@@ -76,16 +65,6 @@ var css = {
 		'&.glassy-overlay > .client.no-margin': "margin:0;",
 		'&.right': "right: 40px; transform-origin: top right;",
 		'&.left': "left: 40px; transform-origin: top left;",
-		
-		'&.parent-topleft':			"transform-origin: 0% 0%;",
-		'&.parent-topcenter':		"transform-origin: 50% 0%;",
-		'&.parent-topright':		"transform-origin: 100% 0%;",
-		'&.parent-middleleft':		"transform-origin: 0% 50%;",
-		'&.parent-middlecenter':	"transform-origin: 50% 50%;",
-		'&.parent-middleright':		"transform-origin: 100% 50%;",
-		'&.parent-bottomleft':		"transform-origin: 0% 100%;",
-		'&.parent-bottomcenter':	"transform-origin: 50% 100%;",
-		'&.parent-bottomright':		"transform-origin: 100% 100%;",		
 
 			// "&.right": {
 			// 	'': "right: 5%; transform-origin: top right;",
@@ -95,6 +74,15 @@ var css = {
 			// 	'': "left: 5%; transform-origin: top left;",
 			// },
 
+        '&.parent-topleft': "transform-origin: 0% 0%;",
+        '&.parent-topcenter': "transform-origin: 50% 0%;",
+        '&.parent-topright': "transform-origin: 100% 0%;",
+        '&.parent-middleleft': "transform-origin: 0% 50%;",
+        '&.parent-middlecenter': "transform-origin: 50% 50%;",
+        '&.parent-middleright': "transform-origin: 100% 50%;",
+        '&.parent-bottomleft': "transform-origin: 0% 100%;",
+        '&.parent-bottomcenter': "transform-origin: 50% 100%;",
+        '&.parent-bottomright': "transform-origin: 100% 100%;",
 		'&.shrink-to-corner:not(:hover)': {
 			'width': 175 + "px",
 			'height': 175 + "px"
@@ -151,24 +139,15 @@ var css = {
 		}
 	},
 	
-	'.glassy-overflow': "position: absolute; _pointer-events: none; background-color: rgba(205,95,65,0.1); z-index: 1998;",
-	
-	'.veldoffice\\/Tabs\\<Document\\> .\\#preview': "background-color: rgba(240, 240, 240, 0.75);"
+	'.glassy': {
+		'#bar': "background-color: rgba(240, 240, 240, 0.35);",
+		'.{Tabs}': "background-color: rgba(240, 240, 240, 0.35);",
+		'.{ListRow}:not(.selected).odd': "background-color: rgba(240, 240, 240, 0.7777);"
+	}
 };
 
-[(""), {
-	onLoad() {
-		const w = this.qs("#window");
-		w.set("css", js.mi(w.get("css") || {}, css));
-		return this.inherited(arguments);
-	}	
-}, [
+[(""), [
 
-	// ["#window", {
-		
-	// 	css: css
-		
-	// }]	
-	
-	
+	[("#window"), { css: css }]	
+
 ]];
