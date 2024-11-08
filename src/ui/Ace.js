@@ -141,6 +141,12 @@ function(require, Ace, ace, Panel, Type, Text) {
 			    
 			    session.insert({ row: lastRow, column: 0 }, '\n' + content);  // Insert content at the bottom
 			},
+			prepend: function(content) {
+				const editor = this.getEditor();
+			    const session = editor.getSession();       // Get the current session
+
+			    session.insert({ row: 0, column: 0 }, '\n' + content);  // Insert content at the bottom
+			},
 			
 			getSelection: function() {
 				const editor = this.getEditor();
