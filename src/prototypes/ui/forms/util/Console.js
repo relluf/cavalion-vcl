@@ -1,4 +1,4 @@
-"use devtools/Resources, devtools/Parser, vcl/Component, vcl/Control, vcl/Dragger, util/HotkeyManager, vcl/ui/Sizer, vcl/ui/FormContainer, devtools/cavalion-devtools, vcl/ui/Ace";
+"use devtools/Resources, devtools/Parser, vcl/Component, vcl/Control, vcl/Dragger, util/HotkeyManager, vcl/ui/Sizer, vcl/ui/FormContainer, devtools/cavalion-devtools, vcl/ui/Ace, util/Clipboard, blocks/Blocks";
 
 const Component = require("vcl/Component");
 const Control = require("vcl/Control");
@@ -8,10 +8,15 @@ const Sizer = require("vcl/ui/Sizer");
 const Dragger = require("vcl/Dragger");
 const Resources = require("devtools/Resources");
 const Parser = require("devtools/Parser");
+const Clipboard = require("util/Clipboard");
+const B = require("blocks/Blocks");
 
 const HOTKEY_ALWAYS_ENABLED = {
 	isHotkeyEnabled() { 
-		return this._owner.isEnabled(); 
+		if(this._owner.isEnabled()) {
+			return (Control.focused || this).up("devtools/Workspace<>") === null;
+		}
+		return false;
 	}
 };
 const getAce = () => { 
@@ -22,25 +27,21 @@ const getAce = () => {
 			.filter(ace => ace.isVisible())
 			.pop();
 };
-
 const deselect = () => {
 	window.getSelection && window.getSelection().removeAllRanges();
 	document.selection && document.selection.empty();
 };
 
-window.H = (uri, vars) => B.i(["Hover<>", { vars: js.mi({ uri: uri }, vars)}]);
+const H = (uri, vars) => B.i(["Hover<>", { vars: js.mi({ uri: uri }, vars)}]);
 
-let cc = function() { // HM-20241010-1-method-auto-require-in-first-call
-	// const args = js.copy_args(arguments);
-	return Promise.resolve(req("clipboard-copy")).then(cc_ => {
-		cc = cc_;
-		
-		return cc.apply(window, arguments);
-	});
-};
-
+const cc = (text) => Clipboard.copy(text);
 const cl = console.log;
 const facts = (comp) => Component.getFactories(comp);
+
+window.B = B; window.H = H;
+window.facts = facts;
+window.cc = cc;
+window.cl = cl;
 
 [["ui/Form"], {
     activeControl: "console",
@@ -343,7 +344,6 @@ const facts = (comp) => Component.getFactories(comp);
     	}
     }],
 
-	
     [["ui/controls/Toolbar"], "toolbar", {
         css: { cursor: "ns-resize" },
         draggable: true,
@@ -379,7 +379,6 @@ const facts = (comp) => Component.getFactories(comp);
         },
         onEvaluate(expr) {
 			const cl = console.log;
-			const cc = req("clipboard-copy");
 			const pr = () => this.print.apply(this, arguments);
 
             const open = (uri, opts) => this.bubble(
