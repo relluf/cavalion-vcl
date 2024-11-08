@@ -1,3 +1,9 @@
+### `2024/11/08` - 1.1.85
+
+* Service build in favor of cavalion-code
+
+### `2024/10/..` - 1.1.84
+
 ### `2024/10/24` - 1.1.83
 
 - 20241024 introduces Control.prototype.getNext/PreviousSibling introduces Ace.prototype.append
