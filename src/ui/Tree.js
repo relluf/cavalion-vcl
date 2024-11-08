@@ -117,7 +117,6 @@ define(function (require) {
 					},
                     "&.expandable:not(.expanding)": {
                         ">.icon::before": {
-                            transform: "translate(0, -2px)",
                             'line-height': "0",
                             content: "'▸'" // http://www.alanwood.net/unicode/geometric_shapes.html
                         }
