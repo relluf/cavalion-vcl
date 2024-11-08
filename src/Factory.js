@@ -534,9 +534,7 @@ this._source = source;
 				var sourceUri = Factory.makeTextUri(name);
 
 				function instantiate(source, local) {
-					var p = "";//local ? ".skip-fetch.local" : "";
-					var factory = new Factory(parentRequire, name + p, sourceUri + p);
-// console.log("instantiate", name + p);
+					var factory = new Factory(parentRequire, name, sourceUri);
 					factory.load(source, () => load(factory, source));
 				}
 
