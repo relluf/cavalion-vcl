@@ -12,8 +12,8 @@ var css = {
 	".transparent": "background-color:transparent;",
 	".glassy-overlay": {
 		"": "pointer-events: none; color:rgba(5,5,5,0.95);",
- 		".glassy": "background-color: rgba(155, 155, 155, 0.35); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);",
-		".loading": "background: rgba(155, 155, 155, 0.35) url(/shared/vcl/images/loading.gif) 50% 50% no-repeat;",
+ 		".glassy": "background-color: rgba(215, 215, 215, 0.35); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);",
+		".loading": "background: rgba(215, 215, 215, 0.35) url(/shared/vcl/images/loading.gif) 50% 50% no-repeat;",
 		".rounded": "padding: 4px; border-radius: 5px;",
 		".animate-width-height": "transition: width 250ms ease-in, height 250ms ease-in;",
 		">.glassy:not(.no-margin)": "margin: 32px;",
@@ -47,7 +47,7 @@ var css = {
 		'&:hover': {
 			'box-shadow': "0 0 10px 5px rgba(0,0,0,.2)",
 			'cursor': "move",
-			'.client': "border-color: rgba(56,127,217,0.025); background-color:rgba(155, 155, 155, 0.2);"
+			'.client': "border-color: rgba(56,127,217,0.025); background-color:rgba(215, 215, 215, 0.2);"
 		},
 		// '&.square': {
 		// 	'min-width': 175 + "px",
@@ -128,7 +128,7 @@ var css = {
 			'&:hover': {
 			}
 		},
-		'.seperator.seperator.seperator': "border-top: 1px solid rgba(155, 155, 155, 0.55);",
+		'.seperator.seperator.seperator': "border-top: 1px solid rgba(215, 215, 215, 0.55);",
 		
 		'&.phone': {
 			'': "width: 389px; border-radius:20px; box-shadow: 0 0 20px 10px rgba(0,0,0,.2);",

@@ -53,6 +53,8 @@ function(require, Ace, ace, Panel, Type, Text) {
 	const markDeletionInGutter = (editor, lineNumber) => {
 	    editor.session.addGutterDecoration(lineNumber, "line-deleted");
 	};
+	
+	ace.config.set("basePath", window.require.toUrl("ace").split("?")[0]);
 
 	return (Ace = Ace(require, {
 		inherits: Panel,
