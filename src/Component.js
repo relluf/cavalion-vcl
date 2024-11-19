@@ -535,13 +535,12 @@ define(function (require) {
                 }
                 return this._vars;
             },
-            setVars: function (value) {
+            setVars: function (value, mixInRecursive) {
             	if(typeof value === "string") {
             		value = js.str2obj(value);
             	}
-                if (this.isLoading()) {
-                    this._vars = mixInR(this._vars || {},
-                    value);
+                if (mixInRecursive || this.isLoading()) {
+                    this._vars = mixInR(this._vars || {}, value);
                 } else {
                     this._vars = value;
                 }

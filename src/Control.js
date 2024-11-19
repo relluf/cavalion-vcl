@@ -1244,6 +1244,8 @@ define(function(require) {
 								control.update();
 							} else if(control._node !== null) {
 								control._update();
+							} else {
+								control.getNode();
 							}
 							control.updateChildren(recursive, directly);
 						}, this);

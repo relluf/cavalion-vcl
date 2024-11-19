@@ -142,7 +142,7 @@ var css = {
 	'.glassy': {
 		'#bar': "background-color: rgba(240, 240, 240, 0.35);",
 		'.{Tabs}': "background-color: rgba(240, 240, 240, 0.35);",
-		'.{ListRow}:not(.selected).odd': "background-color: rgba(240, 240, 240, 0.7777);"
+		'.{ListRow}:not(.selected).odd': "background-color: rgba(240, 240, 240, 0.55);"
 	}
 };
 
