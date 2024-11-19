@@ -47,15 +47,9 @@ define(function (require) {
         inherits: Container,
         prototype: {          
             "@css": {
-                "position": "absolute",
-                "overflow": "auto",
-                "cursor": "default",
-                "&:focus": {
-                    outline: "none"
-                },
-                "&.animated": {
-                	"transition": "transform 0.45s"
-                }
+                '': "position: absolute; overflow: auto; cursor: default;",
+                '&:focus': "outline: none;",
+                '&.animated': "transition: transform 0.45s;"// transform-origin: 0 0;"
             },
 
             /** @overrides ../Control */
@@ -372,7 +366,8 @@ define(function (require) {
         			style['transform-origin'] = this._zoomOrigin;
             	} else {
             		style.transform = "";
-            		style['transform-origin'] = "";
+            		setTimeout(() => style['transform-origin'] = "", 450);
+            		// something is not right here, 0 0 is already the default, right?
             	}
             },
 
@@ -865,7 +860,11 @@ define(function (require) {
             			return this.update(function() { this.setZoom(f, o); }.bind(this));	
             		}
             		this._zoom = f;
-            		this._zoomOrigin = o;
+            		if(o === undefined) {
+            			delete this._zoomOrigin;
+            		} else {
+            			this._zoomOrigin = o;
+            		}
             		this.nodeNeeded();
             		this.renderZoom();
             		this.setTimeout("align", 450);

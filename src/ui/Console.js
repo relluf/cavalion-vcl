@@ -17,6 +17,17 @@ define(function(require) {
 		};
 
 	var MAX_HISTORY_LENGTH = 1024 * 50;
+	
+	const initialize_Q = (root, value) => {
+		const v = value || root._nodes.input.value;
+		root._Q = root._history.filter((s, i, a) => (!i || a[i - 1] !== s) && (!v || s.startsWith(v)));
+		root._Q = root._Q.concat(root._history.filter(s => s.includes(v))).reverse().filter(Array.fn.unique).reverse();
+
+		if(root._Q.length === 0) {
+			root._Q = [v];// 
+		}
+		root._Q.index = root._Q.length;
+	};
 
 	var Console = {
 		inherits: Panel,
@@ -155,7 +166,7 @@ define(function(require) {
 
 				this._nodes.console = this.getChildNode(0);
 				this._nodes.input = this.getChildNode(1, 0);
-
+				
 				this._printer = new Printer(this._nodes.console);
 			},
 /*
@@ -220,9 +231,9 @@ define(function(require) {
 			onkeypress: function(evt) {
 				/** @overrides ../../Control.prototype.onkeydown */
 				var r = this.inherited(arguments);
-				if(r !== false) {
+				if(r !== false) { this.nextTick(() => { // let key be handled
+					const text = this._nodes.input.value;
 					if(evt.keyCode === 13) {
-						var text = this._nodes.input.value;
 						if(text !== "") {
 							var value;
 
@@ -236,8 +247,17 @@ define(function(require) {
 							}
 							this.print(text, value);
 						}
+					} else if(text.startsWith("// ") && text.endsWith(" //")) {
+						if(!this._Q || this._Q.text !== text) {
+							initialize_Q(this, text.substring(0, text.length - 4));
+							
+							this._Q.index--;
+							this._nodes.input.value = this._Q[this._Q.index];
+							this._Q.text = text;
+						}
+
 					}
-				}
+				});}
 				//this.print("press", evt.keyCode);
 				return r;
 			},
@@ -275,16 +295,9 @@ define(function(require) {
 					}
 				} else if(evt.keyCode === 38 || evt.keyCode === 40) {
 					clearQ = false;
-					if(!this._Q) {
-						const v = this._nodes.input.value;
-						
-						this._Q = this._history.filter((s, i, a) => (!i || a[i - 1] !== s) && (!v || s.startsWith(v)));
-						this._Q = this._Q.concat(this._history.filter(s => s.includes(v))).reverse().filter(Array.fn.unique).reverse();
 
-						if(this._Q.length === 0) {
-							this._Q = [v];
-						}
-						this._Q.index = this._Q.length;
+					if(!this._Q) {
+						initialize_Q(this);
 					}
 					
 					if(evt.keyCode === 38) {
@@ -435,7 +448,7 @@ define(function(require) {
 			},
 			getValues: function(selected) {
 				return this.getNode("console")
-					.qsa(".node" + selected ? ".selected" : "")
+					.qsa((selected ? "" : ":scope > ") + " .node" + (selected ? ".selected" : ""))
 					.map(n => n._line)
 					.filter(Boolean).map(l => l._value);
 			},

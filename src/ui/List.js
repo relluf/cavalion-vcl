@@ -715,10 +715,10 @@ workaroundColumnAlignment(this);
 							if(column === null) {
 								column = this.addColumn();
 								column.setAttribute(attrs[i]);
-								var s = attrs[i].split(":").pop().split(".");
+								var s = attrs[i]/*.split(":").pop()*/.split(".");
 								if(s.length > 1) {
 									if(shuffle) {
-										s = [s.pop()].concat(s).join(".");
+										s = [s.pop()].concat(s.join(".")).join(" ");
 									} else {
 										s = s.join(".");
 									}
