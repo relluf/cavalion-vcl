@@ -55,7 +55,7 @@ function(require, Ace, ace, Panel, Type, Text) {
 	};
 	
 	ace.config.set("basePath", window.require.toUrl("ace").split("?")[0]);
-
+	
 	return (Ace = Ace(require, {
 		inherits: Panel,
 		prototype: {
@@ -73,7 +73,7 @@ function(require, Ace, ace, Panel, Type, Text) {
 			_content: "<div></div>",
 
 			_cursorPos: null,
-
+			
 			onnodecreated: function() {
 				/**
 				 * @overrides ../Control.prototype.onnodecreated
@@ -84,8 +84,31 @@ function(require, Ace, ace, Panel, Type, Text) {
 				this._editor.$blockScrolling = Infinity;
 				this._editor.setOption("useSoftTabs", false);
 				this._editor.on("change", (e) => this.dispatch("change", e));
-				
+
 				initCommands(this._editor);
+
+				if(this.hasOwnProperty("_value")) {
+					this._editor.setValue(this._value);
+					delete this._value;
+				}
+				
+				if(this.hasOwnProperty("_mode")) {
+					this.setMode(this._mode);
+				}
+				
+				// this.setTimeout(() => {
+					
+				// 	const app = this.app();
+				// 	if(app && app.qsa("#ace").length > 5) {
+				// 		if(this.isVisible() === false) {
+				// 			this.print(this, "autoremove - isVisible: " + this.isVisible());
+				// 			this._value = this.getValue();
+				// 			this.destroyNode();
+				// 			delete this._editor;
+				// 		}
+				// 	}
+
+				// }, 200);
 				
 				return this.inherited(arguments);
 			},
@@ -115,27 +138,42 @@ function(require, Ace, ace, Panel, Type, Text) {
 				 *
 				 * @returns
 				 */
+
+// this.print(this, "getEditor: " + this._editor);
+				 
 				this.nodeNeeded();
 				return this._editor;
 			},
 			getValue: function() {
+				if(this.hasOwnProperty("_value")) return this._value;
+				
 				this.nodeNeeded();
 				return this._editor.session.getValue();
 			},
 			setValue: function(value) {
-				this.nodeNeeded();
 				if(value instanceof Array && value.every(s => typeof s === "string")) {
 					value = value.join("\n");
 				}
-				return this._editor.setValue(typeof value === "string" ? value : JSON.stringify(value));
+				
+				value = typeof value === "string" ? value : JSON.stringify(value);
+
+				if(!this._node) {
+					return (this._value = value);
+				}
+				
+				// this.nodeNeeded();
+				return this._editor.setValue(value);
 			},
 			getLines: function(seperator) {
 				return this.getValue().split(seperator || "\n");
 			},
 			setMode: function (mode) {
-				this.getEditor().session.setMode("ace/mode/" + mode);
+				if(!this._editor) {
+					return this._mode = mode;
+				}
+				this._editor.session.setMode("ace/mode/" + mode);
 			},
-			
+
 			append: function(content) {
 				const editor = this.getEditor();
 			    const session = editor.getSession();       // Get the current session

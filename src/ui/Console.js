@@ -1,6 +1,7 @@
 define(function(require) {
 
 	var Class = require("js/Class");
+	var Browser = require("util/Browser");
 	var Deferred = require("js/Deferred");
 	var js = require("js");
 	var Printer = require("console/Printer");
@@ -169,27 +170,38 @@ define(function(require) {
 				
 				this._printer = new Printer(this._nodes.console);
 			},
-/*
 			onmousedown: function(evt) {
-		        if(evt.target === this._node) {
-		        	this.addClass("highlight-click");
-		        }
+		        // if(evt.target === this._node) {
+		        // 	this.addClass("highlight-click");
+		        // }
 			},
-			onmouseup: function() {
-				if(this.hasClass("highlight-click")) {
-					this.removeClass("highlight-click");
-				}
+			onmouseup: function(evt) {
+				// if(this.hasClass("highlight-click")) {
+				// 	this.removeClass("highlight-click");
+				// }
 			},
-*/
+
 			onclick: function(evt) {
 				/** @overrides ../../Control.prototype.onclick */
-				this.setTimeout("focus", function() {
-			        //if(evt.target === this._node) {
-	    				this.storeScroll();
-	    				this._nodes.input.focus();
-	    				this.restoreScroll();
-			        //}
-				}.bind(this), 200);
+
+				if(this._ignoreClick) return console.log("blocked-click");
+
+				this.setTimeout("focus", () => requestAnimationFrame(() => {
+    				this.storeScroll();
+
+					if(Browser.chrome) {
+						this._ignoreClick = true;
+						this._nodes.input.focus();
+						this._node.click(); // Force Chrome to acknowledge a user event
+						delete this._ignoreClick;
+					}
+					this._nodes.input.focus();
+
+					Browser.chrome && this.restoreScroll();
+					Browser.safari && this.nextTick(() => this.restoreScroll());
+
+					// Browser.chrome && this.nextTick(() => this._nodes.input.focus());
+				}), 100);
 				
 				var node = evt.target;
 				if(evt.metactrlKey && HE.hasClass(node, "key")) {
@@ -263,7 +275,7 @@ define(function(require) {
 			},
 			onkeydown: function(evt) {
 				/** @overrides ../../Control.prototype.onkeyup */
-				var r = this.inherited(arguments), clearQ = !!this._Q;
+				var r = this.inherited(arguments), clearQ = !!this._Q, nodes;
 				
 				if(evt.ctrlKey === true) {
 					if(evt.altKey === true && evt.keyCode === 13) {
@@ -277,12 +289,12 @@ define(function(require) {
 						if(evt.shiftKey === true) {
 							console.log(sel);
 						}
-						this.print(sel);
-					} else if(evt.keyCode === 76) {
+						this.print(js.sf("c$%d", Math.random() * 10), sel);
+					} else if(evt.keyCode === 76) { // control+L
 						if(evt.shiftKey === true) {
 							
 						} else {
-							var nodes = this._nodes.console.qsa(".selected.node").map(_ => { 
+							nodes = this._nodes.console.qsa(".selected.node").map(_ => { 
 								_.parentNode.removeChild(_);
 								return _;
 							});
@@ -290,8 +302,34 @@ define(function(require) {
 							evt.preventDefault();
 							nodes.map(_ => this._nodes.console.appendChild(_));
 						}
-					} else if(evt.keyCode === 75) {
+					} else if(evt.keyCode === 75) { // control+K
 						this._nodes.console.qsa(".selected.node").map(_ => HE.removeClass(_, "selected"));
+					} else if(evt.keyCode === 73) { // control+I {
+						nodes = this._nodes.console.qsa(".selected.node");
+						if(nodes.length >= 1) {
+							if(nodes[0].previousSibling) {
+								nodes[0].previousSibling.classList.add("selected");
+								nodes[0].previousSibling.scrollIntoView({ behavior: "auto", block: "center", inline: "nearest" });
+								if(evt.shiftKey !== true) {
+									nodes[0].classList.remove("selected");
+								}
+							}
+						} else {
+							nodes = this._nodes.console.qsa(":scope > .node").reverse()
+							nodes[0].classList.add("selected");
+							nodes[0].scrollIntoView({ behavior: "auto", block: "center", inline: "nearest" });
+						}
+					} else if(evt.keyCode === 74) { // control+J {
+						nodes = this._nodes.console.qsa(".selected.node").reverse();
+						if(nodes.length >= 1) {
+							if(nodes[0].nextSibling) {
+								nodes[0].nextSibling.classList.add("selected");
+								nodes[0].scrollIntoView({ behavior: "auto", block: "center", inline: "nearest" });
+								if(evt.shiftKey !== true) {
+									nodes[0].classList.remove("selected");
+								}
+							}
+						}
 					}
 				} else if(evt.keyCode === 38 || evt.keyCode === 40) {
 					clearQ = false;
@@ -454,7 +492,7 @@ define(function(require) {
 			},
 			getKeys: function(selected) {
 				return this.getNode("console")
-					.qsa(".node" + selected ? ".selected" : "")
+					.qsa((selected ? "" : ":scope > ") + " .node" + (selected ? ".selected" : ""))
 					.map(n => n._line)
 					.filter(Boolean).map(l => l._key);
 			}
