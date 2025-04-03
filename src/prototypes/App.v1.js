@@ -67,5 +67,11 @@ var FormContainer = require("vcl/ui/FormContainer");
         ["vcl/ui/FormContainer", "client", { 
         	formUri: "./ui/forms/Portal<>" 
         }]
-    ]]
+    ]],
+    
+    // [("vcl/Action"), "reload-app", {
+    // 	hotkey: "Shift+MetaCtrl+R|Cmd+Alt+R",
+    // 	on(evt) { evt.preventDefault(); document.location.reload(); }
+    // }]
+
 ]];

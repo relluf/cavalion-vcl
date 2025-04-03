@@ -76,9 +76,9 @@ var Handlers = {
 			return alert("app-js not set"); 
 		}
 		
-		if(confirm("Make?")) {
-			Handlers.make_app.apply(this, [evt]);
-		}
+		// if(confirm("Make?")) {
+		// 	Handlers.make_app.apply(this, [evt]);
+		// }
 		
 		var text = this.ud("#extra-components").getValue();
 		RM.get(uri).then(res => {

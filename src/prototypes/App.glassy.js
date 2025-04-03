@@ -4,8 +4,9 @@ var CssRules = require("vcl/CssRules");
 
 var css = {
 	'#close-x': {
-		'': "transition: opacity 1s; opacity: 0.1; position:absolute;top:0;right:0;color:silver;padding:4px 8px;font-size:14pt;z-index:999999999999;",
-		'&:hover': "color:black;cursor:pointer;opacity: 1;"
+		'': "transition: opacity 1s; opacity: 0.1; position:absolute;top:0;right:0;color:silver;padding:4px 8px;font-size:14pt;z-index:999999999999;  border: 1px solid transparent; border-radius:3px;",
+		'&:hover': "color:black;font-weight:bold;cursor:pointer;opacity: 1;backdrop-filter: blur(10px); background-color: rgba(255,255,255,0.5); border: 1px solid silver;",
+		'&:active': "background-color: rgba(56,127,217,0.025);"
 	},
 	".with-shadow": "box-shadow:rgba(0, 0, 0, 0.4) 0px 1px 2px 0px;",
 	".with-text-shadow": "text-shadow: rgb(255 255 255) 0px 0px 12px, #00000094 0px 0px 5px;",
@@ -13,7 +14,7 @@ var css = {
 	".glassy-overlay": {
 		"": "pointer-events: none; color:rgba(5,5,5,0.95);",
  		".glassy": "background-color: rgba(215, 215, 215, 0.35); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);",
-		".loading": "background: rgba(215, 215, 215, 0.35) url(/shared/vcl/images/loading.gif) 50% 50% no-repeat;",
+		".loading": "background: url(/shared/vcl/images/loading.gif) 50% 50% no-repeat;",
 		".rounded": "padding: 4px; border-radius: 5px;",
 		".animate-width-height": "transition: width 250ms ease-in, height 250ms ease-in;",
 		">.glassy:not(.no-margin)": "margin: 32px;",
@@ -73,6 +74,8 @@ var css = {
 			// "&.left": {
 			// 	'': "left: 5%; transform-origin: top left;",
 			// },
+			
+		'#menubar': "border-bottom: none;",
 
         '&.parent-topleft': "transform-origin: 0% 0%;",
         '&.parent-topcenter': "transform-origin: 50% 0%;",
@@ -92,7 +95,7 @@ var css = {
 			'.{List}': "border-radius:5px;",
 			'.{ListHeader}': {
 				'': "background-color:transparent;transition:background-color 1s ease 0s;", 
-				'&.scrolled': "background-color:rgba(255,255,255,0.75);", 
+				'&.scrolled': "background-color:rgba(255,255,255,0.75);backdrop-filter:blur(10px);", 
 				'>div': "background-image:none;border:none;font-weight:bold;"
 			},
 			'.{Input}': {
@@ -124,8 +127,9 @@ var css = {
 			'border': "7px solid rgba(0,0,0,0)",
 			// 'overflow': "hidden",
 			'height': "100%",
-			'transition': "border-color 0.45s ease 0s, background-color 0.45s ease 0s",
+			'transition': "border-color 0.45s ease 0s, background-color 0.45s ease 0s, border-width: 0.45s ease 0s",
 			'&:hover': {
+				'border-width': "10px"
 			}
 		},
 		'.seperator.seperator.seperator': "border-top: 1px solid rgba(215, 215, 215, 0.55);",

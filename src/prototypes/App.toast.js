@@ -1,4 +1,33 @@
+"use util/Clipboard";
+
+const Clipboard = req("util/Clipboard");
+
 ["", {
+	onLoad() {
+
+		// Override toast method to be more convenient (TODO refactor to vcl/Application)
+		this.toast = (c = "Content not provided", ms = 1500, opts = {}) => {
+			if(typeof c === "object") {
+				return this.constructor.prototype.toast.apply(this, [c]);
+			}
+			return this.constructor.prototype.toast.apply(this, [
+				js.mi({content: c, ms: ms, classes: "fade glassy"}, opts)
+			]);
+		};
+		
+		Clipboard.onPaste.addListener(e => { 
+			this.print("onPaste", e);
+			this.toast(js.sf("Pasted %d bytes...", e.length ))});
+		Clipboard.onCopy.addListener(e => { 
+			this.print("onCopy", e);
+			if(typeof e === "string" && e.length > 150) {
+				this.toast(js.sf("Copied %d bytes", e.length ));
+			} else {
+				this.toast(js.sf("Copied <b>%H<b>", e));
+			}});
+
+		return this.inherited(arguments);		
+	},
 	onToast: function(options) {
 		
 		/*- 

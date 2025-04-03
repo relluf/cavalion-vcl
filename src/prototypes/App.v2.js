@@ -18,15 +18,15 @@ const css = {
 };
 
 [["./App.console.toast.glassy<>"], {
-	vars: { canunload: true }
+	vars: { canunload: false }
 }, [
 	
-    [("vcl/Action"), "reload-app", {
-    	hotkey: "Shift+MetaCtrl+R|Cmd+Alt+R",
-    	on() { 
-    		document.location.reload(); 
-    	}
-    }],
+    // [("vcl/Action"), "reload-app", {
+    // 	hotkey: "Shift+MetaCtrl+R|Cmd+Alt+R",
+    // 	on() { 
+    // 		document.location.reload(); 
+    // 	}
+    // }],
     
     [("#window"), { css: css }]
 ]];

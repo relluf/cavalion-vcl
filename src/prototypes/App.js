@@ -1,6 +1,7 @@
 "use vcl/ui/Popup, vcl/ui/List";
 
 ["vcl/Application", { }, [
+
     ["vcl/ui/Panel", ("window"), { 
     	align: "client", classes: "animated",
 		onLoad() { 
@@ -11,5 +12,11 @@
 			},
 			req("vcl/ui/Popup").prototype._parent = this;
 		}
+    }],
+    ["vcl/Action", ("reload-app"), {
+    	hotkey: "Shift+MetaCtrl+R|Cmd+Alt+R",
+    	on(evt) { evt.preventDefault(); document.location.reload(); }
     }]
+	
+
 ]];

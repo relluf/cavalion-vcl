@@ -7,57 +7,42 @@ const Control = require("vcl/Control");
 
 require("console/node/vcl/Component").initialize();
 override(require("vcl/Component").prototype, "print", function(inherited) {
-    		return function() {
-	    		var console = this.down("vcl/ui/Console#console");
-	    		if(console && !console.vars("skip-print")) {
-	    			return console.print.apply(console, arguments);
-	    		}
-	    		return inherited.apply(this, arguments);
-    		};
-    	});
+	return function() {
+		var console = this.down("vcl/ui/Console#console");
+		if(console && !console.vars("skip-print")) {
+			return console.print.apply(console, arguments);
+		}
+		return inherited.apply(this, arguments);
+	};
+});
 
 [(""), [
     ["vcl/Action", ("toggle-console"), {
-        hotkey: `
-keyup:Ctrl+Escape|keydown:Ctrl+Escape|
-keyup:Ctrl+Shift+D|keydown:Ctrl+Shift+D|
-keyup:Alt+Shift+Z|keydown:Alt+Shift+Z|
-keyup:MetaCtrl+192`,
+        hotkey: "keyup:Ctrl+Escape|keydown_:Ctrl+Escape|keyup:Ctrl+Shift+D|keyup:MetaCtrl+192",
 		onLoad() {
 			// TODO #CVLN-20200822-2
-			this.readStorage("visible", (visible) => eval(visible) && this.execute({}));
+			this.readStorage("visible", (visible) => JSON.parse(visible) && this.execute({}));
 		},
         onExecute(evt) {
-            var scope = this.scope();
-            var focused;
+            var scope = this.scope(), console = scope.console.qs("#console");
+            var focused = Control.findByNode(document.qs(":focus"));
+            var visible = scope.console.getVisible();
 
-            if (evt.type === "keydown") {
-                focused = require("vcl/Control").focused;
-                if (focused !== scope.console.getScope().console) {
-                    this.setVar("focused", focused);
-                }
-            } else {
-                if (!scope.console.isVisible()) {
-                    scope.console.show();
-                    scope['align-enabled'].setState(true);
-                } else {
-                	if(Control.focused === scope.console.getScope().console) {
-	                    scope['align-enabled'].setState(false);
-	                    scope.console.hide();
-	                    focused = this.removeVar("focused");
-	                    if (focused && focused !== scope.console) {
-	                        this.setTimeout("focus", function() {
-	                            // console.log("setFocus", focused);
-	                            focused.setFocus();
-	                        }, 250);
-	                    }
-                	} else {
-                		scope.console.setFocus();
-                	}
-                }
-            }
-
-            this.writeStorage("visible", scope.console.isVisible());
+        	if(focused !== console) {
+        		this.vars("focused", focused);
+        	}
+          
+            if(visible && focused !== console) {
+            	console.setFocus();
+            } else if(!scope.console.toggle("visible")) {
+        		if((focused = this.vars("focused"))) {
+        			focused.setFocus();
+        		}
+        	}
+        	
+        	visible = scope.console.isVisible();
+        	scope['align-enabled'].setState(visible);
+            this.writeStorage("visible", visible);
             
             return this.inherited(arguments);
         }
@@ -123,6 +108,17 @@ keyup:MetaCtrl+192`,
     		if(!(console = console.qs("#console")).hasClass("no-time")) { 
     			console.addClass("no-time"); 
     		}
+    	}
+    }],
+    ["vcl/Action", ("open-alphaview"), {
+    	hotkey: "MetaCtrl+F3",
+    	on() {
+    		let c = Control.findByNode(document.qs(":focus"));
+    		if(c && (c = c instanceof (req("vcl/ui/Console")) ? c : c.udr("vcl/ui/Console"))) {
+    			H("devtools/Alphaview.csv", { console: c });
+			} else {
+				H("devtools/Alphaview.csv");
+			}
     	}
     }],
     

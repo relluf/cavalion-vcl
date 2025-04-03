@@ -19,6 +19,7 @@ const HOTKEY_ALWAYS_ENABLED = {
 		return false;
 	}
 };
+
 const getAce = () => { 
 	return Control.focused instanceof Ace ? 
 		Control.focused :
