@@ -1,3 +1,13 @@
+### `2025/04/03` - 1.1.86
+
+* 20250403 fixes bug in sorting by column (List) improves selecting console nodes with keyboard
+* 20250403 updates ^Escape handling to toggle console visibility updates glassy styles toasts out a message whenever the system clipboard is read or written
+* 20250403 introduces Action.prototype.go() (alias for execute()) finetunes Component.prototype.getVar introduces Control.findByName(node) where node is a string (eg. ":focus")
+* 20241119 develops support for searching through history updates Panel.prototype.setZoom to support setting transform-origin as well updates auto ListColumn header algoritm
+* 20241119 updates Component.prototype.setVars to control whether to mixInR or mixIn fixes a bug in Control.prototype.updateChildren() updates glassy styles
+* 20241111 updates glassy background to be more light sets ace.config for dynamic loading of themes and modes
+* 20241108 adds prepend
+
 ### `2024/11/08` - 1.1.85
 
 * Service build in favor of cavalion-code
