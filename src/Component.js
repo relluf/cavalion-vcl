@@ -512,7 +512,7 @@ define(function (require) {
             	if(arguments.length === 2) {
             		return this.setVar("" + key, value);
             	}
-            	if(arguments.length === 3) {
+            	if(arguments.length >= 3) {
             		return this.getVar.apply(this, arguments);
             	}
             	if(key instanceof Array) {
@@ -556,16 +556,18 @@ define(function (require) {
             hasVar: function (key) {
                 return (this._vars && this._vars.hasOwnProperty(key)) || false;
             },
-            getVar: function (namePath, fallback_to_owner, defaultValue) {
-                if (this._vars !== null && arguments.length === 3) {
+            getVar: function (namePath, fallback_to_owner, defaultValue, callingComponent) {
+                if (this._vars !== null && arguments.length >= 3) {
                     this._vars = this._vars || {};
                 }
+                
+                if(arguments.length < 4) callingComponent = this;
                 
                 var r = this._vars !== null ? js.get(namePath, this._vars) : undefined;
                 if (r === undefined) {
                 	if(fallback_to_owner === true && this._owner !== null) {
-                    	r = this._owner.getVar(namePath, true, defaultValue);
-                	} else if(arguments.length === 3) {
+                    	r = this._owner.getVar(namePath, true, defaultValue, callingComponent);
+                	} else if(arguments.length >= 3) {
                 		if((r = defaultValue) !== undefined) {
 			                if(typeof defaultValue === "function") {
 			                	r = defaultValue([this].concat(js.copy_args(arguments)));

@@ -62,6 +62,10 @@ define(function (require) {
                     }
                 }
             },
+            go: function() {
+            	Action.prototype.go = Action.prototype.execute;
+            	return this.go.apply(this, arguments);
+            },
             execute: function (evt, sender) {
             	return this.onexecute(evt, sender);
             },
@@ -312,8 +316,7 @@ define(function (require) {
 	            /**
 	             * Sets the -hotkey-property.
 	             */
-	            value = value.replace(/Cmd\+/g, "Meta+").replace(/\+Cmd/, "+Meta");
-
+	             
                 if (this._hotkey !== value) {
                     this._hotkey = value;
 
@@ -324,11 +327,18 @@ define(function (require) {
                     }
 
                     var me = this;
-                    var arr = this._hotkey.split("|");
+                    var arr;
+                    
+                    if(typeof this._hotkey === "string") {
+                    	arr = this._hotkey.split("|");
+                    } else if(this._hotkey instanceof Array) {
+                    	arr = this._hotkey;
+                    }
 
                     this._hotkeyListeners = [];
 
                     arr.forEach(function(hotkey, type) {
+			            hotkey = hotkey.replace(/Cmd\+/g, "Meta+").replace(/\+Cmd/, "+Meta");
                         hotkey = String.trim(hotkey).split(":");
                         type = hotkey.length === 1 ? "keydown" : hotkey.shift();
                         hotkey = hotkey.shift();
@@ -478,6 +488,7 @@ define(function (require) {
                 type: Type.BOOLEAN,
                 set: Function
             },
+            "hotkeys": { set(value) { this.setHotkey(value); } }, // alias
             "hotkey": {
                 type: Type.STRING,
                 get: Function,

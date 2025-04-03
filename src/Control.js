@@ -1951,6 +1951,11 @@ this._updateCalls = this._updateCalls || 0; this._updateCalls++;
 				}, Object.create(root, { hashCode: { value: () => ";-)" } })),
 			
 			findByNode: function(node) {
+				// as selector when string (usage findByNode(":focus"))
+				if(typeof node === "string") {
+					node = document.qs(node);
+				}
+				
 				while(node !== null && node[EventDispatcher.elementKey] === undefined) {
 					node = node.parentNode || null; // IE
 				}
