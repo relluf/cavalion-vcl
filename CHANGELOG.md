@@ -1,3 +1,15 @@
+### `2025/06/08` - 1.1.87
+
+* enhances nodeNeeded to return node by name introduces qsan() as an alias to qsna() enhances click event handling
+* adds support reloading cavalion-blocks<>-components with click-gesture
+* finds #console more consistently and uses H()
+* fixes sorting issue
+* fixes an issue where getValue() was not consistent with _node.value
+* adds specific styles for input elements in Safari updates general styles
+* fixes the regexp-behaviour matching attribute values adds support for Action go()
+* introduces support for setInterval (like setTimeout) adds get/set/has/clear/Interval and clearIntervals
+
+
 ### `2025/04/03` - 1.1.86
 
 * 20250403 fixes bug in sorting by column (List) improves selecting console nodes with keyboard
@@ -103,7 +115,7 @@
 * comments
 * see previous comment
 * :root => isRootComponent enchances toasting Sizer selection
-* fixes reloadChildNodes-situation changes behavior of ui/Console, ignores <a>nchors, activates console on dblclick
+* fixes reloadChildNodes-situation changes behavior of ui/Console, ignores \<a>nchors, activates console on dblclick
 * adds css styles to App.v1 simplifies code
 * adds css styles to App.v1 simplifies code
 * adjusts Component:setTimeout to automatically name unnamed timeout fixes Control:selectVisible which was pretty buggy - noticeably when trying to make workspace console or navigator visible fixes Node:childNodesNeeded so that callback is made correctly (fixes Cmd+F10 #resource-focus as well)
