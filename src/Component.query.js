@@ -648,7 +648,7 @@ define(function() {
     Result.prototype = [];
     
     /*- Prototype methods of Component, Control, Action to mixin */
-    "on,un,once,dispatch,emit,fire,listen,unlisten,override,connect,disconnect,get,set,execute,toggle,show,hide,render,selectNext,selectPrevious,selectNth,selectFirst,selectLast,toggleClass,print".split(",").forEach(function(name) {
+    "on,un,once,dispatch,emit,fire,listen,unlisten,override,connect,disconnect,get,set,go,execute,toggle,show,hide,render,selectNext,selectPrevious,selectNth,selectFirst,selectLast,toggleClass,print".split(",").forEach(function(name) {
 	        Result.prototype[name] = function() {
 	            for(var i = 0; i < this.length; ++i) {
 	                if(typeof this[i][name] === "function") {
@@ -841,7 +841,7 @@ define(function() {
 
             if(attr.operator === "=") {
             	if(attr.value.startsWith("\\/") && attr.value.endsWith("\\/")) {
-            		return new RegExp(attr.value.substring(2, attr.value.length - 4)).test("" + value)
+            		return new RegExp(attr.value.substring(2, attr.value.length - 2)).test("" + value)
             	}
             	return ("" + value) === attr.value;
             }
