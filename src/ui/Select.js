@@ -61,15 +61,15 @@ define(function(require) {
 			},
 			hasValue: function() { return !!this.getValue(); },
 			getValue: function() {
-				if(this.isLoading()) {
+				if(this.isLoading() || this.hasState("invalidated")) {
 					return this._value;
 				}
 			    return this.nodeNeeded().value;
 			},
-			setValue: function(value) {
+			setValue: function(value, force) {
 				if(this.isLoading()) {
 					this._value = value;
-				} else if(this._value !== value) {
+				} else if(force || (this._value !== value || (this._node && this._node.value !== value))) {
 					this.nodeNeeded().value = (this._value = value);
 					this.dispatch("change");
 				}

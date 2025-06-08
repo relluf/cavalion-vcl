@@ -184,7 +184,7 @@ define(function(require) {
 			onclick: function(evt) {
 				/** @overrides ../../Control.prototype.onclick */
 
-				if(this._ignoreClick) return console.log("blocked-click");
+				if(this._ignoreClick) return;// console.log("blocked-click");
 
 				this.setTimeout("focus", () => requestAnimationFrame(() => {
     				this.storeScroll();
