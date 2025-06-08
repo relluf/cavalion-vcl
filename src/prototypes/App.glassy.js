@@ -4,7 +4,7 @@ var CssRules = require("vcl/CssRules");
 
 var css = {
 	'#close-x': {
-		'': "transition: opacity 1s; opacity: 0.1; position:absolute;top:0;right:0;color:silver;padding:4px 8px;font-size:14pt;z-index:999999999999;  border: 1px solid transparent; border-radius:3px;",
+		'': "transition: opacity 1s; opacity: 0.1; position:absolute;top:0;right:0;color:silver;padding:2px 4px;font-size:14pt;z-index:999999999999;  border: 1px solid transparent; border-radius:3px;",
 		'&:hover': "color:black;font-weight:bold;cursor:pointer;opacity: 1;backdrop-filter: blur(10px); background-color: rgba(255,255,255,0.5); border: 1px solid silver;",
 		'&:active': "background-color: rgba(56,127,217,0.025);"
 	},
@@ -26,6 +26,7 @@ var css = {
 		".{Node}": {
 			"&.invisible-layer": "opacity: 0.4;",
 	    	"&.seperator": "border-top:1px solid rgba(155,155,155,0.55);margin-top:2px;padding-top:2px;",
+	    	"&.seperator-bottom": "border-bottom:1px solid rgba(155,155,155,0.55);margin-bottom:2px;padding-bottom:2px;",
 			">.text>img": "width:20px;height:20px;"
 		}
 	},
@@ -129,7 +130,7 @@ var css = {
 			'height': "100%",
 			'transition': "border-color 0.45s ease 0s, background-color 0.45s ease 0s, border-width: 0.45s ease 0s",
 			'&:hover': {
-				'border-width': "10px"
+				// 'border-width': "10px"
 			}
 		},
 		'.seperator.seperator.seperator': "border-top: 1px solid rgba(215, 215, 215, 0.55);",
@@ -147,6 +148,43 @@ var css = {
 		'#bar': "background-color: rgba(240, 240, 240, 0.35);",
 		'.{Tabs}': "background-color: rgba(240, 240, 240, 0.35);",
 		'.{ListRow}:not(.selected).odd': "background-color: rgba(240, 240, 240, 0.55);"
+	},
+	
+	'input': "background: transparent; margin-top: 2px; border: 1px solid rgb(118, 118, 118); padding-bottom: 3px; padding-top: 3.5px; padding-left: 4px; border-radius: 3px;",
+	'select': "background: transparent; border: 1px solid rgb(118, 118, 118); border-radius: 3px; padding-right:20px;",
+	
+		'input[type=date]': "font-family:system-ui;padding:2px 2px;",
+		'input[type=time]': "font-family:system-ui;padding:1px 2px;",
+
+	'&.safari.safari': {
+		'select': {
+			'-webkit-appearance': "none",
+			'appearance': "none",
+			'font-size': "13.3333px",
+			'padding': "3px",
+			'padding-bottom': "4px",
+			'padding-right': "16px",
+			'background-image': 'url("data:image/svg+xml;charset=UTF-8,%3Csvg width=\'10\' height=\'6\' viewBox=\'0 0 10 6\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath d=\'M0 0l5 6 5-6z\' fill=\'%23666\'/%3E%3C/svg%3E")',
+			'background-repeat': 'no-repeat',
+			'background-position': 'right 4px center',
+			'background-size': '10px 6px',
+			
+		},		
+		'input[type=date]': "padding: 4px; padding-top: 1px; padding-bottom: 2px;",
+		'input[type=time]': "padding-bottom: 2px;",
+		'input:not([type=checkbox])': {
+			'-webkit-appearance': "none",
+			'appearance': "none",
+			'font-size': "13.3333px"
+		},		
+		'button': {
+			'&:not(.selected)': "background-color: #eee; border: 1px solid #999;",
+			'-webkit-appearance': "none",
+			'appearance': "none",
+			// 'box-shadow': "1px 1px 2px rgba(0,0,0,0.1)",
+		},
+		
+		'#menubar button:not(.selected)': "background: none; border: none;"
 	}
 };
 

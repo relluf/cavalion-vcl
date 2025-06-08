@@ -20,7 +20,7 @@ define(function (require) {
                 "-webkit-user-select": "none",
                 "margin": "0",
                 "line-height": "15px",
-				">.{Node}.root-invisible": {
+				".{Node}.root-invisible": {
 					"> *:not(ol)": "display:none;color:blue;",
 					"> ol": "padding-left: 0;"
 				},
