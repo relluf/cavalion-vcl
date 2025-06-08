@@ -540,13 +540,13 @@ define(function(require) {
 				delete this._node;
 				delete this._nodes;
 			},
-			nodeNeeded: function() {
+			nodeNeeded: function(name) {
 				if(this._node === null) {
 					this.createNode(document);
 					this._node[EventDispatcher.elementKey] = this;
 					this.applyClasses();
 				}
-				return this._node;
+				return name ? js.get(name, this._nodes) : this._node;
 			},
 			onnodecreated: function() {
 				this.fire("onNodeCreated", arguments, !this.isDesigning());
@@ -582,6 +582,7 @@ define(function(require) {
 				const node = this.nodeNeeded();
 				return node.qsa.apply(node, arguments);
 			},
+			qsan: function() { return this.qsna.apply(this, arguments); },
 
 			createDragger: function() {
 				return new Dragger(this);
@@ -1590,24 +1591,32 @@ this._updateCalls = this._updateCalls || 0; this._updateCalls++;
 				this.fire("onDrop", arguments);
 			},
 			onclick: function(evt) {
-				if(this.fire("onClick", arguments) !== false) {
+				let r;
+				if((r = this.fire("onClick", arguments)) !== false) {
 					if(this._executesAction === "onClick" && this._action) {
-						this._action.execute(evt, this);
+						r = this._action.execute(evt, this);
 					}
 				}
 
-				// FIXME
-				this.dispatch("tap", evt);
+				if(r !== false) {
+					this.dispatch("tap", evt);
+				}
+				
+				return r;
 			},
 			ondblclick: function(evt) {
-				if(this.fire("onDblClick", arguments) !== false) {
+				let r;
+				if((r = this.fire("onDblClick", arguments)) !== false) {
 					if(this._executesAction === "onDblClick" && this._action) {
-						this._action.execute(evt, this);
+						r = this._action.execute(evt, this);
 					}
 				}
 
-				// FIXME
-				this.dispatch("dbltap", evt);
+				if(r !== false) {
+					this.dispatch("dbltap", evt);
+				}
+				
+				return r;
 			},
 			onmousedown: function(evt) {
 				if(evt.target === this._node && this.isDraggable()) {
