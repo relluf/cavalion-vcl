@@ -914,13 +914,6 @@ workaroundColumnAlignment(this);
 						var row1 = this._source._array.indexOf(i1);
 						var row2 = this._source._array.indexOf(i2);
 	
-						// if(sv) {
-						// 	i1 = this._source.getAttributeValue(column._attribute, row1, true);
-						// 	i2 = this._source.getAttributeValue(column._attribute, row2, true);
-	
-						// 	return dir * sv(i1, i2);
-						// }
-
 						i1 = this.valueByColumnAndRow(column, row1);
 						i2 = this.valueByColumnAndRow(column, row2);
 						
@@ -941,7 +934,7 @@ workaroundColumnAlignment(this);
 							i2 = js.nameOf(i2);
 						}
 	
-						return (i1 < i2 ? -1 : 1) * dir;
+						return (i1 < i2 ? -1 : i1 === i2 ? 0 : 1) * dir;
 					});
 			},
 			
