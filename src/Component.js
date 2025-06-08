@@ -115,6 +115,7 @@ define(function (require) {
                     this.setOwner(null);
 
                     this.clearTimeouts();
+                    this.clearIntervals();
                 } finally {
                     this.endLoading();
                 }
@@ -361,6 +362,80 @@ define(function (require) {
                 }
                 this._timeouts = null;
             },
+			setInterval: function(name, f, ms, args) {
+			    /**
+			     * @param name {String|Object|Function} [optional] Identifier of the interval.
+			     * @param f {Function|String} The function or name of member function.
+			     * @param ms {Number} Delay in milliseconds between calls.
+			     * @param args {Array} Optional arguments to pass to the function.
+			     * @returns Interval ID
+			     * @seealso window.setInterval
+			     */
+			    var h, me = this;
+			    if (!this.hasOwnProperty("_intervals")) {
+			        this._intervals = {};
+			    }
+			
+			    if(typeof name === "object" && typeof name.f === "function") {
+			        return this.setInterval(name.name, name.f, name.ms, name.args);
+			    }
+			
+			    if (typeof f === "number") {
+			        args = ms;
+			        ms = f;
+			        f = name;
+			        name = "interval_" + (nextTick++);
+			    }
+			
+			    if (typeof f === "string") {
+			        f = this[f];
+			        if (typeof f !== "function") {
+			            throw new Error("Need a function");
+			        }
+			        if (args === undefined) {
+			            f = f.bind(this);
+			        } else {
+			            h = f;
+			            f = function () {
+			                return h.apply(me, args);
+			            };
+			        }
+			    } else if (args !== undefined) {
+			        h = f;
+			        f = function () {
+			            return h.apply(window, args);
+			        };
+			    }
+			
+			    if (typeof f !== "function") {
+			        throw new Error("Need a function");
+			    }
+			
+			    this.clearInterval(name);
+			
+			    return (this._intervals[name] = js.setInterval(f, ms, this._intervals[name]));
+			},
+			getInterval: function(name) {
+			    return this._intervals[name];
+			},
+			hasInterval: function(name) {
+			    return this._intervals.hasOwnProperty(name);
+			},
+			clearInterval: function (name) {
+			    if (this.hasOwnProperty("_intervals")) {
+			        var interval = this._intervals[name];
+			        delete this._intervals[name];
+			        return js.clearInterval(interval);
+			    }
+			},
+			clearIntervals: function () {
+			    for (var key in this._intervals) {
+			        if (this._intervals.hasOwnProperty(key)) {
+			            js.clearInterval(this._intervals[key]);
+			        }
+			    }
+			    this._intervals = null;
+			},
             connect: function (listeners) {
                 return this.on.apply(this, [listeners, true]);
             },
@@ -1087,10 +1162,10 @@ define(function (require) {
                 this._components.push(component);
             },
             removeComponent: function (component) {
-                // if(this.hasOwnProperty("_components")) {
-                this._components.splice(this._components.indexOf(component), 1);
-                component._owner = null;
-                // }
+                if(this.hasOwnProperty("_components")) { // 20250514 - seems necessary when reloading hovers
+	                this._components.splice(this._components.indexOf(component), 1);
+	                component._owner = null;
+                }
             },
             getStorageKey: function(forKey) {
             	var app = this.getApp();
