@@ -212,6 +212,13 @@ window.cl = cl;
 			                                        return false;
 			                                    }
 			                                }
+			                            } else if(fc._uri === "cavalion-blocks") {
+		                                    if (confirm(String.format("Reload %s< %s >?", fc._uri, fc.vars("uri"))) === true) {
+		                                    	req("blocks/Factory").unreq(fc._uri);
+		                                    	fc.destroyComponents();
+				                            	fc.recreateNode();
+				                            	return false;
+		                                    }
 			                            }
 			                            fc = fc._parent;
 			                        }
@@ -381,6 +388,7 @@ window.cl = cl;
         onEvaluate(expr) {
 			const cl = console.log;
 			const pr = () => this.print.apply(this, arguments);
+			const $$ = this.vars(["sizer._control"]);
 
             const open = (uri, opts) => this.bubble(
             	"openform",
