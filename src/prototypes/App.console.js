@@ -1,9 +1,10 @@
-"use override, util/Event, util/HtmlElement, console/node/vcl/Component, vcl/Control";
+"use override, util/Event, util/HtmlElement, console/node/vcl/Component, vcl/Control, vcl/ui/Console";
 
 const override = require("override");
 const Event_ = require("util/Event");
 const HtmlElement = require("util/HtmlElement");
 const Control = require("vcl/Control");
+const Console = require("vcl/ui/Console");
 
 require("console/node/vcl/Component").initialize();
 override(require("vcl/Component").prototype, "print", function(inherited) {
@@ -114,11 +115,20 @@ override(require("vcl/Component").prototype, "print", function(inherited) {
     	hotkey: "MetaCtrl+F3",
     	on() {
     		let c = Control.findByNode(document.qs(":focus"));
-    		if(c && (c = c instanceof (req("vcl/ui/Console")) ? c : c.udr("vcl/ui/Console"))) {
-    			H("devtools/Alphaview.csv", { console: c });
-			} else {
-				H("devtools/Alphaview.csv");
+    		
+    		c && (c = c instanceof Console ? c : c.udr("vcl/ui/Console"));
+    		
+			if(!c) {
+				c = app.qs("#console #console");
 			}
+			
+			// if(c.qsna(".console > .node.selected").length === 0) {
+			// 	c.qsna(".console > .node").slice(-1).forEach(node => {
+			// 		node.classList.add("selected");
+			// 	});
+			// }
+			
+			this.nextTick(() => H("devtools/Alphaview.csv", { console: c }));
     	}
     }],
     
