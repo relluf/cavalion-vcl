@@ -9,8 +9,9 @@ var Browser = require("util/Browser");
 // Browser.win = true;
 
 const font_family = (Browser.win ? "Segoe UI, Tahoma, " : "") + "Lucida Grande, Arial, sans-serif";
+const font_size = "9pt";
 const letter_spacing = Browser.win ? "0.75px" : "";
-const default_zoom = Browser.win ? "zoom-109" : "zoom-121";
+const default_zoom = Browser.win ? "zoom-109" : "zoom-112";
 
 [["./App.openform.toast.glassy"], {
 	onLoad: function() {
@@ -59,23 +60,19 @@ const default_zoom = Browser.win ? "zoom-109" : "zoom-121";
 }, [
     [("#window"), { 
     	css: {
-			'font-family': font_family, 
-			'font-size': "9pt",
-			'letter-spacing': letter_spacing,
 			'.{Button}': {
-				'font-size': "9pt",
+				'font-size': font_size,
 				'font-family': font_family,
 				'letter-spacing': letter_spacing,
+				
 				'vertical-align': "top",
 				'&.disabled': "color:gray;",
 				'&:not(:active)': "margin-bottom:4px;",
 				'&:active': "margin-bottom:0;margin-top:2px;border:2px solid rgb(57,121,217); padding-left:8px; padding-right:6px;" // background:-webkit-linear-gradient(top, rgb(255, 255, 255) 10%, rgb(227, 227, 227) 100%);
 			},
-			'.zoom-109': {
-				'': "zoom: 1.09091;",
-				'.zoom-cancel': "zoom: 0.91667;",
-				'.{Ace}': "zoom: 0.91667; font-size: 112.5%;"
-			},
+			'font-family': font_family, 
+			'font-size': font_size,
+			'letter-spacing': letter_spacing,
 			'.zoom-125': {
 				'': "zoom: 1.25;",
 				'.zoom-cancel': "zoom: 0.8;",
@@ -85,7 +82,29 @@ const default_zoom = Browser.win ? "zoom-109" : "zoom-121";
 				'': "zoom: 1.21212121;",
 				'.zoom-cancel': "zoom: 0.825;",
 				'.{Ace}': "zoom: 0.8; font-size: 121.21%;"
-			}
+			},
+			'.zoom-120': {
+				'': "zoom: 1.2;",
+				'.zoom-cancel': "zoom: 0.833333;",
+				'.{Ace}': "zoom: 0.833333; font-size: 120%;"
+			},
+			'.zoom-115': {
+				'': "zoom: 1.15;",
+				'.zoom-cancel': "zoom: 0.869565217;",
+				'.{Ace}': "zoom: 0.869565217; font-size: 115%;"
+			},
+			'.zoom-112': {
+				'': "zoom: 1.125;",
+				'.zoom-cancel': "zoom: 0.88889;",
+				'.{Ace}': "zoom: 0.88889; font-size: 112.5%;"
+			},
+			'.zoom-109': {
+				'': "zoom: 1.09091;",
+				'.zoom-cancel': "zoom: 0.91667;",
+				'.{Ace}': "zoom: 0.91667; font-size: 112.5%;"
+			},
+			
+			'.{Panel}.loading': "background: url(/shared/vcl/images/loading.gif) 50% no-repeat;" // OMG !! why didn't I do that before
     	}
     }, [
         ["vcl/ui/FormContainer", "client", { 
