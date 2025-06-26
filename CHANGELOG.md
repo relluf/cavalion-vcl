@@ -1,3 +1,15 @@
+### `2025/06/25` - 1.1.88
+
+* improves/refactores/cleans css styles
+* updates tree node styles prevents NOde to become selected when .close is clicked
+* sets z-index above Hover<>
+* introduces selection-hover class selects parent upon destroy while selected
+* generalizes sorting
+* improves H() to accept opts
+* reinstates (dedeprecates) Component.prototype.findOwner introduces Component.up(ctor) => findOwner
+* tweaks default zoom settings for mac and win (125% and 109%)
+* adds better support for Windows
+
 ### `2025/06/08` - 1.1.87
 
 * enhances nodeNeeded to return node by name introduces qsan() as an alias to qsna() enhances click event handling
