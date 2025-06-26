@@ -37,7 +37,7 @@ define(function(require) {
 
 			"@css": {
 				"position": "absolute",
-				"z-index": "1"
+				"z-index": "2000"
 			},
 
 			_visible: false,
