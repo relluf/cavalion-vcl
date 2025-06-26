@@ -60,6 +60,10 @@ const default_zoom = Browser.win ? "zoom-109" : "zoom-112";
 }, [
     [("#window"), { 
     	css: {
+			'font-family': font_family, 
+			'font-size': font_size,
+			'letter-spacing': letter_spacing,
+
 			'.{Button}': {
 				'font-size': font_size,
 				'font-family': font_family,
@@ -70,9 +74,7 @@ const default_zoom = Browser.win ? "zoom-109" : "zoom-112";
 				'&:not(:active)': "margin-bottom:4px;",
 				'&:active': "margin-bottom:0;margin-top:2px;border:2px solid rgb(57,121,217); padding-left:8px; padding-right:6px;" // background:-webkit-linear-gradient(top, rgb(255, 255, 255) 10%, rgb(227, 227, 227) 100%);
 			},
-			'font-family': font_family, 
-			'font-size': font_size,
-			'letter-spacing': letter_spacing,
+
 			'.zoom-125': {
 				'': "zoom: 1.25;",
 				'.zoom-cancel': "zoom: 0.8;",
