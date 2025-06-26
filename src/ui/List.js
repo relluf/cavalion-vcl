@@ -908,34 +908,42 @@ workaroundColumnAlignment(this);
 					column = this.getColumn(column);
 				}
 
-				const sv = column.get("onSortValues");
-				this._source.sort(
-					(i1, i2) => {
-						var row1 = this._source._array.indexOf(i1);
-						var row2 = this._source._array.indexOf(i2);
-	
-						i1 = this.valueByColumnAndRow(column, row1);
-						i2 = this.valueByColumnAndRow(column, row2);
-						
-						if(numeric === undefined) {
-							numeric = (!isNaN(parseFloat(i1)) || !isNaN(parseFloat(i2)));
-						}
+				const sv = column.get("onSortValues") || Array.sortValues;
+				this._source.sort((i1, i2) => {
+					var row1 = this._source._array.indexOf(i1);
+					var row2 = this._source._array.indexOf(i2);
 
-						if(i1 === i2) return 0;
-						
-						if(i1 === undefined || i1 == null) return dir * 1;
-						if(i2 === undefined || i2 == null) return dir * -1;
-
-						if(numeric === true) {
-							if(isNaN(i1 = parseFloat(i1))) return dir * 1;
-							if(isNaN(i2 = parseFloat(i2))) return dir * -1;
-						} else if(typeof i1 === "object") {
-							i1 = js.nameOf(i1);
-							i2 = js.nameOf(i2);
-						}
+					i1 = this.valueByColumnAndRow(column, row1);
+					i2 = this.valueByColumnAndRow(column, row2);
+					
+					return dir * sv(i1, i2);
+				});
+				// (i1, i2) => {
+				// 		var row1 = this._source._array.indexOf(i1);
+				// 		var row2 = this._source._array.indexOf(i2);
 	
-						return (i1 < i2 ? -1 : i1 === i2 ? 0 : 1) * dir;
-					});
+				// 		i1 = this.valueByColumnAndRow(column, row1);
+				// 		i2 = this.valueByColumnAndRow(column, row2);
+						
+				// 		if(numeric === undefined) {
+				// 			numeric = (!isNaN(parseFloat(i1)) || !isNaN(parseFloat(i2)));
+				// 		}
+
+				// 		if(i1 === i2) return 0;
+						
+				// 		if(i1 === undefined || i1 == null) return dir * 1;
+				// 		if(i2 === undefined || i2 == null) return dir * -1;
+
+				// 		if(numeric === true) {
+				// 			if(isNaN(i1 = parseFloat(i1))) return dir * 1;
+				// 			if(isNaN(i2 = parseFloat(i2))) return dir * -1;
+				// 		} else if(typeof i1 === "object") {
+				// 			i1 = js.nameOf(i1);
+				// 			i2 = js.nameOf(i2);
+				// 		}
+	
+				// 		return (i1 < i2 ? -1 : i1 === i2 ? 0 : 1) * dir;
+				// 	});
 			},
 			
 			hasSelection: function() {
