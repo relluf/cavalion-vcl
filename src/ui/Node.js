@@ -43,12 +43,33 @@ define(function(require) {
 			// 	return r;
 			// },
 
+			destroy: function() {
+				const tree = this.getTree();
+				if(tree && this._parent) {
+					if(tree.getSelection().includes(this)) {
+						// console.log("should set parent selected");
+						tree.setSelection([this._parent]);
+					}
+				}
+				return this.inherited(arguments);
+			},
 			createNode: function() {
 				/** @overrides ../Component.prototype.loaded */
 				var expanded = this._expanded;
 				this._expanded = false;
 
 				this.inherited(arguments);
+				
+				this._nodes.selection.onmousemove = (e) => {
+					if(!this.hasClass("selection-hover"))	{
+						this.addClass("selection-hover");
+					}
+				};
+				this._nodes.selection.onmouseout = (e) => {
+					if(this.hasClass("selection-hover")) {
+						this.removeClass("selection-hover");
+					}
+				};
 
 				this.setExpanded(expanded);
 			},
