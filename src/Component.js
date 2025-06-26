@@ -794,6 +794,10 @@ define(function (require) {
                 return this.getScope()[arguments[0]];
             },
             up: function(selector, allowAll, callback) {
+            	if(js.Class.isConstructor(selector)) {
+            		return this.findOwner(selector);
+            	}
+
             	if(selector instanceof Array) {
             		// up() will throw if any of the calls returns null
             		if(typeof allowAll === "function") {
@@ -810,7 +814,6 @@ define(function (require) {
             		}
             		return selector;
             	}
-            	
             	
 	            /*- Queries all components for the given selector and filters out
 	                those matches which are an owner of the calling component. The
@@ -971,7 +974,7 @@ define(function (require) {
 	             * @param base If not false, uris are reduced to the implicit base
 	             */
                 
-                console.warn("Component.prototype.findOwner will be deprecated");
+                // console.warn("Component.prototype.findOwner will be deprecated");
                 
                 if (typeof ctor === "string" || ctor instanceof RegExp) {
                     base = uri;
