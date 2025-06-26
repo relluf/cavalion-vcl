@@ -33,7 +33,7 @@ const deselect = () => {
 	document.selection && document.selection.empty();
 };
 
-const H = (uri, vars) => B.i(["Hover<>", { vars: js.mi({ uri: uri }, vars)}]);
+const H = (uri, vars, opts) => B.i(["Hover<>", { vars: js.mi({ uri: uri }, vars)}], opts);
 
 const cc = (text) => Clipboard.copy(text);
 const cl = console.log;
