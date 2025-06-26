@@ -19,19 +19,19 @@ define(function (require) {
             	"padding-left": "0",
                 "-webkit-user-select": "none",
                 "margin": "0",
-                "line-height": "15px",
 				".{Node}.root-invisible": {
 					"> *:not(ol)": "display:none;color:blue;",
 					"> ol": "padding-left: 0;"
 				},
-                ".{./Node}": {
+                ".{Node}": {
     		        display: "block",
                 	cursor: "pointer",
                     "list-style-type": "none",
+                	"line-height": "15px",
                     "white-space": "nowrap",
                     ">.close": {
                     	position: "absolute",
-                    	right: "4px",
+                    	left: "4px", width: "20px",
                     	"padding-top": "2px",
                     	// cursor: "pointer",
                     	display: "none"
@@ -42,7 +42,13 @@ define(function (require) {
                         "padding-left": "18px",
                         "-webkit-padding-start": "18px"
                     },
-                    "&.closeable>.close": {
+                    // "&.selected.closeable>.close": {
+                    // 	display: "block"
+                    // },
+                    "&:hover.closeable>.close": {
+                    	display: "block"
+                    },
+                    "&.selection-hover.closeable>.close": {
                     	display: "block"
                     },
                     "&.expanded>ol": {
@@ -56,7 +62,7 @@ define(function (require) {
                         height: "21px",
                         "z-index": "0",
                         "border-radius": "3px",
-                        "pointer-events": "none"//,display:"none"
+                        // "pointer-events": "none"//,display:"none"
                     },
                     ">.icon": {
                         display: "inline-block",
@@ -129,6 +135,11 @@ define(function (require) {
                     ">.container": {
                         "padding-left": "12px"
                     }
+                },
+                "&.no-selection .{Node}": {
+                	"cursor": "default",
+                	".icon": "cursor: pointer;",
+                	".selection": "visibility: hidden; display: none;"
                 }
             },
 
@@ -202,7 +213,9 @@ define(function (require) {
                             rect.top + rect.height > evt.clientY) {
                         	// Node.prototype.onclick will handle event
                         } else {
-                            this.setSelection([component]);
+                        	if(!evt.target.matches(".close")) {
+                            	this.setSelection([component]);
+                        	}
                         }
                     } else if(name === "dblclick") {
                         this.setSelection([component]);
