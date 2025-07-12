@@ -62,9 +62,10 @@ define(function (require) {
                     }
                 }
             },
-            go: function() {
-            	Action.prototype.go = Action.prototype.execute;
-            	return this.go.apply(this, arguments);
+            go: function(opts) {
+            	if(this.isEnabled() && this.isVisible()) {
+            		return this.execute.apply(this, arguments);
+            	}
             },
             execute: function (evt, sender) {
             	return this.onexecute(evt, sender);
