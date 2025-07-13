@@ -3,6 +3,7 @@
 const override = require("override");
 const Event_ = require("util/Event");
 const HtmlElement = require("util/HtmlElement");
+const Component = require("vcl/Component");
 const Control = require("vcl/Control");
 const Console = require("vcl/ui/Console");
 
@@ -112,14 +113,50 @@ override(require("vcl/Component").prototype, "print", function(inherited) {
     	}
     }],
     ["vcl/Action", ("open-alphaview"), {
-    	hotkey: "MetaCtrl+F3",
+    	hotkey: "Alt+MetaCtrl+F3|MetaCtrl+F3",
     	on() {
+    		const cons = this.app().qs("#console #console");
+    		const control = cons.vars(["sizer._control"]);
+    		const props = {};
+    		
     		let c = Control.findByNode(document.qs(":focus"));
+    		c && (c = c instanceof Console ? c : null); //c.ud("vcl/ui/Console"));
     		
-    		c && (c = c instanceof Console ? c : c.udr("vcl/ui/Console"));
-    		
-			if(!c) {
-				c = app.qs("#console #console");
+			if(c && (c.sel instanceof Array) && c.sel.length > 0) {
+				props.console = c;
+			} else {
+				const uris = (us) => us.filter(Boolean).filter(Array.fn.unique).join("; ");
+				const ats = (c) => Object.entries(c).filter(e => e[0].startsWith("@"));
+				const item = ((c) => js.mi(js.trim({
+					'.': c,
+					uri: uris([c.getUri(), c._uri]),
+					vars: c._vars,
+					'class': c.constructor,
+					name: c._name,
+					owner: c._owner,
+					parent: c._parent,
+					root: c.up(),
+					resource: c.vars("resource")
+				}), Object.fromEntries(ats(c))));
+				const app = this.app();
+				
+				const obj = {};
+				if(control) {
+					obj['#' + (control._name || control.hashCode())] = [control];
+					props.placeholder = js.n(control);
+				}
+
+				props.sel = [js.mi(obj, {
+					All: Component.all.map(item),
+					Application: [{ app, requirejs: window.require.s.contexts._, nameOf: js.nameOf }],
+					Roots: app.qsa(":root").map(item),
+					Trees: app.qsa("vcl/ui/Tree").map(item),
+					Lists: app.qsa("vcl/ui/List").map(item),
+					Selection: app.qsa(":visible").filter(c => c.getSelection).map(item),
+					Resources: Component.all.filter(c => c.vars("resource.uri")).map(c => js.mi({resource: c.vars("resource")}, item(c)))
+				})];
+
+
 			}
 			
 			// if(c.qsna(".console > .node.selected").length === 0) {
@@ -128,7 +165,7 @@ override(require("vcl/Component").prototype, "print", function(inherited) {
 			// 	});
 			// }
 			
-			this.nextTick(() => H("devtools/Alphaview.csv", { console: c }));
+			this.nextTick(() => H("devtools/Alphaview.csv", props));
     	}
     }],
     

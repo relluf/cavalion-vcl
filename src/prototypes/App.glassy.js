@@ -112,7 +112,7 @@ function animate() {
 				'&:hover': {
 					'box-shadow': "0 0 10px 5px rgba(0,0,0,.2)",
 					'cursor': "move",
-					'.client': "border-color: rgba(56,127,217,0.025); background-color:rgba(215, 215, 215, 0.2);"
+					'.client': "border-color: rgba(56,127,217,0.025);"// background-color:rgba(215, 215, 215, 0.2);"
 				},
 				'&.dragging': {
 					'transition': "box-shadow 0.15s ease 0s" || "transform 75ms ease-out 0s, left 75ms ease-out 0s, right 75ms ease-out 0s, top 75ms ease-out 0s, bottom 75ms ease-out 0s, width 75ms ease-out 0s, height 75ms ease-out 0s, border-width 0.45s ease 0s",
@@ -180,7 +180,7 @@ function animate() {
 				'.client': {
 					'position': "relative",
 					'border-radius': "7px",
-					'border': "7px solid rgba(0,0,0,0)",
+					'border': "0px solid rgba(0,0,0,0)",
 					// 'overflow': "hidden",
 					'height': "100%",
 					'transition': "border-color 0.45s ease 0s, background-color 0.45s ease 0s, border-width: 0.45s ease 0s",
@@ -200,7 +200,14 @@ function animate() {
 			},
 			'.glassy': {
 				'#bar': "background-color: rgba(240, 240, 240, 0.35);",
-				'.{Tabs}': "background-color: rgba(240, 240, 240, 0.35);",
+				'.{Tabs}': {
+					'': "background-color: rgba(240, 240, 240, 0.35); height: auto;",
+					'.{Tab}': {
+						'': "background-color: transparent; border: none;",
+						'&:not(.disabled)': "cursor: pointer;",
+						'&.selected': "font-weight: bold; background-color:rgba(255, 255, 255, 0.65); border-radius:3px;"
+					}
+				},
 				'.{ListRow}:not(.selected).odd': "background-color: rgba(240, 240, 240, 0.55);",
 				
 	        	// '::before': {
@@ -224,7 +231,6 @@ function animate() {
 		            '-webkit-backdrop-filter': "blur(2px)",
 		            '-webkit-filter': 'url("#glass-distortion")'
 		        }
-				
 			},
 			
 			'input': "background: transparent; margin-top: 2px; border: 1px solid rgb(118, 118, 118); padding-bottom: 3px; padding-top: 3.5px; padding-left: 4px; border-radius: 3px;",

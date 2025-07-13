@@ -69,6 +69,8 @@ const default_zoom = Browser.win ? "zoom-109" : "zoom-112";
 				'font-family': font_family,
 				'letter-spacing': letter_spacing,
 				
+				'&.alt-selected.selected': "background-color: transparent; color: black; font-weight: bold;",// background-image: linear-gradient(to top, rgb(56, 121, 217) 2px, transparent 2px);",
+
 				'vertical-align': "top",
 				'&.disabled': "color:gray;",
 				'&:not(:active)': "margin-bottom:4px;",
