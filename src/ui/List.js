@@ -98,12 +98,13 @@ define(function(require) {
 			_source: null,
 			_sourceMonitor: null,
 			_rowHeight: 23,
-			_rowBuffer: 25,
-			_count: 0,
-			_topRow: 0,
-			_visibleRowCount: 0,
+                        _rowBuffer: 25,
+                        _count: 0,
+                        _topRow: 0,
+                        _visibleRowCount: 0,
 
-			_selection: null,
+                        _shiftSelectFromLast: false,
+                        _selection: null,
 
 			_header: null,
 			_footer: null,
@@ -272,52 +273,83 @@ workaroundColumnAlignment(this);
 						this.dispatch(name, evt);
 					} else if(name === "click") {
 						var rowIndex = component._rowIndex;
-						var selection;
-						if(evt.ctrlKey === true || evt.metaKey === true) {
-							if(this.isRowSelected(rowIndex)) {
-								var index = this._selection.indexOf(rowIndex);
-								selection = [].concat(this._selection);
-								selection.splice(index, 1);
-							} else {
-								selection = this._selection.concat([rowIndex]);
-							}
+                                               var selection;
+                                               if(evt.ctrlKey === true || evt.metaKey === true) {
+                                                       if(this.isRowSelected(rowIndex)) {
+                                                               var index = this._selection.indexOf(rowIndex);
+                                                               selection = [].concat(this._selection);
+                                                               selection.splice(index, 1);
+                                                       } else {
+                                                               selection = this._selection.concat([rowIndex]);
+                                                       }
 
-						} else if(evt.shiftKey === true) {
-							var length = this._selection.length;
-							var prev = length > 0 ? this._selection[length - 1] : 0;
-							var i;
+                                               } else if(evt.shiftKey === true) {
+                                                       var length = this._selection.length;
+                                                       var i;
 
-							HtmlElement.clearSelection();
+                                                       HtmlElement.clearSelection();
 
-							if(prev === rowIndex) {
-								selection = this._selection;
-							} else {
-								selection = [];
-								if(this.isRowSelected(prev)) {
-									selection.push(prev);
-								}
-								if(prev < rowIndex) {
-									for(i = prev + 1; i <= rowIndex; ++i) {
-										if(!this.isRowSelected(i)) {
-											selection.push(i);
-										}
-									}
-								} else {
-									for(i = prev - 1; i >= rowIndex; --i) {
-										if(!this.isRowSelected(i)) {
-											selection.push(i);
-										}
-									}
-								}
-							}
-						} else {
-							selection = [component._rowIndex];
-							evt.preventDefault();
-						}
-						this.setSelection(selection);
-						this.dispatch("click", evt);
-					}
-				}
+                                                       if(this._shiftSelectFromLast === true) {
+                                                               var anchor = length > 0 ? this._selection[length - 1] : 0;
+                                                               if(anchor === rowIndex) {
+                                                                       selection = this._selection;
+                                                               } else {
+                                                                       selection = [];
+                                                                       if(this.isRowSelected(anchor)) {
+                                                                               selection.push(anchor);
+                                                                       }
+                                                                       if(anchor < rowIndex) {
+                                                                               for(i = anchor + 1; i <= rowIndex; ++i) {
+                                                                                       if(!this.isRowSelected(i)) {
+                                                                                               selection.push(i);
+                                                                                       }
+                                                                               }
+                                                                       } else {
+                                                                               for(i = anchor - 1; i >= rowIndex; --i) {
+                                                                                       if(!this.isRowSelected(i)) {
+                                                                                               selection.push(i);
+                                                                                       }
+                                                                               }
+                                                                       }
+                                                               }
+                                                       } else {
+                                                               var start = length > 0 ? Math.min.apply(Math, this._selection) : 0;
+                                                               var end = length > 0 ? Math.max.apply(Math, this._selection) : 0;
+
+                                                               if(length === 0) {
+                                                                       start = Math.min(0, rowIndex);
+                                                                       end = Math.max(0, rowIndex);
+                                                               } else if(rowIndex < start) {
+                                                                       start = rowIndex;
+                                                               } else if(rowIndex > end) {
+                                                                       end = rowIndex;
+                                                               } else {
+                                                                       if(rowIndex - start < end - rowIndex) {
+                                                                               start = rowIndex;
+                                                                       } else {
+                                                                               end = rowIndex;
+                                                                       }
+                                                               }
+
+                                                               selection = [];
+                                                               if(start <= end) {
+                                                                       for(i = start; i <= end; ++i) {
+                                                                               selection.push(i);
+                                                                       }
+                                                               } else {
+                                                                       for(i = start; i >= end; --i) {
+                                                                               selection.push(i);
+                                                                       }
+                                                               }
+                                                       }
+                                               } else {
+                                                       selection = [component._rowIndex];
+                                                       evt.preventDefault();
+                                               }
+                                               this.setSelection(selection);
+                                               this.dispatch("click", evt);
+                                       }
+                               }
 				return this.inherited(arguments);
 			},
 			onresize: function(evt) {
@@ -980,47 +1012,57 @@ workaroundColumnAlignment(this);
 				});
 				this.updateChildren(true, true);
 			},
-			selectAll: function() {
-				var selection = [];
-				for(var i = 0; i < this._count; ++i) {
-					selection.push(i);
-				}
-				this.setSelection(selection);
-			},
-			getOnSelectionChange: function() {
-				return this._onSelectionChange;
-			},
-			setOnSelectionChange: function(value) {
-				this._onSelectionChange = value;
-			}
-		},
-		properties: {
-			"align": {
-				set: Function,
-				type: Panel.ALIGN
-			},
-			"autoColumns": {
-				type: Class.Type.BOOLEAN,
-				set: Function
-			},
-			"columns": {
-				type: Class.Type.ARRAY,
-				stored: false,
-				visible: false
-			},
-			"executesAction": {
-				type: ["No", "onClick", "onRowDblClick"]
-			},
-        	"focusable": {
-        		type: Class.Type.BOOLEAN,
-        		set: Function
-        	},
-			"onSelectionChange": {
-				type: Class.Type.EVENT,
-				editorInfo: {
-					defaultValue: "(function(data) {})"
-				}
-			},
+                       selectAll: function() {
+                               var selection = [];
+                               for(var i = 0; i < this._count; ++i) {
+                                       selection.push(i);
+                               }
+                               this.setSelection(selection);
+                       },
+                       getShiftSelectFromLast: function() {
+                               return this._shiftSelectFromLast;
+                       },
+                       setShiftSelectFromLast: function(value) {
+                               this._shiftSelectFromLast = value === true;
+                       },
+                       getOnSelectionChange: function() {
+                               return this._onSelectionChange;
+                       },
+                       setOnSelectionChange: function(value) {
+                               this._onSelectionChange = value;
+                       }
+               },
+               properties: {
+                       "align": {
+                               set: Function,
+                               type: Panel.ALIGN
+                       },
+                       "autoColumns": {
+                               type: Class.Type.BOOLEAN,
+                               set: Function
+                       },
+                       "shiftSelectFromLast": {
+                               type: Class.Type.BOOLEAN,
+                               set: Function
+                       },
+                       "columns": {
+                               type: Class.Type.ARRAY,
+                               stored: false,
+                               visible: false
+                       },
+                       "executesAction": {
+                               type: ["No", "onClick", "onRowDblClick"]
+                       },
+                       "focusable": {
+                               type: Class.Type.BOOLEAN,
+                               set: Function
+                       },
+                       "onSelectionChange": {
+                               type: Class.Type.EVENT,
+                               editorInfo: {
+                                       defaultValue: "(function(data) {})"
+                               }
+                       },
 			"onColumnsChanged": {
 				type: Class.Type.EVENT
 			},
