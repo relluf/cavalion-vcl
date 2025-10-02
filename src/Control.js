@@ -1083,37 +1083,98 @@ define(function(require) {
 			isContainerShowing: function() {
 				return this.isShowing();
 			},
-			isVisible: function() {
-				var r, designer = this.getDesignerHook();
-				if(designer !== null) {
-					r = designer.isControlVisible(this);
-				} else {
-					r = this._visible === true || this._visible === "always";
-				}
+                        isVisible: function() {
+                                var r, designer = this.getDesignerHook();
+                                if(designer !== null) {
+                                        r = designer.isControlVisible(this);
+                                } else {
+                                        r = this._visible === true || this._visible === "always";
+                                }
 
-				if(r === true) {
-					if(this._parent === null) {
-						r = this._parentNode !== null ? this._visible : false;
-					} else if(this._parent.isControlVisible(this)) {
-						r = designer === null ? this._visible : !this.hasState(
-							ControlState.notVisibleDesigning)
-					} else {
-						r = false;
-					}
+                                if(r === true) {
+                                        if(this._parent === null) {
+                                                r = this._parentNode !== null ? this._visible : false;
+                                        } else if(this._parent.isControlVisible(this)) {
+                                                r = designer === null ? this._visible : !this.hasState(
+                                                        ControlState.notVisibleDesigning)
+                                        } else {
+                                                r = false;
+                                        }
 
-					if(r === true && designer === null && this._action !== null) {
-						var v = this._action.isVisible();
-						if(v !== "leave") {
-							r = v;
-						}
-					}
-				}
+                                        if(r === true && designer === null && this._action !== null) {
+                                                var v = this._action.isVisible();
+                                                if(v !== "leave") {
+                                                        r = v;
+                                                }
+                                        }
+                                }
 
-				return r === true ? r : r === "always";
-			},
-			isControlVisible: function(control) {
-				return this.hasState(ControlState.acceptChildNodes) && this.isVisible();
-			},
+                                return r === true ? r : r === "always";
+                        },
+                        whenVisible: function(options) {
+                                options = options || {};
+
+                                if(this.isShowing() === true) {
+                                        return Promise.resolve(this);
+                                }
+
+                                if(this._parent !== null && this._parent !== this &&
+                                                typeof this._parent.whenVisible === "function" &&
+                                                this._parent.isShowing() === false) {
+                                        return this._parent.whenVisible(options).then(function() {
+                                                return this.whenVisible(options);
+                                        }.bind(this));
+                                }
+
+                                return new Promise(function(resolve, reject) {
+                                        var done = false;
+                                        var showLis, destroyLis;
+
+                                        var cleanup = function() {
+                                                if(showLis !== undefined) {
+                                                        this.un(showLis);
+                                                        showLis = undefined;
+                                                }
+                                                if(destroyLis !== undefined) {
+                                                        this.un(destroyLis);
+                                                        destroyLis = undefined;
+                                                }
+                                        }.bind(this);
+
+                                        var resolveVisible = function() {
+                                                if(done === false && this.isShowing() === true) {
+                                                        done = true;
+                                                        cleanup();
+                                                        resolve(this);
+                                                }
+                                        }.bind(this);
+
+                                        var rejectVisible = function(err) {
+                                                if(done === false) {
+                                                        done = true;
+                                                        cleanup();
+                                                        reject(err);
+                                                }
+                                        };
+
+                                        showLis = this.on("show", function() {
+                                                resolveVisible();
+                                        });
+
+                                        destroyLis = this.on("destroy", function() {
+                                                rejectVisible(new Error("Control destroyed before becoming visible"));
+                                        });
+
+                                        // Trigger an update to ensure visibility changes are processed.
+                                        this.update();
+
+                                        // Check once more in case the control became visible synchronously.
+                                        resolveVisible();
+                                }.bind(this));
+                        },
+                        isControlVisible: function(control) {
+                                return this.hasState(ControlState.acceptChildNodes) && this.isVisible();
+                        },
 			isDraggable: function() {
 			/**
 			 * Returns whether the calling control is draggable based upon the
