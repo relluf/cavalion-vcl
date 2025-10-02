@@ -1,5 +1,5 @@
-define(["require", "js/defineClass", "ace/ace", "./Panel", "js/Type", "util/Text"], 
-function(require, Ace, ace, Panel, Type, Text) {
+define(["require", "js/defineClass", "ace/ace", "../Control", "./Panel", "js/Type", "util/Text"], 
+function(require, Ace, ace, Control, Panel, Type, Text) {
     
 	var Range = ace.Range;
 	
@@ -8,6 +8,64 @@ function(require, Ace, ace, Panel, Type, Text) {
 	// 	editor.session.foldAll(); 
 	// 	while(editor.session.unfold(editor.getCursorPosition(), false)); 
 	// };
+	
+	const app = (editor) => Control.findByNode(editor.container).app();
+	const toast = (editor, theme) => app(editor).toast(
+		js.sf("Theme <b>%H<b> set", theme), 1500, {}
+	);
+	
+	const themes = [
+		"ace/theme/chrome",
+		"ace/theme/clouds",
+		"ace/theme/crimson_editor",
+		"ace/theme/dawn",
+		"ace/theme/dracula",
+		"ace/theme/dreamweaver",
+		"ace/theme/eclipse",
+		"ace/theme/github",
+		"ace/theme/gob",
+		"ace/theme/gruvbox",
+		"ace/theme/idle_fingers",
+		"ace/theme/iplastic",
+		"ace/theme/katzenmilch",
+		"ace/theme/kr_theme",
+		"ace/theme/kuroir",
+		"ace/theme/merbivore",
+		"ace/theme/merbivore_soft",
+		"ace/theme/monokai",
+		"ace/theme/mono_industrial",
+		"ace/theme/pastel_on_dark",
+		"ace/theme/solarized_dark",
+		"ace/theme/solarized_light",
+		"ace/theme/sqlserver",
+		"ace/theme/terminal",
+		"ace/theme/textmate",
+		"ace/theme/tomorrow",
+		"ace/theme/tomorrow_night",
+		"ace/theme/tomorrow_night_blue",
+		"ace/theme/tomorrow_night_bright",
+		"ace/theme/tomorrow_night_eighties",
+		"ace/theme/twilight",
+		"ace/theme/vibrant_ink",
+		"ace/theme/xcode"
+	];
+	function cycleThemeUp(editor) {
+		let index = themes.indexOf(editor.getTheme());
+		index = (index + 1) % themes.length;
+		editor.setTheme(themes[index]);
+		toast(editor, themes[index]);
+	}
+	function cycleThemeDown(editor) {
+		let index = themes.indexOf(editor.getTheme());
+		if(index === 0) {
+			index = themes.length - 1;
+		} else {
+			index--;
+		}
+		
+		editor.setTheme(themes[index]);
+		toast(editor, themes[index]);
+	}
 
 	const initCommands = (editor) => {
 		editor.commands.addCommand({
@@ -35,6 +93,16 @@ function(require, Ace, ace, Panel, Type, Text) {
 		            }
 		        }
 	        }
+		});
+		editor.commands.addCommand({
+			name: "cycleThemeUp",
+			bindKey: { mac: "Option-Command-;", win: null },
+			exec: cycleThemeUp
+		});
+		editor.commands.addCommand({
+			name: "cycleThemeDown",
+			bindKey: { mac: "Shift-Option-Command-;", win: null },
+			exec: cycleThemeDown
 		});
 	};
 	const removeAllMarkers = (editor, lines) => {
