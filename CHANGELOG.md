@@ -1,4 +1,24 @@
-### `2025/07/28` - 1.1.89...
+### `2025/10/02` 1.1.89
+
+**Component: Enhances override handling and specialization utilities**
+
+* Improves `override` logic:
+  * Functions are now wrapped and bound via selectors as before.
+  * Non-function values fall back to direct assignment with a console warning.
+* Adds `chain(name, link)` helper to attach a method while preserving its inherited reference.
+* Refines event override: ensures `onSomeEvent` property-style handlers are set correctly, preparing for inherited chaining support.
+
+**Misc UX and robustness tweaks**
+
+* **Factory**: Only sets `Method.setInherited` when a previous value exists, avoiding undefined inheritance chains.
+* **Console**: `open-alphaview` now uses `on(evt)`; **Alt** key opens an exploratory selection (All/Roots/Trees/Lists/etc.), otherwise focuses the active Console.
+* **Glassy**: Disables runtime SVG “glass-distortion” injection and related `.distorted` rules (commented out).
+* **App.openform**: Supports `App.openform.prefix` for URI prefixing in both modal and non-modal flows; forwards `sender || this`.
+* **App.toast**: Adds `margin-bottom` animation to `.fade` for smoother collapse.
+* **App.v1**: Removes default zoom CSS class from the main FormContainer.
+
+
+### `2025/07/28`
 
 * **Improves `getSpecializer`**  
   Split into `getSpecializer_raw` and `getSpecializer`, adding fallback logic using `Component.getFactories()` when no specializer is found.
