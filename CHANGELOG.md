@@ -1,3 +1,26 @@
+### `2025/07/28` - 1.1.89...
+
+* **Improves `getSpecializer`**  
+  Split into `getSpecializer_raw` and `getSpecializer`, adding fallback logic using `Component.getFactories()` when no specializer is found.
+
+* **Improves event binding in `Component.js`**  
+  Wraps event handlers in a function (`f`) that retains the original `method` and applies `Method.setName` and `Method.setInherited` when appropriate.
+
+* **Cleans up `CssRules.js`**  
+  Removes empty JSDoc comments and adds commented-out placeholder logic for empty CSS selectors.
+
+* **Improves `Factory.js` property method handling**  
+  Calls `Method.setInherited` only when the property already has a value.
+
+* **Improves `open-alphaview` hotkey behavior**  
+  Differentiates between Alt + MetaCtrl+F3 and MetaCtrl+F3, showing an extended selection list (`All`, `Application`, `Roots`, etc.) when Alt is pressed.
+
+* **Improves toast transition**  
+  Adds `margin-bottom 250ms ease-in` to the `.fade` transition.
+
+* **Adds `H.i` shortcut in Console utilities**  
+  Enables quick opening of `devtools/Alphaview.csv` with a preselected object.
+
 ### `2025/06/25` - 1.1.88
 
 * improves/refactores/cleans css styles
@@ -20,7 +43,6 @@
 * adds specific styles for input elements in Safari updates general styles
 * fixes the regexp-behaviour matching attribute values adds support for Action go()
 * introduces support for setInterval (like setTimeout) adds get/set/has/clear/Interval and clearIntervals
-
 
 ### `2025/04/03` - 1.1.86
 
@@ -111,7 +133,6 @@
 ### Prototypes
 
 * **App.v1**: Hacking CSS - makes Hovers closing X hardly visible, appears when hovered
-
 
 ### `2023/10/06` - 1.1.79
 
