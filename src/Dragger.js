@@ -88,8 +88,7 @@ define(function(require) {
 				this.updateHandles(evt);
 			},
 			createHandles: function() {},
-			destroyHandles: function() {
-			},
+			destroyHandles: function() {},
 
 			updateHandles: function(evt) {
 				/** This will just move the control, override to change behaviour */

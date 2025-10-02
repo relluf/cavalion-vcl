@@ -34,6 +34,7 @@ const deselect = () => {
 };
 
 const H = (uri, vars, opts) => B.i(["Hover<>", { vars: js.mi({ uri: uri }, vars)}], opts);
+H.i = (obj) => H("devtools/Alphaview.csv", { sel: [obj] });
 
 const cc = (text) => Clipboard.copy(text);
 const cl = console.log;

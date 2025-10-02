@@ -112,7 +112,7 @@ const default_zoom = Browser.win ? "zoom-109" : "zoom-112";
     	}
     }, [
         ["vcl/ui/FormContainer", "client", { 
-			classes: default_zoom,
+			// classes: default_zoom,
         	formUri: "./ui/forms/Portal<>" 
         }]
     ]]

@@ -8,10 +8,6 @@ define(function(require) {
 	var CssRules = {
 
 		prototype: {
-
-			/**
-			 *
-			 */
 			constructor: function() {
 				this._rules = {};
 				CssRules.instances.push(this);
@@ -19,16 +15,18 @@ define(function(require) {
 
 			_rules: null,
 			_selector: "",
-
-			/**
-			 *
-			 */
 			apply: function(css) {
 				var selector = this.getSelector();
 				var set, get;
+				
+				// if(css['']) {
+				// 	css['&:not(.defaults.overriden)'] = css[''];
+				// 	delete css[''];
+				// }
 
 				js.keys(css).forEach(function(name, index) {
 					var obj = Stylesheet.validateStyle(css[name]);
+					
 					var rule = this._rules[name];
 					var priority;
 					if(obj === undefined) {
@@ -85,44 +83,24 @@ define(function(require) {
 					}
 				}, this);
 			},
-
-			/**
-			 *
-			 */
 			getRule: function(name, create) {
 				return this._rules[name] || null;
 			},
-
-			/**
-			 *
-			 */
 			getRuleStyle: function(name) {
 				return this.getRule(name).style;
 			},
-
-			/**
-			 *
-			 */
 			getSelector: function() {
 				if(this._selector === "") {
 					this._selector = Stylesheet.generateSelector();
 				}
 				return this._selector;
 			},
-
-			/**
-			 *
-			 */
 			setSelector: function(value) {
 				if(js.keys(this._rules).length !== 0) {
 					throw new Error("Can not change selector while rules are already created");
 				}
 				this._selector = value;
 			},
-
-			/**
-			 *
-			 */
 			setRules: function(value) {
 				var rules = {};
 
@@ -181,10 +159,6 @@ define(function(require) {
 				loop(value, "");
 				this.apply(rules);
 			},
-
-			/**
-			 *
-			 */
 			getClassName: function() {
 				if(this._selector === "") {
 					this.apply();

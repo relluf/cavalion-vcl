@@ -133,7 +133,7 @@ const Clipboard = req("util/Clipboard");
     			"&.medium": "font-size: 14pt;",
     			"&.fade": {
     				opacity: "0",
-    				transition: "opacity 1s ease",
+    				transition: "opacity 1s ease, margin-bottom 250ms ease-in",
     			},
     			"&.appear": {
     				opacity: "1"
@@ -165,9 +165,7 @@ const Clipboard = req("util/Clipboard");
 		    	"&.paragraph": {
 	    			'max-width': "35%"
 		    	}
-    		},
-    		
-    		
+    		}
     	}
     }]
 ]];

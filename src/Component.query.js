@@ -894,7 +894,7 @@ define(function() {
 		}
 	
     	selector = relativeNS(selector, context);
-    	
+
         var parser = new CssSelectorParser();
         parser.registerNestingOperators(">");
         parser.registerNestingOperators("~");
