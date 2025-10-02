@@ -22,18 +22,24 @@ define(function (require) {
 			return f;
     	};
 		for(var k in value) {
-			var method = wrap(value[k]); 
-			
-			var selector = k.split(" ");
-			var event = selector.pop();
-			if(!selector.length) {
-				selector = [this];
+			var f = value[k];
+			if(typeof f === "function") {
+				var method = wrap(f); 
+				
+				var selector = k.split(" ");
+				var event = selector.pop();
+				if(!selector.length) {
+					selector = [this];
+				} else {
+	    			selector = this.qsa(selector.join(" "));
+				}
+				selector.forEach(function(component) {
+					component.override(event, method, true);
+				});
 			} else {
-    			selector = this.qsa(selector.join(" "));
+				console.warn("overriding", k, f);
+				this[k] = f;
 			}
-			selector.forEach(function(component) {
-				component.override(event, method, true);
-			});
 		}
     };
 
@@ -916,7 +922,15 @@ define(function (require) {
             properties: function() {
             	return this.defineProperties();
             },
-            
+/*- 2025... */
+			chain: function(name, link) {
+				const inherited = this.get(name); // throws if non-existent
+				if(inherited) {
+					js.Method.setInherited(link, inherited);
+				}
+				return this.set(name, link);
+			},
+			
             refresh: function() { /* global F5 in cavalion-tapps */ },
             
             open: function() {
@@ -1229,6 +1243,20 @@ define(function (require) {
             	}
             	
                 return Component.getKeysByUri(this._uri || this.getUri()).specializer;
+            },
+            getSpecializer_: function(removeClasses) {
+            	let spec = this.getSpecializer_raw(removeClasses);
+            	
+            	if(!spec) {
+            		const facts = Component.getFactories(this);
+            		while(facts.length && !spec) {
+            			let keys = Component.getKeysByUri(facts.shift()._uri);
+            			keys.specializer_classes.unshift(keys.specializer);
+            			spec = keys.specializer_classes.join(".");
+            		}
+            	}
+            	
+            	return spec;
             },
             getPropertyValue: function (name) {
                 return this['@properties'][name];
@@ -1580,9 +1608,19 @@ define(function (require) {
             				if(event.indexOf("on") === 0) {
 	            				var hash = component.hashCode();
 	            				var props = properties[hash] || (properties[hash] = component.defineProperties());
-	            				if(props[event] !== undefined) {
-	            					/*- onSomeEvent property style detected */
+            					var property = props[event];
+	            				if(property !== undefined) {
+									/*- onSomeEvent property style detected */
 	            					return props[event].set(component, method);
+	        // 						var f = function() { return method.apply(this, arguments); };
+									// f.method = method;
+	            					
+	        //     					var v = property.get(component);
+									// Method.setName(f, String.format("%n.%s", component, property._name));
+									// if(v) {
+									// 	Method.setInherited(method, v);
+									// }
+	        //     					return property.set(component, f);
 	            				}
             				}
         					component.on(event, method);
