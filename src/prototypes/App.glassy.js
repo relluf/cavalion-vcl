@@ -2,16 +2,16 @@
 
 const CssRules = require("vcl/CssRules");
 
-document.body.appendChild(require("util/HtmlElement").fromSource(
-	`<svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" style="position:absolute; overflow:hidden">
-	    <defs>
-	        <filter id="glass-distortion" x="0%" y="0%" width="100%" height="100%">
-	            <feTurbulence type="fractalNoise" baseFrequency="0.008 0.008" numOctaves="2" seed="92" result="noise"></feTurbulence>
-	            <feGaussianBlur in="noise" stdDeviation="2" result="blurred"></feGaussianBlur>
-	            <feDisplacementMap in="SourceGraphic" in2="blurred" scale="77" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap>
-	        </filter>
-	    </defs>
-	</svg>`));
+// document.body.appendChild(require("util/HtmlElement").fromSource(
+// 	`<svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" style="position:absolute; overflow:hidden">
+// 	    <defs>
+// 	        <filter id="glass-distortion" x="0%" y="0%" width="100%" height="100%">
+// 	            <feTurbulence type="fractalNoise" baseFrequency="0.008 0.008" numOctaves="2" seed="92" result="noise"></feTurbulence>
+// 	            <feGaussianBlur in="noise" stdDeviation="2" result="blurred"></feGaussianBlur>
+// 	            <feDisplacementMap in="SourceGraphic" in2="blurred" scale="77" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap>
+// 	        </filter>
+// 	    </defs>
+// 	</svg>`));
 	
 function animate() {
 	const node = document.qs("svg feGaussianBlur");
@@ -59,39 +59,39 @@ function animate() {
 				}
 			},
 			
-	        '&.distorted': {
-		        '': {
-		            'position': "absolute",
-		            'width': "300px",
-		            'height': "200px",
-		            'border-radius': "28px",
-		            'cursor': "move",
-		            'isolation': "isolate",
-		            'touch-action': "none",
-		            /* enable pointer dragging on touch */
-		            'box-shadow': "0px 6px 24px rgba(0, 0, 0, 0.2)"
-		        },
-	        	'::before': {
-		            'content': "''",
-		            'position': "absolute",
-		            'inset': "0",
-		            'z-index': "0",
-		            // 'box-shadow': "inset 0 20px -5px rgba(255, 255, 255, 0.7);",
-		            // 'background-color': "rgba(255, 255, 255, 0.4)"
-		        },
-	        	'::after': {
-		            'content': "''",
-		            'position': "absolute",
-		            'inset': "0",
-		            'z-index': "-1",
-		            // 'border-radius': "28px",
-		            'backdrop-filter': "blur(2px)",
-		            'filter': "url(#glass-distortion)",
-		            'isolation': "isolate",
-		            '-webkit-backdrop-filter': "blur(2px)",
-		            '-webkit-filter': 'url("#glass-distortion")'
-		        }
-			},
+	  //      '&.distorted': {
+		 //       '': {
+		 //           'position': "absolute",
+		 //           'width': "300px",
+		 //           'height': "200px",
+		 //           'border-radius': "28px",
+		 //           'cursor': "move",
+		 //           'isolation': "isolate",
+		 //           'touch-action': "none",
+		 //           /* enable pointer dragging on touch */
+		 //           'box-shadow': "0px 6px 24px rgba(0, 0, 0, 0.2)"
+		 //       },
+	  //      	'::before': {
+		 //           'content': "''",
+		 //           'position': "absolute",
+		 //           'inset': "0",
+		 //           'z-index': "0",
+		 //           // 'box-shadow': "inset 0 20px -5px rgba(255, 255, 255, 0.7);",
+		 //           // 'background-color': "rgba(255, 255, 255, 0.4)"
+		 //       },
+	  //      	'::after': {
+		 //           'content': "''",
+		 //           'position': "absolute",
+		 //           'inset': "0",
+		 //           'z-index': "-1",
+		 //           // 'border-radius': "28px",
+		 //           'backdrop-filter': "blur(2px)",
+		 //           'filter': "url(#glass-distortion)",
+		 //           'isolation': "isolate",
+		 //           '-webkit-backdrop-filter': "blur(2px)",
+		 //           '-webkit-filter': 'url("#glass-distortion")'
+		 //       }
+			// },
 			
 			'.container-glassy': { 
 				'': {

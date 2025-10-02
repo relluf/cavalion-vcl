@@ -488,8 +488,12 @@ this._source = source;
 						if(typeof value === "function") {
 							Method.setName(value, String.format("%n.%s", 
 								component, property._name));
-							Method.setInherited(value, property.get(component, 
-								value));
+							
+							var v = property.get(component, 
+								value);
+							if(v) {
+								Method.setInherited(value, v);
+							}
 							// value = Method.trace(value);
 						} else {
 							value = undefined;

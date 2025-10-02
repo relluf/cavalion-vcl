@@ -272,7 +272,8 @@ define(function(require) {
 			    
 			    var EM = this.getEM(); var start = Date.now();
 			    /*- hold a reference to the current request and index by page */
-			    this._pageReqs[page] = (this._request = 
+this.print("requested page " + page,
+				this._pageReqs[page] = (this._request = 
 			    	EM.query(
 				    	criteria.entity || this._entity, 
 				    	criteria.attributes || this._attributes, 
@@ -312,7 +313,7 @@ define(function(require) {
 						if(!this.isBusy()) {
 							this.notifyEvent(SourceEvent.busyChanged, false, page);
 						}
-					})
+					}))
 				);
 				
 				// console.debug(this._entity, "requestPage: page", page, "missile away - waiting for response");
