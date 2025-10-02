@@ -31,7 +31,7 @@ var FormContainer = require("vcl/ui/FormContainer");
         // FIXME Make abstracter
         if(name === "openform" || name === "openform-tabbed") {
         	/*- Delegate to Portal-form */
-            scope.openform.execute({uri: msg.uri, msg: msg}, this);
+            scope.openform.execute({uri: msg.uri, msg: msg}, sender || this);
         } else if(name === "openform_modal") {
             scope.openform_modal.execute(msg, sender);
         } else if(name === "log") {
@@ -48,6 +48,7 @@ var FormContainer = require("vcl/ui/FormContainer");
             var app_scope = app.getScope();
             var container = new FormContainer(app);
             var client = app_scope.modal_client;
+			var prefix = this.vars(["App.openform.prefix"]) || "";
 
             // var cs = HtmlElement.getComputedStyle(document.documentElement);
             var cs = scope.modal_client.getComputedStyle();
@@ -96,7 +97,7 @@ var FormContainer = require("vcl/ui/FormContainer");
             });
 
             if(evt.uri) {
-                container.setFormUri(evt.uri);
+                container.setFormUri(prefix + evt.uri);
             } else if(evt.form) {
             	/*- Use form, but do not own it */
             	container.swapForm(evt.form, false);
@@ -133,7 +134,9 @@ var FormContainer = require("vcl/ui/FormContainer");
     ["vcl/Action", ("openform"), {
 		on(evt, sender) {
             var scope = this.ud("#client").getForm().getScope();
-            scope.open_form.execute(evt.uri, evt.msg);
+			var prefix = (sender || this).vars(["App.openform.prefix"]) || "";
+            
+            scope.open_form.execute(prefix + evt.uri, evt.msg);
 		}    	
     }],
     ["#window", {}, [
