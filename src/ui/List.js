@@ -1,6 +1,7 @@
 define(function(require) {
 
 // 2021/02/02: ListColumn-maxwidth feature  
+// 2025/09/24: Refactoring rendering process: https://chatgpt.com/g/g-p-67c87b1e85cc81919f001cf9e4e558d2-vo/c/68d2e612-0f28-8330-a487-7e6e4431a1c5
 
 	var Class = require("js/Class");
 	var Method = require("js/Method");
@@ -77,7 +78,7 @@ define(function(require) {
 				},
 				'&.header-invisible .{./ListHeader}': "height:0;",
 				'.{./ListColumn}': "transition: width 400ms, max-width 400ms",
-				'.ListCell': "transition: width 400ms, max-width 400ms"
+				'.ListCell': "transition: width 400ms, max-width 400ms",
 			},
 			MAX_AUTOCOLUMNS: 50,
 
@@ -458,35 +459,38 @@ workaroundColumnAlignment(this);
 				if(column._attribute !== "") {
 					orgValue = (value = this._source.getAttributeValue(column._attribute, row));
 				}
-				
+
 				if(value === Source.Pending) {
 					value = "-";
-				} else if(column._wantsNullValues || (value !== null && value !== undefined)) {
-					if(column._displayFormat !== "") {
-						value = js.sf(column._displayFormat, value);
-					}
-					if(column._onGetValue !== null) {
-						value = column.fire("onGetValue", [
-						        value, row, this._source]);
-					}
-					if(this._onColumnGetValue !== null) {
-					    value = this.fire("onColumnGetValue", [
-					            column, value, row, this._source]);
-					}
-					if(column._onRenderCell !== null) {
-						if(column.fire("onRenderCell", [cell, value, column, 
-							    row, this._source, orgValue]) === false) {
-							return;
+				} else {
+					if(column._wantsNullValues || (value !== null && value !== undefined)) {
+	
+						if(column._onGetValue !== null) {
+							value = column.fire("onGetValue", [value, row, this._source]);
 						}
-					}
-					if(this._onColumnRenderCell !== null) {
-					    if(this.fire("onColumnRenderCell", [cell, value, column, 
-							    row, this._source, orgValue]) === false) {
-					        return;
-					    }
-					}
-					if(this._formatDates === true && this.isDate(value)) {
-						value = this.formatDate(value);
+	
+						if(column._displayFormat !== "") {
+							value = js.sf(column._displayFormat, value);
+						}
+						if(this._onColumnGetValue !== null) {
+						    value = this.fire("onColumnGetValue", [
+						            column, value, row, this._source]);
+						}
+						if(column._onRenderCell !== null) {
+							if(column.fire("onRenderCell", [cell, value, column, 
+								    row, this._source, orgValue]) === false) {
+								return;
+							}
+						}
+						if(this._onColumnRenderCell !== null) {
+						    if(this.fire("onColumnRenderCell", [cell, value, column, 
+								    row, this._source, orgValue]) === false) {
+						        return;
+						    }
+						}
+						if(this._formatDates === true && this.isDate(value)) {
+							value = this.formatDate(value);
+						}
 					}
 				}
 				
@@ -1012,57 +1016,57 @@ workaroundColumnAlignment(this);
 				});
 				this.updateChildren(true, true);
 			},
-                       selectAll: function() {
-                               var selection = [];
-                               for(var i = 0; i < this._count; ++i) {
-                                       selection.push(i);
-                               }
-                               this.setSelection(selection);
-                       },
-                       getShiftSelectFromLast: function() {
-                               return this._shiftSelectFromLast;
-                       },
-                       setShiftSelectFromLast: function(value) {
-                               this._shiftSelectFromLast = value === true;
-                       },
-                       getOnSelectionChange: function() {
-                               return this._onSelectionChange;
-                       },
-                       setOnSelectionChange: function(value) {
-                               this._onSelectionChange = value;
-                       }
-               },
-               properties: {
-                       "align": {
-                               set: Function,
-                               type: Panel.ALIGN
-                       },
-                       "autoColumns": {
-                               type: Class.Type.BOOLEAN,
-                               set: Function
-                       },
-                       "shiftSelectFromLast": {
-                               type: Class.Type.BOOLEAN,
-                               set: Function
-                       },
-                       "columns": {
-                               type: Class.Type.ARRAY,
-                               stored: false,
-                               visible: false
-                       },
-                       "executesAction": {
-                               type: ["No", "onClick", "onRowDblClick"]
-                       },
-                       "focusable": {
-                               type: Class.Type.BOOLEAN,
-                               set: Function
-                       },
-                       "onSelectionChange": {
-                               type: Class.Type.EVENT,
-                               editorInfo: {
-                                       defaultValue: "(function(data) {})"
-                               }
-                       },
+			selectAll: function() {
+			       var selection = [];
+			       for(var i = 0; i < this._count; ++i) {
+			               selection.push(i);
+			       }
+			       this.setSelection(selection);
+			},
+			getShiftSelectFromLast: function() {
+				return this._shiftSelectFromLast;
+			},
+			setShiftSelectFromLast: function(value) {
+				this._shiftSelectFromLast = value === true;
+			},
+			getOnSelectionChange: function() {
+				return this._onSelectionChange;
+			},
+			setOnSelectionChange: function(value) {
+				this._onSelectionChange = value;
+			}
+		},
+		properties: {
+           "align": {
+                   set: Function,
+                   type: Panel.ALIGN
+           },
+           "autoColumns": {
+                   type: Class.Type.BOOLEAN,
+                   set: Function
+           },
+           "shiftSelectFromLast": {
+                   type: Class.Type.BOOLEAN,
+                   set: Function
+           },
+           "columns": {
+                   type: Class.Type.ARRAY,
+                   stored: false,
+                   visible: false
+           },
+           "executesAction": {
+                   type: ["No", "onClick", "onRowDblClick"]
+           },
+           "focusable": {
+                   type: Class.Type.BOOLEAN,
+                   set: Function
+           },
+           "onSelectionChange": {
+                   type: Class.Type.EVENT,
+                   editorInfo: {
+                           defaultValue: "(function(data) {})"
+                   }
+           },
 			"onColumnsChanged": {
 				type: Class.Type.EVENT
 			},

@@ -1,4 +1,6 @@
 define(function(require) {
+	
+// 2025/09/24: Refactoring rendering process: https://chatgpt.com/g/g-p-67c87b1e85cc81919f001cf9e4e558d2-vo/c/68d2e612-0f28-8330-a487-7e6e4431a1c5
 
 	var Class = require("js/Class");
 	var Method = require("js/Method");
@@ -69,70 +71,88 @@ define(function(require) {
 				var firstRow = list.getTopRow();
 				var visibleRows = list.getVisibleRowCount(true);
 				var max = list.getCount();
-				var rowBuffer = list._rowBuffer; //getRowBuffer() ?
-				var row;
-
+				var rowBuffer = list._rowBuffer;
+			
 				var count = visibleRows + rowBuffer * 2;
-
-				if(count > max) {
-					count = max;
-				}
-				
-				// if(count % 2 === 1) count++;
-
+				if (count > max) count = max;
+			
 				firstRow -= rowBuffer;
-				if(firstRow < 0) {
-					firstRow = 0;
-				}
-
-				if(firstRow + count > max) {
-					firstRow = max - count;
-				}
-
+				if (firstRow < 0) firstRow = 0;
+				if (firstRow + count > max) firstRow = max - count;
+			
 				var delta = Math.abs(this._firstRow - firstRow);
-// console.log("delta", delta, "count", count, "firstRow", firstRow);
-if(firstRow !== 0 && delta === 0) return;
+				if (firstRow !== 0 && delta === 0) return;
 				this.setCount(count);
-
-				if(this._firstRow === -1 || delta > rowBuffer / 2) {
-// console.log("!!! pagemove")
-					for(var i = 0; i < count; ++i) {
-						row = this._controls[i];
-// if((row._rowIndex % 2) !== ((i + firstRow) % 2)) console.log("ListBody-setRowIndex", row._rowIndex, "==>", i + firstRow);
-						row.setRowIndex(i + firstRow);
+			
+				if (this._firstRow === -1 || delta > rowBuffer / 2) {
+					// --- pagemove: two-pass, visible rows last ---
+					const vStart = firstRow + rowBuffer;                 // first visible row
+					const vEnd   = vStart + visibleRows - 1;            // last visible row
+					const later = [];
+			
+					for (let i = 0; i < count; ++i) {
+						const row = this._controls[i];
+						const idx = i + firstRow;
+			
+						// off-screen rows now…
+						if (idx < vStart || idx > vEnd) {
+							row.setRowIndex(idx);
+						} else {
+							// …visible rows deferred
+							later.push([row, idx]);
+						}
 					}
+			
+					// visible rows last (next tick keeps UI & fetching logic snappy)
+					this.setTimeout("renderRows.visible", () => {
+						for (const [row, idx] of later) row.setRowIndex(idx);
+					}, 0);
+			
 					this._firstRow = firstRow;
 				} else {
-
-					if(/*delta > rowBuffer * 0.75 || */firstRow === 0 || firstRow === max - count) {
-// console.log("!!! normalmove")
-						while(this._firstRow < firstRow) {
-							row = this._controls.splice(0, 1)[0];
+					// --- normal small scroll: keep the cheap rotation logic ---
+					if (/* delta > rowBuffer * 0.75 || */ firstRow === 0 || firstRow === max - count) {
+						while (this._firstRow < firstRow) {
+							let row = this._controls.splice(0, 1)[0];
 							this._controls.push(row);
 							row.setRowIndex(this._firstRow + count);
 							this._firstRow++;
 						}
-
-						while(this._firstRow > firstRow) {
-							row = this._controls.pop();
+						while (this._firstRow > firstRow) {
+							let row = this._controls.pop();
 							this._controls = [row].concat(this._controls);
 							row.setRowIndex(--this._firstRow);
 						}
-
 					}
 				}
 			},
 			updateRows: function(range) {
-				if(this.hasOwnProperty("_controls")) {
-					for(var i = 0; i < Math.min(this._controls.length, this._parent.getCount()); ++i) {
+				if (this.hasOwnProperty("_controls")) {
+					const list = this.getList();
+					const top = list.getTopRow();
+					const visEnd = top + list.getVisibleRowCount(true) - 1;
+			
+					const early = [];  // off-screen first
+					const late  = [];  // in-view last
+			
+					for (var i = 0; i < Math.min(this._controls.length, this._parent.getCount()); ++i) {
 						var c = this._controls[i];
-						if(c._node !== null) {
-							// Update row when the range is unknown or it's rowIndex is within the range
-							if(range === undefined || (c._rowIndex >= range.start && c._rowIndex <= range.end)) {
-								c.initializeNodes();
+						if (c._node !== null) {
+							// Update row when the range is unknown or its rowIndex is within the range
+							if (range === undefined || (c._rowIndex >= range.start && c._rowIndex <= range.end)) {
+								// In-view? Defer. Otherwise do it now.
+								(c._rowIndex >= top && c._rowIndex <= visEnd ? late : early).push(c);
 							}
 						}
 					}
+			
+					// Initialize off-screen first…
+					early.forEach(c => c.initializeNodes());
+			
+					// …and do the visible rows last (small defer keeps the UI snappy)
+					this.setTimeout("init-visible-rows", function() {
+						late.forEach(c => c.initializeNodes());
+					}, 0);
 				}
 			},
 			rowHeightChanged: function() {
