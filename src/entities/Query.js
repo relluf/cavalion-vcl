@@ -14,6 +14,49 @@ define(function(require) {
 	var NativeArray = ([]).constructor;
 	
 	var WAITING = {};
+	
+	function defaultPageProcessors(objs) {
+
+		if (!objs || !objs.length) return;
+	
+		// 1) renameKeys first
+		var map = this._renameKeys;
+		if (map) {
+			var kOld, kNew, i, obj;
+			for (i = 0; i < objs.length; i++) {
+				obj = objs[i];
+				for (kOld in map) if (map.hasOwnProperty(kOld) && obj.hasOwnProperty(kOld)) {
+					kNew = map[kOld];
+					obj[kNew] = obj[kOld];
+					delete obj[kOld];
+				}
+			}
+		}
+	
+		// 2) expand dotted keys into nested objects if enabled
+		if (this._expandKeys) {
+			// cache the dotted keys from the first record for perf
+			var first = objs[0];
+			var keys = Object.keys(first);
+			var dotted = [];
+			for (var j = 0; j < keys.length; j++) {
+				if (keys[j].indexOf('.') !== -1) dotted.push(keys[j]);
+			}
+			if (dotted.length) {
+				for (i = 0; i < objs.length; i++) {
+					obj = objs[i];
+					for (j = 0; j < dotted.length; j++) {
+						var dk = dotted[j];
+						if (obj.hasOwnProperty(dk)) {
+							// js.set("a.b.c", value, obj) → creates obj.a.b.c
+							js.set(dk, obj[dk], obj);
+						}
+					}
+				}
+			}
+		}
+
+	}
 
     return (Query = Query(require, {
     	inherits: Array,
@@ -33,6 +76,10 @@ define(function(require) {
     		_count: true,
     		_distinct: false,
     		_onGetRequestCriteria: null,
+    		_onProcessPage: null,
+    		
+    		_expandKeys: true,
+    		_renameKeys: null,
 
     		_layoutChanged: false,
     		_request: null,
@@ -123,6 +170,11 @@ define(function(require) {
 				/*- round limits */
 				var startPage = parseInt(start / this._limit, 10);
 				var endPage = parseInt(end / this._limit + 0.5, 10);
+				
+				if(endPage * this._limit > this._size) {
+					// console.warn("adjusted endpage");
+					endPage--;
+				}
 				
 				while(startPage <= endPage) {
 					// console.debug(this._entity, "getObjects: page", startPage, "needed");
@@ -272,7 +324,7 @@ define(function(require) {
 			    
 			    var EM = this.getEM(); var start = Date.now();
 			    /*- hold a reference to the current request and index by page */
-this.print("requested page " + page,
+				// this.print("requested page " + page, this._pageReqs)
 				this._pageReqs[page] = (this._request = 
 			    	EM.query(
 				    	criteria.entity || this._entity, 
@@ -313,9 +365,8 @@ this.print("requested page " + page,
 						if(!this.isBusy()) {
 							this.notifyEvent(SourceEvent.busyChanged, false, page);
 						}
-					}))
-				);
-				
+					}));
+
 				// console.debug(this._entity, "requestPage: page", page, "missile away - waiting for response");
 				// this.print("requesting-page", page);
 				if(!wasBusy) {
@@ -389,6 +440,13 @@ this.print("requested page " + page,
 				if(res.names !== undefined) {
 					this._attributes = res.names.join(",");
 					this.notify(SourceEvent.layoutChanged);
+				}
+				
+				defaultPageProcessors.apply(this, [instances]);
+
+				// 🔌 allow page-level processing
+				if (this.hasOwnProperty("_onProcessPage")) {
+					this.fire("onProcessPage", [instances, page, criteria, res]);
 				}
 
 				if(this._arr === null || this._tuples === null/* || this._arr.length === 0*/) {
@@ -642,7 +700,16 @@ this.print("requested page " + page,
     			f: function(e) {
     				/*	This method provides an interface to handle errors, if not set an error will be thrown and logged to the console */
     			}
-    		}
+    		},
+			"onProcessPage": {
+				type: Type.EVENT,
+				f: function(objs, page, criteria, res) {
+					/* Mutate or replace `objs` (instances) for this page.
+					   Return nothing to mutate in place, or return a new array to replace. */
+				}
+			},
+			"renameKeys": { type: Type.OBJECT, d: null },	// { "old": "new" }
+			"expandKeys": { type: Type.BOOLEAN, d: false }	// assign a.b → obj.a.b
     	}
     }));
 
