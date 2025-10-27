@@ -1672,6 +1672,6 @@ define(function (require) {
     Component.prototype.udown = Component.prototype.ud;
 
     Property.registerReferencedClass(Component);
-
+   
     return Component;
 });
