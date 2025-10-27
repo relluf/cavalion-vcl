@@ -203,8 +203,8 @@ define(function (require) {
                     this._form.setParent(null);
                     //this._form.setOwner(null);
                     this._form.destroy(false); // false === do not cache the instance (@overrides ../Component._cache)
-                    this._useCache = evt.useCache;
-                    this._useScaffolding = evt.useScaffolding;
+                    this._useCache = (evt && evt.useCache) || true;
+                    this._useScaffolding = (evt && evt.useScaffolding) || true;
                     this.loadForm();
                 }
             },
