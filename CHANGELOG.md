@@ -1,9 +1,4 @@
-### `2025/10/27` — onProcessPage
-
-* Adds `onProcessPage`-property to Query....
-
-
-### `2025/10/27` — List cell formatting & selection handling
+### `2025/10/27` 1.1.90 — List cell formatting & selection handling
 
 * Adds `_formatNumbers: true` and `_renderCellTitles: true` defaults in `List` prototype.
 * Exposes `formatDates`, `formatNumbers`, and `renderCellTitles` as public boolean properties.
@@ -17,6 +12,9 @@
 * Keeps `textContent` vs `innerHTML` rendering path; updates `autoWidth` call unchanged.
 * In `ListRow`, increases selected-row specificity to `"&.selected.selected.selected"` to ensure highlight wins.
 
+### `2025/10/27` — onProcessPage
+
+* Adds `onProcessPage`-property to Query....
 
 ### `2025/10/02` 1.1.89
 
@@ -36,7 +34,6 @@
 * **App.openform**: Supports `App.openform.prefix` for URI prefixing in both modal and non-modal flows; forwards `sender || this`.
 * **App.toast**: Adds `margin-bottom` animation to `.fade` for smoother collapse.
 * **App.v1**: Removes default zoom CSS class from the main FormContainer.
-
 
 ### `2025/07/28`
 
