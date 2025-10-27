@@ -16,7 +16,7 @@ define(function(require) {
 				// "&:nth-child(odd)": { "background-color": "white" },
 				"&.odd": { "background-color": "#f0f0f0" },
 				// "&:not(.odd)": { "background-color": "white" },
-				"&.selected": {
+				"&.selected.selected.selected": {
 					color: "white",
 					"background-color": "rgb(56, 121, 217)"
 				},
