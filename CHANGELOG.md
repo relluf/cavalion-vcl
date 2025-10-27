@@ -1,3 +1,23 @@
+### `2025/10/27` — onProcessPage
+
+* Adds `onProcessPage`-property to Query....
+
+
+### `2025/10/27` — List cell formatting & selection handling
+
+* Adds `_formatNumbers: true` and `_renderCellTitles: true` defaults in `List` prototype.
+* Exposes `formatDates`, `formatNumbers`, and `renderCellTitles` as public boolean properties.
+* Adds number formatting: when `typeof value === "number"` and `formatNumbers !== false`, applies `Math.f(value)`.
+* Breaking: numbers are now formatted by default; set `formatNumbers = false` to restore previous raw rendering.
+* Adds optional cell titles: when `renderCellTitles === true`, sets `cell.title` to the rendered value; clears title for empty cells.
+* Preserves date formatting via `formatDates` (still `true` by default).
+* Refactors click selection flow: moves `setSelection(selection)` and `dispatch("click")` outside conditional branches for consistent dispatch.
+* Maintains Ctrl/Cmd toggle and Shift range selection logic; cleans up selection state handling.
+* Adjusts array rendering: joins primitives; for object arrays shows `"%s, ... (%d)"`.
+* Keeps `textContent` vs `innerHTML` rendering path; updates `autoWidth` call unchanged.
+* In `ListRow`, increases selected-row specificity to `"&.selected.selected.selected"` to ensure highlight wins.
+
+
 ### `2025/10/02` 1.1.89
 
 **Component: Enhances override handling and specialization utilities**
