@@ -205,7 +205,12 @@ function animate() {
 					'.{Tab}': {
 						'': "background-color: transparent; border: none;",
 						'&:not(.disabled)': "cursor: pointer;",
-						'&.selected': "font-weight: bold; background-color:rgba(255, 255, 255, 0.65); border-radius:3px;"
+						'&.selected': "font-weight: bold; border-radius:3px; border: none;",
+					},
+					'&:not(.focused)': {
+						'.{Tab}': {
+							'&.selected': "background-color:rgba(255, 255, 255, 0.65);",
+						}
 					}
 				},
 				'.{ListRow}:not(.selected).odd': "background-color: rgba(240, 240, 240, 0.55);",
@@ -232,7 +237,8 @@ function animate() {
 		            '-webkit-filter': 'url("#glass-distortion")'
 		        }
 			},
-			
+
+			// TODO twijfelachtig die margin-top: 2px;			
 			'input': "background: transparent; margin-top: 2px; border: 1px solid rgb(118, 118, 118); padding-bottom: 3px; padding-top: 3.5px; padding-left: 4px; border-radius: 3px;",
 			'select': "background: transparent; border: 1px solid rgb(118, 118, 118); border-radius: 3px; padding-right:20px;",
 			
