@@ -349,8 +349,8 @@ workaroundColumnAlignment(this);
                                        selection = [component._rowIndex];
                                        evt.preventDefault();
                                }
-                               this.setSelection(selection);
                                this.dispatch("click", evt);
+                               this.nextTick(() => this.setSelection(selection));
                        }
                }
 				return this.inherited(arguments);
@@ -531,11 +531,18 @@ workaroundColumnAlignment(this);
 workaroundColumnAlignment(this);
 			},
 			isDate: function(value) {
-				return (value instanceof Date) || (typeof value === "string" && 
-					value.length === 24 && value.endsWith("Z"));
+				return (value instanceof Date) || 
+					(value > 946706400000 && value < 1893477600000) ||
+					(typeof value === "string" && value.length === 24 && value.endsWith("Z"));
 			},
 			formatDate: function(value, opts) {
-				if(!(value instanceof Date)) value = new Date(value);
+				if(!(value instanceof Date)) {
+					if(typeof value === "string" && value.match(/^\d+$/)) {
+						value = parseInt(value, 10);
+					}
+					value = new Date(value);
+				}
+				
 				if(opts && opts.utc) {
 					return js.sf("%d/%02d/%02d %02d:%02d", value.getUTCFullYear(), value.getUTCMonth() + 1,
 							value.getUTCDate(), value.getUTCHours(), value.getUTCMinutes());
@@ -955,6 +962,10 @@ workaroundColumnAlignment(this);
 				} else if(typeof column === "number") {
 					column = this.getColumn(column);
 				}
+				
+				if(numeric === undefined) {
+					numeric = this.isNumericColumn(column);
+				}
 
 				const sv = column.get("onSortValues") || Array.sortValues;
 				this._source.sort((i1, i2) => {
@@ -963,6 +974,11 @@ workaroundColumnAlignment(this);
 
 					i1 = this.valueByColumnAndRow(column, row1);
 					i2 = this.valueByColumnAndRow(column, row2);
+					
+					if(numeric) {
+						i1 = isFinite(i1) ? parseFloat(i1) : i1;
+						i2 = isFinite(i2) ? parseFloat(i2) : i2;
+					}
 					
 					return dir * sv(i1, i2);
 				});
@@ -992,6 +1008,13 @@ workaroundColumnAlignment(this);
 	
 				// 		return (i1 < i2 ? -1 : i1 === i2 ? 0 : 1) * dir;
 				// 	});
+			},
+			
+			isNumericColumn(column) {
+				return this._source._array
+					.slice(0, 100)
+					.every((o, i) => 
+						isFinite(this.valueByColumnAndRow(column, i)));
 			},
 			
 			hasSelection: function() {

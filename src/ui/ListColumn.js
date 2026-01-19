@@ -281,7 +281,13 @@ define(function(require) {
 				}
 			},
 			getAttributeClassName: function() {
-				return Array.from(this._attribute).map(char => /[\w-]/.test(char) ? char : '_').join('');
+				let r = Array.from(this._attribute).map(char => /[\w-]/.test(char) ? char : '_').join('');
+				
+				if(r === "fa") {
+					r += "_";
+				}
+				
+				return r;
 				
 				// return this._attribute.
 				// 	replace(/\#/g, "-").
