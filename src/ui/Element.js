@@ -93,6 +93,9 @@ define(function(require) {
 				for(var k in value) {
 					this._node.setAttribute(k, value[k]);
 				}
+				if(this._hint) {
+					this._node.title = this._hint;
+				}
 				return this.inherited(arguments);
 			},
 
@@ -104,6 +107,15 @@ define(function(require) {
 				this._attributes = value;
 				if(this._node) {
 					this.recreateNode();
+				}
+			},
+			setHint: function(value) {
+				if(this._hint !== value) {
+					this._hint = value;
+					
+					if(this._node) {
+						this._node.title = value;
+					}
 				}
 			},
 			sourceNotifyEvent: function(event, data) {
@@ -148,6 +160,10 @@ define(function(require) {
 				/*- This property is not stored (when not designing?) */
 				stored: false,
 				type: Type.OBJECT,
+				set: Function
+			},
+			"hint": {
+				type: Type.STRING,
 				set: Function
 			}
 		},
