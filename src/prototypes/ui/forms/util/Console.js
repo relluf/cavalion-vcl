@@ -36,14 +36,13 @@ const deselect = () => {
 const H = (uri, vars, opts) => B.i(["Hover<>", { vars: js.mi({ uri: uri }, vars)}], opts);
 H.i = (obj) => H("devtools/Alphaview.csv", { sel: [obj] });
 
+const tap = fn => x => (fn(x), x);
 const cc = (text) => Clipboard.copy(text);
+const cp = (cb) => Clipboard.paste(cb);
 const cl = console.log;
 const facts = (comp) => Component.getFactories(comp);
 
-window.B = B; window.H = H;
-window.facts = facts;
-window.cc = cc;
-window.cl = cl;
+js.mi(window, { B, H, facts, cc, cp, cl, tap });
 
 [["ui/Form"], {
     activeControl: "console",
@@ -79,16 +78,18 @@ window.cl = cl;
 
             if (value !== null) {
                 // `#CVLN-20200904-3`
-                content.push(js.sf("%s%s%s", 
+                content.push(js.sf("%H%H%H", 
                 	value.isRootComponent() ? ":root" : "", 
                 	value.isSelected && value.isSelected() ? ":selected" : "", 
                 	value.isEnabled && value.isEnabled() ? "" : ":disabled"));
 
         		if(value['@factory']) {
-        			content.push(js.n(value['@factory']).split("#").slice(0, -1).join("!"));
+        			content.push(js.sf("<small>%H</small>", js.n(value['@factory']).split("#").slice(0, -1).join("!")));
+        		} else {
+        			content.push("<i>no-factory</i>");
         		}
 
-        		content.push(js.sf("[%s]", value));
+        		content.push(js.sf("<b>[%H]</b>", value));
         		
 				var props = [], hashAndNameOrUri = (c) => [c.hashCode(), c._name ? "#" + c._name : " " + c._uri].filter(s => s !== "").join("");
 				if(value.up()) {
@@ -115,10 +116,14 @@ window.cl = cl;
 					consoles.forEach(c => c.getNode("input").value = js.sf("#%d", value.hashCode()));
 					consoles.forEach(c => c.focus());
 				}
+				
+				content.splice(0, 0, js.sf("<b>%H#%s</b>", value._name, value.hashCode()));
             }
-            scope.sizer_selection.setContent(String.format("%H", content.join(" ")));
-            
+
+            scope.sizer_selection.setContent(content.join(" "));
+
             if(value !== null) {
+	            
             	if(!content[0]) content.shift();
                 // content.pop();
     			app.toast({ title: js.sf("%n", value), content: " " || js.sf("<ul style='padding:0;padding-left:8px;'><li>%s</li></ul>", content.join("</li><li>")), classes: "glassy fade"});
