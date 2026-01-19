@@ -8,8 +8,6 @@ define(function(require) {
 	var CssRules = 			require("./CssRules");
 
 	var instances = [];
-	
-
 
 	return (Application = Application(require, {
 		inherits: Component,

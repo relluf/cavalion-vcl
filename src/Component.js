@@ -269,6 +269,9 @@ define(function (require) {
             	}
             	return this.setTimeout(name, f, 0, args);
             },
+            debounce(name, ms, f) {
+            	return this.setTimeout(name, f, ms);
+            },
             setTimeout: function(name, f, ms, args) {
 	            /**
 	             * @param name {String} [optional] Used to identify the timeout. Successive calls will cancel a previous timeout with the same name.
@@ -819,6 +822,18 @@ define(function (require) {
             			callback.apply(this, selector);
             		}
             		return selector;
+            	}
+
+            	
+            	if(typeof selector === "function") {
+            		let c = this.getOwner();
+            		while(c !== null) {
+            			if(selector(c) == true) {
+            				break;
+            			}
+            			c = c.getOwner();
+            		}
+            		return c;
             	}
             	
 	            /*- Queries all components for the given selector and filters out
