@@ -1,3 +1,33 @@
+### `2026/01/18` 1.1.91 — UI/UX utility upgrades: visibility, filtering, sorting, and hints
+
+#### List sorting/selection fixes + date/numeric heuristics
+
+- Defers row selection updates to the next tick after click dispatch to avoid selection timing issues.
+- Broadens date detection to treat epoch-millis ranges as dates (in addition to `Date` instances and ISO `...Z` strings).
+- Improves date formatting to accept numeric-string timestamps by coercing before constructing a `Date`.
+- Adds automatic numeric-column detection (samples first 100 rows) when the caller doesn’t specify `numeric`.
+- Coerces finite numeric cell values to floats during sort comparisons for consistent numeric ordering.
+- Avoids a generated CSS class name collision by renaming attribute `"fa"` to `"fa_"` for list columns.
+
+
+#### Changes
+
+- Adds `Component.debounce(name, ms, fn)` as a shorthand over named timeouts.
+- Extends component lookup to accept a predicate function and walk owners until it matches.
+- Enhances `Control.whenVisible(...)` to accept an optional callback, reuse cached promises, and optionally reject on destroy (`rejectOnDestroy`); default destroy now resolves with `null`.
+- Adds `data/Array` support for filtering out `Source.Pending` items, plus a new `filterPending` property and `setFilterPending(...)`.
+- Reduces toast spam by silencing clipboard debug prints while keeping user feedback toasts.
+- Improves the developer console helpers: adds `tap`, paste helper, and safer/clearer HTML rendering for selection metadata.
+- Adds `Element.hint` (sets DOM `title`) and ensures hints are applied when attributes update.
+- Adjusts `List` click handling to avoid selection timing issues by deferring selection to the next tick.
+- Broadens date detection/formatting in `List` to handle epoch-millis (including numeric strings) in addition to `Date` and ISO Z strings.
+- Improves `List` sorting by auto-detecting numeric columns and coercing finite numeric values before comparing.
+- Adds `List.isNumericColumn(...)` heuristic (samples up to 100 rows) to drive numeric sorting defaults.
+- Hardens `ListColumn.getAttributeClassName()` to avoid CSS-class collisions for attribute `"fa"` by renaming to `"fa_"`.
+- Minor whitespace cleanup in `Application.js` (no functional change).
+
+
+
 ### `2025/10/27` 1.1.90 — List cell formatting & selection handling
 
 * Adds `_formatNumbers: true` and `_renderCellTitles: true` defaults in `List` prototype.

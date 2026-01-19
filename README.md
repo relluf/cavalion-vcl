@@ -1,6 +1,7 @@
 * [Declarative Component Format.md](docs/:)
 * [Naming Conventions.md](docs/:)
 * ...
+* [Application Events.md](docs/:)
 
 # cavalion-vcl
 
