@@ -1112,22 +1112,29 @@ define(function(require) {
 	                return r === true ? r : r === "always";
 	        },
 			whenVisible: function(options) {
+				let cb;
+				if (typeof options === "function") {
+					cb = options;
+					options = {};
+				}
 				options = options || {};
+			
+				const rejectOnDestroy = options.rejectOnDestroy === true;
 			
 				// Already visible → reuse a cached resolved promise (no new allocs).
 				if (this.isShowing() === true) {
-					return this._wv_resolved || (this._wv_resolved = Promise.resolve(this));
+					const p = this._wv_resolved || (this._wv_resolved = Promise.resolve(this));
+					return cb ? p.then(() => cb(this), () => undefined) : p;
 				}
 			
 				// Already waiting → return the same pending promise.
-				if (this._wv_pending) return this._wv_pending;
+				if (this._wv_pending) {
+					return cb ? this._wv_pending.then(v => (v && cb(v), v)) : this._wv_pending;
+				}
 			
-				// If a parent must become visible first, start our listeners now, but don't
-				// allocate a *second* promise for us — we still reuse _wv_pending below.
 				if (this._parent && this._parent !== this &&
-				    typeof this._parent.whenVisible === "function" &&
-				    this._parent.isShowing() === false) {
-					// Fire and forget: when parent shows, we’ll re-check via resolveVisible().
+					typeof this._parent.whenVisible === "function" &&
+					this._parent.isShowing() === false) {
 					this._parent.whenVisible(options).then(() => { this.update(); });
 				}
 			
@@ -1137,30 +1144,33 @@ define(function(require) {
 					if (destroyLis !== undefined) { this.un(destroyLis); destroyLis = undefined; }
 				};
 			
-				// Create exactly one pending promise and cache it.
 				this._wv_pending = new Promise((resolve, reject) => {
 					const settle = (fn, v) => { cleanup(); this._wv_pending = null; return fn(v); };
 			
 					const resolveVisible = () => {
 						if (this.isShowing() === true) {
-							// Cache a resolved promise for next time.
 							this._wv_resolved = this._wv_resolved || Promise.resolve(this);
 							return settle(resolve, this);
 						}
 					};
 			
-					const rejectVisible = (err) => settle(reject, err);
-			
 					showLis = this.on("show", resolveVisible);
-					destroyLis = this.on("destroy",
-						() => rejectVisible(new Error("Control destroyed before becoming visible")));
 			
-					// Nudge layout/visibility and do a synchronous re-check.
+					destroyLis = this.on("destroy", () => {
+						if (rejectOnDestroy) {
+							return settle(reject, new Error("Control destroyed before becoming visible"));
+						}
+						// Cancellation/no-op by default: resolves to null/undefined.
+						return settle(resolve, null);
+					});
+			
 					this.update();
 					resolveVisible();
 				});
 			
-				return this._wv_pending;
+				return cb
+					? this._wv_pending.then(v => (v && cb(v), v))
+					: this._wv_pending;
 			},
 	        isControlVisible: function(control) {
 	                return this.hasState(ControlState.acceptChildNodes) && this.isVisible();
