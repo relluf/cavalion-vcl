@@ -30,14 +30,6 @@ const default_zoom = Browser.win ? "zoom-109" : "zoom-112";
     		
     	return this.inherited(arguments);
 	},
-	onDispatchChildEvent: function(component, name, evt, f, args) {
-		if(name === "touchstart") {
-			if(!Fullscreen.hasRequested()) {
-				Fullscreen.request(document.documentElement);
-			}
-		}
-        return this.inherited(arguments);
-	},
     onGetState: function() {
         var scope = this.getScope();
         var form = scope.client._form;
@@ -64,6 +56,8 @@ const default_zoom = Browser.win ? "zoom-109" : "zoom-112";
 			'font-size': font_size,
 			'letter-spacing': letter_spacing,
 
+		    '.right': "float: right;",
+	    
 			'.{Button}': {
 				'font-size': font_size,
 				'font-family': font_family,

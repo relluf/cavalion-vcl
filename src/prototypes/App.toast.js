@@ -16,10 +16,10 @@ const Clipboard = req("util/Clipboard");
 		};
 		
 		Clipboard.onPaste.addListener(e => { 
-			this.print("onPaste", e);
+			// this.print("onPaste", e);
 			this.toast(js.sf("Pasted %d bytes...", e.length ))});
 		Clipboard.onCopy.addListener(e => { 
-			this.print("onCopy", e);
+			// this.print("onCopy", e);
 			if(typeof e === "string" && e.length > 150) {
 				this.toast(js.sf("Copied %d bytes", e.length ));
 			} else {
