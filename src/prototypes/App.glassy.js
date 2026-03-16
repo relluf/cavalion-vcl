@@ -41,7 +41,7 @@ function animate() {
 			".transparent": "background-color:transparent;",
 			".glassy-overlay": {
 				"": "pointer-events: none; color:rgba(5,5,5,0.95);",
-		 		".glassy": "background-color: rgba(215, 215, 215, 0.35); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);",
+		 		".glassy": "background-color: rgba(215, 215, 215, 0.35); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); z-index: 2;",
 				".loading": "background: url(/shared/vcl/images/loading.gif) 50% 50% no-repeat;",
 				".rounded": "padding: 4px; border-radius: 5px;",
 				".animate-width-height": "transition: width 250ms ease-in, height 250ms ease-in;",

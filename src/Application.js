@@ -301,6 +301,7 @@ define(function(require) {
 			},
 			setIcon: function(value) {
                 if(this._icon !== value) {
+                    this._icon = value;
                     var link = document.querySelectorAll("html head link[rel='icon shortcut']")[0];
                     if(link === undefined) {
                         link = document.createElement("link");

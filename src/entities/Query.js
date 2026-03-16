@@ -609,6 +609,11 @@ define(function(require) {
 					this.notify(SourceEvent.changed);
 				}
 			},
+
+			getFrom() { return this._entity; },
+			setFrom(value) { return this.setEntity(value); },
+			getSelect() { return this._attributes; },
+			setSelect(value) { return this.setAttributes(value); },
 			
 			assign: function(query) {
 				var wasActive = this.isActive();
@@ -651,6 +656,10 @@ define(function(require) {
     		"entity": {
     			type: Type.STRING
     		},
+    		
+			"from": { type: Type.STRING, get: Function, set: Function },
+			"select": { type: Type.STRING, get: Function, set: Function },
+    		
     		"filterBy": {
     			type: Type.ARRAY
     		},

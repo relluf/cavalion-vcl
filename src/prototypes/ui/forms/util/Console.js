@@ -91,7 +91,7 @@ js.mi(window, { B, H, facts, cc, cp, cl, tap });
 
         		content.push(js.sf("<b>[%H]</b>", value));
         		
-				var props = [], hashAndNameOrUri = (c) => [c.hashCode(), c._name ? "#" + c._name : " " + c._uri].filter(s => s !== "").join("");
+				var props = [], hashAndNameOrUri = (c) => [c.hashCode(), c.isRootComponent() ? c._uri : c._name ? "#" + c._name : " " + c._uri].filter(s => s !== "").join("");
 				if(value.up()) {
 					props.push(js.sf("up(): #%s", hashAndNameOrUri(value.up())));
 				}

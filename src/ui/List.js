@@ -10,6 +10,7 @@ define(function(require) {
 	var Source = require("../../data/Source");
 	var SourceEvent = require("../../data/SourceEvent");
 	var Component = require("../Component");
+	var Control = require("../Control");
 	var Panel = require("./Panel");
 	var ListColumn = require("./ListColumn");
 	var ListHeader = require("./ListHeader");
@@ -17,6 +18,9 @@ define(function(require) {
 	var ListBody = require("./ListBody");
 	var ListRow = require("./ListRow");
 	
+	const CLICK_INTERVAL = 350;
+	const MAX_PRESS_DURATION = 180;
+
 	// require("stylesheet!./List.less");
 	
 	// TODO centralize/utilize :-p
@@ -52,6 +56,7 @@ define(function(require) {
 			'@css': {
 				overflow: "hidden",
 				'overflow-x': "auto",
+				'&.no-select': "user-select: none; -webkit-user-select: none;",
 				'&.busy': {
 					'background': "url(/shared/vcl/images/loading.gif) no-repeat 4px 32px",
 					'.body': {
@@ -268,90 +273,100 @@ workaroundColumnAlignment(this);
 			},
 			dispatchChildEvent: function(component, name, evt, f, args) {
 				/** @overrides ../Control.prototype.dispatchChildEvent */
-				if(name === "mousedown" && evt.shiftKey === true) {
-					// prevent selection with mouse
-					evt.preventDefault();
-				} else if(component instanceof ListRow) {
-					if(["dblclick", "dragenter", "dragover", "dragleave", "drop"].indexOf(name) !== -1) {
+				// if(name === "mousedown" && evt.shiftKey === true) {
+				// 	// prevent selection with mouse
+				// 	evt.preventDefault();
+				// } else 
+				if(component instanceof ListRow) {
+					if(["dblclick", "dragenter", "dragover", "dragleave", "drop", 
+						"mousedown", "mouseup"].indexOf(name) !== -1) {
 						this.dispatch(name, evt);
+						
+						if(name === "mousedown") {
+							this._lastMouseDown = Date.now();
+						}
+						
 					} else if(name === "click") {
-						var rowIndex = component._rowIndex;
-                               var selection;
-                               if(evt.ctrlKey === true || evt.metaKey === true) {
-                                       if(this.isRowSelected(rowIndex)) {
-                                               var index = this._selection.indexOf(rowIndex);
-                                               selection = [].concat(this._selection);
-                                               selection.splice(index, 1);
-                                       } else {
-                                               selection = this._selection.concat([rowIndex]);
-                                       }
-
-                               } else if(evt.shiftKey === true) {
-                                       var length = this._selection.length;
-                                       var i;
-
-                                       HtmlElement.clearSelection();
-
-                                       if(this._shiftSelectFromLast === true) {
-                                               var anchor = length > 0 ? this._selection[length - 1] : 0;
-                                               if(anchor === rowIndex) {
-                                                       selection = this._selection;
-                                               } else {
-                                                       selection = [];
-                                                       if(this.isRowSelected(anchor)) {
-                                                               selection.push(anchor);
-                                                       }
-                                                       if(anchor < rowIndex) {
-                                                               for(i = anchor + 1; i <= rowIndex; ++i) {
-                                                                       if(!this.isRowSelected(i)) {
-                                                                               selection.push(i);
-                                                                       }
-                                                               }
-                                                       } else {
-                                                               for(i = anchor - 1; i >= rowIndex; --i) {
-                                                                       if(!this.isRowSelected(i)) {
-                                                                               selection.push(i);
-                                                                       }
-                                                               }
-                                                       }
-                                               }
-                                       } else {
-                                               var start = length > 0 ? Math.min.apply(Math, this._selection) : 0;
-                                               var end = length > 0 ? Math.max.apply(Math, this._selection) : 0;
-
-                                               if(length === 0) {
-                                                       start = Math.min(0, rowIndex);
-                                                       end = Math.max(0, rowIndex);
-                                               } else if(rowIndex < start) {
-                                                       start = rowIndex;
-                                               } else if(rowIndex > end) {
-                                                       end = rowIndex;
-                                               } else {
-                                                       if(rowIndex - start < end - rowIndex) {
-                                                               start = rowIndex;
-                                                       } else {
-                                                               end = rowIndex;
-                                                       }
-                                               }
-
-                                               selection = [];
-                                               if(start <= end) {
-                                                       for(i = start; i <= end; ++i) {
-                                                               selection.push(i);
-                                                       }
-                                               } else {
-                                                       for(i = start; i >= end; --i) {
-                                                               selection.push(i);
-                                                       }
-                                               }
-                                       }
-                               } else {
-                                       selection = [component._rowIndex];
-                                       evt.preventDefault();
-                               }
-                               this.dispatch("click", evt);
-                               this.nextTick(() => this.setSelection(selection));
-                       }
+						if(Date.now() - this._lastMouseDown < 150) {
+							var rowIndex = component._rowIndex;
+							var selection;
+							if(evt.ctrlKey === true || evt.metaKey === true) {
+						       if(this.isRowSelected(rowIndex)) {
+					               var index = this._selection.indexOf(rowIndex);
+					               selection = [].concat(this._selection);
+					               selection.splice(index, 1);
+						       } else {
+					               selection = this._selection.concat([rowIndex]);
+						       }
+							
+							} else if(evt.shiftKey === true) {
+							       var length = this._selection.length;
+							       var i;
+							
+							       HtmlElement.clearSelection();
+							
+							       if(this._shiftSelectFromLast === true) {
+							               var anchor = length > 0 ? this._selection[length - 1] : 0;
+							               if(anchor === rowIndex) {
+							                       selection = this._selection;
+							               } else {
+							                       selection = [];
+							                       if(this.isRowSelected(anchor)) {
+							                               selection.push(anchor);
+							                       }
+							                       if(anchor < rowIndex) {
+							                               for(i = anchor + 1; i <= rowIndex; ++i) {
+							                                       if(!this.isRowSelected(i)) {
+							                                               selection.push(i);
+							                                       }
+							                               }
+							                       } else {
+							                               for(i = anchor - 1; i >= rowIndex; --i) {
+							                                       if(!this.isRowSelected(i)) {
+							                                               selection.push(i);
+							                                       }
+							                               }
+							                       }
+							               }
+							       } else {
+							               var start = length > 0 ? Math.min.apply(Math, this._selection) : 0;
+							               var end = length > 0 ? Math.max.apply(Math, this._selection) : 0;
+							
+							               if(length === 0) {
+							                       start = Math.min(0, rowIndex);
+							                       end = Math.max(0, rowIndex);
+							               } else if(rowIndex < start) {
+							                       start = rowIndex;
+							               } else if(rowIndex > end) {
+							                       end = rowIndex;
+							               } else {
+							                       if(rowIndex - start < end - rowIndex) {
+							                               start = rowIndex;
+							                       } else {
+							                               end = rowIndex;
+							                       }
+							               }
+							
+							               selection = [];
+							               if(start <= end) {
+							                       for(i = start; i <= end; ++i) {
+							                               selection.push(i);
+							                       }
+							               } else {
+							                       for(i = start; i >= end; --i) {
+							                               selection.push(i);
+							                       }
+							               }
+							       }
+							} else {
+							       selection = [component._rowIndex];
+							       evt.preventDefault();
+							}
+							//this.nextTick(() => this.setSelection(selection));
+							this.setSelection(selection);
+							this.dispatch("click", evt);
+                    	}
+					}
                }
 				return this.inherited(arguments);
 			},
@@ -394,6 +409,29 @@ workaroundColumnAlignment(this);
 						}
 					}
 				}
+				return r;
+			},
+			onmouseup: function(evt) {
+				/** @overrides ../Control.prototype.onmouseup */
+				var r = this.inherited(arguments);
+
+				this.nextTick(() => {
+					if(r === false || evt.button !== 0) return r;
+		
+					const now = Date.now();
+					const pressDuration = now - (this._lastMouseDown || now);
+					const sinceLastUp = now - (this._lastMouseUpTime || 0);
+		
+					this._lastMouseUpTime = now;
+		
+					if(pressDuration <= MAX_PRESS_DURATION) {
+						// Only arms no-select when the press was short (so, probably not a drag)
+						this.update(() => this.syncClass("no-select", true));
+					}
+	
+					this.setTimeout("no-select", () => this.syncClass("no-select", false), CLICK_INTERVAL);
+				});
+				
 				return r;
 			},
 
@@ -531,25 +569,64 @@ workaroundColumnAlignment(this);
 workaroundColumnAlignment(this);
 			},
 			isDate: function(value) {
-				return (value instanceof Date) || 
-					(value > 946706400000 && value < 1893477600000) ||
-					(typeof value === "string" && value.length === 24 && value.endsWith("Z"));
+				if(value instanceof Date) return true;
+
+				if((value > 946706400000 && value < 1893477600000)) return true;
+				
+				if(typeof value === "string") {
+					if(value.length === 24 && value.endsWith("Z")) {
+						return true;
+					}
+					if(value.length === 10 && /\d\d[\-\/]\d\d[\-\/]\d\d\d\d/.test(value)) {
+						return true;
+					}
+					if(value.length === 10 && /\d\d\d\d[\-\/]\d\d[\-\/]\d\d/.test(value)) {
+						return true;
+					}
+					if(value.endsWith(", JJJJ-MM-DD)")) {
+						return true;
+					}
+				}
 			},
 			formatDate: function(value, opts) {
+				let time = true;
 				if(!(value instanceof Date)) {
-					if(typeof value === "string" && value.match(/^\d+$/)) {
-						value = parseInt(value, 10);
+					if(typeof value === "string") {
+						if(value.endsWith(", JJJJ-MM-DD)")) {
+							value = value.substring(1, 11);
+							time = false;
+						}
+
+						if(value.match(/^\d+$/)) {
+							value = parseInt(value, 10);
+							
+						} else if(/\d\d[\-\/]\d\d[\-\/]\d\d\d\d/.test(value)) {
+							const d = value.charAt(2);
+							value = value.split(d).reverse().join("/");
+							time = false;
+						}
 					}
 					value = new Date(value);
 				}
 				
+				if(time === true) {
+					if(opts && opts.utc) {
+						return js.sf("%d/%02d/%02d %02d:%02d", value.getUTCFullYear(), value.getUTCMonth() + 1,
+								value.getUTCDate(), value.getUTCHours(), value.getUTCMinutes());
+					}
+					
+					return js.sf("%d/%02d/%02d %02d:%02d", value.getFullYear(), value.getMonth() + 1,
+							value.getDate(), value.getHours(), value.getMinutes());
+				}
+
 				if(opts && opts.utc) {
-					return js.sf("%d/%02d/%02d %02d:%02d", value.getUTCFullYear(), value.getUTCMonth() + 1,
-							value.getUTCDate(), value.getUTCHours(), value.getUTCMinutes());
+					return js.sf("%d/%02d/%02d", value.getUTCFullYear(), value.getUTCMonth() + 1,
+							value.getUTCDate());
 				}
 				
-				return js.sf("%d/%02d/%02d %02d:%02d", value.getFullYear(), value.getMonth() + 1,
-						value.getDate(), value.getHours(), value.getMinutes());
+				return js.sf("%d/%02d/%02d", value.getFullYear(), value.getMonth() + 1,
+						value.getDate());
+
 			},
 
 			getBodyWidth: function() {
@@ -674,6 +751,10 @@ workaroundColumnAlignment(this);
 					}
 				}
 				return null;
+			},
+			getColumnByNode: function(node) {
+				node = node.soup(".ListCell");
+				return node && this._columns.find(col => node.matches(col._rule.selectorText));
 			},
 			getColumnByName: function(name) {
 				for(var i = 0, l = this._columns.length; i < l; ++i) {

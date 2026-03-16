@@ -33,6 +33,7 @@ define(function(require) {
 			_autoSize: "width",
 			_rowIndex: -1,
 			_list: null,
+			_draggable: false,
 
 			getInnerHtml: function() {
 				/** @overrides ../Control.prototype.getInnerHtml */

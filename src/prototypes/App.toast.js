@@ -2,6 +2,8 @@
 
 const Clipboard = req("util/Clipboard");
 
+let IMG_LOADING = "https://veldapps.com/shared/vcl/images/loading.gif";
+
 ["", {
 	onLoad() {
 
@@ -40,16 +42,22 @@ const Clipboard = req("util/Clipboard");
 				- remove: API to remove toast
 		*/
 
-		var Element = require("vcl/ui/Element");
-		var scope = this.getScope();
-		var elem = new Element(this);
+		const Element = require("vcl/ui/Element");
+		const scope = this.getScope();
+		const elem = new Element(this);
 
-		var timeout = options.ms || (options.hasOwnProperty("timeout") ? options.timeout : 1500);
-		var content = options.content || "No toast content";
-		var classes = options.classes || "fade";
+		const timeout = options.ms ?? (options.hasOwnProperty("timeout") ? options.timeout : 1500);
+		const classes = options.cl ?? options.classes ?? "glassy fade";
+		const title = options.t ?? options.title;
 
-		if(options.title !== undefined) {
+		let content = options.c ?? options.content ?? "No toast content";
+		
+		if(title !== undefined) {
 			content = js.sf("<b>%s</b><div>%s</div>", options.title, content);
+		}
+		
+		if(options.loading === true) {
+			content += " &nbsp; " + IMG_LOADING;
 		}
 
 		elem.setContent(content);
@@ -58,7 +66,9 @@ const Clipboard = req("util/Clipboard");
 		elem.update(() => elem.addClass("appear"));
 
 		const controller = {
-			element: elem,
+			element: elem, el: elem, elem,
+			
+			update: (content) => controller.el.setContent(content),
 			remove(timeout_) {
 				elem.setTimeout("disappear", () => {
 

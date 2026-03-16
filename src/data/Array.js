@@ -20,6 +20,8 @@ define(function(require) {
 			_onFilterObject: null,
     		_notifications: null,
     		
+    		_filterPending: false,
+    		
 			_onUpdate: null,
 			_onChange: null,
     		_onBusyChanged: null,
@@ -121,6 +123,10 @@ define(function(require) {
 				/** @overrides ../data/Source.prototype.getAttributeValue */
 				this.assertArray(index);
 				var obj = this.getObject(index || 0);
+				if(obj === null || typeof obj !== "object") {
+					return obj;
+				}
+				
 				if(name === ".") {
 					return obj;
 				}
@@ -189,7 +195,10 @@ define(function(require) {
 					this._arr = this._array;
 					for(var i = 0; i < this._array.length; ++i) {
 						var obj = this._array[i];
-						if(obj === Source.Pending || this.fire("onFilterObject", [obj, i, context]) !== true) {
+						if(
+							(obj === Source.Pending && !this._filterPending) || 
+							this.fire("onFilterObject", [obj, i, context]) !== true
+						) {
 							arr.push(obj);
 						}
 					}
@@ -248,6 +257,12 @@ define(function(require) {
 					}
 
 					this.notify(SourceEvent.layoutChanged);
+				}
+			},
+			setFilterPending: function(value) {
+				if(this._filterPending !== value) {
+					this._filterPending = value;
+					this.updateFilter();
 				}
 			},
 			arrayChanged: function() {
@@ -356,6 +371,10 @@ define(function(require) {
 		properties: {
 			"array": {
 				type: Type.ARRAY,
+				set: Function
+    		},
+			"filterPending": {
+				type: Type.BOOLEAN,
 				set: Function
     		},
     		"onActiveChanged": {
