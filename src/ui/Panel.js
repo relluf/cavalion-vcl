@@ -103,13 +103,53 @@ define(function (require) {
                 var i = 0;
                 var U;
 
+                function isFiniteNumber(value) {
+                    return typeof value === "number" && isFinite(value);
+                }
+
+                function getAlignedExtent(control, property) {
+                    var size;
+                    var node = control._node;
+
+                    if (!node && typeof control.nodeNeeded === "function") {
+                        node = control.nodeNeeded();
+                    }
+
+                    if (node && typeof node.getBoundingClientRect === "function") {
+                        var rect = node.getBoundingClientRect();
+
+                        size = property === "height" ? rect.height : rect.width;
+
+                        var containerZoom = thisObj.getZoom && thisObj.getZoom(true);
+                        if (isFiniteNumber(containerZoom) && containerZoom !== 0) {
+                            size /= containerZoom;
+                        }
+                    }
+
+                    if (!isFiniteNumber(size)) {
+                        var fallback = property === "height" ? control._height : control._width;
+                        size = parseFloat(control.getComputedStylePropValue(property));
+
+                        if (!isFiniteNumber(size)) {
+                            size = isFiniteNumber(fallback) ? fallback : 0;
+                        }
+
+                        var controlZoom = control.hasOwnProperty("_zoom") ? parseFloat(control._zoom) : NaN;
+                        if (isFiniteNumber(controlZoom) && controlZoom !== 1) {
+                            size *= controlZoom;
+                        }
+                    }
+
+                    return size;
+                }
+
                 /**
                  *
                  */
                 function next() {
                     if (i < controls.length) {
                         var control = controls[i];
-                        var align = control._align, zoom = control._zoom;
+                        var align = control._align;
 
                         if (align !== "none" && control.isVisible()) {
                             if (align === "client") {
@@ -126,34 +166,26 @@ define(function (require) {
  */
                                 if (align === "top") {
                                     setBounds(control, cr.left, cr.top, cr.right, U, function () {
-                                    	if(zoom !== 1.0) {
-                                    		console.log("alignControls", control._name, control);
-                                        	cr.top += (control._height * zoom);
-                                    	} else {
-	                                        cr.top += (parseInt(control.getComputedStylePropValue("height"), 10) || 0);
-                                    	}
+                                        var height = getAlignedExtent(control, "height");
+                                        cr.top += height;
                                         next();
                                     });
                                 } else if (align === "bottom") {
                                     setBounds(control, cr.left, U, cr.right, cr.bottom, function () {
-                                    	if(zoom !== 1.0) {
-                                    		console.log("alignControls", control._name, control);
-                                        	cr.bottom += (control._height * zoom);
-                                    	} else {
-                                        	cr.bottom += (parseInt(control.getComputedStylePropValue("height"), 10) || 0);
-                                    	}
+                                        var height = getAlignedExtent(control, "height");
+                                        cr.bottom += height;
                                         next();
                                     });
                                 } else if (align === "left") {
                                     setBounds(control, cr.left, cr.top, U, cr.bottom, function () {
-                                        //cr.left += control._width;
-                                        cr.left += (parseInt(control.getComputedStylePropValue("width"), 10) || 0);
+                                        var width = getAlignedExtent(control, "width");
+                                        cr.left += width;
                                         next();
                                     });
                                 } else if (align === "right") {
                                     setBounds(control, U, cr.top, cr.right, cr.bottom, function () {
-                                        //cr.right += control._width;
-                                        cr.right += (parseInt(control.getComputedStylePropValue("width"), 10) || 0);
+                                        var width = getAlignedExtent(control, "width");
+                                        cr.right += width;
                                         next();
                                     });
                                 }
