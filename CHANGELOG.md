@@ -1,3 +1,45 @@
+Generate a git commit message, first line lowercased like: "(categorized): summary" , followed by bulleted phrases, starting with verbs like "Adds/Changes/Removes/Introduces/Refactors/Enhances/..."
+
+Generate a RELEASENOTES entry for users/developers of Cavalion
+
+
+### `2026/05/13` 1.1.93 — Component accessors and console/UI interaction refinements
+
+* Bumps version to **1.1.93**. 
+* Adds dotted-path lookup support to `Component.get()` for nested property access (`foo.bar.baz`). 
+* Changes `Control.render()` to return the result of `onRender` handlers when visible. 
+* Improves `App.console` inspector behavior with contextual `inspector` / `app-info` view classes. 
+* Adds automatic temporary selection highlighting in `ui/Console` when no explicit node selection exists. 
+* Refactors `ui/Console` selection synchronization into reusable `update_sel()`. 
+* Adds `console/allow-alt-meta-click` opt-out support for console inspection shortcuts. 
+* Prevents forced meta/shift-click interception when components explicitly allow alternate click handling. 
+* Refactors `ui/CheckGroup` rendering lifecycle around `render()` instead of direct node mutation. 
+* Ensures `CheckGroup.update()` re-renders node state consistently after expansion changes. 
+* Guards `CheckGroup.render()` against uninitialized nodes before touching DOM references. 
+* Changes `CheckGroup.onchange()` to trigger `render()` directly after expand/collapse actions. 
+* Cleans up redundant inline documentation and duplicated override comments in `ui/CheckGroup.js`. 
+* Defers `List` row refreshes via delayed `updateRows()` scheduling for attribute/render-related changes. 
+* Updates project docs to include `AGENTS.md` guidance and agent-oriented framework notes. 
+
+### `2026/03/16` 1.1.92 — UI selection and data query aliases
+
+Tightens several UI and data-layer behaviors across the framework. It fixes icon state persistence, adds `from`/`select` query aliases, makes array filtering more explicit around `Source.Pending`, and improves toast ergonomics with shorthand options and live updates. On the UI side, it refines `List` click/selection handling to better distinguish clicks from drag gestures, broadens date parsing/formatting, and adds small support utilities such as column lookup by DOM node and improved root-component labeling in the console.
+
+* Fixes `Application.setIcon()` to persist `_icon` before updating the favicon link.
+* Adds `filterPending` to `src/data/Array.js` and refreshes filtering when the flag changes.
+* Changes array filtering so `Source.Pending` entries can be kept or filtered explicitly.
+* Fixes `getAttributeValue()` in `src/data/Array.js` for `null` and non-object values.
+* Adds query aliases `from` → `entity` and `select` → `attributes` in `src/entities/Query.js`.
+* Improves `App.toast` with shorthand options (`t`, `c`, `cl`), default `glassy fade` styling, and `loading` content support.
+* Adds `update()` plus `el`/`elem` aliases to the toast controller API.
+* Fixes root-component labeling in `ui/forms/util/Console.js` by preferring `_uri` for root instances.
+* Improves `src/ui/List.js` click handling by tracking short presses and reducing accidental selection during drag interactions.
+* Adds temporary `.no-select` behavior after short clicks to suppress unwanted text selection in lists.
+* Expands date detection and formatting in `src/ui/List.js` for `DD-MM-YYYY`, `YYYY-MM-DD`, numeric timestamps, and date-only display.
+* Adds `getColumnByNode()` to resolve a list column from a DOM node.
+* Updates `App.glassy` overlay styling with `z-index: 2`.
+* Adds `_draggable` state to `src/ui/ListRow.js`.
+
 ### `2026/01/18` 1.1.91 — UI/UX utility upgrades: visibility, filtering, sorting, and hints
 
 #### List sorting/selection fixes + date/numeric heuristics
@@ -25,8 +67,6 @@
 - Adds `List.isNumericColumn(...)` heuristic (samples up to 100 rows) to drive numeric sorting defaults.
 - Hardens `ListColumn.getAttributeClassName()` to avoid CSS-class collisions for attribute `"fa"` by renaming to `"fa_"`.
 - Minor whitespace cleanup in `Application.js` (no functional change).
-
-
 
 ### `2025/10/27` 1.1.90 — List cell formatting & selection handling
 
