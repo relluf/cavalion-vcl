@@ -228,14 +228,17 @@ define(function(require) {
 					}
 				}
 				
+				this.update_sel();
+
+				return this.inherited(arguments);
+			},
+			update_sel() {
 				// -1- remove keys from this
 				this.sel && this.sel.map((o, i) => delete this[i]);
 				// TODO 20200729-1 find better way to extend/inherit/override eval context
 				this.sel = this._nodes.console.qsa(".selected.node").map(_ => _._line._value);
 				// -1- add keys to this
 				this.sel.map((o, i) => this[i] = o);
-				
-				return this.inherited(arguments);
 			},
 			ondblclick: function(evt) {
 				this.clearTimeout("focus");

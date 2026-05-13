@@ -733,7 +733,7 @@ workaroundColumnAlignment(this);
 					}
 				} else if(which === "attribute" || which === "onGetValue" || which === "onRenderCell" || which === "displayFormat") {
 					if(this._node !== null) {
-						this._body.updateRows();
+						this.setTimeout("render", () => this._body.updateRows(), 50);
 					}
 				}
 			},

@@ -929,6 +929,14 @@ define(function (require) {
             	return this.setProperties.apply(this, arguments);
             }, // TODO might be moved to JsObject (set/get)
             get: function(key) {
+            	if(key.includes(".")) {
+	            	let r = this;
+	            	key.split(".").forEach(prop => {
+	            		r = r && r.get(prop);
+	            	});
+	            	
+	            	return r;
+            	}
             	return this.defineProperties()[key].get(this);	
             },
             // has: function(key) {

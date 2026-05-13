@@ -612,7 +612,7 @@ define(function(require) {
 			},
 			render: function() {
 				if(this.isVisible()) {
-			    	this.fire("onRender", arguments);
+			    	return this.fire("onRender", arguments);
 				} else {
 					this.setState("invalidated")
 				}

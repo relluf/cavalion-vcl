@@ -118,6 +118,8 @@ override(require("vcl/Component").prototype, "print", function(inherited) {
     		const cons = this.app().qs("#console #console");
     		const control = cons.vars(["sizer._control"]);
     		const props = {};
+
+    		let classes = [];
     		
 			if(evt.altKey === true) {
 				const uris = (us) => us.filter(Boolean).filter(Array.fn.unique).join("; ");
@@ -139,6 +141,7 @@ override(require("vcl/Component").prototype, "print", function(inherited) {
 				if(control) {
 					obj['#' + (control._name || control.hashCode())] = [control];
 					props.placeholder = js.n(control);
+					classes.push("inspector");
 				} else { 
 					js.mi(ex, {
 						All: Component.all.map(item),
@@ -149,6 +152,7 @@ override(require("vcl/Component").prototype, "print", function(inherited) {
 						Selection: app.qsa(":visible").filter(c => c.getSelection).map(item),
 						Resources: Component.all.filter(c => c.vars("resource.uri")).map(c => js.mi({resource: c.vars("resource")}, item(c)))
 					});
+					classes.push("app-info");
 				}
 
 				props.sel = [js.mi(obj, ex)];
@@ -157,15 +161,25 @@ override(require("vcl/Component").prototype, "print", function(inherited) {
 	    		c && (c = c instanceof Console ? c : c.ud("vcl/ui/Console"));
 	    		
 				props.console = c;
+
+				c.update_sel();
+				if((c.sel || []).length === 0) {
+					c.qsna(".console > .node").slice(-1).forEach((node, i) => {
+						node.classList.add("selected");
+						c.setTimeout("clear-auto-select-" + i, () => {
+							node.classList.remove("selected");
+							c.update_sel();
+						}, 1500);
+					});
+					c.update_sel();
+				}
 			}
 			
-			// if(c.qsna(".console > .node.selected").length === 0) {
-			// 	c.qsna(".console > .node").slice(-1).forEach(node => {
-			// 		node.classList.add("selected");
-			// 	});
-			// }
-			
-			this.nextTick(() => H("devtools/Alphaview.csv", props));
+			if(classes.length > 0) {
+				classes.unshift("");
+			}
+
+			this.nextTick(() => H("devtools/Alphaview.csv" + classes.join("."), props));
     	}
     }],
     

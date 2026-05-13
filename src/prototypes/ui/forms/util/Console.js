@@ -32,6 +32,15 @@ const deselect = () => {
 	window.getSelection && window.getSelection().removeAllRanges();
 	document.selection && document.selection.empty();
 };
+const allowsAltMetaClick = (component) => {
+	while(component instanceof Component) {
+		if(component.vars && component.vars("console/allow-alt-meta-click") === true) {
+			return true;
+		}
+		component = component._parent;
+	}
+	return false;
+};
 
 const H = (uri, vars, opts) => B.i(["Hover<>", { vars: js.mi({ uri: uri }, vars)}], opts);
 H.i = (obj) => H("devtools/Alphaview.csv", { sel: [obj] });
@@ -142,7 +151,7 @@ js.mi(window, { B, H, facts, cc, cp, cl, tap });
                             if(evt.altKey === true) {
                             	var root = sizer._control.up();
                             	sizer.setControl(root === app ? null : root);
-                            } else if(evt.shiftKey === true) {
+                            } else if(evt.shiftKey === true && allowsAltMetaClick(component) !== true) {
                             	sizer.setControl(null);
                             } else {
                             	sizer.setControl(sizer._control._parent);
@@ -188,7 +197,7 @@ js.mi(window, { B, H, facts, cc, cp, cl, tap });
 		                    return false;
 		                } else if (name === "click") {
 		                	// sizer.vars("meta", evt.metaKey === true);
-		                    if (evt.metaKey === true) {
+		                    if (evt.metaKey === true && allowsAltMetaClick(component) !== true) {
 		                        if (component instanceof Control) {
 		                            if (sizer._control === component) {
 		                            	// deselect
@@ -198,7 +207,7 @@ js.mi(window, { B, H, facts, cc, cp, cl, tap });
 		                            evt.preventDefault();
 		                            return false;
 		                        }
-		                    } else if(evt.shiftKey === true) {
+		                    } else if(evt.shiftKey === true && allowsAltMetaClick(component) !== true) {
 		                        var fc = component;
 		                        evt.preventDefault();
 		                        deselect();

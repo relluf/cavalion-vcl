@@ -54,10 +54,19 @@ define(function(require) {
 			_onExpand: null,
 			_onExpanded: null,
 
-			/**
-			 * @overrides ../Control.prototype.initializeNodes
-			 */
+			getClientNode: function() {
+				/**
+				 * @overrides ../Control.prototype.getClientNode
+				 */
+				if(this._node === null) {
+					this._nodeNeeded();
+				}
+				return this._nodes.container;
+			},
 			initializeNodes: function() {
+				/**
+				 * @overrides ../Control.prototype.initializeNodes
+				 */
 				this.inherited(arguments);
 
 				this._nodes.checkbox = this.getChildNode(0);
@@ -82,68 +91,54 @@ define(function(require) {
 				}
 			},
 
-			/**
-			 * @overrides ../Control.prototype.update
-			 */
 			update: function() {
+				/**
+				 * @overrides ../Control.prototype.update
+				 */
 				var r = this.inherited(arguments);
-				if(this.hasOwnProperty("_node")) {
-					this._nodes.checkbox.checked = this._expanded;
-				}
+				// if(this.hasOwnProperty("_node")) {
+				// 	this._nodes.checkbox.checked = this._expanded;
+				// }
+				this.render();
 				return r;
 			},
-
-			/**
-			 * @overrides ../Control.prototype.render
-			 */
 			render: function() {
-				this._nodes.text.innerHTML = this._text;
-				this._nodes.checkbox.checked = this._expanded;
+				/**
+				 * @overrides ../Control.prototype.render
+				 */
+
+				if(this._nodes) {
+					this._nodes.text.innerHTML = this._text;
+					this._nodes.checkbox.checked = this._expanded;
+				}
+
+				return this.inherited(arguments);
 			},
 
-			/**
-			 * @overrides ../Control.prototype.isExpanded
-			 */
 			isExpanded: function() {
+				/**
+				 * @overrides ../Control.prototype.isExpanded
+				 */
 				return this._expanded;
 			},
-
-			/**
-			 * @overrides ../Control.prototype.isControlVisible
-			 */
 			isControlVisible: function(control) {
+				/**
+				 * @overrides ../Control.prototype.isControlVisible
+				 */
 				return this._expanded === true && this.inherited(arguments);
 			},
-
-			/**
-			 * @overrides ../Control.prototype.isContainerShowing
-			 */
 			isContainerShowing: function() {
+				/**
+				 * @overrides ../Control.prototype.isContainerShowing
+				 */
 				return this.isExpanded();
 			},
 
-			/**
-			 * @overrides ../Control.prototype.getClientNode
-			 */
-			getClientNode: function() {
-				if(this._node === null) {
-					this._nodeNeeded();
-				}
-				return this._nodes.container;
-			},
-
-			/**
-			 *
-			 */
 			textChanged: function(newValue, oldValue) {
 				if(this.hasOwnProperty("_node")) {
 					this.render();
 				}
 			},
-
-			/**
-			 *
-			 */
 			onchange: function(evt) {
 				if(this._expanded !== this.getNode("checkbox").checked) {
 					if(this._expanded === true) {
@@ -151,13 +146,9 @@ define(function(require) {
 					} else {
 						this.dispatch("expand", evt);
 					}
-					this.update();
+					this.render();
 				}
 			},
-
-			/**
-			 *
-			 */
 			onexpand: function(evt) {
 				if(this._onExpand !== null) {
 					this._expanded = this._onExpand.apply(this, [evt]) !== false;
@@ -176,10 +167,6 @@ define(function(require) {
 
 				return this._expanded;
 			},
-
-			/**
-			 *
-			 */
 			oncollapse: function(evt) {
 				if(this._onCollapse !== null) {
 					this._expanded = !(this._onCollapse.apply(this, [evt]) !== false);
@@ -192,20 +179,12 @@ define(function(require) {
 				}
 				return this._expanded;
 			},
-
-			/**
-			 *
-			 */
 			getText: function() {
 				if(this.isDesigning()) {
 					return this._text || this._name;
 				}
 				return this._text;
 			},
-
-			/**
-			 *
-			 */
 			setText: function(value) {
 				if(this._text !== value) {
 					value = [value, this._text];
@@ -213,17 +192,9 @@ define(function(require) {
 					this.textChanged(this._text, value[1]);
 				}
 			},
-
-			/**
-			 *
-			 */
 			getExpanded: function() {
 				return this._expanded;
 			},
-
-			/**
-			 *
-			 */
 			setExpanded: function(value) {
 				if(this._expanded !== value) {
 					if(this.isExpandable() && this._node !== null && this.isLoading() === false) {
@@ -237,70 +208,34 @@ define(function(require) {
 					}
 				}
 			},
-
-			/**
-			 *
-			 */
 			isExpandable: function() {
 				return this._expandable === "auto" ?
 						this.hasOwnProperty("_controls") && this._controls.length > 0 : this._expandable;
 			},
-
-			/**
-			 *
-			 */
 			getOnCollapse: function() {
 				return this._onCollapse;
 			},
-
-			/**
-			 *
-			 */
 			setOnCollapse: function(value) {
 				this._onCollapse = value;
 			},
-
-			/**
-			 *
-			 */
 			getOnExpand: function() {
 				return this._onExpand;
 			},
-
-			/**
-			 *
-			 */
 			setOnExpand: function(value) {
 				this._onExpand = value;
 			},
-
-			/**
-			 *
-			 */
 			getOnCollapsed: function() {
 				return this._onCollapsed;
 			},
-
-			/**
-			 *
-			 */
 			setOnCollapsed: function(value) {
 				this._onCollapsed = value;
 			},
-
-			/**
-			 *
-			 */
 			getOnExpanded: function() {
 				return this._onExpanded;
 			},
-
-			/**
-			 *
-			 */
 			setOnExpanded: function(value) {
 				this._onExpanded = value;
-			}
+			}		
 		},
 
 		properties: {
