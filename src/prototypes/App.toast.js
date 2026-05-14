@@ -1,8 +1,97 @@
 "use util/Clipboard";
 
 const Clipboard = req("util/Clipboard");
+const HtmlElement = req("util/HtmlElement");
+const Control = req("vcl/Control");
 
 let IMG_LOADING = "https://veldapps.com/shared/vcl/images/loading.gif";
+
+const getToastAlignmentBounds = function(container, control) {
+	let rect;
+	let point;
+
+	if(control instanceof Control) {
+		rect = control.getAbsoluteRect();
+		point = control.clientToDocument(0, 0);
+		rect = {
+			left: point.x,
+			top: point.y,
+			width: rect.width,
+			height: rect.height
+		};
+	} else if(control && control.nodeType === 1) {
+		rect = HtmlElement.getAbsoluteRect(control);
+	} else if(control && typeof control.getBoundingClientRect === "function") {
+		rect = control.getBoundingClientRect();
+		rect = {
+			left: rect.left + window.pageXOffset,
+			top: rect.top + window.pageYOffset,
+			width: rect.width,
+			height: rect.height
+		};
+	} else {
+		return null;
+	}
+
+	if(container && container.documentToClient) {
+		point = container.documentToClient(rect.left, rect.top);
+		rect.left = point.x;
+		rect.top = point.y;
+	}
+
+	rect.right = rect.left + rect.width;
+	rect.bottom = rect.top + rect.height;
+
+	return rect;
+};
+const alignToastElement = function(container, node, alignment) {
+	const bounds = getToastAlignmentBounds(container, alignment && alignment.control);
+	const position = alignment && (alignment.position || alignment.origin) || "top-center";
+	const dx = alignment && alignment.dx || 0;
+	const dy = alignment && alignment.dy || 0;
+	const width = node.offsetWidth || node.scrollWidth || 0;
+	const height = node.offsetHeight || node.scrollHeight || 0;
+	let left;
+	let top;
+
+	if(!bounds || !node) {
+		return false;
+	}
+
+	if(position === "top-left") {
+		left = bounds.left;
+		top = bounds.top;
+	} else if(position === "top-right") {
+		left = bounds.right - width;
+		top = bounds.top;
+	} else if(position === "bottom-left") {
+		left = bounds.left;
+		top = bounds.bottom - height;
+	} else if(position === "bottom-center") {
+		left = bounds.left + (bounds.width - width) / 2;
+		top = bounds.bottom - height;
+	} else if(position === "bottom-right") {
+		left = bounds.right - width;
+		top = bounds.bottom - height;
+	} else if(position === "center") {
+		left = bounds.left + (bounds.width - width) / 2;
+		top = bounds.top + (bounds.height - height) / 2;
+	} else {
+		left = bounds.left + (bounds.width - width) / 2;
+		top = bounds.top;
+	}
+
+	node.style.position = "absolute";
+	node.style.left = Math.round(left + dx) + "px";
+	node.style.top = Math.round(top + dy) + "px";
+	node.style.right = "auto";
+	node.style.bottom = "auto";
+	node.style.float = "none";
+	node.style.clear = "none";
+	node.style.margin = "0";
+
+	return true;
+};
 
 ["", {
 	onLoad() {
@@ -49,6 +138,13 @@ let IMG_LOADING = "https://veldapps.com/shared/vcl/images/loading.gif";
 		const timeout = options.ms ?? (options.hasOwnProperty("timeout") ? options.timeout : 1500);
 		const classes = options.cl ?? options.classes ?? "glassy fade";
 		const title = options.t ?? options.title;
+		const alignment = options.alignment ?? options.align;
+		const align = function() {
+			if(alignment && elem._node) {
+				elem.addClass("aligned");
+				alignToastElement(scope.toasts, elem._node, alignment);
+			}
+		};
 
 		let content = options.c ?? options.content ?? "No toast content";
 		
@@ -63,12 +159,18 @@ let IMG_LOADING = "https://veldapps.com/shared/vcl/images/loading.gif";
 		elem.setContent(content);
 		elem.setParent(scope.toasts);
 		elem.addClasses(classes);
-		elem.update(() => elem.addClass("appear"));
+		elem.update(() => {
+			align();
+			elem.addClass("appear");
+		});
 
 		const controller = {
 			element: elem, el: elem, elem,
 			
-			update: (content) => controller.el.setContent(content),
+			update: (content) => {
+				controller.el.setContent(content);
+				controller.el.update(align);
+			},
 			remove(timeout_) {
 				elem.setTimeout("disappear", () => {
 
@@ -78,6 +180,7 @@ let IMG_LOADING = "https://veldapps.com/shared/vcl/images/loading.gif";
 				}, timeout_ !== undefined ? timeout_ : timeout);
 			},
 			show() {
+				elem.update(align);
 				elem.replaceClass("disappear", "appear");
 			},
 			hide(timeout_) {
@@ -99,6 +202,7 @@ let IMG_LOADING = "https://veldapps.com/shared/vcl/images/loading.gif";
     	autoPosition: "top-left-bottom-right",
     	classes: "glassy-overlay",
     	css: {
+	   		"": "overflow: visible;",
 	   		".right-half-size-switch": {
 				height: "15px",
 				width: "20px",
@@ -114,6 +218,7 @@ let IMG_LOADING = "https://veldapps.com/shared/vcl/images/loading.gif";
     		
     		".{./Element}": {
     			"pointer-events": "all",
+    			"display": "inline-block",
     			"a": {
     				"text-decoration": "underline",
     				cursor: "pointer"
@@ -125,7 +230,10 @@ let IMG_LOADING = "https://veldapps.com/shared/vcl/images/loading.gif";
     			"&.glassy": {
 	    			padding: "16px 24px",
 	    			margin: "4px",
-	    			'border-radius': "15px"
+	    			'border-radius': "15px",
+	    			"background-color": "rgba(215, 215, 215, 0.35)",
+	    			"backdrop-filter": "blur(10px)",
+	    			"-webkit-backdrop-filter": "blur(10px)"
     			},
     			//"min-width": "300px",
     			"float": "right",
@@ -138,6 +246,10 @@ let IMG_LOADING = "https://veldapps.com/shared/vcl/images/loading.gif";
         		},
 
         		"&.no-clear": "clear: none;",
+        		"&.aligned": {
+        			"z-index": "20001",
+        			"box-shadow": "0 1px 5px rgba(0,0,0,0.15)"
+        		},
 
     			"&.big": "font-size: 32pt;",
     			"&.medium": "font-size: 14pt;",

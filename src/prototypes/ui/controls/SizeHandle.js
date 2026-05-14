@@ -40,31 +40,35 @@
 
 		return this.inherited(arguments);
 	},
-	onDraggerNeeded() {
-		var control = this.getVar("control");
-		var dragger = new (require("vcl/Dragger"))(this);
-		var horizontal = this.hasClass("horizontal");
-
-		dragger.setCursor(horizontal ? "ew-resize" : "ns-resize");
-		dragger.override({
-			updateHandles: function(evt) {
-				if(horizontal === true) {
-    			    if(!control.getVisible()) {
-    			        control.setVisible(true);
-    			        control.setWidth(0);
-    			    }
-					control.setWidth(control.getWidth() + (evt.clientX - this._sx));
-				} else {
-    			    if(!control.getVisible()) {
-    			        control.setVisible(true);
-    			        control.setHeight(0);
-    			    }
-					control.setHeight(control.getHeight() - (evt.clientY - this._sy));
+		onDraggerNeeded() {
+			var control = this.getVar("control");
+			var dragger = new (require("vcl/Dragger"))(this);
+			var horizontal = this.hasClass("horizontal");
+			var getScale = function() {
+				return typeof control.getDocumentScale === "function" ? control.getDocumentScale() : { x: 1, y: 1 };
+			};
+	
+			dragger.setCursor(horizontal ? "ew-resize" : "ns-resize");
+			dragger.override({
+				updateHandles: function(evt) {
+					var scale = getScale();
+					if(horizontal === true) {
+	    			    if(!control.getVisible()) {
+	    			        control.setVisible(true);
+	    			        control.setWidth(0);
+	    			    }
+						control.setWidth(control.getWidth() + ((evt.clientX - this._sx) / scale.x));
+					} else {
+	    			    if(!control.getVisible()) {
+	    			        control.setVisible(true);
+	    			        control.setHeight(0);
+	    			    }
+						control.setHeight(control.getHeight() - ((evt.clientY - this._sy) / scale.y));
+					}
+					this._sx = evt.clientX;
+					this._sy = evt.clientY;
 				}
-				this._sx = evt.clientX;
-				this._sy = evt.clientY;
-			}
-		});
+			});
 		return dragger;
 	}
 }];

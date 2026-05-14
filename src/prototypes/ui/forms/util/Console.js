@@ -370,19 +370,23 @@ js.mi(window, { B, H, facts, cc, cp, cl, tap });
     [["ui/controls/Toolbar"], "toolbar", {
         css: { cursor: "ns-resize" },
         draggable: true,
-        onDraggerNeeded() {
-            var control = this._owner;
-            var dragger = new Dragger(this);
-
-            dragger.setCursor("ns-resize");
-            dragger.override({
-                updateHandles: function (evt) {
-                    control.setHeight(control.getHeight() - (evt.clientY - this._sy));
-                    this._sy = evt.clientY;
-                }
-            });
-            return dragger;
-        }
+	        onDraggerNeeded() {
+	            var control = this._owner;
+	            var dragger = new Dragger(this);
+	            var getScale = function() {
+	            	return typeof control.getDocumentScale === "function" ? control.getDocumentScale() : { x: 1, y: 1 };
+	            };
+	
+	            dragger.setCursor("ns-resize");
+	            dragger.override({
+	                updateHandles: function (evt) {
+	                	var scale = getScale();
+	                    control.setHeight(control.getHeight() - ((evt.clientY - this._sy) / scale.y));
+	                    this._sy = evt.clientY;
+	                }
+	            });
+	            return dragger;
+	        }
     }, [
         [("vcl/ui/Element"), "sizer_selection", {
             css: "padding: 4px; display: inline-block; cursor: default;"

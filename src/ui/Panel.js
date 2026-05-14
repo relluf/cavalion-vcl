@@ -42,6 +42,15 @@ define(function (require) {
             callback();
         }
     }
+    function getAlignedExtent(control, dimension) {
+        var zoom = control._zoom === undefined ? 1.0 : control._zoom;
+
+        if (zoom !== 1.0) {
+            return (control["_" + dimension] || 0) * zoom;
+        }
+
+        return parseFloat(control.getComputedStylePropValue(dimension)) || 0;
+    }
 
     var Panel = {
         inherits: Container,
@@ -109,7 +118,7 @@ define(function (require) {
                 function next() {
                     if (i < controls.length) {
                         var control = controls[i];
-                        var align = control._align, zoom = control._zoom;
+                        var align = control._align;
 
                         if (align !== "none" && control.isVisible()) {
                             if (align === "client") {
@@ -126,34 +135,22 @@ define(function (require) {
  */
                                 if (align === "top") {
                                     setBounds(control, cr.left, cr.top, cr.right, U, function () {
-                                    	if(zoom !== 1.0) {
-                                    		console.log("alignControls", control._name, control);
-                                        	cr.top += (control._height * zoom);
-                                    	} else {
-	                                        cr.top += (parseInt(control.getComputedStylePropValue("height"), 10) || 0);
-                                    	}
+                                    	cr.top += getAlignedExtent(control, "height");
                                         next();
                                     });
                                 } else if (align === "bottom") {
                                     setBounds(control, cr.left, U, cr.right, cr.bottom, function () {
-                                    	if(zoom !== 1.0) {
-                                    		console.log("alignControls", control._name, control);
-                                        	cr.bottom += (control._height * zoom);
-                                    	} else {
-                                        	cr.bottom += (parseInt(control.getComputedStylePropValue("height"), 10) || 0);
-                                    	}
+                                    	cr.bottom += getAlignedExtent(control, "height");
                                         next();
                                     });
                                 } else if (align === "left") {
                                     setBounds(control, cr.left, cr.top, U, cr.bottom, function () {
-                                        //cr.left += control._width;
-                                        cr.left += (parseInt(control.getComputedStylePropValue("width"), 10) || 0);
+                                        cr.left += getAlignedExtent(control, "width");
                                         next();
                                     });
                                 } else if (align === "right") {
                                     setBounds(control, U, cr.top, cr.right, cr.bottom, function () {
-                                        //cr.right += control._width;
-                                        cr.right += (parseInt(control.getComputedStylePropValue("width"), 10) || 0);
+                                        cr.right += getAlignedExtent(control, "width");
                                         next();
                                     });
                                 }

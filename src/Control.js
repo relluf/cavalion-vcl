@@ -634,21 +634,34 @@ define(function(require) {
 				
 				return this.nodeNeeded().scrollIntoView(options);
 			},
+			getDocumentScale: function() {
+				var node = this.nodeNeeded();
+				var bcr = node.getBoundingClientRect ? node.getBoundingClientRect() : null;
+				var width = node.offsetWidth || 0;
+				var height = node.offsetHeight || 0;
+
+				return {
+					x: bcr !== null && width !== 0 ? bcr.width / width : 1,
+					y: bcr !== null && height !== 0 ? bcr.height / height : 1
+				};
+			},
 
 			documentToClient: function(x, y) {
 				var ar = this.getAbsoluteRect();
+				var scale = this.getDocumentScale();
 				if(x.y !== undefined) {
 					y = x.y;
 					x = x.x;
 				}
 
 				return {
-					x: x - ar.left,
-					y: y - ar.top
+					x: (x - ar.left) / scale.x,
+					y: (y - ar.top) / scale.y
 				};
 			},
 			clientToDocument: function(x, y, includeScroll) {
 				var ar = this.getAbsoluteRect();
+				var scale = this.getDocumentScale();
 				if(x.y !== undefined) {
 					y = x.y;
 					x = x.x;
@@ -660,12 +673,27 @@ define(function(require) {
 				}
 
 				return {
-					x: ar.left + x,
-					y: ar.top + y
+					x: ar.left + (x * scale.x),
+					y: ar.top + (y * scale.y)
 				};
 			},
 			getAbsoluteRect: function(includeScroll) {
-				return HtmlElement.getAbsoluteRect(this.nodeNeeded(), includeScroll);
+				var node = this.nodeNeeded();
+				var rect = HtmlElement.getAbsoluteRect(node, includeScroll);
+
+				if(node.getBoundingClientRect) {
+					var bcr = node.getBoundingClientRect();
+					var doc = node.ownerDocument || document;
+					var scrollLeft = window.pageXOffset || doc.documentElement.scrollLeft || doc.body.scrollLeft || 0;
+					var scrollTop = window.pageYOffset || doc.documentElement.scrollTop || doc.body.scrollTop || 0;
+
+					rect.left = bcr.left + scrollLeft;
+					rect.top = bcr.top + scrollTop;
+					rect.width = bcr.width;
+					rect.height = bcr.height;
+				}
+
+				return rect;
 			},
 
 
