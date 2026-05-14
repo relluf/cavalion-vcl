@@ -1560,8 +1560,10 @@ define(function (require) {
 				}
 				
 				return f ? gather(f).filter((o, i, a) => a.indexOf(o) === i) : r;
+			},
+			withVars: (comp, names, cb) => {
+				return cb.apply(comp, names.map(name => comp.vars(name)));
 			}
-            
         },
         properties: {
             "components": {
