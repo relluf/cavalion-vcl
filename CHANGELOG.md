@@ -2,6 +2,26 @@ Generate a git commit message, first line lowercased like: "(categorized): summa
 
 Generate a RELEASENOTES entry for users/developers of Cavalion
 
+### `2026/05/14` — Zoom-aware positioning and aligned toast support
+
+* Adds `Component.withVars(comp, names, cb)` helper to resolve component vars and invoke callbacks with mapped values. 
+* Adds `Control.getDocumentScale()` to detect effective DOM scaling via `getBoundingClientRect()`.
+* Fixes `documentToClient()` and `clientToDocument()` to account for scaled/zoomed controls.
+* Refines `Control.getAbsoluteRect()` to use live `getBoundingClientRect()` coordinates and dimensions.
+* Improves coordinate conversion consistency for transformed or zoomed layouts.
+* Updates `ui/controls/SizeHandle` drag resizing to respect document scale on both axes.
+* Updates `ui/forms/util/Console` toolbar resizing to use scale-aware drag deltas.
+* Refactors `Panel.alignControls()` extent calculations into shared `getAlignedExtent()`.
+* Fixes panel alignment offsets when controls use `_zoom`.
+* Removes duplicated width/height alignment logic in `Panel`.
+* Adds toast alignment support via `options.alignment` / `options.align`.
+* Supports toast positioning relative to `Control` instances, DOM nodes, or `getBoundingClientRect()` providers.
+* Adds alignment presets: `top-left`, `top-center`, `top-right`, `bottom-*`, and `center`.
+* Adds toast offset support through `alignment.dx` and `alignment.dy`.
+* Updates toast lifecycle (`show`, `update`) to recompute aligned positioning dynamically.
+* Refines toast overlay styling with visible overflow, inline-block layout, blur backdrop, and elevated aligned toasts.
+* Adds `.aligned` toast state with explicit z-index and shadow handling.
+* Improves glassy toast appearance using translucent backgrounds and `backdrop-filter`.
 
 ### `2026/05/13` 1.1.93 — Component accessors and console/UI interaction refinements
 
