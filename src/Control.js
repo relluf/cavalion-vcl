@@ -224,8 +224,15 @@ define(function(require) {
 			removeControl: function(control) {
 				this.assertContainer();
 
-				this._controls.splice(this._controls.indexOf(control), 1);
-				delete control._parent;
+				var index = this._controls.indexOf(control);
+				if(index !== -1) {
+					this._controls.splice(index, 1);
+				} else {
+					console.warn("removeControl mismatch", this.toString(), control.toString());
+				}
+				if(control._parent === this) {
+					delete control._parent;
+				}
 			},
 			destroyControls: function() {
 				// this.disableAlign();

@@ -84,14 +84,6 @@ define(function(require) {
 							p = this._parent.documentToClient(p);
 						}
 						
-						// this.print("popup", {
-						// 	bounds: bounds,
-						// 	ar: ar,
-						// 	ar_: ar_,
-						// 	cs: cs,
-						// 	cs_: cs_
-						// });
-						
 						if(position.origin === "bottom-left") {
 							this.setLeft(p.x + (position.dx || 0));
 							this.setTop(p.y + parseInt(cs.height, 10) + (position.dy || 0));

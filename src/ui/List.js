@@ -872,14 +872,23 @@ workaroundColumnAlignment(this);
 							attributes.push(attrs[i]);
 						}
 
-						// TODO `#CVLN-20201004-1` deal with a lot of columns
-						// for(i = 0; i < columns.length; ++i) {
-						// 	if(columns[i]._custom === false && (
-						// 			columns[i]._attribute === "" ||
-						// 			attributes.indexOf(columns[i]._attribute) === -1)) {
-						// 		columns[i].destroy();
-						// 	}
-						// }
+						columns.forEach(function(column) {
+							const isAutoColumn = column &&
+								column._custom === false &&
+								column.getOwner &&
+								column.getOwner() === this;
+
+							if(!isAutoColumn) {
+								return;
+							}
+							if(
+								column._attribute === "" ||
+								attributes.indexOf(column._attribute) === -1
+							) {
+								column.destroy();
+								changed = true;
+							}
+						}, this);
 
 						if(changed === true) {
 							this.notifyEvent("columnsChanged", [], true);

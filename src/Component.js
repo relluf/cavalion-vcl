@@ -1202,9 +1202,17 @@ define(function (require) {
                 this._components.push(component);
             },
             removeComponent: function (component) {
-                if(this.hasOwnProperty("_components")) { // 20250514 - seems necessary when reloading hovers
-	                this._components.splice(this._components.indexOf(component), 1);
-	                component._owner = null;
+                var components = this.hasOwnProperty("_components") ? this._components : null;
+                if (components instanceof Array) {
+                    var index = components.indexOf(component);
+                    if (index !== -1) {
+                        components.splice(index, 1);
+                    } else {
+                        console.warn("removeComponent mismatch", this.toString(), component.toString());
+                    }
+                }
+                if (component._owner === this) {
+                    component._owner = null;
                 }
             },
             getStorageKey: function(forKey) {
@@ -1574,6 +1582,7 @@ define(function (require) {
             },
             "owner": {
                 type: Type.OBJECT,
+                set: Function,
                 assignable: false,
                 visible: false,
                 stored: false
