@@ -2,7 +2,33 @@ Generate a git commit message, first line lowercased like: "(categorized): summa
 
 Generate a RELEASENOTES entry for users/developers of Cavalion
 
-### `2026/05/14` — Zoom-aware positioning and aligned toast support
+### `2026/05/18` 1.1.95 Ownership safety and auto-column cleanup
+
+#### Component / Control ownership consistency
+
+* Fixes `removeComponent()` to safely handle missing `_components` arrays. 
+* Prevents accidental removal when `indexOf()` returns `-1`. 
+* Adds `console.warn("removeComponent mismatch", ...)` for ownership inconsistencies. 
+* Clears `component._owner` only when the current instance is the actual owner. 
+* Adds explicit `set: Function` support to the `owner` property metadata. 
+* Fixes `removeControl()` to validate membership before mutating `_controls`. 
+* Prevents unintended removal of the last control on lookup mismatches. 
+* Adds `console.warn("removeControl mismatch", ...)` diagnostics for invalid detach flows. 
+* Removes `_parent` only when the control still belongs to the current container. 
+
+#### List auto-column lifecycle
+
+* Refactors `List.updateColumns()` cleanup behavior for auto-generated columns. 
+* Re-enables removal of obsolete auto-columns when source attributes disappear. 
+* Restricts cleanup to owned, non-custom columns only. 
+* Preserves custom columns and externally owned columns during refresh cycles. 
+* Triggers `columnsChanged` after stale auto-columns are destroyed. 
+
+#### Chore
+
+* Removes commented debug output from `Popup.js`. 
+
+### `2026/05/14` 1.1.94 — Zoom-aware positioning and aligned toast support
 
 * Adds `Component.withVars(comp, names, cb)` helper to resolve component vars and invoke callbacks with mapped values. 
 * Adds `Control.getDocumentScale()` to detect effective DOM scaling via `getBoundingClientRect()`.
