@@ -32,6 +32,7 @@ define(["js/Deferred"], function(Deferred) {
 	        });
 	    }
 		function $(inherits, name, properties, children) {
+			var isarr = inherits instanceof Array;
 			if(arguments.length === 1 && inherits instanceof Array && inherits.length > 0) {
 				if(inherits[0] 
 					&& inherits[0].hasOwnProperty("name") 
@@ -45,6 +46,11 @@ define(["js/Deferred"], function(Deferred) {
 					inherits = [];
 					// alert("!! really do not understand this code but now we found a case !!");
 				}
+			} else if(inherits !== null && typeof inherits === "object" && !isarr) {
+				children = name;
+				properties = inherits;
+				name = "";
+				inherits = [];
 			}
 			
 			if(typeof inherits === "string") {
