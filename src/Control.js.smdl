@@ -1,0 +1,619 @@
+# Control.js
+
+This document describes [Control.js]() with emphasis on the rendering process of `vcl/Control` and its derived classes.
+
+The central observation of this thread is that `initializeNodes()` and `render()` are two adjacent lifecycle phases with overlapping practical responsibilities. `initializeNodes()` already acts as the moment where `this._node` and `this._nodes` become usable for subclass logic, while `render()` remains the broader invalidation-driven projection phase. The purpose of this document is to make that split explicit, document the current patterns in the framework, and create a structure that can later grow into a much larger `Control.js.smdl`.
+
+## Functionality
+
+`Control.js` is the central visual lifecycle module of the framework. It owns the transition from abstract component state into concrete DOM state, exposes the base rendering contract, participates in state reflection through `_update()`, and provides the structural hooks that most visual subclasses build on top of.
+
+Functionally, `Control.js` is where the following concerns meet:
+
+- node creation and destruction
+- stateful visibility and invalidation
+- DOM access through `this._node` and `this._nodes`
+- render dispatch through `render()` and `onRender`
+- the queue-driven update cycle through `update()` and `_update()`
+
+## Position In The Framework
+
+`Control.js` sits between the generic component model and the UI class hierarchy.
+
+- Above it sits `Component.js`, which provides properties, ownership, event dispatch and general component lifecycle.
+- Below it sit visual controls such as `Element`, `Panel`, `Input`, `Node`, `Tab`, `List`, and many specializations built on top of those.
+- Beside it sits `ControlUpdater.js`, which turns invalidation into queued update work.
+
+Because of that position, `Control.js` does not define one concrete rendering strategy. Instead, it defines the base visual lifecycle that descendants may preserve, extend, or replace.
+
+## Lifecycle Overview
+
+The current `vcl/Control` rendering path is not one single method. It is a chain of phases.
+
+### Core flow
+
+1. A node is created in `createNode()`.
+2. `this._node` and `this._nodes` become available.
+3. `initializeNodes()` performs initial node wiring.
+4. `nodecreated` is dispatched.
+5. `render()` is called once immediately after node creation.
+6. Later visual and state changes flow through `update()` and `_update()`.
+7. When the control is marked `invalidated`, `_update()` calls `render()` again.
+
+### Important consequence
+
+`render()` is not the only place where DOM-facing work happens. In practice, `initializeNodes()` is already a distinct lifecycle phase that many controls use for node lookup, child-node binding, event hookup and early DOM preparation.
+
+That makes `initializeNodes()` more than just a small helper. It is already a structural counterpart to `render()`.
+
+## Relevant Source Anchors
+
+- [Control.js](./Control.js)
+- `createNode()` around the node creation and first render
+- `initializeNodes()` in the base class
+- `render()` in the base class
+- `_update()` where `invalidated` leads back to `render()`
+
+## `createNode()`
+
+`createNode()` is the place where the control crosses from abstract component state into concrete DOM state.
+
+### Current sequence
+
+```js
+createNode: function(documentNode) {
+	this._node = documentNode.createElement(this.getElement());
+	this._node.id = this.getNodeId();
+	this._node.innerHTML = this.getInnerHtml();
+	if(this._tabIndex !== -1) {
+		this._node.tabIndex = this._tabIndex;
+	}
+	this._nodes = {};
+	this.initializeNodes();
+	this.dispatch("nodecreated", this._node, this._nodes);
+	this.render();
+}
+```
+
+### Observations
+
+- `this._node` exists before `initializeNodes()` is entered.
+- `this._nodes` exists before `initializeNodes()` is entered.
+- `initializeNodes()` runs before the first `render()`.
+- `render()` therefore already assumes node lookup and node registration are done.
+
+This ordering is the key to understanding why `initializeNodes()` is a viable place for framework-level rendering cleanup.
+
+## `initializeNodes()`
+
+### Base implementation
+
+The base `initializeNodes()` is deliberately small:
+
+```js
+initializeNodes: function() {
+	this._node.onscroll = EventDispatcher.handleEvent;
+	// FIXME there are more events that might need to be hooked
+},
+```
+
+At first glance this looks incidental, but its position in the lifecycle gives it a much larger meaning than the implementation suggests.
+
+### Semantic role
+
+`initializeNodes()` is the phase where:
+
+- the DOM node already exists
+- named child-node references can be stored in `this._nodes`
+- structural DOM relationships can be established
+- node-level event handlers can be connected
+- one-time-per-node setup can happen before the first render pass
+
+### Why it matters
+
+A recurring problem in the current framework is that many `render()` overrides are forced to do work that is not really repeatable rendering. They often contain node lookup, child registration or structural DOM maintenance, simply because those operations require access to `this._node` and `this._nodes`.
+
+`initializeNodes()` already solves that access problem cleanly.
+
+### Not one-time per control
+
+`initializeNodes()` is not a one-time hook for the life of the component. It is a one-time hook per node instance.
+
+That matters because:
+
+- `recreateNode()` destroys and rebuilds the DOM node
+- any future extension point in this phase must be idempotent
+- node-level setup must tolerate being applied again after recreation
+
+### Practical reading
+
+The best way to read `initializeNodes()` is:
+
+> "The node exists now; bind your DOM references and perform structural setup that should happen before the first and every subsequent render pass for this node instance."
+
+### Relation to the current thread
+
+This is exactly why `initializeNodes()` can help "fix" the ambiguity of `render()` without forcing `render()` to become narrowly about low-level DOM painting.
+
+`initializeNodes()` can absorb:
+
+- node registration
+- child-node discovery
+- DOM event hookup
+- structural node augmentation
+
+while `render()` can remain the repeatable projection/update phase.
+
+## `render()`
+
+### Base implementation
+
+The base implementation is very small and intentionally abstract:
+
+```js
+render: function() {
+	if(this.isVisible()) {
+		return this.fire("onRender", arguments);
+	} else {
+		this.setState("invalidated");
+	}
+},
+```
+
+### What the base contract really says
+
+The base class does not define rendering as "apply these DOM changes". Instead it defines rendering as:
+
+- only render while visible
+- otherwise remain invalidated
+- delegate actual rendering behavior to the `onRender` event
+
+This is important. In `vcl/Control`, `render()` is less a built-in paint routine and more a visibility-gated render dispatch.
+
+### The strengths of this design
+
+- `render()` stays abstract
+- prototype resources can implement rendering through `onRender`
+- controls without custom DOM projection do not need a large built-in render body
+- the base class does not force a single visual model onto all descendants
+
+### The costs of this design
+
+- subclasses are free to redefine `render()` completely
+- some subclasses do not call inherited `render()`
+- `onRender` is only meaningful for some controls
+- "render" can mean dispatch, DOM sync, structural patching, or all three
+
+### `onRender`
+
+`onRender` is a `Type.EVENT` property backed by `_onRender`. It is dispatched by `fire()`, which means:
+
+- the event is suppressed while loading
+- the event is suppressed while designing
+- the return value comes directly from the `_onRender` function
+
+That suppression behavior is consistent with normal event semantics, but not always with lifecycle semantics. This is one of the reasons a future `initializeNodes`-adjacent hook may need different dispatch rules.
+
+## `update()` and `_update()`
+
+`render()` is called in two main ways:
+
+- immediately from `createNode()`
+- later from `_update()` when the control is `invalidated`
+
+### Why `_update()` matters
+
+The real visual lifecycle is state-driven:
+
+- setters mark a control invalidated
+- `update()` queues the control
+- `ControlUpdater` eventually runs `_update()`
+- `_update()` reflects control state and calls `render()` when needed
+
+This means the practical rendering model is:
+
+> invalidation + visibility + queued update + render dispatch
+
+That model is broader than simple DOM repainting, which again supports keeping `render()` abstract.
+
+## `initializeNodes()` vs `render()`
+
+The cleanest separation is not "setup vs render" in the generic sense, but this:
+
+### `initializeNodes()`
+
+- per-node lifecycle phase
+- has access to `this._node`
+- has access to `this._nodes`
+- registers child refs
+- wires node-level events
+- performs structural setup
+- should be idempotent across node recreation
+
+### `render()`
+
+- repeatable lifecycle phase
+- gated by visibility in the base class
+- driven by invalidation and update queueing
+- projects component state into the current node
+- may remain abstract or domain-specific
+
+### Working distinction
+
+If an operation depends on the node existing but does not need to run on every invalidation, it is a strong candidate for `initializeNodes()`.
+
+If an operation reflects current component state and may need to run again after property changes, it belongs in `render()` or in methods that `render()` calls.
+
+## Derived Class Patterns
+
+The framework currently uses several different rendering patterns. This section groups them by behavior.
+
+### Pattern A: additive `initializeNodes()`, base-style render dispatch
+
+These classes extend `initializeNodes()` and preserve the base render idea.
+
+Examples:
+
+- [ui/Panel.js](./ui/Panel.js)
+- many `Element`-based prototype resources using `onRender`
+
+Characteristics:
+
+- `initializeNodes()` adds node wiring
+- `render()` still delegates to inherited behavior, or allows `onRender`
+- `onRender` remains meaningful
+
+### Pattern B: additive `initializeNodes()`, additive `render()`
+
+These classes do their own DOM sync and then still call inherited `render()`.
+
+Examples:
+
+- [ui/Node.js](./ui/Node.js)
+- [ui/Panel.js](./ui/Panel.js)
+- [ui/Node.closeable.js](./ui/Node.closeable.js)
+
+Characteristics:
+
+- the class has its own built-in render work
+- `onRender` may still run
+- ordering differs per class
+
+Notes:
+
+- `Node` renders text and icon, then calls inherited `render()`
+- `Panel` applies zoom, then calls inherited `render()`
+- `Node.closeable` calls inherited `render()` first, then mutates close-button structure
+
+These are already three different sub-variants inside the same broad pattern.
+
+### Pattern C: full render replacement
+
+These classes override `render()` and never call inherited `render()`.
+
+Examples:
+
+- [ui/Input.js](./ui/Input.js)
+- [ui/Select.js](./ui/Select.js)
+- [ui/Checkbox.js](./ui/Checkbox.js)
+- [ui/Radiobutton.js](./ui/Radiobutton.js)
+- [ui/CheckGroup.js](./ui/CheckGroup.js)
+
+Characteristics:
+
+- `render()` means "synchronize DOM state now"
+- `onRender` is effectively bypassed
+- visibility gating from the base class is bypassed
+
+This is one of the main reasons the meaning of `render()` is currently inconsistent across control types.
+
+### Pattern D: render interception and short-circuit
+
+The most notable example is [ui/Tab.js](./ui/Tab.js).
+
+Its render method behaves like this:
+
+- if no `_onRender` exists, perform default text rendering
+- if `_onRender` exists and returns `false`, still perform default text rendering
+- otherwise suppress default rendering
+
+This is a real "event overrides default rendering" pattern, but it is unique enough that it should be treated as a special case rather than the framework norm.
+
+### Pattern E: structural rendering in `initializeNodes()`
+
+The list subsystem already demonstrates that `initializeNodes()` can carry structural render responsibility.
+
+Examples:
+
+- [ui/List.js](./ui/List.js)
+- [ui/ListRow.js](./ui/ListRow.js)
+
+Characteristics:
+
+- child node references are bound in `initializeNodes()`
+- structural HTML may be refreshed there
+- cells may be rendered during node initialization
+
+This is important because it proves the framework already tolerates a broader interpretation of `initializeNodes()` than the base implementation suggests.
+
+## Representative Derived Classes
+
+### `vcl/ui/Input`
+
+`initializeNodes()`:
+
+- ensures `this._nodes.input` exists
+- applies placeholder, type and name
+- hooks native input events
+
+`render()`:
+
+- reads either `_value` or the bound source attribute
+- writes the result into the input node
+
+Interpretation:
+
+- `initializeNodes()` handles node preparation
+- `render()` performs repeatable value projection
+
+This is actually a fairly good split, even though it bypasses inherited `render()`.
+
+### `vcl/ui/Checkbox` and `vcl/ui/Radiobutton`
+
+`initializeNodes()`:
+
+- finds `input` and `label`
+- wires `for` to the generated input id
+
+`render()`:
+
+- updates checked state
+- updates label HTML
+
+Interpretation:
+
+- these are strong candidates for the "node setup in `initializeNodes()`, state projection in `render()`" mental model
+- they still bypass `onRender`
+
+### `vcl/ui/Select`
+
+`initializeNodes()`:
+
+- hooks native events
+
+`render()`:
+
+- rebuilds the `<option>` list
+- chooses a selected value
+
+Interpretation:
+
+- this mixes structural DOM rebuilding with state projection inside `render()`
+- a future refactor might separate "option structure changed" from "selected value changed"
+
+### `vcl/ui/Node`
+
+`initializeNodes()`:
+
+- binds `selection`, `icon`, `text` and `container`
+- validates required child nodes
+
+`render()`:
+
+- optionally lets the tree intercept node rendering
+- applies text and icon state
+- then calls inherited `render()`
+
+Interpretation:
+
+- this is a layered lifecycle
+- the tree-level `onNodeRender` hook is the real render override point, not `onRender`
+
+### `vcl/ui/Tab`
+
+`initializeNodes()`:
+
+- binds text and close nodes
+
+`render()`:
+
+- uses `_onRender` as an override gate for built-in text rendering
+
+Interpretation:
+
+- `Tab` is the clearest example of `onRender` overriding a control's default rendering
+- the return-value convention is unusual and easy to misread
+
+### `vcl/ui/Panel`
+
+`initializeNodes()`:
+
+- adds focusability concerns
+
+`render()`:
+
+- applies zoom styling
+- then calls inherited `render()`
+
+Interpretation:
+
+- this is an additive render model
+- built-in DOM sync and `onRender` coexist
+
+### `vcl/ui/List` and `vcl/ui/ListRow`
+
+`initializeNodes()` in these classes does more than plain child-node registration.
+
+It also:
+
+- binds structural nodes
+- ensures inner HTML matches expectations
+- performs cell rendering during node setup
+
+Interpretation:
+
+- these classes demonstrate that `initializeNodes()` can already function as a structural rendering phase
+- they strengthen the case for a first-class `initializeNodes` lifecycle hook
+
+## Inconsistencies
+
+The current framework does not have one consistent meaning of `render()`.
+
+### 1. Event dispatch vs DOM sync
+
+In the base class, `render()` means "fire `onRender` when visible".
+
+In many descendants, `render()` means "synchronize DOM directly".
+
+### 2. Visibility gating
+
+The base class defers rendering while invisible by setting `invalidated` again.
+
+Descendants that bypass inherited `render()` also bypass this behavior.
+
+### 3. `onRender` availability
+
+Some controls expose `onRender` as a meaningful lifecycle hook.
+
+Others define it as a property but never route rendering through it.
+
+### 4. Ordering differences
+
+Some controls run built-in render logic before inherited render.
+
+Some after.
+
+Some never.
+
+That means the same `onRender` event can be:
+
+- a primary render implementation
+- an after-render hook
+- a pre-render veto point
+- or dead code
+
+depending on the control type.
+
+### 5. Structural work in `render()`
+
+Some controls rebuild node structure in `render()` even when the operation is not truly a repeatable state projection.
+
+This often happens because no formal lifecycle hook exists between:
+
+- "the node exists now"
+- and
+- "perform repeatable render work"
+
+### 6. Loading and designing suppression
+
+Because `onRender` runs through `fire()`, it is suppressed during loading and designing.
+
+That behavior may be correct for user-facing events, but it is less obviously correct for lifecycle extension points.
+
+## Why `initializeNodes()` Helps
+
+This thread's hypothesis is:
+
+> `initializeNodes()` is already a sort of render method, or at least a method that can absorb part of the brokenness currently concentrated in `render()`.
+
+That makes sense for three reasons.
+
+### Reason 1: correct timing
+
+When `initializeNodes()` runs:
+
+- the DOM node exists
+- child lookup is possible
+- node-local structure can be installed
+
+This is exactly the moment many current `render()` workarounds need.
+
+### Reason 2: clearer repeatability boundary
+
+Moving structural setup into `initializeNodes()` makes `render()` easier to read as a repeatable phase.
+
+### Reason 3: already proven in real subclasses
+
+The list subsystem and several control types already treat `initializeNodes()` as more than a trivial helper.
+
+So formalizing that role is not an alien design move; it is codifying an existing pattern.
+
+## Candidate Extension Point
+
+If the framework introduces a new property or event to steer `initializeNodes()`, its semantics should be explicit.
+
+### Desired contract
+
+The new hook would mean:
+
+> "The node has been created and `this._nodes` is available. Perform node-level setup now."
+
+### Requirements
+
+- runs after `this._node` and `this._nodes` exist
+- runs during every node creation and recreation
+- does not assume this is the final render pass
+- is safe for idempotent structural setup
+
+### Open design question
+
+If implemented as a normal `Type.EVENT` routed through `fire()`, the hook would be suppressed during loading and designing.
+
+That may be undesirable for a lifecycle hook in this phase.
+
+So this extension point probably needs one of these behaviors:
+
+- a forced `fire(..., true)` style dispatch
+- a direct `_onInitializeNodes` call
+- a dedicated lifecycle dispatcher distinct from general events
+
+## Direction
+
+The most promising direction is not to narrow `render()` to pure DOM painting.
+
+Instead:
+
+- keep `render()` abstract and repeatable
+- recognize `initializeNodes()` as a first-class lifecycle phase
+- move structural DOM setup pressure out of `render()`
+- make subclass behavior easier to compare against an explicit two-phase model
+
+## Recommended Mental Model
+
+For `vcl/Control` and its descendants, the most useful mental model today is:
+
+### Phase 1: node creation
+
+- create the element
+- install inner HTML
+- create `this._nodes`
+
+### Phase 2: node initialization
+
+- run `initializeNodes()`
+- bind refs
+- wire DOM events
+- perform structural setup
+
+### Phase 3: first render
+
+- project current component state into the node
+- optionally route through `onRender`
+
+### Phase 4: queued rerender
+
+- property changes invalidate the control
+- `_update()` eventually runs
+- `render()` runs again when visible
+
+## Short Conclusion
+
+`initializeNodes()` and `render()` are not competing concepts. They are two adjacent lifecycle phases that have been carrying overlapping responsibilities.
+
+The framework becomes easier to reason about when:
+
+- `initializeNodes()` owns node-availability concerns
+- `render()` owns repeatable projection concerns
+- subclass deviations are documented as explicit patterns instead of accidental differences
+
+That is the basis on which this document should grow.

@@ -1,4 +1,6 @@
-$("vcl/ui/Panel", {
+"use js";
+
+["vcl/ui/Panel", {
 	align: "top",
 	height: 23,
 	css: {
@@ -7,4 +9,4 @@ $("vcl/ui/Panel", {
 		"border-top": "1px solid #f0f0f0",
 		overflow: "hidden"
 	}
-});
+}];

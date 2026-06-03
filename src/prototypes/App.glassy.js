@@ -1,4 +1,4 @@
-"use util/HtmlElement, vcl/CssRules, vcl/ui/Input, vcl/ui/Tabs, vcl/ui/ListRow";
+"use util/HtmlElement, vcl/CssRules, vcl/ui/Input, vcl/ui/Tabs, vcl/ui/ListRow, vcl/ui/Node";
 
 const CssRules = require("vcl/CssRules");
 

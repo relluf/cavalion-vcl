@@ -489,7 +489,10 @@ define(function (require) {
                 type: Type.BOOLEAN,
                 set: Function
             },
-            "hotkeys": { set(value) { this.setHotkey(value); } }, // alias
+            "hotkeys": { 
+                type: Type.STRING,
+            	set(value) { this.setHotkey(value); } 
+            }, // alias
             "hotkey": {
                 type: Type.STRING,
                 get: Function,

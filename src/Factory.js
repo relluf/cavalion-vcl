@@ -48,6 +48,9 @@ define(function(require) {
 			ui/entities/Query<Channel.new>
 	*/
 
+
+/*- Known issue: codex://threads/019e71e1-5d13-79c1-9419-94c606b08350 */
+
 	var Factory = require("js/defineClass");
 	var Class = require("js/Class");
 	var Type = require("js/Type");
