@@ -495,7 +495,7 @@ workaroundColumnAlignment(this);
 				this._body.render_();
 			},
 			renderCell: function(cell, row, column) {
-				var value, orgValue;
+				var value, orgValue, title;
 				if(column._attribute !== "") {
 					orgValue = (value = this._source.getAttributeValue(column._attribute, row));
 				}
@@ -503,7 +503,7 @@ workaroundColumnAlignment(this);
 				if(value === Source.Pending) {
 					value = "-";
 				} else {
-					if(column._wantsNullValues || (value !== null && value !== undefined)) {
+					if(column._wantsNullValues || column._alwaysGetValue || (value !== null && value !== undefined)) {
 						if(column._onGetValue !== null) {
 							value = column.fire("onGetValue", [value, row, this._source]);
 						}
@@ -553,7 +553,7 @@ workaroundColumnAlignment(this);
 						value = js.sf("%n", value);
 					}
 					if(this._renderCellTitles === true) {
-						cell.title = value;
+						title = value;
 					}
 				}
 
@@ -561,6 +561,9 @@ workaroundColumnAlignment(this);
 					cell.textContent = value;
 				} else {
 					cell.innerHTML = value;
+				}
+				if(title !== undefined) {
+					cell.title = column._rendering === "innerHTML" ? cell.textContent : title;
 				}
 				column.autoWidth(cell.textContent, cell);
 				
@@ -731,7 +734,7 @@ workaroundColumnAlignment(this);
 							newValue: newValue
 						});
 					}
-				} else if(which === "attribute" || which === "onGetValue" || which === "onRenderCell" || which === "displayFormat") {
+				} else if(which === "attribute" || which === "onGetValue" || which === "onRenderCell" || which === "displayFormat" || which === "alwaysGetValue") {
 					if(this._node !== null) {
 						this.setTimeout("render", () => this._body.updateRows(), 50);
 					}
@@ -1012,7 +1015,7 @@ workaroundColumnAlignment(this);
 
 			valueByColumnAndRow(column, row) {
 				var value = this._source.getAttributeValue(column._attribute, row, true);
-				if(column._wantsNullValues || (value !== null && value !== undefined)) {
+				if(column._wantsNullValues || column._alwaysGetValue || (value !== null && value !== undefined)) {
 					if(column._displayFormat !== "") {
 						value = js.sf(column._displayFormat, value);
 					}

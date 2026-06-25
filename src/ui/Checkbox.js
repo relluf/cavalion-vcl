@@ -57,8 +57,13 @@ define(function(require) {
 					this.setNodeId(this._nodes.input, "input"));
 			},
 			render: function() { /** @override ../Control.prototype.render */
-				this._nodes.input.checked = this._checked;
-				this._nodes.label.innerHTML = this._label;
+
+				if(this._nodes) {
+					this._nodes.input.checked = this._checked;
+					this._nodes.label.innerHTML = this._label;
+				}
+				
+				return this.inherited(arguments);
 			},
 
 			getInputValue: function() {

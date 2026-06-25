@@ -75,6 +75,9 @@ define(function(require) {
 			},
 			insertControl: function() {
 				/** @overrides ../Control.prototype.insertControl */
+				if(!this._expandable) {
+					this.setExpandable(true);
+				}
 				this.setState("classesInvalidated");
 				this.inherited(arguments);
 			},
@@ -141,16 +144,18 @@ define(function(require) {
 					}
 				}
 				
-				if(text instanceof Array) {
-					this._nodes.text.innerHTML = String.format.apply(String, text);
-				} else if(this._textReflects === "innerHtml") {
-					this._nodes.text.innerHTML = text;
-				} else {
-					this._nodes.text.textContent = text;
-				}
-				
-				if(this._icon) {
-					this._nodes.icon.style.backgroundImage = js.sf("url(%s)", this._icon);
+				if(this._nodes) {
+					if(text instanceof Array) {
+						this._nodes.text.innerHTML = String.format.apply(String, text);
+					} else if(this._textReflects === "innerHtml") {
+						this._nodes.text.innerHTML = text;
+					} else {
+						this._nodes.text.textContent = text;
+					}
+					
+					if(this._icon) {
+						this._nodes.icon.style.backgroundImage = js.sf("url(%s)", this._icon);
+					}
 				}
 				
 				return this.inherited(arguments);

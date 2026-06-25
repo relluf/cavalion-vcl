@@ -58,6 +58,7 @@ define(function(require) {
 	var Component = require("./Component");
 	var Deferred = require("js/Deferred");
 	var parse = require("./Factory.parse");
+	var resolvePropertyValue = require("./Factory.resolvePropertyValue");
 	var js = require("js");
 	var PropertyValue = parse.PropertyValue;
 
@@ -457,17 +458,18 @@ this._source = source;
 								component.constructor, k, component, component._uri));
 					} else {
 						var value = node.properties[k];
-						this.setPropertyValue(property, component, value, fixUps);
+						this.setPropertyValue(property, component, value, fixUps, node);
 					}
 				}
 			},
-			setPropertyValue: function(property, component, value, fixUps) {
+			setPropertyValue: function(property, component, value, fixUps, node) {
 				/**
 				 * @param property
 				 * @param component
 				 * @param value
 				 * @param fixUps
 				 */
+				value = resolvePropertyValue(property, component, value, node);
 				if(property.isReference()) {
 					fixUps.push({
 						property: property,

@@ -15,6 +15,7 @@ define(function(require) {
 	var Type = require("js/Type");
 	var Component = require("./Component");
 	var evaluate = require("./Reader.evaluate");
+	var resolvePropertyValue = require("./Factory.resolvePropertyValue");
 	var js = require("js");
 
 	return (Reader = Reader(require, {
@@ -241,17 +242,18 @@ define(function(require) {
 //								component));
 					} else {
 						var value = node.properties[k];
-						this.setPropertyValue(property, component, value);
+						this.setPropertyValue(property, component, value, node);
 					}
 				}
 			},
-			setPropertyValue: function(property, component, value) {
+			setPropertyValue: function(property, component, value, node) {
 				/**
 				 *
 				 * @param property
 				 * @param component
 				 * @param value
 				 */
+				value = resolvePropertyValue(property, component, value, node);
 				if(property.isReference()) {
 					this._references.push({
 						property: property,

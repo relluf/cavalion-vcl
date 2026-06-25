@@ -7,7 +7,7 @@ define(function(require) {
 	var Source = require("../../data/Source");
 	var SourceEvent = require("../../data/SourceEvent");
 	var Component = require("../Component");
-
+	
 	return Array(require, {
 		inherits: Component,
 		implementing: [Source],
@@ -162,6 +162,8 @@ define(function(require) {
 				if(this._arrayDuringLoad !== undefined) {
 					this.setArray(this._arrayDuringLoad);
 					delete this._arrayDuringLoad;
+				} else {
+					// this.setArray([]);
 				}
 				if(this.hasOwnProperty("_notifications")) {
 				    var me = this;

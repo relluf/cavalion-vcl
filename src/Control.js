@@ -819,38 +819,21 @@ define(function(require) {
 				}
 			},
 			toggleClass: function(classes) {
-				if(this._classes_rt === null) {
-					this.addClasses(classes);
-				} else {
-					var changed = false;
-					if(!(classes instanceof Array)) {
-						classes = classes.split(" ");
-					}
-	/*- BUG: following code doesn't work
-					classes.forEach(function(cls, index) {
-						if((index = this._classes_rt.indexOf(cls)) === -1) {
-							this._classes_rt.push(cls);
-							changed = true;
-						} else {
-							this._classes_rt.splice(index, 1);
-							changed = true;
-						}
-					}, this);
-					if(changed) {
-						this.setState(ControlState.classesInvalidated, true);
-					}
-					
-		Replaced with following fragment
-	*/
-					classes.forEach(function(cls, index) {
-						if(this.hasClass(cls)) {
-							this.removeClass(cls, true);
-						} else {
-							this.addClass(cls, true);
-						}
-					}, this);
+				if(!(classes instanceof Array)) {
+					classes = classes.split(" ");
 				}
+				classes.forEach(function(cls) {
+					if(cls === "") {
+						return;
+					}
+					if(this.hasClass(cls)) {
+						this.removeClass(cls, true);
+					} else {
+						this.addClass(cls, true);
+					}
+				}, this);
 			},
+
 			replaceClass: function(find, replace) {
 				if(this._classes_rt !== null) {
 					var changed = false;

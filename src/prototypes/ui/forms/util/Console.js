@@ -1,4 +1,4 @@
-"use devtools/Resources, devtools/Parser, vcl/Component, vcl/Control, vcl/Dragger, util/HotkeyManager, vcl/ui/Sizer, vcl/ui/FormContainer, devtools/cavalion-devtools, vcl/ui/Ace, util/Clipboard, blocks/Blocks";
+"use devtools/Resources, vcl/Component, vcl/Control, vcl/Dragger, util/HotkeyManager, vcl/ui/Sizer, vcl/ui/FormContainer, devtools/cavalion-devtools, vcl/ui/Ace, util/Clipboard, blocks/Blocks, vcl/Application";
 
 const Component = require("vcl/Component");
 const Control = require("vcl/Control");
@@ -7,7 +7,6 @@ const Ace = require("vcl/ui/Ace");
 const Sizer = require("vcl/ui/Sizer");
 const Dragger = require("vcl/Dragger");
 const Resources = require("devtools/Resources");
-const Parser = require("devtools/Parser");
 const Clipboard = require("util/Clipboard");
 const B = require("blocks/Blocks");
 
@@ -43,7 +42,8 @@ const allowsAltMetaClick = (component) => {
 };
 
 const H = (uri, vars, opts) => B.i(["Hover<>", { vars: js.mi({ uri: uri }, vars)}], opts);
-H.i = (obj) => H("devtools/Alphaview.csv", { sel: [obj] });
+H.i = (obj) => H("Alphaview.csv", { sel: [obj] });
+H.ns = (a, b, c) => Promise.resolve(H(a, b, c)).then(h => (h.addClass("no-shrinking"), h));
 
 const tap = fn => x => (fn(x), x);
 const cc = (text) => Clipboard.copy(text);
@@ -295,77 +295,6 @@ js.mi(window, { B, H, facts, cc, cp, cl, tap });
 			}
 		}
 	}],
-    ["vcl/Action", ("format"), {
-    	hotkey: "Shift+MetaCtrl+F",
-		overrides: HOTKEY_ALWAYS_ENABLED,
-    	on(evt) {
-    		const ace = getAce();
-    		if(ace) {
-    			Parser.format(ace);
-    		}
-    	}
-    }],
-    ["vcl/Action", ("print"), {
-    	hotkey: "MetaCtrl+Enter|Shift+MetaCtrl+Enter",
-		overrides: HOTKEY_ALWAYS_ENABLED,
-    	on(evt) {
-    		const ace = evt.ace || getAce();
-    		if(ace) {
-	    		const resource = ace.vars(["resource"]);
-	    		const doc = ace.vars(["instance"]) || {};
-	    		const name = (uri) => uri.split("/").pop();
-	    		
-	    		let console = evt.shiftKey ? this.ud("#console") : (
-	    			evt.console || ace.ud("> #console"));
-	    		if(!console || !console.isVisible()) {
-	    			console = this.ud("#console");
-	    		}
-	    		
-	    		try {
-		    		const root = Parser.getRoot(ace, {
-		    			javascript: { eval_: (expr) => 
-		    				this.ud("#console")._onEvaluate(expr, { ace: ace })
-		    			}
-		    		});
-		    		
-					(console || this.app()).print(name(resource ? resource.uri : (doc.id || doc.naam || "")), root);
-	    		} catch(e) {
-					(console || this.app()).print(name(resource ? resource.uri : (doc.id || doc.naam || "")), e);
-	    		}
-    		}
-    	}
-    }],
-    ["vcl/Action", ("save-resource-local"), {
-    	hotkey: "Shift+MetaCtrl+Alt+S",
-    	on() {
-			const ace = getAce();
-			const resource = ace && ace.vars(["resource"]);
-
-    		if(resource && ace instanceof Ace) {
-				const text = ace.getValue();
-				const blob = new Blob([text], { type: "text/plain" });
-					
-				if(!resource.name) { // TODO Resources.extrapolate(resource);
-					resource.path = resource.uri.split("/");
-					resource.name = resource.path.pop();
-					resource.path = resource.path.join("/");
-					resource.ext = resource.name.split(".").pop();
-				}
-				
-				const link = document.createElement("a");
-				link.setAttribute("href", URL.createObjectURL(blob));
-				link.setAttribute("download", resource.name);
-				
-				document.body.appendChild(link);
-				this.nextTick(() => { 
-					link.click(); 
-					document.body.removeChild(link); 
-				});
-    		} else {
-    			this.app().toast({content:"No resource", classes: "fade glassy"});
-    		}
-    	}
-    }],
 
     [["ui/controls/Toolbar"], "toolbar", {
         css: { cursor: "ns-resize" },
@@ -408,6 +337,7 @@ js.mi(window, { B, H, facts, cc, cp, cl, tap });
 			const cl = console.log;
 			const pr = () => this.print.apply(this, arguments);
 			const $$ = this.vars(["sizer._control"]);
+			const _ = this.getValues(true).pop() || this.getValues().pop();
 
             const open = (uri, opts) => this.bubble(
             	"openform",

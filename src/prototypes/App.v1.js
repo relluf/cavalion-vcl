@@ -1,4 +1,4 @@
-"use util/Browser, util/HtmlElement, util/Fullscreen, vcl/ui/Element, vcl/ui/FormContainer, vcl/ui/Tree, vcl/ui/Node, vcl/ui/Button";
+"use util/Browser, util/HtmlElement, util/Fullscreen, vcl/ui/Element, vcl/ui/FormContainer, vcl/ui/Tree, vcl/ui/Node, vcl/ui/Button, vcl/ui/Popup";
 
 var Fullscreen = require("util/Fullscreen");
 var HtmlElement = require("util/HtmlElement");
@@ -70,6 +70,11 @@ const default_zoom = Browser.win ? "zoom-109" : "zoom-112";
 				'&:not(:active)': "margin-bottom:4px;",
 				'&:active': "margin-bottom:0;margin-top:2px;border:2px solid rgb(57,121,217); padding-left:8px; padding-right:6px;" // background:-webkit-linear-gradient(top, rgb(255, 255, 255) 10%, rgb(227, 227, 227) 100%);
 			},
+			// '.{Popup}:not(.no-w-350)': {
+			// 	'': "min-width: 350px; padding: 6px 0;",
+			// 	'.{Element}.header': "padding: 6px 12px 8px 12px;",
+			// 	'.{Button}': "display:block; width:100%; border:none; text-align:left; padding: 6px 12px;"
+			// },
 
 			'.zoom-125': {
 				'': "zoom: 1.25;",
@@ -103,6 +108,7 @@ const default_zoom = Browser.win ? "zoom-109" : "zoom-112";
 			},
 			
 			'.{Panel}.loading': "background: url(/shared/vcl/images/loading.gif) 50% no-repeat;" // OMG !! why didn't I do that before
+			
     	}
     }, [
         ["vcl/ui/FormContainer", "client", { 

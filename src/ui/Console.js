@@ -149,7 +149,7 @@ define(function(require) {
 			},
 			
 			_align: "client",
-			_content: "<div class='console'></div><div class='cmdline'><input></div>",
+			_content: "<div class='console'></div><div class='cmdline'><input autocomplete=\"off\" autocorrect=\"off\" autocapitalize=\"off\" spellcheck=\"false\"></div>",
 			_history: null,
 			_onEvaluate: null,
 			_mouseTarget: null,

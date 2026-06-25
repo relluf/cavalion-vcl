@@ -2,6 +2,58 @@ Generate a git commit message, first line lowercased like: "(categorized): summa
 
 Generate a RELEASENOTES entry for users/developers of Cavalion
 
+### `2026/06/24` Query engine, property resolution and UI refinements
+
+- Adds support for selector groups (`,`), evaluating multiple selector trees and returning a deduplicated result set.
+- Refactors selector parsing into reusable rule-set generation (`rulesFromTree`).
+- Fixes numeric pseudo-selector parsing by correctly using `isNaN(value)` instead of `isNaN`.
+- Cleans up URI matching variable initialization.
+
+#### Property loading
+
+- Introduces shared `Factory.resolvePropertyValue` processing for both `Factory` and `Reader`.
+- Resolves property values before reference handling during component instantiation.
+- Extends property assignment flow with node context.
+
+#### UI controls
+
+- Simplifies `Control.toggleClass()` and fixes class toggling behavior.
+- Adds `autocomplete` property to `ui/Input` and applies the HTML `autocomplete` attribute.
+- Disables browser autocomplete, autocorrect, autocapitalization and spellcheck for `ui/Console`.
+- Makes `Checkbox` and `Node` rendering resilient when DOM nodes are not yet available.
+- Automatically marks `Node` instances as expandable when child controls are inserted.
+
+#### List rendering
+
+- Adds `ListColumn.alwaysGetValue` to force value retrieval for null/undefined cells.
+- Updates cell rendering and exported values to honor `alwaysGetValue`.
+- Improves cell title generation for HTML-rendered content.
+
+#### Console & developer tooling
+
+- Simplifies hover helper APIs (`H.i`, `H.ns`).
+- Removes built-in formatting, print and local resource export actions from the developer console.
+
+#### Miscellaneous
+
+- Imports `Popup` into the application prototype and adds placeholder styling hooks.
+- Performs formatting and minor cleanup across UI prototype files.
+- Adds a small `data/Array` load-path refinement without functional behavior changes.
+
+### `2026/06/04` Component query selector fixes
+
+* Fixes `match_uri()` local variable scoping for `$HOME` URI rewrites.
+* Fixes `:pseudo` numeric parsing by calling `isNaN(value)` correctly.
+* Adds support for comma-separated selector lists via parsed `selectors`.
+* Returns merged results for multiple selector rule sets.
+* Deduplicates multi-selector results using `component.hashCode()`.
+* Preserves `Result` return type for combined selections.
+* Refactors selector rule extraction into `rulesFromTree(tree)`.
+* Keeps wildcard tag handling through `ctor = "*"`.
+* Removes `~` as registered nesting operator.
+* Maintains `>` and `PARENT_HIERARCHY_OPERATOR` nesting support.
+* Limits selector parsing output to normalized rule-set arrays.
+
 ### `2026/05/18` 1.1.95 Ownership safety and auto-column cleanup
 
 #### Component / Control ownership consistency

@@ -706,7 +706,7 @@ define(function() {
     };
     
     function match_uri(rule, component) {
-        var uri = component._uri;//getUri();
+        var i, uri = component._uri;//getUri();
         
         // TODO how to solve this in a clean manner, or is this just pure framework-code? Well even then, it needs to be centralized and documented :-p
         if(uri.indexOf("$HOME") === 0 && (i = uri.indexOf("/cavalion-blocks/tools/")) !== -1) {
@@ -801,7 +801,7 @@ define(function() {
                 value = context;
             } else if(pseudo.value.charAt(0) === "#") {
                 value = parseInt(pseudo.value.substring(1), 10);
-                if(isNaN) {
+                if(isNaN(value)) {
                 	var name = pseudo.value.substring(1);
                 	value = all.filter(function(comp) {
                 		return comp.getName() === name;
@@ -897,51 +897,68 @@ define(function() {
 
         var parser = new CssSelectorParser();
         parser.registerNestingOperators(">");
-        parser.registerNestingOperators("~");
         parser.registerNestingOperators(PARENT_HIERARCHY_OPERATOR);
         
-        tree = parser.parse(selector
+        var tree = parser.parse(selector
             .replace(/<([^>]*)>/g, "\\<$1\\>")
             .replace(/\//g, "\\/"));
-            
-        const query = (s, comp, all) => query_(Component.relativeNS(s, comp), comp, all);
 
-
-        var rules = [], rule = tree.rule;
-        while(rule) {
-            if(rule.tagName && rule.tagName.indexOf("<") !== -1) {
-                rule.uri = rule.tagName;
-                if(!(rule.exact = rule.uri.indexOf("<>") === -1)) {
-                    rule.uri = rule.uri.split("<")[0];
-                }
-                delete rule.tagName;
-            } else if(rule.tagName && rule.tagName !== "*") {
-                rule.ctor = require(rule.tagName);
-                delete rule.tagName;
-            } else if(rule.tagName === "*") {
-                rule.ctor = "*";
-            }
-            rules.push(rule);
-            rule = rule.rule;
+        function rulesFromTree(tree) {
+	        var rules = [], rule = tree.rule;
+	        while(rule) {
+	            if(rule.tagName && rule.tagName.indexOf("<") !== -1) {
+	                rule.uri = rule.tagName;
+	                if(!(rule.exact = rule.uri.indexOf("<>") === -1)) {
+	                    rule.uri = rule.uri.split("<")[0];
+	                }
+	                delete rule.tagName;
+	            } else if(rule.tagName && rule.tagName !== "*") {
+	                rule.ctor = require(rule.tagName);
+	                delete rule.tagName;
+	            } else if(rule.tagName === "*") {
+	                rule.ctor = "*";
+	            }
+	            rules.push(rule);
+	            rule = rule.rule;
+	        }
+	        return rules;
         }
-        return rules;
+
+        if(tree.type === "selectors") {
+            return tree.selectors.map(rulesFromTree);
+        }
+
+        return [rulesFromTree(tree)];
     }
 
     return function(selector, context, all) {
-        var rules = parse(selector, context);
-        var operator;
-        var components = [].concat(all);
+        var ruleSets = parse(selector, context);
+        var selected = new Result();
+        var selectedHashCodes = {};
         
-        rules.reverse().forEach(function(rule) {
-            components = components.reduce(function(arr, component) {
-                if(match(rule, component, operator, context, components)) {
-                    arr.push(component);
+        ruleSets.forEach(function(rules) {
+            var operator;
+            var components = [].concat(all);
+
+            rules.reverse().forEach(function(rule) {
+                components = components.reduce(function(arr, component) {
+                    if(match(rule, component, operator, context, components)) {
+                        arr.push(component);
+                    }
+                    return arr;
+                }, new Result());
+                operator = rule.nestingOperator;
+            });
+
+            components.forEach(function(component) {
+                var hashCode = component.hashCode();
+                if(selectedHashCodes[hashCode] !== true) {
+                    selectedHashCodes[hashCode] = true;
+                    selected.push(component);
                 }
-                return arr;
-            }, new Result());
-            operator = rule.nestingOperator;
+            });
         });
         
-        return components;
+        return selected;
     };
 });

@@ -52,6 +52,7 @@ define(function(require) {
 			_rule: null,
 			_sizeable: true,
 			_custom: false,
+			_alwaysGetValue: false,
 
 			_classNameCells: "",
 
@@ -425,6 +426,16 @@ define(function(require) {
 					this.propertyChanged("displayFormat", value);
 				}
 			},
+			getAlwaysGetValue: function() {
+				return this._alwaysGetValue;
+			},
+			setAlwaysGetValue: function(value) {
+				value = value === true;
+				if(this._alwaysGetValue !== value) {
+					this._alwaysGetValue = value;
+					this.propertyChanged("alwaysGetValue", value);
+				}
+			},
 			getOnGetValue: function() {
 				return this._onGetValue;
 			},
@@ -476,6 +487,10 @@ define(function(require) {
 			"displayFormat": {
 				set: Function,
 				type: Class.Type.STRING
+			},
+			"alwaysGetValue": {
+				set: Function,
+				type: Class.Type.BOOLEAN
 			},
 			"sizeable": {
 				set: Function,

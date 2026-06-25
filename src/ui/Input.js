@@ -23,6 +23,7 @@ define(function(require) {
 			_element: "input",
 			_type: "",
 			_placeholder: "",
+			_autocomplete: "off",
 			_value: "",
 
 			_detectChangeTimeout: 50,
@@ -52,6 +53,10 @@ define(function(require) {
 					} catch(e) {
 						console.error("Input.type = " + this._type, e);
 					}
+				}
+
+				if(this.hasOwnProperty("_autocomplete")) {
+					this.applyAutocomplete();
 				}
 
 				if(this._name !== "") {
@@ -300,6 +305,27 @@ define(function(require) {
 						this._node.placeholder = value;
 					}
 				}
+			},
+			applyAutocomplete: function() {
+				var value = this._autocomplete;
+				var input = this._nodes.input;
+
+				if(value === "" || value === null || value === undefined) {
+					input.removeAttribute("autocomplete");
+				} else {
+					input.setAttribute("autocomplete", value);
+				}
+			},
+			getAutocomplete: function() {
+				return this._autocomplete;
+			},
+			setAutocomplete: function(value) {
+				if(this._autocomplete !== value) {
+					this._autocomplete = value;
+					if(this._nodes.input) {
+						this.applyAutocomplete();
+					}
+				}
 			}
 		},
 		properties: {
@@ -316,6 +342,11 @@ define(function(require) {
 			},
 			"placeholder": {
 				type: Type.STRING,
+				set: Function
+			},
+			"autocomplete": {
+				type: Type.STRING,
+				get: Function,
 				set: Function
 			},
 			"onChange": {
