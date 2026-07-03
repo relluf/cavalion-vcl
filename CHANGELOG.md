@@ -2,6 +2,20 @@ Generate a git commit message, first line lowercased like: "(categorized): summa
 
 Generate a RELEASENOTES entry for users/developers of Cavalion
 
+### `2026/07/02` — Build pipeline and source maintenance
+
+### Build
+- Adds `sanitizeForMinifier(src)` to `src/prototypes/make/Build.js`.
+- Sanitizes specific regex literals before passing JavaScript sources to `minify()`.
+- Rewrites affected regex literals as `new RegExp(...)` to avoid minifier parsing issues.
+- Applies sanitization only for `.js` assets processed by `merge_lib()`.
+- Preserves the existing resource merge, CR stripping, and `define(...)` wrapping behavior.
+
+### Source maintenance
+- Normalizes formatting and line endings in `src/Factory.js`.
+- Keeps `setPropertyValue()` and related property resolution logic functionally unchanged.
+- Performs import and whitespace cleanup without changing runtime behavior.
+
 ### `2026/06/24` Query engine, property resolution and UI refinements
 
 - Adds support for selector groups (`,`), evaluating multiple selector trees and returning a deduplicated result set.

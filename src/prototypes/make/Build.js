@@ -2,6 +2,21 @@
 
 var RM = require("devtools/Resources");
 
+function sanitizeForMinifier(src) {
+	return src
+		// /^.*[:/#]([^:/#]+)$/g
+		.replace(
+			/\/\^\.\*\[:\/#\]\(\[\^:\/#\]\+\)\$\/g/g,
+			'new RegExp("^.*[:/#]([^:/#]+)$","g")'
+		)
+
+		// /[\\/:*?"<>|]+/g
+		.replace(
+			/\/\[\\\\\/:\*\?"<>\|\]\+\/g/g,
+			'new RegExp("[\\\\\\\\/:*?\\"<>|]+","g")'
+		);
+}
+
 var Handlers = {
 	merge_lib() {
         var vars = this._owner.getVars();
@@ -43,7 +58,7 @@ var Handlers = {
 	    	if(text) {
 		        text = text.replace(/\r/g, "");
 		        if(uri.indexOf(".js") === uri.length - 3) {
-		        	text = minify(text);
+		        	text = minify(sanitizeForMinifier(text));
 		        }
 	            source.push(String.format("define(\"%s\", %s);", uri, JSON.stringify(text)));
 	    	}
